@@ -27,12 +27,12 @@ const HeroSection = () => {
       </p>
       <div className="flex justify-center my-10 gap-4">
         <a
-          href="http://localhost:5173/resume"
+          href="https://resumyy.netlify.app/resume"
           className="bg-gradient-to-r from-blue-600 to-cyan-500 py-3 px-8 rounded-full text-lg font-medium hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-300"
         >
           Analyze Your Resume
         </a>
-        <a href="#" className="py-3 px-8 rounded-full border border-gray-700 text-lg font-medium hover:bg-gray-800/50 transition-all duration-300">
+        <a href="https://github.com/Happyesss/resumy" className="py-3 px-8 rounded-full border border-gray-700 text-lg font-medium hover:bg-gray-800/50 transition-all duration-300">
           Read docs
         </a>
       </div>
