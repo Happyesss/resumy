@@ -1,11 +1,9 @@
 import React from 'react';
-import { FileText, GripVertical, Lightbulb } from 'lucide-react';
 import { ResumeData } from '../../../types/resume';
 
 interface SummarySectionProps {
   data: ResumeData;
   onUpdate: (data: Partial<ResumeData>) => void;
-  isDragging?: boolean;
 }
 
 const sampleSummaries = [
@@ -16,8 +14,7 @@ const sampleSummaries = [
 
 export const SummarySection: React.FC<SummarySectionProps> = ({
   data,
-  onUpdate,
-  isDragging
+  onUpdate
 }) => {
   const [showSuggestions, setShowSuggestions] = React.useState(false);
 
@@ -31,25 +28,9 @@ export const SummarySection: React.FC<SummarySectionProps> = ({
   };
 
   return (
-    <div className={`bg-white rounded-lg border-2 border-gray-200 p-6 transition-all duration-200 ${
-      isDragging ? 'border-blue-400 shadow-lg' : 'hover:border-gray-300'
-    }`}>
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center space-x-2">
-          <FileText className="h-5 w-5 text-blue-600" />
-          <h2 className="text-lg font-semibold text-gray-900">Professional Summary</h2>
-        </div>
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={() => setShowSuggestions(!showSuggestions)}
-            className="flex items-center space-x-1 px-2 py-1 text-sm text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
-            title="Get suggestions"
-          >
-            <Lightbulb className="h-4 w-4" />
-            <span>Suggestions</span>
-          </button>
-          <GripVertical className="h-5 w-5 text-gray-400 cursor-grab" />
-        </div>
+    <div className="bg-white rounded-lg border-2 border-gray-200 p-6 transition-all duration-200 hover:border-gray-300">
+      <div className="mb-6">
+        <h2 className="text-lg font-semibold text-gray-900">Summary</h2>
       </div>
 
       <div className="space-y-4">

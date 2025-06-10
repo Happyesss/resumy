@@ -1,17 +1,14 @@
 import React from 'react';
-import { User, GripVertical } from 'lucide-react';
 import { ResumeData } from '../../../types/resume';
 
 interface PersonalInfoSectionProps {
   data: ResumeData;
   onUpdate: (data: Partial<ResumeData>) => void;
-  isDragging?: boolean;
 }
 
 export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
   data,
-  onUpdate,
-  isDragging
+  onUpdate
 }) => {
   const { personalInfo } = data;
 
@@ -25,15 +22,11 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
   };
 
   return (
-    <div className={`bg-white rounded-lg border-2 border-gray-200 p-6 transition-all duration-200 ${
-      isDragging ? 'border-blue-400 shadow-lg' : 'hover:border-gray-300'
-    }`}>
+    <div className={`bg-white rounded-lg border-2 border-gray-200 p-6 transition-all duration-200 hover:border-gray-300`}>
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-2">
-          <User className="h-5 w-5 text-blue-600" />
           <h2 className="text-lg font-semibold text-gray-900">Personal Information</h2>
         </div>
-        <GripVertical className="h-5 w-5 text-gray-400 cursor-grab" />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

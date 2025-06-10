@@ -1,37 +1,18 @@
 import React from 'react';
-import { Award, GripVertical, Plus, Trash2, Calendar } from 'lucide-react';
-import { ResumeData, Certification } from '../../../types/resume';
-import { v4 as uuidv4 } from 'uuid';
+import { ResumeData } from '../../../types/resume';
 
 interface CertificationsSectionProps {
   data: ResumeData;
   onUpdate: (data: Partial<ResumeData>) => void;
-  isDragging?: boolean;
 }
 
 export const CertificationsSection: React.FC<CertificationsSectionProps> = ({
   data,
-  onUpdate,
-  isDragging
+  onUpdate
 }) => {
   const { certifications } = data;
 
-  const addCertification = () => {
-    const newCertification: Certification = {
-      id: uuidv4(),
-      name: '',
-      issuer: '',
-      date: '',
-      expiryDate: '',
-      credentialId: ''
-    };
-
-    onUpdate({
-      certifications: [...certifications, newCertification]
-    });
-  };
-
-  const updateCertification = (id: string, field: keyof Certification, value: string) => {
+  const updateCertification = (id: string, field: string, value: string) => {
     onUpdate({
       certifications: certifications.map(cert =>
         cert.id === id ? { ...cert, [field]: value } : cert
@@ -46,24 +27,9 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({
   };
 
   return (
-    <div className={`bg-white rounded-lg border-2 border-gray-200 p-6 transition-all duration-200 ${
-      isDragging ? 'border-blue-400 shadow-lg' : 'hover:border-gray-300'
-    }`}>
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center space-x-2">
-          <Award className="h-5 w-5 text-blue-600" />
-          <h2 className="text-lg font-semibold text-gray-900">Certifications</h2>
-        </div>
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={addCertification}
-            className="flex items-center space-x-1 px-3 py-1 text-sm text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
-          >
-            <Plus className="h-4 w-4" />
-            <span>Add Certification</span>
-          </button>
-          <GripVertical className="h-5 w-5 text-gray-400 cursor-grab" />
-        </div>
+    <div className="bg-white rounded-lg border-2 border-gray-200 p-6 transition-all duration-200 hover:border-gray-300">
+      <div className="mb-6">
+        <h2 className="text-lg font-semibold text-gray-900">Certifications</h2>
       </div>
 
       <div className="space-y-6">
@@ -77,7 +43,7 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({
                 onClick={() => removeCertification(cert.id)}
                 className="text-red-600 hover:text-red-800 transition-colors"
               >
-                <Trash2 className="h-4 w-4" />
+                Remove
               </button>
             </div>
 
@@ -109,9 +75,8 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({
               </div>
 
               <div>
-                <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
-                  <Calendar className="h-4 w-4" />
-                  <span>Issue Date *</span>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Issue Date *
                 </label>
                 <input
                   type="month"
@@ -122,9 +87,8 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({
               </div>
 
               <div>
-                <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
-                  <Calendar className="h-4 w-4" />
-                  <span>Expiry Date (Optional)</span>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Expiry Date (Optional)
                 </label>
                 <input
                   type="month"
@@ -152,7 +116,6 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({
 
         {certifications.length === 0 && (
           <div className="text-center py-8 text-gray-500">
-            <Award className="h-12 w-12 mx-auto mb-4 text-gray-300" />
             <p className="text-lg font-medium">No certifications added yet</p>
             <p className="text-sm">Click "Add Certification" to showcase your credentials</p>
           </div>

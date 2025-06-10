@@ -1,5 +1,4 @@
 import React from 'react';
-import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { PersonalInfoSection } from './sections/PersonalInfoSection';
 import { SummarySection } from './sections/SummarySection';
 import { WorkExperienceSection } from './sections/WorkExperienceSection';
@@ -38,42 +37,19 @@ export const ResumeEditor: React.FC<ResumeEditorProps> = ({
   resumeData,
   onUpdateResume
 }) => {
-  const [sectionOrder, setSectionOrder] = React.useState(defaultSectionOrder);
 
-  const handleDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
-
-    const items = Array.from(sectionOrder);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
-
-    setSectionOrder(items);
-  };
-
-  const renderSection = (sectionId: string, index: number) => {
+  const renderSection = (sectionId: string) => {
     const SectionComponent = sectionComponents[sectionId as keyof typeof sectionComponents];
     
     if (!SectionComponent) return null;
 
     return (
-      <Draggable key={sectionId} draggableId={sectionId} index={index}>
-        {(provided, snapshot) => (
-          <div
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            className={`mb-6 transition-shadow duration-200 ${
-              snapshot.isDragging ? 'shadow-lg' : ''
-            }`}
-          >
-            <SectionComponent
-              data={resumeData}
-              onUpdate={onUpdateResume}
-              isDragging={snapshot.isDragging}
-            />
-          </div>
-        )}
-      </Draggable>
+      <div key={sectionId} className="mb-6">
+        <SectionComponent
+          data={resumeData}
+          onUpdate={onUpdateResume}
+        />
+      </div>
     );
   };
 
@@ -81,25 +57,11 @@ export const ResumeEditor: React.FC<ResumeEditorProps> = ({
     <div className="w-full max-w-4xl mx-auto p-6">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Build Your Resume</h1>
-        <p className="text-gray-600">Fill in your information and drag sections to reorder them</p>
+        <p className="text-gray-600">Fill in your information below</p>
       </div>
-
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <Droppable droppableId="resume-sections">
-          {(provided, snapshot) => (
-            <div
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              className={`transition-colors duration-200 ${
-                snapshot.isDraggingOver ? 'bg-blue-50' : ''
-              }`}
-            >
-              {sectionOrder.map((sectionId, index) => renderSection(sectionId, index))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+      <div>
+        {defaultSectionOrder.map((sectionId) => renderSection(sectionId))}
+      </div>
     </div>
   );
 };

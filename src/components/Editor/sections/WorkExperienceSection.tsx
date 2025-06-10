@@ -1,37 +1,17 @@
 import React from 'react';
-import { Briefcase, GripVertical, Plus, Trash2, Calendar } from 'lucide-react';
+import { Briefcase, Plus, Trash2, Calendar } from 'lucide-react';
 import { ResumeData, WorkExperience } from '../../../types/resume';
-import { v4 as uuidv4 } from 'uuid';
 
 interface WorkExperienceSectionProps {
   data: ResumeData;
   onUpdate: (data: Partial<ResumeData>) => void;
-  isDragging?: boolean;
 }
 
 export const WorkExperienceSection: React.FC<WorkExperienceSectionProps> = ({
   data,
-  onUpdate,
-  isDragging
+  onUpdate
 }) => {
   const { workExperience } = data;
-
-  const addExperience = () => {
-    const newExperience: WorkExperience = {
-      id: uuidv4(),
-      company: '',
-      position: '',
-      location: '',
-      startDate: '',
-      endDate: '',
-      current: false,
-      description: ['']
-    };
-
-    onUpdate({
-      workExperience: [...workExperience, newExperience]
-    });
-  };
 
   const updateExperience = (id: string, field: keyof WorkExperience, value: any) => {
     onUpdate({
@@ -72,24 +52,9 @@ export const WorkExperienceSection: React.FC<WorkExperienceSectionProps> = ({
   };
 
   return (
-    <div className={`bg-white rounded-lg border-2 border-gray-200 p-6 transition-all duration-200 ${
-      isDragging ? 'border-blue-400 shadow-lg' : 'hover:border-gray-300'
-    }`}>
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center space-x-2">
-          <Briefcase className="h-5 w-5 text-blue-600" />
-          <h2 className="text-lg font-semibold text-gray-900">Work Experience</h2>
-        </div>
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={addExperience}
-            className="flex items-center space-x-1 px-3 py-1 text-sm text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
-          >
-            <Plus className="h-4 w-4" />
-            <span>Add Experience</span>
-          </button>
-          <GripVertical className="h-5 w-5 text-gray-400 cursor-grab" />
-        </div>
+    <div className="bg-white rounded-lg border-2 border-gray-200 p-6 transition-all duration-200 hover:border-gray-300">
+      <div className="mb-6">
+        <h2 className="text-lg font-semibold text-gray-900">Work Experience</h2>
       </div>
 
       <div className="space-y-6">
