@@ -67,24 +67,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         // First check connectivity to Supabase
         try {
           console.log('Testing Supabase connectivity...');
-          // Use a simple request to test connectivity
-          try {
-            const { error: healthError } = await supabase
-              .from('users')
-              .select('count')
-              .limit(1);
+          // Use a simple request to test connectivity with a shorter timeout
+          const healthCheckPromise = supabase
+            .from('users')
+            .select('count')
+            .limit(1);
 
-            console.log(
-              'Health check result:',
-              healthError
-                ? `Error: ${healthError.message}`
-                : 'Connection successful'
-            );
-          } catch (networkError) {
-            console.error('Network error during health check:', networkError);
-          }
+          const timeoutPromise = new Promise((_, reject) => {
+            setTimeout(() => reject(new Error('Health check timed out')), 5000);
+          });
+
+          await Promise.race([healthCheckPromise, timeoutPromise]);
+          console.log('Health check successful - Supabase is reachable');
         } catch (healthError) {
-          console.error('Error during health check:', healthError);
+          console.error('Health check failed:', healthError);
+          // Continue with initialization even if health check fails
         }
 
         // Get the current session
@@ -114,8 +111,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
               // Add detailed network debugging
               if (navigator.onLine === false) {
                 console.warn(
-                  'Browser reports device is offline! Will retry when online.'
+                  'Browser reports device is offline! Will use cached data if available.'
                 );
+                
+                // Use cached profile if available
+                if (cachedProfile && cachedProfile.auth_user_id === session.user.id) {
+                  console.log('Using cached profile while offline');
+                  updateProfileWithCache(cachedProfile);
+                }
+                return;
               }
 
               console.log(
@@ -123,11 +127,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
                 navigator.onLine ? 'Online' : 'Offline'
               );
 
-              // Try with timeout to prevent hanging requests - increased to 10 seconds
+              // Try with shorter timeout to prevent hanging requests
               const timeoutPromise = new Promise((_, reject) => {
                 setTimeout(
                   () => reject(new Error('Profile fetch timed out')),
-                  10000
+                  8000 // Reduced from 10 seconds to 8 seconds
                 );
               });
 
@@ -143,8 +147,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
                 );
                 updateProfileWithCache(userProfile);
               }
-            } catch (profileError) {
+            } catch (profileError: any) {
               console.error('Error fetching user profile:', profileError);
+              
+              // Use cached profile if available and the error is network-related
+              if (cachedProfile && cachedProfile.auth_user_id === session.user.id) {
+                console.log('Using cached profile due to fetch error');
+                updateProfileWithCache(cachedProfile);
+              }
+
               // Log error details with type checking
               console.log(
                 'Error details:',
@@ -153,56 +164,58 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
                   : 'Unknown error',
                 profileError instanceof Error
                   ? profileError.message
-                  : String(profileError),
-                profileError instanceof Error && 'code' in profileError
-                  ? (profileError as any).code
-                  : 'no-code',
-                profileError instanceof Error
-                  ? profileError.stack
-                    ? 'Has stack'
-                    : 'No stack'
-                  : 'Not an Error object'
+                  : String(profileError)
               );
 
-              let retryCount = 0;
-              const maxRetries = 3;
+              // Only retry if it's a timeout or network error, not a data error
+              if (profileError.message?.includes('timed out') || 
+                  profileError.message?.includes('fetch') ||
+                  !navigator.onLine) {
+                
+                let retryCount = 0;
+                const maxRetries = 2; // Reduced from 3 to 2
 
-              const retryWithBackoff = async () => {
-                if (!mounted || retryCount >= maxRetries) return;
+                const retryWithBackoff = async () => {
+                  if (!mounted || retryCount >= maxRetries) return;
 
-                const delay = Math.pow(2, retryCount) * 1000; // 1s, 2s, 4s
-                retryCount++;
+                  const delay = Math.pow(2, retryCount) * 2000; // 2s, 4s (increased base delay)
+                  retryCount++;
 
-                console.log(
-                  `Init - retry ${retryCount}/${maxRetries} after ${delay}ms...`
-                );
+                  console.log(
+                    `Init - retry ${retryCount}/${maxRetries} after ${delay}ms...`
+                  );
 
-                setTimeout(async () => {
-                  if (!mounted) return;
+                  setTimeout(async () => {
+                    if (!mounted || !navigator.onLine) return;
 
-                  try {
-                    console.log('Retrying profile fetch after delay...');
-                    const retryProfile = await getUserProfile(session.user.id);
-                    console.log(
-                      'Retry successful, profile loaded:',
-                      retryProfile.email
-                    );
-                    updateProfileWithCache(retryProfile);
-                  } catch (retryError) {
-                    console.error(
-                      `Init retry ${retryCount} failed:`,
-                      retryError
-                    );
-                    if (retryCount < maxRetries) {
-                      retryWithBackoff();
-                    } else {
-                      console.log('Init - max retries reached');
+                    try {
+                      console.log('Retrying profile fetch after delay...');
+                      const retryProfile = await getUserProfile(session.user.id);
+                      console.log(
+                        'Retry successful, profile loaded:',
+                        retryProfile.email
+                      );
+                      updateProfileWithCache(retryProfile);
+                    } catch (retryError) {
+                      console.error(
+                        `Init retry ${retryCount} failed:`,
+                        retryError
+                      );
+                      if (retryCount < maxRetries) {
+                        retryWithBackoff();
+                      } else {
+                        console.log('Init - max retries reached, using cached data if available');
+                        // Final fallback to cached data
+                        if (cachedProfile && cachedProfile.auth_user_id === session.user.id) {
+                          updateProfileWithCache(cachedProfile);
+                        }
+                      }
                     }
-                  }
-                }, delay);
-              };
+                  }, delay);
+                };
 
-              retryWithBackoff();
+                retryWithBackoff();
+              }
             }
           } else {
             console.log('No existing session found');
@@ -302,11 +315,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             throw new Error('Device is offline');
           }
 
-          // Try with timeout to prevent hanging requests - increased to 10 seconds
+          // Try with shorter timeout to prevent hanging requests
           const timeoutPromise = new Promise((_, reject) => {
             setTimeout(
               () => reject(new Error('Profile fetch timed out')),
-              10000
+              8000 // Reduced from 10 seconds to 8 seconds
             );
           });
 
@@ -322,52 +335,69 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             );
             updateProfileWithCache(userProfile);
           }
-        } catch (error) {
+        } catch (error: any) {
           console.error('Error fetching user profile on auth change:', error);
+          
+          // Use cached profile if available and the error is network-related
+          if (cachedProfile && cachedProfile.auth_user_id === session.user.id) {
+            console.log('Using cached profile due to auth state change fetch error');
+            updateProfileWithCache(cachedProfile);
+          }
+          
           console.log(
             'Auth state change - attempting to recover/create profile...'
           );
 
-          // Try again after a short delay with increasing delays (exponential backoff)
-          let retryCount = 0;
-          const maxRetries = 3;
+          // Only retry for network-related errors
+          if (error.message?.includes('timed out') || 
+              error.message?.includes('fetch') ||
+              !navigator.onLine) {
+            
+            // Try again after a short delay with increasing delays (exponential backoff)
+            let retryCount = 0;
+            const maxRetries = 2; // Reduced from 3 to 2
 
-          const retryWithBackoff = async () => {
-            if (!mounted || retryCount >= maxRetries) return;
+            const retryWithBackoff = async () => {
+              if (!mounted || retryCount >= maxRetries) return;
 
-            const delay = Math.pow(2, retryCount) * 1000; // 1s, 2s, 4s
-            retryCount++;
+              const delay = Math.pow(2, retryCount) * 2000; // 2s, 4s (increased base delay)
+              retryCount++;
 
-            console.log(
-              `Auth state change - retry ${retryCount}/${maxRetries} after ${delay}ms...`
-            );
+              console.log(
+                `Auth state change - retry ${retryCount}/${maxRetries} after ${delay}ms...`
+              );
 
-            setTimeout(async () => {
-              if (!mounted) return;
+              setTimeout(async () => {
+                if (!mounted || !navigator.onLine) return;
 
-              try {
-                console.log('Auth state change - retrying profile fetch...');
-                const retryProfile = await getUserProfile(session.user.id);
-                console.log(
-                  'Auth state change - retry successful, profile loaded:',
-                  retryProfile.email
-                );
-                updateProfileWithCache(retryProfile);
-              } catch (retryError) {
-                console.error(
-                  `Auth state change - retry ${retryCount} failed:`,
-                  retryError
-                );
-                if (retryCount < maxRetries) {
-                  retryWithBackoff();
-                } else {
-                  console.log('Auth state change - max retries reached');
+                try {
+                  console.log('Auth state change - retrying profile fetch...');
+                  const retryProfile = await getUserProfile(session.user.id);
+                  console.log(
+                    'Auth state change - retry successful, profile loaded:',
+                    retryProfile.email
+                  );
+                  updateProfileWithCache(retryProfile);
+                } catch (retryError) {
+                  console.error(
+                    `Auth state change - retry ${retryCount} failed:`,
+                    retryError
+                  );
+                  if (retryCount < maxRetries) {
+                    retryWithBackoff();
+                  } else {
+                    console.log('Auth state change - max retries reached, using cached data if available');
+                    // Final fallback to cached data
+                    if (cachedProfile && cachedProfile.auth_user_id === session.user.id) {
+                      updateProfileWithCache(cachedProfile);
+                    }
+                  }
                 }
-              }
-            }, delay);
-          };
+              }, delay);
+            };
 
-          retryWithBackoff();
+            retryWithBackoff();
+          }
         }
       }
     });

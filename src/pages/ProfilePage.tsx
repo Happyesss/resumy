@@ -365,6 +365,9 @@ export const ProfilePage: React.FC = () => {
     try {
       setLoading(true);
       
+      // Clear any previous error messages
+      setErrorMessages(prev => ({ ...prev, profileImage: '' }));
+      
       // Import required functions
       const { uploadFile, getPublicUrl } = await import('../lib/supabase');
       const { optimizeImage } = await import('../utils/imageUtils');
@@ -374,7 +377,22 @@ export const ProfilePage: React.FC = () => {
       
       // Upload the optimized file to Supabase storage
       const filePath = `profile_images/${user.id}/${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
-      await uploadFile('public', filePath, optimizedFile);
+      
+      try {
+        await uploadFile('public', filePath, optimizedFile);
+      } catch (uploadError: any) {
+        console.error('Upload error details:', uploadError);
+        
+        // Check if it's a bucket not found error
+        if (uploadError.message?.includes('Bucket not found') || 
+            uploadError.message?.includes('bucket') ||
+            (uploadError.statusCode === 404 || uploadError.status === 404)) {
+          throw new Error('Storage bucket not configured. Please contact support or check your Supabase project setup.');
+        }
+        
+        // Re-throw other errors
+        throw uploadError;
+      }
       
       // Get the public URL
       const imageUrl = getPublicUrl('public', filePath);
@@ -395,11 +413,25 @@ export const ProfilePage: React.FC = () => {
       // Show success message
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3000);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error uploading profile image:', error);
+      
+      let errorMessage = 'Failed to upload profile image. Please try again.';
+      
+      // Provide more specific error messages
+      if (error.message?.includes('Storage bucket not configured')) {
+        errorMessage = 'Image upload is not available. The storage system needs to be configured. Please contact support.';
+      } else if (error.message?.includes('File too large')) {
+        errorMessage = 'The image file is too large. Please choose a smaller image.';
+      } else if (error.message?.includes('Invalid file type')) {
+        errorMessage = 'Invalid file type. Please choose a JPG, PNG, or WebP image.';
+      } else if (!navigator.onLine) {
+        errorMessage = 'You are offline. Please check your internet connection and try again.';
+      }
+      
       setErrorMessages(prev => ({ 
         ...prev, 
-        profileImage: 'Failed to upload profile image. Please try again.' 
+        profileImage: errorMessage
       }));
     } finally {
       setLoading(false);
@@ -668,8 +700,8 @@ export const ProfilePage: React.FC = () => {
           onDismiss={() => setSaveSuccess(false)}
         />
         <ErrorBanner
-          message={errorMessages.validation || errorMessages.profile || ""}
-          onDismiss={() => setErrorMessages(prev => ({ ...prev, validation: '', profile: '' }))}
+          message={errorMessages.validation || errorMessages.profile || errorMessages.profileImage || ""}
+          onDismiss={() => setErrorMessages(prev => ({ ...prev, validation: '', profile: '', profileImage: '' }))}
         />
         <ProfileHeader
           profileData={profileData}
