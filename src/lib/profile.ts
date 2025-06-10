@@ -39,9 +39,26 @@ export interface Project {
   imageUrl?: string;
 }
 
+// Helper function to get the database user ID from auth user ID
+const getDatabaseUserId = async (authUserId: string): Promise<string> => {
+  const { data: user, error } = await supabase
+    .from('users')
+    .select('id')
+    .eq('auth_user_id', authUserId)
+    .single();
+    
+  if (error) throw error;
+  if (!user) throw new Error('User not found in database');
+  
+  return user.id;
+};
+
 // Generic function to fetch profile sections
-export const fetchProfileSections = async <T>(userId: string, sectionType: string): Promise<T[]> => {
+export const fetchProfileSections = async <T>(authUserId: string, sectionType: string): Promise<T[]> => {
   try {
+    // Get the database user ID
+    const userId = await getDatabaseUserId(authUserId);
+    
     // First, check if the user has any resumes
     const { data: resumes, error: resumeError } = await supabase
       .from('resumes')
@@ -99,11 +116,14 @@ export const fetchProfileSections = async <T>(userId: string, sectionType: strin
 
 // Generic function to update profile sections
 export const updateProfileSection = async <T>(
-  userId: string, 
+  authUserId: string, 
   sectionType: string,
   content: T[]
 ): Promise<void> => {
   try {
+    // Get the database user ID
+    const userId = await getDatabaseUserId(authUserId);
+    
     // First, get the user's resume id
     const { data: resumes, error: resumeError } = await supabase
       .from('resumes')
@@ -173,34 +193,34 @@ export const updateProfileSection = async <T>(
 };
 
 // Helper functions for specific section types
-export const fetchWorkExperience = async (userId: string): Promise<WorkExperience[]> => {
-  return fetchProfileSections<WorkExperience>(userId, 'work_experience');
+export const fetchWorkExperience = async (authUserId: string): Promise<WorkExperience[]> => {
+  return fetchProfileSections<WorkExperience>(authUserId, 'work_experience');
 };
 
-export const updateWorkExperience = async (userId: string, workExperience: WorkExperience[]): Promise<void> => {
-  return updateProfileSection<WorkExperience>(userId, 'work_experience', workExperience);
+export const updateWorkExperience = async (authUserId: string, workExperience: WorkExperience[]): Promise<void> => {
+  return updateProfileSection<WorkExperience>(authUserId, 'work_experience', workExperience);
 };
 
-export const fetchEducation = async (userId: string): Promise<Education[]> => {
-  return fetchProfileSections<Education>(userId, 'education');
+export const fetchEducation = async (authUserId: string): Promise<Education[]> => {
+  return fetchProfileSections<Education>(authUserId, 'education');
 };
 
-export const updateEducation = async (userId: string, education: Education[]): Promise<void> => {
-  return updateProfileSection<Education>(userId, 'education', education);
+export const updateEducation = async (authUserId: string, education: Education[]): Promise<void> => {
+  return updateProfileSection<Education>(authUserId, 'education', education);
 };
 
-export const fetchSkills = async (userId: string): Promise<Skill[]> => {
-  return fetchProfileSections<Skill>(userId, 'skills');
+export const fetchSkills = async (authUserId: string): Promise<Skill[]> => {
+  return fetchProfileSections<Skill>(authUserId, 'skills');
 };
 
-export const updateSkills = async (userId: string, skills: Skill[]): Promise<void> => {
-  return updateProfileSection<Skill>(userId, 'skills', skills);
+export const updateSkills = async (authUserId: string, skills: Skill[]): Promise<void> => {
+  return updateProfileSection<Skill>(authUserId, 'skills', skills);
 };
 
-export const fetchProjects = async (userId: string): Promise<Project[]> => {
-  return fetchProfileSections<Project>(userId, 'projects');
+export const fetchProjects = async (authUserId: string): Promise<Project[]> => {
+  return fetchProfileSections<Project>(authUserId, 'projects');
 };
 
-export const updateProjects = async (userId: string, projects: Project[]): Promise<void> => {
-  return updateProfileSection<Project>(userId, 'projects', projects);
+export const updateProjects = async (authUserId: string, projects: Project[]): Promise<void> => {
+  return updateProfileSection<Project>(authUserId, 'projects', projects);
 };
