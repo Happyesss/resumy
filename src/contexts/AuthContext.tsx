@@ -123,11 +123,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
                 navigator.onLine ? 'Online' : 'Offline'
               );
 
-              // Try with timeout to prevent hanging requests
+              // Try with timeout to prevent hanging requests - increased to 10 seconds
               const timeoutPromise = new Promise((_, reject) => {
                 setTimeout(
                   () => reject(new Error('Profile fetch timed out')),
-                  5000
+                  10000
                 );
               });
 
@@ -302,11 +302,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             throw new Error('Device is offline');
           }
 
-          // Try with timeout to prevent hanging requests
+          // Try with timeout to prevent hanging requests - increased to 10 seconds
           const timeoutPromise = new Promise((_, reject) => {
             setTimeout(
               () => reject(new Error('Profile fetch timed out')),
-              5000
+              10000
             );
           });
 

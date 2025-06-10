@@ -91,23 +91,22 @@ export const fetchProfileSections = async <T>(authUserId: string, sectionType: s
       resumeId = newResume.id;
     }
     
-    // Fetch the section data
+    // Fetch the section data using limit(1) instead of single()
     const { data, error } = await supabase
       .from('resume_sections')
       .select('content')
       .eq('resume_id', resumeId)
       .eq('section_type', sectionType)
-      .single();
+      .limit(1);
       
-    if (error) {
-      // If the section doesn't exist, return empty array
-      if (error.code === 'PGRST116') {
-        return [] as T[];
-      }
-      throw error;
+    if (error) throw error;
+    
+    // Check if data array is empty or null
+    if (!data || data.length === 0) {
+      return [] as T[];
     }
     
-    return data.content || [] as T[];
+    return data[0].content || [] as T[];
   } catch (error) {
     console.error(`Error fetching ${sectionType}:`, error);
     return [] as T[];
@@ -156,20 +155,22 @@ export const updateProfileSection = async <T>(
       resumeId = newResume.id;
     }
     
-    // Check if section exists
-    const { data: existingSection, error: checkError } = await supabase
+    // Check if section exists using limit(1) instead of single()
+    const { data: existingSections, error: checkError } = await supabase
       .from('resume_sections')
       .select('id')
       .eq('resume_id', resumeId)
       .eq('section_type', sectionType)
-      .single();
+      .limit(1);
       
+    if (checkError) throw checkError;
+    
     // If section already exists, update it
-    if (existingSection) {
+    if (existingSections && existingSections.length > 0) {
       const { error: updateError } = await supabase
         .from('resume_sections')
         .update({ content })
-        .eq('id', existingSection.id);
+        .eq('id', existingSections[0].id);
         
       if (updateError) throw updateError;
     } else {
