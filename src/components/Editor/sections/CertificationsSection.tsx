@@ -1,5 +1,7 @@
 import React from 'react';
-import { ResumeData } from '../../../types/resume';
+import { Award, Plus, Trash2 } from 'lucide-react';
+import { ResumeData, Certification } from '../../../types/resume';
+import { ActionButtons } from '../ActionButtons';
 
 interface CertificationsSectionProps {
   data: ResumeData;
@@ -11,6 +13,20 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({
   onUpdate
 }) => {
   const { certifications } = data;
+
+  const addCertification = () => {
+    const newCertification: Certification = {
+      id: Date.now().toString(),
+      name: '',
+      issuer: '',
+      date: '',
+      expiryDate: '',
+      credentialId: ''
+    };
+    onUpdate({
+      certifications: [...certifications, newCertification]
+    });
+  };
 
   const updateCertification = (id: string, field: string, value: string) => {
     onUpdate({
@@ -28,13 +44,20 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({
 
   return (
     <div className="bg-white rounded-lg border-2 border-gray-200 p-6 transition-all duration-200 hover:border-gray-300">
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold text-gray-900">Certifications</h2>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center space-x-2">
+          <Award className="h-5 w-5 text-blue-600" />
+          <h2 className="text-lg font-semibold text-gray-900">Certifications</h2>
+        </div>
+        <ActionButtons
+          onAdd={addCertification}
+          addLabel="Add Certification"
+        />
       </div>
 
       <div className="space-y-6">
         {certifications.map((cert, index) => (
-          <div key={cert.id} className="border border-gray-200 rounded-lg p-4">
+          <div key={cert.id} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
             <div className="flex items-center justify-between mb-4">
               <span className="text-sm font-medium text-gray-600">
                 Certification {index + 1}
@@ -43,7 +66,7 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({
                 onClick={() => removeCertification(cert.id)}
                 className="text-red-600 hover:text-red-800 transition-colors"
               >
-                Remove
+                <Trash2 className="h-4 w-4" />
               </button>
             </div>
 
@@ -115,7 +138,8 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({
         ))}
 
         {certifications.length === 0 && (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+            <Award className="h-12 w-12 mx-auto mb-4 text-gray-300" />
             <p className="text-lg font-medium">No certifications added yet</p>
             <p className="text-sm">Click "Add Certification" to showcase your credentials</p>
           </div>

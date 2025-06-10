@@ -1,5 +1,7 @@
 import React from 'react';
-import { ResumeData } from '../../../types/resume';
+import { FolderOpen, Plus, Trash2, ExternalLink, Github } from 'lucide-react';
+import { ResumeData, Project } from '../../../types/resume';
+import { ActionButtons } from '../ActionButtons';
 
 interface ProjectsSectionProps {
   data: ResumeData;
@@ -11,6 +13,22 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
   onUpdate
 }) => {
   const { projects } = data;
+
+  const addProject = () => {
+    const newProject: Project = {
+      id: Date.now().toString(),
+      name: '',
+      description: '',
+      technologies: [],
+      url: '',
+      github: '',
+      startDate: '',
+      endDate: ''
+    };
+    onUpdate({
+      projects: [...projects, newProject]
+    });
+  };
 
   const updateProject = (id: string, field: string, value: any) => {
     onUpdate({
@@ -33,13 +51,20 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
 
   return (
     <div className="bg-white rounded-lg border-2 border-gray-200 p-6 transition-all duration-200 hover:border-gray-300">
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold text-gray-900">Projects</h2>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center space-x-2">
+          <FolderOpen className="h-5 w-5 text-blue-600" />
+          <h2 className="text-lg font-semibold text-gray-900">Projects</h2>
+        </div>
+        <ActionButtons
+          onAdd={addProject}
+          addLabel="Add Project"
+        />
       </div>
 
       <div className="space-y-6">
         {projects.map((project, index) => (
-          <div key={project.id} className="border border-gray-200 rounded-lg p-4">
+          <div key={project.id} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
             <div className="flex items-center justify-between mb-4">
               <span className="text-sm font-medium text-gray-600">
                 Project {index + 1}
@@ -48,7 +73,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                 onClick={() => removeProject(project.id)}
                 className="text-red-600 hover:text-red-800 transition-colors"
               >
-                {/* Trash2 icon removed */}
+                <Trash2 className="h-4 w-4" />
               </button>
             </div>
 
@@ -133,7 +158,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
-                    {/* ExternalLink icon removed */}
+                    <ExternalLink className="h-4 w-4" />
                     <span>Live URL (Optional)</span>
                   </label>
                   <input
@@ -147,7 +172,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
 
                 <div>
                   <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
-                    {/* Github icon removed */}
+                    <Github className="h-4 w-4" />
                     <span>GitHub URL (Optional)</span>
                   </label>
                   <input
@@ -164,8 +189,8 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
         ))}
 
         {projects.length === 0 && (
-          <div className="text-center py-8 text-gray-500">
-            {/* Folder icon removed */}
+          <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+            <FolderOpen className="h-12 w-12 mx-auto mb-4 text-gray-300" />
             <p className="text-lg font-medium">No projects added yet</p>
             <p className="text-sm">Click "Add Project" to showcase your work</p>
           </div>

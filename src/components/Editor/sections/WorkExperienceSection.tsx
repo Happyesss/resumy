@@ -1,6 +1,7 @@
 import React from 'react';
 import { Briefcase, Plus, Trash2, Calendar } from 'lucide-react';
 import { ResumeData, WorkExperience } from '../../../types/resume';
+import { ActionButtons } from '../ActionButtons';
 
 interface WorkExperienceSectionProps {
   data: ResumeData;
@@ -12,6 +13,22 @@ export const WorkExperienceSection: React.FC<WorkExperienceSectionProps> = ({
   onUpdate
 }) => {
   const { workExperience } = data;
+
+  const addExperience = () => {
+    const newExperience: WorkExperience = {
+      id: Date.now().toString(),
+      company: '',
+      position: '',
+      location: '',
+      startDate: '',
+      endDate: '',
+      current: false,
+      description: ['']
+    };
+    onUpdate({
+      workExperience: [...workExperience, newExperience]
+    });
+  };
 
   const updateExperience = (id: string, field: keyof WorkExperience, value: any) => {
     onUpdate({
@@ -53,13 +70,20 @@ export const WorkExperienceSection: React.FC<WorkExperienceSectionProps> = ({
 
   return (
     <div className="bg-white rounded-lg border-2 border-gray-200 p-6 transition-all duration-200 hover:border-gray-300">
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold text-gray-900">Work Experience</h2>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center space-x-2">
+          <Briefcase className="h-5 w-5 text-blue-600" />
+          <h2 className="text-lg font-semibold text-gray-900">Work Experience</h2>
+        </div>
+        <ActionButtons
+          onAdd={addExperience}
+          addLabel="Add Experience"
+        />
       </div>
 
       <div className="space-y-6">
         {workExperience.map((experience, index) => (
-          <div key={experience.id} className="border border-gray-200 rounded-lg p-4">
+          <div key={experience.id} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
             <div className="flex items-center justify-between mb-4">
               <span className="text-sm font-medium text-gray-600">
                 Experience {index + 1}
@@ -188,7 +212,7 @@ export const WorkExperienceSection: React.FC<WorkExperienceSectionProps> = ({
         ))}
 
         {workExperience.length === 0 && (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
             <Briefcase className="h-12 w-12 mx-auto mb-4 text-gray-300" />
             <p className="text-lg font-medium">No work experience added yet</p>
             <p className="text-sm">Click "Add Experience" to get started</p>

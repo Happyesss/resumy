@@ -1,5 +1,7 @@
 import React from 'react';
-import { ResumeData } from '../../../types/resume';
+import { GraduationCap, Plus, Trash2 } from 'lucide-react';
+import { ResumeData, Education } from '../../../types/resume';
+import { ActionButtons } from '../ActionButtons';
 
 interface EducationSectionProps {
   data: ResumeData;
@@ -11,6 +13,23 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
   onUpdate
 }) => {
   const { education } = data;
+
+  const addEducation = () => {
+    const newEducation: Education = {
+      id: Date.now().toString(),
+      institution: '',
+      degree: '',
+      field: '',
+      location: '',
+      startDate: '',
+      endDate: '',
+      gpa: '',
+      honors: ''
+    };
+    onUpdate({
+      education: [...education, newEducation]
+    });
+  };
 
   const updateEducation = (id: string, field: string, value: string) => {
     onUpdate({
@@ -28,13 +47,20 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
 
   return (
     <div className="bg-white rounded-lg border-2 border-gray-200 p-6 transition-all duration-200 hover:border-gray-300">
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold text-gray-900">Education</h2>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center space-x-2">
+          <GraduationCap className="h-5 w-5 text-blue-600" />
+          <h2 className="text-lg font-semibold text-gray-900">Education</h2>
+        </div>
+        <ActionButtons
+          onAdd={addEducation}
+          addLabel="Add Education"
+        />
       </div>
 
       <div className="space-y-6">
         {education.map((edu, index) => (
-          <div key={edu.id} className="border border-gray-200 rounded-lg p-4">
+          <div key={edu.id} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
             <div className="flex items-center justify-between mb-4">
               <span className="text-sm font-medium text-gray-600">
                 Education {index + 1}
@@ -43,7 +69,7 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
                 onClick={() => removeEducation(edu.id)}
                 className="text-red-600 hover:text-red-800 transition-colors"
               >
-                Remove
+                <Trash2 className="h-4 w-4" />
               </button>
             </div>
 
@@ -101,8 +127,8 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
               </div>
 
               <div>
-                <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
-                  <span>Start Date</span>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Start Date
                 </label>
                 <input
                   type="month"
@@ -113,8 +139,8 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
               </div>
 
               <div>
-                <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
-                  <span>End Date</span>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  End Date
                 </label>
                 <input
                   type="month"
@@ -154,7 +180,8 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
         ))}
 
         {education.length === 0 && (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+            <GraduationCap className="h-12 w-12 mx-auto mb-4 text-gray-300" />
             <p className="text-lg font-medium">No education added yet</p>
             <p className="text-sm">Click "Add Education" to get started</p>
           </div>
