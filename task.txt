@@ -1,0 +1,54 @@
+Project Customization Notes
+=========================
+
+- All payment and subscription/upgrade features must be removed from the project.
+- No paid plans, no upgrade options, and no payment UI or backend logic should remain.
+- Only Gemini API key (provided by the user) will be used for AI features.
+- Remove any payment/subscription/upgrade logic and UI from all areas, including the profile section.
+- Ensure the app is free to use and only requires the Gemini API key for AI functionality.
+- Remove all references to payment or subscription from documentation, code, and UI.
+- Remove any database fields, API endpoints, or logic related to payment or subscription status.
+- The user experience should not mention or suggest any paid or premium features.
+- The only required configuration for AI features is the Gemini API key, which the user will provide.
+- All onboarding, settings, and profile pages should only reference the Gemini API key for AI access.
+- No upgrade, downgrade, or plan management options should exist anywhere in the app.
+- All code, UI, and documentation should reflect a 100% free and open-source product.
+- If any logic checks for subscription or payment status, remove or refactor it to always allow access.
+- If any UI elements or routes are dedicated to payment, subscription, or upgrade, remove them entirely.
+- The README and all documentation should be updated to reflect these changes.
+- The project should be ready for deployment as a free, Gemini-powered AI resume builder with no payment or upgrade features.
+
+
+Comprehensive Refactor Prompt for Developers or AI Agents
+--------------------------------------------------------
+
+Your task is to transform this project into a 100% free, open-source AI resume builder that only requires a Gemini API key for AI features. Follow these instructions:
+
+1. Remove All Payment and Subscription Logic:
+   - Delete all code, UI, and backend logic related to payment, subscriptions, upgrades, downgrades, plans, and premium/pro features.
+   - Remove all references to API keys for payment services, checkout sessions, billing portals, and payment processing.
+   - Delete or refactor any database fields, API endpoints, or logic related to payment or subscription status (e.g., `subscription_plan`, `subscription_status`, customer IDs, subscription IDs, etc.).
+
+2. Update the User Interface:
+   - Remove all pricing, plan selection, upgrade, downgrade, and subscription management UI components and pages (e.g., pricing cards, subscription sections, upgrade buttons, plan comparisons, etc.).
+   - Eliminate all references to “Pro”, “Premium”, “Upgrade”, “Plan”, “Subscription”, “Billing”, and similar terms from the UI, onboarding, and settings.
+   - Ensure the profile and settings pages only reference the Gemini API key for AI access.
+
+3. Documentation and Onboarding:
+   - Update the README, onboarding flows, and all documentation to remove any mention of payment, subscriptions, or upgrades.
+   - Clearly state that the app is free to use and only requires a Gemini API key for AI features.
+
+4. Gemini API Key Only:
+   - Ensure the only required configuration for AI features is the Gemini API key, which the user will provide.
+   - Remove support for other paid AI providers if not needed.
+
+5. Testing and Validation:
+   - Test the application thoroughly to confirm that all payment and subscription logic is removed.
+   - Verify that all features are accessible without any payment or upgrade, and that only the Gemini API key is required for AI functionality.
+
+6. Final Review:
+   - Ensure the codebase, UI, and documentation reflect a 100% free, Gemini-powered AI resume builder.
+   - Remove any dead code, unused files, or references left over from payment/subscription features.
+
+Summary:
+The final product should be a free, open-source AI resume builder with no payment, plan, or upgrade options, and only require a Gemini API key for AI features. All traces of payment and subscription logic must be completely removed from the codebase, UI, and documentation.
