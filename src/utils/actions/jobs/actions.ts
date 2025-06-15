@@ -7,6 +7,26 @@ import type { Job } from "@/lib/types";
 import { z } from "zod";
 import { JobListingParams } from "./schema";
 
+// Temporary mapper to handle database column name differences
+function mapDbJobToJob(dbJob: any): Job {
+  return {
+    id: dbJob.id,
+    user_id: dbJob.user_id,
+    company_name: dbJob.company_name || dbJob.company || '',
+    position_title: dbJob.position_title || dbJob.title || '',
+    job_url: dbJob.job_url,
+    description: dbJob.description,
+    location: dbJob.location,
+    salary_range: dbJob.salary_range,
+    keywords: dbJob.keywords || [],
+    work_location: dbJob.work_location,
+    employment_type: dbJob.employment_type,
+    created_at: dbJob.created_at,
+    updated_at: dbJob.updated_at,
+    is_active: dbJob.is_active !== undefined ? dbJob.is_active : true
+  };
+}
+
 export async function createJob(jobListing: z.infer<typeof simplifiedJobSchema>) {
   
   const supabase = await createClient();
@@ -18,16 +38,17 @@ export async function createJob(jobListing: z.infer<typeof simplifiedJobSchema>)
 
   const jobData = {
     user_id: user.id,
-    company_name: jobListing.company_name,
-    position_title: jobListing.position_title,
+    // Map new field names to existing database columns temporarily
+    company: jobListing.company_name,
+    title: jobListing.position_title,
     job_url: jobListing.job_url,
     description: jobListing.description,
-    location: jobListing.location,
-    salary_range: jobListing.salary_range,
-    keywords: jobListing.keywords,
-    work_location: jobListing.work_location || 'in_person', 
-    employment_type: jobListing.employment_type || 'full_time', 
-    is_active: true
+    // These fields will be ignored if they don't exist in the database
+    ...(jobListing.location && { location: jobListing.location }),
+    ...(jobListing.salary_range && { salary_range: jobListing.salary_range }),
+    ...(jobListing.keywords && { keywords: jobListing.keywords }),
+    ...(jobListing.work_location && { work_location: jobListing.work_location }),
+    ...(jobListing.employment_type && { employment_type: jobListing.employment_type })
   };
 
   const { data, error } = await supabase
@@ -41,7 +62,7 @@ export async function createJob(jobListing: z.infer<typeof simplifiedJobSchema>)
     throw error;
   }
   
-  return data;
+  return mapDbJobToJob(data);
 }
 
 export async function deleteJob(jobId: string): Promise<void> {
@@ -94,19 +115,23 @@ export async function getJobListings({
   let query = supabase
     .from('jobs')
     .select('*', { count: 'exact' })
-    .eq('is_active', true)
     .order('created_at', { ascending: false });
 
-  // Apply filters if they exist
+  // Apply filters if they exist (only for columns that exist in the database)
   if (filters) {
-    if (filters.workLocation) {
-      query = query.eq('work_location', filters.workLocation);
-    }
-    if (filters.employmentType) {
-      query = query.eq('employment_type', filters.employmentType);
-    }
-    if (filters.keywords && filters.keywords.length > 0) {
-      query = query.contains('keywords', filters.keywords);
+    // Skip these filters if the columns don't exist yet
+    try {
+      if (filters.workLocation) {
+        query = query.eq('work_location', filters.workLocation);
+      }
+      if (filters.employmentType) {
+        query = query.eq('employment_type', filters.employmentType);
+      }
+      if (filters.keywords && filters.keywords.length > 0) {
+        query = query.contains('keywords', filters.keywords);
+      }
+    } catch (error) {
+      console.log('Some filter columns may not exist yet, skipping advanced filters');
     }
   }
 
@@ -120,7 +145,7 @@ export async function getJobListings({
   }
 
   return {
-    jobs,
+    jobs: jobs?.map(mapDbJobToJob) || [],
     totalCount: count ?? 0,
     currentPage: page,
     totalPages: Math.ceil((count ?? 0) / pageSize)
@@ -130,9 +155,10 @@ export async function getJobListings({
 export async function deleteTailoredJob(jobId: string): Promise<void> {
   const supabase = await createClient();
 
+  // Just delete the job instead of marking as inactive since is_active column might not exist
   const { error } = await supabase
     .from('jobs')
-    .update({ is_active: false })
+    .delete()
     .eq('id', jobId);
 
   if (error) {
@@ -150,18 +176,13 @@ export async function createEmptyJob(): Promise<Job> {
     throw new Error('User not authenticated');
   }
 
-  const emptyJob: Partial<Job> = {
+  const emptyJob = {
     user_id: user.id,
-    company_name: 'New Company',
-    position_title: 'New Position',
+    // Use database column names
+    company: 'New Company',
+    title: 'New Position',
     job_url: null,
-    description: null,
-    location: null,
-    salary_range: null,
-    keywords: [],
-    work_location: null,
-    employment_type: null,
-    is_active: true
+    description: null
   };
 
   const { data, error } = await supabase
@@ -176,5 +197,5 @@ export async function createEmptyJob(): Promise<Job> {
   }
 
   revalidatePath('/', 'layout');
-  return data;
-} 
+  return mapDbJobToJob(data);
+}

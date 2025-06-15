@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Database Migration Tool</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        button { padding: 10px 20px; margin: 10px 0; background: #007cba; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #005a87; }
+        .result { margin: 20px 0; padding: 20px; border-radius: 4px; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .info { background: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 4px; overflow-x: auto; }
+        .sql-box { background: #f8f9fa; border: 1px solid #dee2e6; padding: 15px; border-radius: 4px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ResumeLM Database Migration Tool</h1>
+        <p>This tool will check if your database schema is up to date and provide SQL commands to fix any issues.</p>
+        
+        <button onclick="checkDatabase()">Check Database Schema</button>
+        
+        <div id="result"></div>
+        
+        <div id="sqlInstructions" style="display: none;">
+            <h2>Manual SQL Migration Required</h2>
+            <p>Please run the following SQL commands in your Supabase SQL Editor:</p>
+            <div class="sql-box">
+                <h3>Step 1: Add Missing Columns</h3>
+                <pre id="sqlCommands"></pre>
+            </div>
+            <p>After running the SQL commands, click "Check Database Schema" again to verify the migration.</p>
+        </div>
+    </div>
+
+    <script>
+        async function checkDatabase() {
+            const resultDiv = document.getElementById('result');
+            const sqlInstructionsDiv = document.getElementById('sqlInstructions');
+            
+            resultDiv.innerHTML = '<div class="info">Checking database schema...</div>';
+            
+            try {
+                const response = await fetch('/api/migrate-jobs', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h3>✅ ${data.message}</h3>
+                            <p>Jobs in database: ${data.sampleJobs}</p>
+                            <p>Available columns: ${data.availableColumns?.join(', ') || 'None'}</p>
+                        </div>
+                    `;
+                    sqlInstructionsDiv.style.display = 'none';
+                } else {
+                    if (data.sql) {
+                        // Show SQL migration instructions
+                        resultDiv.innerHTML = `
+                            <div class="error">
+                                <h3>⚠️ Database Schema Update Required</h3>
+                                <p>${data.message}</p>
+                            </div>
+                        `;
+                        document.getElementById('sqlCommands').textContent = data.sql;
+                        sqlInstructionsDiv.style.display = 'block';
+                    } else {
+                        resultDiv.innerHTML = `
+                            <div class="error">
+                                <h3>❌ Error</h3>
+                                <p>${data.error}</p>
+                                <p><strong>Details:</strong> ${data.details}</p>
+                            </div>
+                        `;
+                        sqlInstructionsDiv.style.display = 'none';
+                    }
+                }
+                
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h3>❌ Connection Error</h3>
+                        <p>Failed to connect to the API: ${error.message}</p>
+                        <p>Make sure your development server is running.</p>
+                    </div>
+                `;
+                sqlInstructionsDiv.style.display = 'none';
+            }
+        }
+        
+        // Auto-check on page load
+        window.addEventListener('load', checkDatabase);
+    </script>
+</body>
+</html>
