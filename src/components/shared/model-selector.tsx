@@ -144,11 +144,13 @@ function UnavailableModelPopover({ children, model }: { children: React.ReactNod
                 Add your own {provider?.name} API key to use this model
               </p>
               <div className="flex gap-2">
-                <Link href="/settings" className="flex-1">
-                  <Button size="sm" variant="outline" className="w-full h-7 text-xs">
+                <div className="flex-1">
+                  <Button size="sm" variant="outline" className="w-full h-7 text-xs" onClick={() => {
+                    toast.error("API key management is currently unavailable");
+                  }}>
                     Configure API Key
                   </Button>
-                </Link>
+                </div>
                 {provider?.apiLink && (
                   <Link href={provider.apiLink} target="_blank" rel="noopener noreferrer">
                     <Button size="sm" variant="ghost" className="h-7 px-2">

@@ -1,7 +1,6 @@
 'use client';
 
 import { LogoutButton } from "@/components/auth/logout-button";
-import { SettingsButton } from "@/components/settings/settings-button";
 import { Logo } from "@/components/ui/logo";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -106,8 +105,6 @@ export function AppHeader({ children }: AppHeaderProps) {
                     <span className="hidden lg:inline">Profile</span>
                   </Link>
                   <div className="mx-1 lg:mx-2 h-4 w-px bg-purple-200/50" />
-                  <SettingsButton />
-                  <div className="mx-1 lg:mx-2 h-4 w-px bg-purple-200/50" />
                   <LogoutButton />
                 </div>
               </nav>
@@ -148,9 +145,6 @@ export function AppHeader({ children }: AppHeaderProps) {
                       <User className="h-4 w-4" />
                       Profile
                     </Link>
-                    <div className="px-4">
-                      <SettingsButton className="w-full justify-start" />
-                    </div>
                     <div className="px-4">
                       <LogoutButton className="w-full justify-start" />
                     </div>

@@ -6,7 +6,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { AlertCircle, Settings } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 
 interface ApiErrorDialogProps {
@@ -22,9 +22,9 @@ export function ApiErrorDialog({
   open,
   onOpenChange,
   title = "API Key Required",
-  description = "To use this feature, you need to add your API key in settings.",
-  actionLabel = "Go to Settings",
-  actionHref = "/settings"
+  description = "To use this feature, you need to add your API key.",
+  actionLabel = "Got It",
+  actionHref = "#"
 }: ApiErrorDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -41,10 +41,8 @@ export function ApiErrorDialog({
         <div className="flex justify-end gap-2 mt-4">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
-          </Button>
-          <Button asChild>
+          </Button>          <Button asChild>
             <Link href={actionHref}>
-              <Settings className="h-4 w-4 mr-2" />
               {actionLabel}
             </Link>
           </Button>

@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Upload, AlertTriangle } from "lucide-react";
 import { Resume } from "@/lib/types";
 
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { addTextToResume } from "@/utils/actions/resumes/ai";
 import pdfToText from "react-pdftotext";
 import { cn } from "@/lib/utils";
@@ -59,18 +59,10 @@ export function TextImportDialog({
         setContent(prev => prev + (prev ? "\n\n" : "") + text);
       } catch (err) {
         console.error('PDF processing error:', err);
-        toast({
-          title: "PDF Processing Error",
-          description: "Failed to extract text from the PDF. Please try again or paste the content manually.",
-          variant: "destructive",
-        });
+        toast.error("Failed to extract text from the PDF. Please try again or paste the content manually.");
       }
     } else {
-      toast({
-        title: "Invalid File",
-        description: "Please drop a PDF file.",
-        variant: "destructive",
-      });
+      toast.error("Please drop a PDF file.");
     }
   };
 
@@ -82,23 +74,17 @@ export function TextImportDialog({
         setContent(prev => prev + (prev ? "\n\n" : "") + text);
       } catch (err) {
         console.error('PDF processing error:', err);
-        toast({
-          title: "PDF Processing Error",
-          description: "Failed to extract text from the PDF. Please try again or paste the content manually.",
-          variant: "destructive",
-        });
+        toast.error("Failed to extract text from the PDF. Please try again or paste the content manually.");
       }
+    } else {
+      toast.error("Please upload a PDF file.");
     }
   };
 
   const handleImport = async () => {
     setApiKeyError("");
     if (!content.trim()) {
-      toast({
-        title: "No content",
-        description: "Please enter some text to import.",
-        variant: "destructive",
-      });
+      toast.error("Please enter some text to import.");
       return;
     }
 
@@ -111,10 +97,7 @@ export function TextImportDialog({
         onResumeChange(key, updatedResume[key] as Resume[keyof Resume]);
       });
 
-      toast({
-        title: "Import successful",
-        description: "Your resume has been updated with the imported content.",
-      });
+      toast.success("Your resume has been updated with the imported content.");
       setOpen(false);
       setContent("");
     } catch (error) {
@@ -122,14 +105,10 @@ export function TextImportDialog({
       const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
       if (errorMessage.includes('API key')) {
         setApiKeyError(
-          'API key required. Please add your API key in settings to use AI features.'
+          'API key required to use AI features.'
         );
       } else {
-        toast({
-          title: "Import failed",
-          description: "Failed to process the text. Please try again.",
-          variant: "destructive",
-        });
+        toast.error("Failed to process the text. Please try again.");
       }
     } finally {
       setIsProcessing(false);
@@ -210,9 +189,9 @@ export function TextImportDialog({
                   variant="outline"
                   size="sm"
                   className="text-red-600 border-red-200 hover:bg-red-50/50 w-auto mx-auto"
-                  onClick={() => window.location.href = '/settings'}
+                  onClick={() => toast.info("API key management is currently unavailable")}
                 >
-                  Set API Keys in Settings
+                  Configure API Keys
                 </Button>
               </div>
             </div>
@@ -244,4 +223,4 @@ export function TextImportDialog({
       </DialogContent>
     </Dialog>
   );
-} 
+}

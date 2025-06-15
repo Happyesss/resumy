@@ -5,6 +5,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Sparkles, Crown, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { toast } from "sonner"
 
 function checkForApiKeys() {
   const storedKeys = localStorage.getItem('resumelm-api-keys')
@@ -81,15 +82,14 @@ export function ApiKeyAlert() {
 
               {/* CTA */}
               <div className="flex-shrink-0">
-                <Link href="/settings">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="text-xs text-gray-600 hover:text-teal-600 h-6 px-2"
-                  >
-                    Configure
-                  </Button>
-                </Link>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="text-xs text-gray-600 hover:text-teal-600 h-6 px-2"
+                  onClick={() => toast.info("API key management is currently unavailable")}
+                >
+                  Configure
+                </Button>
               </div>
             </div>
 
@@ -115,15 +115,14 @@ export function ApiKeyAlert() {
                     OpenAI <ArrowRight className="w-3 h-3" />
                   </a>
                 </div>
-                <Link href="/settings">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="text-xs text-gray-600 hover:text-teal-600 h-6 px-2"
-                  >
-                    Configure
-                  </Button>
-                </Link>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="text-xs text-gray-600 hover:text-teal-600 h-6 px-2"
+                  onClick={() => toast.info("API key management is currently unavailable")}
+                >
+                  Configure
+                </Button>
               </div>
             </div>
           </div>

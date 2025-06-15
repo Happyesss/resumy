@@ -122,9 +122,8 @@ export function ApiKeyErrorAlert({ error, router }: ApiKeyErrorAlertProps) {
                   "border border-gray-400",
                   "h-8"
                 )}
-                onClick={() => router.push('/settings')}
               >
-                Set API Keys
+                Manage API Keys
               </Button>
             </div>
           </>

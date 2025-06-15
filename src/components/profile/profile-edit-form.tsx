@@ -249,7 +249,7 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
         console.error('Resume upload error:', error);
         if (error.message.toLowerCase().includes('api key')) {
           setApiKeyError(
-            'API key required. Please add your API key in settings to continue.'
+            'API key required to continue.'
           );
         } else {
           toast.error("Failed to process content: " + error.message, {
@@ -312,6 +312,11 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
         });
       }
     }
+  };
+
+  // Update onClick handler for both API Key buttons
+  const handleApiKeyClick = () => {
+    toast.info("API key management is currently unavailable");
   };
 
   return (
@@ -520,9 +525,9 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                               variant="outline"
                               size="sm"
                               className="text-red-600 border-red-200 hover:bg-red-50/50 w-auto mx-auto"
-                              onClick={() => window.location.href = '/settings'}
+                              onClick={() => handleApiKeyClick()}
                             >
-                              Set API Keys in Settings
+                              Set API Keys
                             </Button>
                           </div>
                         </div>
@@ -644,9 +649,9 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                               variant="outline"
                               size="sm"
                               className="text-red-600 border-red-200 hover:bg-red-50/50 w-auto mx-auto"
-                              onClick={() => window.location.href = '/settings'}
+                              onClick={() => handleApiKeyClick()}
                             >
-                              Set API Keys in Settings
+                              Set API Keys
                             </Button>
                           </div>
                         </div>
@@ -848,4 +853,4 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
       </div>
     </div>
   );
-} 
+}
