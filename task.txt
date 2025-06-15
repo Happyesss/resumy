@@ -1,12 +1,29 @@
- completely remove the Settings section from the project.
-This includes:
+Remove the Settings Section Completely
 
-All Settings-related files, folders, and components
+Delete all Settings-related files, folders, and components.
 
-Any import statements or references to Settings throughout the codebase
+Remove all imports and references to the Settings section across the codebase.
 
-All Settings-related entries or schemas in the database, if they exist
+Ensure any Settings-related data, collections, or schemas in the database are deleted as well.
 
-Ensure there is no residual code, logic, or configuration referencing Settings
+Confirm that no residual logic or UI elements tied to Settings remain.
 
-The goal is to eliminate all traces of Settings functionality from both the frontend and backend.
+Use Gemini 2.0 Flash as the Only Model
+
+Set Gemini 2.0 Flash as the default and only model used across the entire project.
+
+Remove all other models (e.g., GPT, Claude etc.) from:
+
+Codebase (including imports and components)
+
+Model selectors or dropdowns
+
+The database (schemas, config tables, or settings)
+
+Ensure that only Gemini 2.0 Flash is referenced anywhere a model is used.
+
+The goal is to streamline the project by:
+
+Eliminating all Settings-related functionality
+
+Standardizing on Gemini 2.0 Flash only for all AI interactions

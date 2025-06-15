@@ -289,7 +289,7 @@ const EducationSection = memo(function EducationSection({
 });
 
 // Style factory function
-function createResumeStyles(settings: Resume['document_settings'] = {
+function createResumeStyles(settings = {
   document_font_size: 10,
   document_line_height: 1.5,
   document_margin_vertical: 36,
@@ -561,8 +561,32 @@ interface ResumePDFDocumentProps {
 }
 
 export const ResumePDFDocument = memo(function ResumePDFDocument({ resume }: ResumePDFDocumentProps) {
-  // Memoize styles based on document settings
-  const styles = useMemo(() => createResumeStyles(resume.document_settings), [resume.document_settings]);
+  const defaultResumeStyles = {
+    document_font_size: 10,
+    document_line_height: 1.5,
+    document_margin_vertical: 36,
+    document_margin_horizontal: 36,
+    header_name_size: 24,
+    header_name_bottom_spacing: 24,
+    skills_margin_top: 2,
+    skills_margin_bottom: 2,
+    skills_margin_horizontal: 0,
+    skills_item_spacing: 2,
+    experience_margin_top: 2,
+    experience_margin_bottom: 2,
+    experience_margin_horizontal: 0,
+    experience_item_spacing: 4,
+    projects_margin_top: 2,
+    projects_margin_bottom: 2,
+    projects_margin_horizontal: 0,
+    projects_item_spacing: 4,
+    education_margin_top: 2,
+    education_margin_bottom: 2,
+    education_margin_horizontal: 0,
+    education_item_spacing: 4,
+    footer_width: 80,
+  };
+  const styles = useMemo(() => createResumeStyles(defaultResumeStyles), []);
 
   return (
     <PDFDocument>
@@ -573,7 +597,7 @@ export const ResumePDFDocument = memo(function ResumePDFDocument({ resume }: Res
         <ProjectsSection projects={resume.projects} styles={styles} />
         <EducationSection education={resume.education} styles={styles} />
         
-        {resume.document_settings?.show_ubc_footer && (
+        {false && (
           <View style={styles.footer}>
             <Image 
               src="/images/ubc-science-footer.png"
@@ -590,4 +614,4 @@ export const ResumePDFDocument = memo(function ResumePDFDocument({ resume }: Res
     prevProps.resume === nextProps.resume &&
     prevProps.variant === nextProps.variant
   );
-}); 
+});

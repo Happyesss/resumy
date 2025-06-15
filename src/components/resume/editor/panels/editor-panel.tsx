@@ -1,6 +1,6 @@
 'use client';
 
-import { Resume, Profile, Job, DocumentSettings } from "@/lib/types";
+import { Resume, Profile, Job } from "@/lib/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Accordion } from "@/components/ui/accordion";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
@@ -15,8 +15,7 @@ import {
   WorkExperienceForm,
   EducationForm,
   SkillsForm,
-  ProjectsForm,
-  DocumentSettingsForm
+  ProjectsForm
 } from '../dynamic-components';
 import { ResumeEditorTabs } from "../header/resume-editor-tabs";
 import ResumeScorePanel from "./resume-score-panel";
@@ -145,22 +144,7 @@ export function EditorPanel({
                 </Suspense>
               </TabsContent>
 
-              {/* Document Settings Form */}
-              <TabsContent value="settings">
-                <Suspense fallback={
-                  <div className="space-y-4 animate-pulse">
-                    <div className="h-8 bg-muted rounded-md w-1/3" />
-                    <div className="h-24 bg-muted rounded-md" />
-                  </div>
-                }>
-                  <DocumentSettingsForm
-                    documentSettings={resume.document_settings!}
-                    onChange={(_field: 'document_settings', value: DocumentSettings) => {
-                      onResumeChange('document_settings', value);
-                    }}
-                  />
-                </Suspense>
-              </TabsContent>
+              {/* Document Settings removed */}
 
               {/* Cover Letter Form */}
               <TabsContent value="cover-letter">

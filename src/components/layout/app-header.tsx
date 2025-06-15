@@ -17,7 +17,6 @@ interface AppHeaderProps {
 
 export function AppHeader({ children }: AppHeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [defaultModel, setDefaultModel] = useState<string>('');
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
 
   // Load stored data on mount
@@ -32,21 +31,9 @@ export function AppHeader({ children }: AppHeaderProps) {
       }
     }
 
-    // Load default model
-    const storedModel = localStorage.getItem('resumelm-default-model');
-    if (storedModel) {
-      setDefaultModel(storedModel);
-    } else {
-      // Set default model to Gemini (free model)
-      setDefaultModel('gemini-1.5-flash');
-      localStorage.setItem('resumelm-default-model', 'gemini-1.5-flash');
-    }
+    // Always set default model to Gemini 2.0 Flash
+    localStorage.setItem('resumelm-default-model', 'gemini-1.5-flash-8b');
   }, []);
-
-  const handleModelChange = (modelId: string) => {
-    setDefaultModel(modelId);
-    localStorage.setItem('resumelm-default-model', modelId);
-  };
 
   return (
     <header className="h-14 border-b backdrop-blur-xl fixed top-0 left-0 right-0 z-40 shadow-md border-purple-200/50">
@@ -82,11 +69,11 @@ export function AppHeader({ children }: AppHeaderProps) {
                 {/* Model Selector - Responsive Width */}
                 <div className="mr-2 lg:mr-3">
                   <ModelSelector
-                    value={defaultModel}
-                    onValueChange={handleModelChange}
+                    value="gemini-1.5-flash-8b"
+                    onValueChange={() => {}}
                     apiKeys={apiKeys}
                     className="w-[220px] lg:w-[260px] xl:w-[300px] h-8 text-xs"
-                    placeholder="Select AI model"
+                    placeholder="Gemini 1.5 Flash 8B"
                     showToast={false}
                   />
                 </div>
@@ -124,11 +111,11 @@ export function AppHeader({ children }: AppHeaderProps) {
                     {/* Mobile Model Selector */}
                     <div className="px-1">
                       <ModelSelector
-                        value={defaultModel}
-                        onValueChange={handleModelChange}
+                        value="gemini-1.5-flash-8b"
+                        onValueChange={() => {}}
                         apiKeys={apiKeys}
                         className="w-full h-10 text-sm"
-                        placeholder="Select AI model"
+                        placeholder="Gemini 1.5 Flash 8B"
                         showToast={false}
                       />
                     </div>

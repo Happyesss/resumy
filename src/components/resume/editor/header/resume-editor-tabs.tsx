@@ -1,6 +1,6 @@
 'use client';
 
-import { User, Briefcase, FolderGit2, GraduationCap, Wrench, LayoutTemplate } from "lucide-react";
+import { User, Briefcase, FolderGit2, GraduationCap, Wrench } from "lucide-react";
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export function ResumeEditorTabs() {
@@ -55,7 +55,7 @@ export function ResumeEditorTabs() {
         </TabsList>
       </div>
 
-      <TabsList className="h-full w-full relative bg-white/80 backdrop-blur-xl border border-white/40 rounded-lg overflow-hidden grid grid-cols-3 @[500px]:grid-cols-6 gap-0.5 p-0.5 shadow-lg">
+      <TabsList className="h-full w-full relative bg-white/80 backdrop-blur-xl border border-white/40 rounded-lg overflow-hidden grid grid-cols-3 @[500px]:grid-cols-5 gap-0.5 p-0.5 shadow-lg">
         {/* Basic Info Tab */}
         <TabsTrigger 
           value="basic" 
@@ -141,22 +141,7 @@ export function ResumeEditorTabs() {
           </span>
         </TabsTrigger>
 
-        {/* Settings Tab */}
-        <TabsTrigger 
-          value="settings" 
-          className="group flex items-center gap-1.5 px-2 py-1 rounded-md font-medium relative transition-all duration-300
-            data-[state=active]:bg-gradient-to-r data-[state=active]:from-gray-500/10 data-[state=active]:to-slate-500/10
-            data-[state=active]:border-gray-500/20 data-[state=active]:shadow-md hover:bg-white/60
-            data-[state=inactive]:text-gray-500 data-[state=inactive]:hover:text-gray-900"
-        >
-          <div className="p-1 rounded-md bg-gray-100/80 transition-transform duration-300 group-data-[state=active]:scale-105 group-data-[state=active]:bg-gray-100">
-            <LayoutTemplate className="h-3.5 w-3.5 text-gray-600 transition-colors group-data-[state=inactive]:text-gray-500/70" />
-          </div>
-          <span className="relative text-xs whitespace-nowrap">
-            Layout
-            <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full bg-gray-500 scale-x-0 transition-transform duration-300 group-data-[state=active]:scale-x-100"></div>
-          </span>
-        </TabsTrigger>
+        {/* Settings Tab removed */}
       </TabsList>
 
     

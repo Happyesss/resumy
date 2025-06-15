@@ -99,20 +99,12 @@ export function ApiKeyAlert() {
                 <div className="flex items-center gap-4 text-xs text-gray-500">
                   <span>Or use your own API keys:</span>
                   <a 
-                    href="https://console.anthropic.com/"
+                    href="https://ai.google.dev/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 hover:text-teal-600 transition-colors"
                   >
-                    Anthropic <ArrowRight className="w-3 h-3" />
-                  </a>
-                  <a 
-                    href="https://platform.openai.com/docs/quickstart/create-and-export-an-api-key"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 hover:text-teal-600 transition-colors"
-                  >
-                    OpenAI <ArrowRight className="w-3 h-3" />
+                    Google <ArrowRight className="w-3 h-3" />
                   </a>
                 </div>
                 <Button

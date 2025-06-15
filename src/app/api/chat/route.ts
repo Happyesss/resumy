@@ -33,6 +33,12 @@ export async function POST(req: Request) {
     console.log('Resume present:', !!requestBody.resume);
     
     if (requestBody.resume) {
+      // Remove document_settings from the resume object as it's no longer supported
+      if (requestBody.resume.document_settings) {
+        console.log('Removing document_settings from resume object');
+        delete requestBody.resume.document_settings;
+      }
+      
       console.log('Resume keys:', Object.keys(requestBody.resume));
       console.log('Resume first_name:', requestBody.resume.first_name);
       console.log('Resume last_name:', requestBody.resume.last_name);

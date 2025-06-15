@@ -10,19 +10,19 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { DocumentSettings } from "@/lib/types";
+// DocumentSettings type has been removed
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState, useEffect } from "react";
 import { Check, Save, Trash2, Plus } from "lucide-react";
 
 interface SavedStylesDialogProps {
-  currentSettings: DocumentSettings;
-  onApplyStyle: (settings: DocumentSettings) => void;
+  currentSettings: Record<string, any>;
+  onApplyStyle: (settings: Record<string, any>) => void;
 }
 
 interface SavedStyle {
   name: string;
-  settings: DocumentSettings;
+  settings: Record<string, any>;
   timestamp: number;
 }
 
@@ -65,7 +65,7 @@ export function SavedStylesDialog({ currentSettings, onApplyStyle }: SavedStyles
   };
 
   // Apply a saved style
-  const handleApplyStyle = (settings: DocumentSettings) => {
+  const handleApplyStyle = (settings: Record<string, any>) => {
     onApplyStyle(settings);
     setIsOpen(false);
   };

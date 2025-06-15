@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 import type { ComponentType } from 'react';
 import { LoadingFallback } from './shared/LoadingFallback';
-import type { WorkExperience, Education, Skill, Project, DocumentSettings } from '@/lib/types';
+import type { WorkExperience, Education, Skill, Project } from '@/lib/types';
 
 interface WorkExperienceFormProps {
   experiences: WorkExperience[];
@@ -64,15 +64,4 @@ export const ProjectsForm = dynamic(
 );
 
 
-export const DocumentSettingsForm = dynamic(
-  () => import('./forms/document-settings-form').then(mod => ({ 
-    default: mod.DocumentSettingsForm 
-  })) as Promise<ComponentType<{ 
-    documentSettings: DocumentSettings; 
-    onChange: (field: 'document_settings', value: DocumentSettings) => void 
-  }>>,
-  {
-    loading: () => <LoadingFallback lines={1} />,
-    ssr: false
-  }
-);
+// Document settings have been removed

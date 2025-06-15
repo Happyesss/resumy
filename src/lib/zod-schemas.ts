@@ -80,41 +80,7 @@ export const textImportSchema = z.object({
   })).optional(),
 });
 
-export const documentSettingsSchema = z.object({
-  // Global Settings
-  document_font_size: z.number(),
-  document_line_height: z.number(),
-  document_margin_vertical: z.number(),
-  document_margin_horizontal: z.number(),
-
-  // Header Settings
-  header_name_size: z.number(),
-  header_name_bottom_spacing: z.number(),
-
-  // Skills Section
-  skills_margin_top: z.number(),
-  skills_margin_bottom: z.number(),
-  skills_margin_horizontal: z.number(),
-  skills_item_spacing: z.number(),
-
-  // Experience Section
-  experience_margin_top: z.number(),
-  experience_margin_bottom: z.number(),
-  experience_margin_horizontal: z.number(),
-  experience_item_spacing: z.number(),
-
-  // Projects Section
-  projects_margin_top: z.number(),
-  projects_margin_bottom: z.number(),
-  projects_margin_horizontal: z.number(),
-  projects_item_spacing: z.number(),
-
-  // Education Section
-  education_margin_top: z.number(),
-  education_margin_bottom: z.number(),
-  education_margin_horizontal: z.number(),
-  education_item_spacing: z.number(),
-});
+// Document settings have been removed
 
 export const sectionConfigSchema = z.object({
   visible: z.boolean(),
@@ -157,7 +123,6 @@ export type WorkExperience = z.infer<typeof workExperienceSchema>;
 export type Education = z.infer<typeof educationSchema>;
 export type Project = z.infer<typeof projectSchema>;
 export type Skill = z.infer<typeof skillSchema>;
-export type DocumentSettings = z.infer<typeof documentSettingsSchema>;
 export type SectionConfig = z.infer<typeof sectionConfigSchema>;
 
 

@@ -50,7 +50,7 @@ function generateResumeHash(resume: Resume): string {
       projects: resume.projects,
       education: resume.education,
     },
-    settings: resume.document_settings,
+    settings: {},
   });
   
   // Simple hash function

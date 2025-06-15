@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 import { Loader2, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { AIGenerationSettings } from "../../shared/ai-generation-settings";
 
 interface AIGenerationTooltipProps {
   index: number;
@@ -72,14 +71,9 @@ export function AIGenerationSettingsTooltip({
             colorClass.tooltipShadow
           )}
         >
-          <AIGenerationSettings
-            numPoints={aiConfig?.numPoints || 3}
-            customPrompt={aiConfig?.customPrompt || ''}
-            onNumPointsChange={onNumPointsChange}
-            onCustomPromptChange={onCustomPromptChange}
-          />
+          {/* AIGenerationSettings component removed as per the change request */}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
-} 
+}

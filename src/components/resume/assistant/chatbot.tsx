@@ -74,7 +74,7 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
   const router = useRouter();
   const [accordionValue, setAccordionValue] = React.useState<string>("");
   const [apiKeys, setApiKeys] = React.useState<ApiKey[]>([]);
-  const [defaultModel, setDefaultModel] = React.useState<string>('gpt-4.1-nano');
+  const [defaultModel, setDefaultModel] = React.useState<string>('gemini-1.5-flash-8b');
   const [originalResume, setOriginalResume] = React.useState<Resume | null>(null);
   const [isInitialLoading, setIsInitialLoading] = React.useState(false);
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
@@ -104,11 +104,18 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
     apiKeys,
   };
   
+  // Remove document_settings from resume for the chat API
+  const resumeForChat = { ...resume };
+  // Use type assertion to handle the document_settings property
+  if ((resumeForChat as any).document_settings) {
+    delete (resumeForChat as any).document_settings;
+  }
+
   const { messages, error, append, isLoading, addToolResult, stop, setMessages } = useChat({
     api: '/api/chat',
     body: {
       target_role: resume.target_role,
-      resume: resume,
+      resume: resumeForChat,
       config,
       job: job,
     },

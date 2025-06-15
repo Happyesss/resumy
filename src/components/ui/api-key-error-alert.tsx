@@ -31,12 +31,19 @@ export function ApiKeyErrorAlert({ error, router }: ApiKeyErrorAlertProps) {
   const errorString = typeof error === 'string' ? error : (error as Error)?.message || '';
   const errorJson = JSON.stringify(error);
   
+  // Try to parse error as JSON to get more details
+  let parsedError: any = null;
+  try {
+    parsedError = JSON.parse(errorString);
+  } catch {
+    // If parsing fails, parsedError remains null
+  }
+  
   console.log('Error string for checking:', errorString);
   console.log('Error JSON for checking:', errorJson);
-  console.log('Contains OpenAI API key not found:', errorString.includes('OpenAI API key not found') || errorJson.includes('OpenAI API key not found'));
-  console.log('Contains invalid x-api-key:', errorString.includes('invalid x-api-key') || errorJson.includes('authentication_error'));
-  console.log('Contains Incorrect API key:', errorString.includes('Incorrect API key provided') || errorJson.includes('invalid_api_key'));
-  console.log('Contains Rate limit:', errorString.includes('Rate limit exceeded') || errorJson.includes('Rate limit exceeded'));
+  console.log('Parsed error:', parsedError);
+  console.log('Contains Google API key not found:', errorString.includes('Google API key not found') || errorJson.includes('Google API key not found'));
+  console.log('Contains Rate limit:', errorString.includes('Rate limit exceeded') || errorJson.includes('Rate limit exceeded') || errorString.includes('fetch failed') || (parsedError && parsedError.error === 'fetch failed'));
   console.groupEnd();
 
   return (
@@ -65,23 +72,39 @@ export function ApiKeyErrorAlert({ error, router }: ApiKeyErrorAlertProps) {
                   (error as Error)?.message?.includes('structuredClone') ||
                   (error as Error)?.message?.includes('could not be cloned'))
                   ? "There was an issue processing the response. Please try your request again."
-                  : ((error as Error)?.message?.includes('OpenAI API key not found') ||
-                      JSON.stringify(error).includes('OpenAI API key not found'))
-                      ? "OpenAI API key not found. Upgrade to Pro or set your API key in settings to continue."
-                      : ((error as Error)?.message?.includes('invalid x-api-key') || 
-                          JSON.stringify(error).includes('authentication_error'))
-                          ? "Your Anthropic API key is invalid. Upgrade to Pro or try updating it in settings and try again."
-                          : ((error as Error)?.message?.includes('Incorrect API key provided') ||
-                              JSON.stringify(error).includes('invalid_api_key'))
-                              ? "Your OpenAI API key is invalid. Upgrade to Pro or try updating it in settings and try again."
-                              : ((error as Error)?.message?.includes('Rate limit exceeded') ||
-                                  JSON.stringify(error).includes('Rate limit exceeded'))
+                  : ((error as Error)?.message?.includes('Google API key not found') ||
+                      JSON.stringify(error).includes('Google API key not found'))
+                      ? "Google API key not found. Please add your Google API key in the profile settings to use Gemini 1.5 Flash 8B."
+                      : ((error as Error)?.message?.includes('invalid_api_key') ||
+                          JSON.stringify(error).includes('invalid_api_key'))
+                          ? "Your Google API key is invalid. Please check your key and try again."
+                          : ((error as Error)?.message?.includes('Rate limit exceeded') ||
+                              JSON.stringify(error).includes('Rate limit exceeded') ||
+                              (error as Error)?.message?.includes('fetch failed') ||
+                              (() => {
+                                try {
+                                  const parsed = JSON.parse((error as Error)?.message || '{}');
+                                  return parsed.error === 'fetch failed';
+                                } catch {
+                                  return false;
+                                }
+                              })())
                                   ? `You've exceeded the rate limit. Please try again after ${(() => {
                                       try {
-                                        const errorData = JSON.parse((error as Error).message);
-                                        const expiration = errorData.expirationTimestamp 
+                                        const errorMessage = (error as Error)?.message || '';
+                                        let errorData;
+                                        
+                                        // Try to parse the error message as JSON
+                                        try {
+                                          errorData = JSON.parse(errorMessage);
+                                        } catch {
+                                          // If not JSON, try to extract from the JSON.stringify result
+                                          errorData = error;
+                                        }
+                                        
+                                        const expiration = errorData?.expirationTimestamp 
                                           ? new Date(errorData.expirationTimestamp)
-                                          : new Date(Date.now() + ((errorData.timeLeft || 30) * 1000));
+                                          : new Date(Date.now() + ((errorData?.timeLeft || 30) * 1000));
                                         
                                         return expiration.toLocaleTimeString([], { 
                                           hour: 'numeric', 
@@ -122,8 +145,9 @@ export function ApiKeyErrorAlert({ error, router }: ApiKeyErrorAlertProps) {
                   "border border-gray-400",
                   "h-8"
                 )}
+                onClick={() => router.push('/profile')}
               >
-                Manage API Keys
+                Add Google API Key
               </Button>
             </div>
           </>

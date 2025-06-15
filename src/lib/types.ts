@@ -78,7 +78,6 @@ export interface Resume {
   projects: Project[];
   created_at: string;
   updated_at: string;
-  document_settings?: DocumentSettings;
   section_order?: string[];
   section_configs?: {
     [key: string]: { visible: boolean };
@@ -87,44 +86,7 @@ export interface Resume {
   cover_letter?: Record<string, unknown> | null;
 }
 
-export interface DocumentSettings {
-  // Global Settings
-  document_font_size: number;
-  document_line_height: number;
-  document_margin_vertical: number;
-  document_margin_horizontal: number;
-
-  // Header Settings
-  header_name_size: number;
-  header_name_bottom_spacing: number;
-
-  // Skills Section
-  skills_margin_top: number;
-  skills_margin_bottom: number;
-  skills_margin_horizontal: number;
-  skills_item_spacing: number;
-
-  // Experience Section
-  experience_margin_top: number;
-  experience_margin_bottom: number;
-  experience_margin_horizontal: number;
-  experience_item_spacing: number;
-
-  // Projects Section
-  projects_margin_top: number;
-  projects_margin_bottom: number;
-  projects_margin_horizontal: number;
-  projects_item_spacing: number;
-
-  // Education Section
-  education_margin_top: number;
-  education_margin_bottom: number;
-  education_margin_horizontal: number;
-  education_item_spacing: number;
-
-  show_ubc_footer?: boolean;
-  footer_width?: number; // Percentage width of the footer
-}
+// Document settings have been removed
 
 export interface Profile {
   id: string;
@@ -146,14 +108,7 @@ export interface Profile {
 }
 
 export const AI_PROVIDERS = {
-  OPENAI: 'openai',
-  // AZURE: 'azure',
-  ANTHROPIC: 'anthropic',
-  // BEDROCK: 'bedrock',
-  // GOOGLE: 'google',
-  // VERTEX: 'vertex',
-  // MISTRAL: 'mistral',
-  // XAI: 'xai',
+  GOOGLE: 'google',
   // TOGETHER: 'together',
   // COHERE: 'cohere',
   // FIREWORKS: 'fireworks',
