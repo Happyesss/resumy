@@ -57,7 +57,7 @@ export function ResumeSortControls({
     <div className="flex items-center gap-2">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="gap-2">
+          <Button variant="outline" className="gap-2 bg-white">
             <span>Sort by {sortOptions.find(opt => opt.value === currentSort)?.label}</span>
           </Button>
         </DropdownMenuTrigger>
@@ -78,6 +78,7 @@ export function ResumeSortControls({
         variant="outline"
         size="icon"
         onClick={toggleDirection}
+        className="bg-white"
       >
         {direction === 'asc' ? <ArrowUpAZ /> : <ArrowDownAZ />}
       </Button>

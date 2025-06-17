@@ -1,37 +1,14 @@
-/**
- * Home Page Component
- * 
- * This is the main dashboard page of the Resume AI application. It displays:
- * - User profile information
- * - Quick stats (profile score, resume counts, job postings)
- * - Base resume management
- * - Tailored resume management
- * 
- * The page implements a soft gradient minimalism design with floating orbs
- * and mesh overlay for visual interest.
- */
-
 import { redirect } from "next/navigation";
 import { countResumes } from "@/utils/actions/resumes/actions";
 import {User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ProfileRow } from "@/components/dashboard/profile-row";
 import { WelcomeDialog } from "@/components/dashboard/welcome-dialog";
-import { getGreeting } from "@/lib/utils";
-import { ApiKeyAlert } from "@/components/dashboard/api-key-alert";
 import { type SortOption, type SortDirection } from "@/components/resume/management/resume-sort-controls";
 import type { Resume } from "@/lib/types";
 import { ResumesSection } from "@/components/dashboard/resumes-section";
 import { createClient } from "@/utils/supabase/server";
 import { getDashboardData } from "@/utils/actions";
-
-
-
-
-
-
-
 
 
 export default async function Home({
@@ -52,8 +29,6 @@ export default async function Home({
   const userId = user?.id;
   void userId;
   
-  
-  // Check if user is coming from confirmation
   const params = await searchParams;
   const isNewSignup = params?.type === 'signup' && params?.token_hash;
 
@@ -65,7 +40,6 @@ export default async function Home({
       redirect("/");
     }
   } catch {
-    // Redirect to login if error occurs
     redirect("/");
   }
 
@@ -134,32 +108,13 @@ export default async function Home({
 
       {/* Welcome Dialog for New Signups */}
       <WelcomeDialog isOpen={!!isNewSignup} />
-      
-      {/* Gradient Background */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-rose-50/50 via-sky-50/50 to-violet-50/50" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8882_1px,transparent_1px),linear-gradient(to_bottom,#8882_1px,transparent_1px)] bg-[size:14px_24px]" />
-        {/* Animated Gradient Orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-teal-200/20 to-cyan-200/20 rounded-full blur-3xl animate-float-slow" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-purple-200/20 to-indigo-200/20 rounded-full blur-3xl animate-float-slower" />
-      </div>
-
-      {/* Content */}
       <div className="relative z-10">
-      {/* Profile Row Component */}
-      <ProfileRow profile={profile} />
-        
-        <div className="pl-2 sm:pl-0 sm:container sm:max-none  max-w-7xl mx-auto  lg:px-8 md:px-8 sm:px-6 pt-4 ">  
-          {/* Profile Overview */}
+        <div className="pl-2 sm:pl-0 sm:container sm:max-none  max-w-7xl mx-auto  lg:px-8 md:px-8 sm:px-6 pt-4 ">
           <div className="mb-6 space-y-4">
-            {/* API Key Alert */}
-            <ApiKeyAlert />
-            
-            {/* Greeting & Edit Button */}
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-2xl font-semibold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
-                  {getGreeting()}, {profile.first_name}
+                <h1 className="text-2xl font-semibold bg-gradient-to-r text-slate-100">
+                  Hi there, {profile.first_name}
                 </h1>
                 <p className="text-sm text-muted-foreground mt-0.5">
                   Welcome to your resume dashboard

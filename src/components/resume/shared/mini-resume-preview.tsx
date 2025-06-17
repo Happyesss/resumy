@@ -28,12 +28,12 @@ export function MiniResumePreview({
     });
   }
 
-  const accentBorder = type === 'base' ? 'purple-200' : 'pink-200';
-  const accentBg = type === 'base' ? 'purple-50' : 'pink-50';
-  const accentText = type === 'base' ? 'purple-600' : 'pink-600';
+  const accentBorder = type === 'base' ? 'gray-200' : 'purple-300';
+  const accentBg = type === 'base' ? 'white' : 'purple-50';
+  const accentText = type === 'base' ? 'gray-700' : 'purple-600';
   const glowColor = type === 'base' 
-    ? 'shadow-purple-500/20 hover:shadow-purple-500/30' 
-    : 'shadow-rose-500/20 hover:shadow-rose-500/30';
+    ? 'shadow-gray-300/20 hover:shadow-gray-300/30' 
+    : 'shadow-purple-500/20 hover:shadow-purple-500/30';
 
   return (
     <div className={cn(
@@ -41,7 +41,7 @@ export function MiniResumePreview({
       "rounded-lg overflow-hidden",
       "border shadow-lg",
       `border-${accentBorder}`,
-      "bg-white",
+      type === 'base' ? "bg-white" : "bg-gradient-to-br from-purple-50 to-indigo-50",
       "transition-all duration-300",
       "hover:shadow-xl hover:-translate-y-1",
       glowColor,
@@ -60,7 +60,9 @@ export function MiniResumePreview({
           </h3>
           <div className={cn(
             "inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium",
-            `bg-${accentBg} text-${accentText}`
+            type === 'base' 
+              ? "bg-gray-100 text-gray-700" 
+              : "bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-700"
           )}>
             {type === 'base' ? 'Base Resume' : 'Tailored Resume'}
           </div>
@@ -149,8 +151,8 @@ export function MiniResumePreview({
         "transition-opacity duration-300",
         "bg-gradient-to-br",
         type === 'base'
-          ? "from-purple-500/5 to-indigo-500/5"
-          : "from-pink-500/5 to-rose-500/5"
+          ? "from-gray-500/5 to-gray-500/5"
+          : "from-purple-500/10 to-indigo-500/10"
       )} />
     </div>
   );
