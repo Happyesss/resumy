@@ -11,7 +11,7 @@ import { ResumeSortControls, type SortOption, type SortDirection } from '@/compo
 import type { Profile, Resume } from '@/lib/types';
 import { deleteResume, copyResume } from '@/utils/actions/resumes/actions';
 import { Pagination, PaginationContent, PaginationItem } from '@/components/ui/pagination';
-import { useState, useOptimistic, useTransition } from 'react';
+import { useState, useOptimistic, useTransition, useEffect } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import { toast } from 'sonner';
 
@@ -19,6 +19,10 @@ interface OptimisticResume extends Resume {
   isOptimistic?: boolean;
   originalId?: string;
 }
+
+type OptimisticAction = 
+  | { type: 'ADD'; resume: OptimisticResume }
+  | { type: 'REMOVE'; resumeId: string };
 
 interface ResumesSectionProps {
   type: 'base' | 'tailored';
@@ -48,20 +52,39 @@ export function ResumesSection({
   baseResumes = [],
   canCreateMore
 }: ResumesSectionProps) {
-  const [optimisticResumes, removeOptimisticResume] = useOptimistic(
+  const [optimisticResumes, dispatchOptimistic] = useOptimistic(
     resumes as OptimisticResume[],
-    (state, deletedResumeId: string) => 
-      state.filter(resume => resume.id !== deletedResumeId)
-  );
-
-  const [optimisticCopiedResumes, addOptimisticCopy] = useOptimistic(
-    optimisticResumes,
-    (state, newResume: OptimisticResume) => [newResume, ...state]
+    (state, action: OptimisticAction) => {
+      switch (action.type) {
+        case 'ADD':
+          return [action.resume, ...state];
+        case 'REMOVE':
+          return state.filter(resume => resume.id !== action.resumeId);
+        default:
+          return state;
+      }
+    }
   );
 
   const [, startTransition] = useTransition();
   const [deletingResumes, setDeletingResumes] = useState<Set<string>>(new Set());
   const [copyingResumes, setCopyingResumes] = useState<Set<string>>(new Set());
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Renamed to avoid any potential name collision
+  const [paginationState, setPaginationState] = useState<PaginationState>({
+    currentPage: 1,
+    itemsPerPage: 7
+  });
+
+  // Ensure component is mounted before rendering hooks
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return <div>Loading...</div>;
+  }
 
   const config = {
     base: {
@@ -76,29 +99,27 @@ export function ResumesSection({
       }
     },
     tailored: {
-      gradient: 'from-purple-400 to-pink-500',
+      gradient: 'from-purple-400 to-blue-500',
       border: 'border-purple-400/30',
-      bg: 'bg-pink-400/10',
+      bg: 'bg-blue-400/10',
       text: 'text-purple-400',
       icon: Sparkles,
       accent: {
-        bg: 'pink-400/20',
-        hover: 'pink-400/30'
+        bg: 'blue-400/20',
+        hover: 'blue-400/30'
       }
     }
   }[type];
 
-  const [pagination, setPagination] = useState<PaginationState>({
-    currentPage: 1,
-    itemsPerPage: 7
-  });
-
   const handleDeleteResume = async (resumeId: string, resumeName: string) => {
     setDeletingResumes(prev => new Set(prev).add(resumeId));
-    removeOptimisticResume(resumeId);
+    
+    // Only remove this specific resume ID from the UI - don't affect other resumes
+    dispatchOptimistic({ type: 'REMOVE', resumeId });
     toast.loading(`Deleting "${resumeName}"...`, { id: resumeId });
     
     try {
+      // Delete only this specific resume
       await deleteResume(resumeId);
       toast.success(`"${resumeName}" deleted successfully`, { id: resumeId });
     } catch (error) {
@@ -126,7 +147,7 @@ export function ResumesSection({
       updated_at: new Date().toISOString()
     };
     
-    addOptimisticCopy(optimisticCopy);
+    dispatchOptimistic({ type: 'ADD', resume: optimisticCopy });
     toast.loading(`Copying "${sourceResume.name}"...`, { id: `copy-${sourceResume.id}` });
     
     try {
@@ -144,12 +165,12 @@ export function ResumesSection({
     }
   };
 
-  const startIndex = (pagination.currentPage - 1) * pagination.itemsPerPage;
-  const endIndex = startIndex + pagination.itemsPerPage;
-  const paginatedResumes = optimisticCopiedResumes.slice(startIndex, endIndex);
+  const startIndex = (paginationState.currentPage - 1) * paginationState.itemsPerPage;
+  const endIndex = startIndex + paginationState.itemsPerPage;
+  const paginatedResumes = optimisticResumes.slice(startIndex, endIndex);
 
   function handlePageChange(page: number) {
-    setPagination(prev => ({
+    setPaginationState(prev => ({
       ...prev,
       currentPage: page
     }));
@@ -364,7 +385,7 @@ export function ResumesSection({
                     className={cn(
                       "h-8 w-8 rounded-lg",
                       "bg-gray-800 hover:bg-gray-700",
-                      "text-purple-400 hover:text-purple-300",
+                      "text-white hover:text-green-400",
                       "border border-gray-700",
                       "shadow-sm",
                       "transition-all duration-300",
@@ -376,7 +397,7 @@ export function ResumesSection({
                     {isCopying ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
-                      <Copy className="h-4 w-4" />
+                      <Copy className="h-4 w-4 text-white" />
                     )}
                   </Button>
                 ) : (
@@ -388,7 +409,7 @@ export function ResumesSection({
                         className={cn(
                           "h-8 w-8 rounded-lg",
                           "bg-gray-800 hover:bg-gray-700",
-                          "text-purple-400 hover:text-purple-300",
+                          "text-white hover:text-green-400",
                           "border border-gray-700",
                           "shadow-sm",
                           "transition-all duration-300",
@@ -396,7 +417,7 @@ export function ResumesSection({
                           "hover:-translate-y-0.5"
                         )}
                       >
-                        <Copy className="h-4 w-4" />
+                        <Copy className="h-4 w-4 text-white" />
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent className="bg-gray-900 border-gray-800">
@@ -477,7 +498,7 @@ export function ResumesSection({
           </div>
         </div>
 
-        {optimisticCopiedResumes.length > pagination.itemsPerPage && (
+        {optimisticResumes.length > paginationState.itemsPerPage && (
           <div className="hidden md:flex w-full items-start justify-start -mt-4">
             <Pagination className="flex justify-end">
               <PaginationContent className="gap-1">
@@ -485,22 +506,22 @@ export function ResumesSection({
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => handlePageChange(pagination.currentPage - 1)}
-                    disabled={pagination.currentPage === 1}
+                    onClick={() => handlePageChange(paginationState.currentPage - 1)}
+                    disabled={paginationState.currentPage === 1}
                     className="h-8 w-8 p-0 text-gray-400 hover:text-white bg-gray-800 border-gray-700"
                   >
                     <ChevronLeft className="h-4 w-4" />
                   </Button>
                 </PaginationItem>
                 
-                {Array.from({ length: Math.ceil(optimisticCopiedResumes.length / pagination.itemsPerPage) }).map((_, index) => {
+                {Array.from({ length: Math.ceil(optimisticResumes.length / paginationState.itemsPerPage) }).map((_, index) => {
                   const pageNumber = index + 1;
-                  const totalPages = Math.ceil(optimisticCopiedResumes.length / pagination.itemsPerPage);
+                  const totalPages = Math.ceil(optimisticResumes.length / paginationState.itemsPerPage);
                   
                   if (
                     pageNumber === 1 || 
                     pageNumber === totalPages || 
-                    (pageNumber >= pagination.currentPage - 1 && pageNumber <= pagination.currentPage + 1)
+                    (pageNumber >= paginationState.currentPage - 1 && pageNumber <= paginationState.currentPage + 1)
                   ) {
                     return (
                       <PaginationItem key={index}>
@@ -511,7 +532,7 @@ export function ResumesSection({
                           className={cn(
                             "h-8 w-8 p-0 bg-gray-800 border-gray-700",
                             "text-gray-400 hover:text-white",
-                            pagination.currentPage === pageNumber && "font-medium text-purple-400"
+                            paginationState.currentPage === pageNumber && "font-medium text-purple-400"
                           )}
                         >
                           {pageNumber}
@@ -521,8 +542,8 @@ export function ResumesSection({
                   }
 
                   if (
-                    pageNumber === 2 && pagination.currentPage > 3 ||
-                    pageNumber === totalPages - 1 && pagination.currentPage < totalPages - 2
+                    pageNumber === 2 && paginationState.currentPage > 3 ||
+                    pageNumber === totalPages - 1 && paginationState.currentPage < totalPages - 2
                   ) {
                     return (
                       <PaginationItem key={index}>
@@ -538,8 +559,8 @@ export function ResumesSection({
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => handlePageChange(pagination.currentPage + 1)}
-                    disabled={pagination.currentPage === Math.ceil(optimisticCopiedResumes.length / pagination.itemsPerPage)}
+                    onClick={() => handlePageChange(paginationState.currentPage + 1)}
+                    disabled={paginationState.currentPage === Math.ceil(optimisticResumes.length / paginationState.itemsPerPage)}
                     className="h-8 w-8 p-0 text-gray-400 hover:text-white bg-gray-800 border-gray-700"
                   >
                     <ChevronRight className="h-4 w-4" />
@@ -568,7 +589,7 @@ export function ResumesSection({
             <div className="w-full">
               <Carousel className="w-full">
                 <CarouselContent>
-                  {paginatedResumes.map((resume) => (
+                  {paginatedResumes.map((resume: OptimisticResume) => (
                     <CarouselItem key={resume.id} className="basis-[85%] pl-4">
                       <ResumeCard resume={resume} />
                     </CarouselItem>
@@ -591,10 +612,10 @@ export function ResumesSection({
             <LimitReachedCard />
           )}
 
-          {paginatedResumes.map((resume) => (
+          {paginatedResumes.map((resume: OptimisticResume) => (
             <ResumeCard key={resume.id} resume={resume} />
           ))}
-          {optimisticCopiedResumes.length === 0 && optimisticCopiedResumes.length + 1 < 4 && (
+          {optimisticResumes.length === 0 && optimisticResumes.length + 1 < 4 && (
             <div className="col-span-2 md:col-span-1" />
           )}
         </div>

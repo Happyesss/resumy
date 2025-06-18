@@ -1,5 +1,6 @@
 'use client';
 
+import * as React from 'react';
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,18 +9,24 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Link from "next/link";
-import { useState, useEffect } from "react";
 
 interface WelcomeDialogProps {
   isOpen: boolean;
 }
 
 export function WelcomeDialog({ isOpen: initialIsOpen }: WelcomeDialogProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [isMounted, setIsMounted] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
+    setIsMounted(true);
     setIsOpen(initialIsOpen);
   }, [initialIsOpen]);
+
+  // Don't render until mounted to avoid SSR issues
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <Dialog 

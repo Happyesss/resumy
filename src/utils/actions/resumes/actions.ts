@@ -96,14 +96,26 @@ export async function deleteResume(resumeId: string): Promise<void> {
     }
 
     if (!resume.is_base_resume && resume.job_id) {
-      const { error: jobDeleteError } = await supabase
-        .from('jobs')
-        .delete()
-        .eq('id', resume.job_id)
-        .eq('user_id', user.id);
+      // Check if there are other resumes referencing this job
+      const { data: otherResumes, error: countError } = await supabase
+        .from('resumes')
+        .select('id')
+        .eq('job_id', resume.job_id)
+        .neq('id', resumeId); // Exclude the resume being deleted
 
-      if (jobDeleteError) {
-        console.error('Failed to delete associated job:', jobDeleteError);
+      if (countError) {
+        console.error('Failed to check for other resumes:', countError);
+      } else if (!otherResumes || otherResumes.length === 0) {
+        // Only delete the job if no other resumes reference it
+        const { error: jobDeleteError } = await supabase
+          .from('jobs')
+          .delete()
+          .eq('id', resume.job_id)
+          .eq('user_id', user.id);
+
+        if (jobDeleteError) {
+          console.error('Failed to delete associated job:', jobDeleteError);
+        }
       }
     }
 
@@ -303,9 +315,43 @@ export async function copyResume(resumeId: string): Promise<Resume> {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id: _id, created_at: _created_at, updated_at: _updated_at, ...resumeDataToCopy } = sourceResume;
 
+  let newJobId = null;
+
+  // If this is a tailored resume with a job, create a copy of the job as well
+  if (!sourceResume.is_base_resume && sourceResume.job_id) {
+    const { data: sourceJob, error: jobFetchError } = await supabase
+      .from('jobs')
+      .select('*')
+      .eq('id', sourceResume.job_id)
+      .eq('user_id', user.id)
+      .single();
+
+    if (!jobFetchError && sourceJob) {
+      // Create a copy of the job
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id: _jobId, created_at: _jobCreated, updated_at: _jobUpdated, ...jobDataToCopy } = sourceJob;
+      
+      const { data: newJob, error: jobCreateError } = await supabase
+        .from('jobs')
+        .insert([{
+          ...jobDataToCopy,
+          user_id: user.id,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        }])
+        .select()
+        .single();
+
+      if (!jobCreateError && newJob) {
+        newJobId = newJob.id;
+      }
+    }
+  }
+
   const newResume = {
     ...resumeDataToCopy,
     name: `${sourceResume.name} (Copy)`,
+    job_id: newJobId, // Use the new job ID if we created one, otherwise null
     user_id: user.id,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
