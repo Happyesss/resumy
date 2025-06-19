@@ -17,7 +17,7 @@ function SubmitButton() {
     <Button 
       type="submit" 
       disabled={pending}
-      className="w-full bg-gradient-to-r from-violet-600 via-blue-600 to-violet-600 hover:from-violet-500 hover:via-blue-500 hover:to-violet-500 shadow-lg shadow-violet-500/25 transition-all duration-500 animate-gradient-x"
+      className="w-full h-9 bg-purple-400 hover:bg-purple-500 text-white font-medium transition-all duration-200 rounded-lg shadow-lg shadow-purple-400/20"
     >
       {pending ? (
         <>
@@ -104,24 +104,22 @@ export function SignupForm() {
   return (
     <>
       {formState.success ? (
-        <Alert className="bg-emerald-50/50 text-emerald-900 border-emerald-200/50">
-          <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+        <Alert className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 rounded-lg">
           <AlertDescription>
             Account created successfully! Please check your email to confirm your account.
           </AlertDescription>
         </Alert>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {formState.error && (
-            <Alert variant="destructive" className="bg-red-50/50 text-red-900 border-red-200/50">
+            <Alert variant="destructive" className="bg-red-500/10 text-red-400 border-red-500/20 rounded-lg">
               <AlertDescription>{formState.error}</AlertDescription>
             </Alert>
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
+            <Label htmlFor="name" className="text-sm font-medium text-white">Full Name</Label>
             <div className="relative">
-              {/* <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" /> */}
               <Input
                 id="name"
                 name="name"
@@ -133,18 +131,17 @@ export function SignupForm() {
                 required
                 minLength={2}
                 maxLength={50}
-                // className="pl-10"
                 validation={validations.name}
                 isTouched={touchedFields.name}
                 autoFocus
+                className="bg-black border-purple-400/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 hover:bg-black hover:border-purple-400/50 focus:bg-black"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-sm font-medium">Email</Label>
+            <Label htmlFor="email" className="text-sm font-medium text-white">Email</Label>
             <div className="relative">
-              {/* <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" /> */}
               <Input
                 id="email"
                 name="email"
@@ -156,17 +153,16 @@ export function SignupForm() {
                 placeholder="you@example.com"
                 required
                 pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                // className="pl-10"
                 validation={validations.email}
                 isTouched={touchedFields.email}
+                className="bg-black border-purple-400/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 hover:bg-black hover:border-purple-400/50 focus:bg-black"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-sm font-medium">Password</Label>
+            <Label htmlFor="password" className="text-sm font-medium text-white">Password</Label>
             <div className="relative">
-              {/* <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" /> */}
               <Input
                 id="password"
                 name="password"
@@ -179,19 +175,17 @@ export function SignupForm() {
                 required
                 minLength={6}
                 maxLength={100}
-                // className="pl-10"
                 validation={validations.password}
                 isTouched={touchedFields.password}
+                className="bg-black border-purple-400/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 hover:bg-black hover:border-purple-400/50 focus:bg-black"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="confirmPassword" className="text-sm font-medium">Confirm Password</Label>
+            <Label htmlFor="confirmPassword" className="text-sm font-medium text-white">Confirm Password</Label>
             <div className="relative">
-              {/* <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" /> */}
               <Input
-                autoFocus
                 id="confirmPassword"
                 name="confirmPassword"
                 type="password"
@@ -203,9 +197,9 @@ export function SignupForm() {
                 required
                 minLength={6}
                 maxLength={100}
-                // className="pl-10"
                 validation={validations.confirmPassword}
                 isTouched={touchedFields.confirmPassword}
+                className="bg-black border-purple-400/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 hover:bg-black hover:border-purple-400/50 focus:bg-black"
               />
             </div>
           </div>

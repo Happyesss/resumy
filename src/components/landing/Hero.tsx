@@ -29,8 +29,8 @@ export function Hero() {
         <div className="relative">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
             <span className="block text-gray-200">Open source</span>
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600 animate-text">
-              AI Resume Builder
+            <span className="block text-purple-400">
+              Resumy
             </span>
             <span className="block text-gray-200">that lands you tech jobs</span>
           </h1>

@@ -16,10 +16,9 @@ export function Navbar() {
   return (
     <nav className="h-16 border-b bg-white/50 backdrop-blur-lg sticky top-0 w-full z-50">
       <div className="max-w-[2000px] mx-auto h-full px-6 flex items-center justify-between">
-        <div className="flex items-center gap-8">
-          {/* Logo/Brand */}
-          <Link href="/home" className="text-xl font-semibold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
-            Resume.AI
+        <div className="flex items-center gap-8">          {/* Logo/Brand */}
+          <Link href="/home" className="text-xl font-semibold text-purple-400">
+            Resumy
           </Link>
 
           {/* Navigation Links */}

@@ -5,7 +5,6 @@ import { BenefitsList } from "@/components/landing/benefits-list";
 import { ActionButtons } from "@/components/landing/action-buttons";
 import { Logo } from "@/components/ui/logo";
 import { ErrorDialog } from "@/components/auth/error-dialog";
-import { CreatorStory } from "@/components/landing/creator-story";
 import { HowItWorks } from "@/components/landing/how-it-works";
 import { HeroVideoSection } from "@/components/landing/hero-video-section";
 import { Footer } from "@/components/layout/footer";
@@ -278,12 +277,6 @@ export default async function LoginPage({
           {/* Pricing Section with improved framing */}
           <div id="pricing" className="relative py-16">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-violet-50/30 to-transparent"></div>
-          </div>
-
-          {/* Creator Story with improved framing */}
-          <div id="about" className="relative py-16">
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-50/30 to-transparent"></div>
-            <CreatorStory />
           </div>
         </div>
       </main>

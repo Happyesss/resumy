@@ -15,11 +15,10 @@ import { useSearchParams } from "next/navigation";
 function SubmitButton() {
   const { pending } = useFormStatus();
   
-  return (
-    <Button 
+  return (    <Button 
       type="submit" 
       disabled={pending}
-      className="w-full bg-gradient-to-r from-violet-600 via-blue-600 to-violet-600 hover:from-violet-500 hover:via-blue-500 hover:to-violet-500 shadow-lg shadow-violet-500/25 transition-all duration-500 animate-gradient-x"
+      className="w-full h-9 bg-purple-400 hover:bg-purple-500 text-white font-medium transition-all duration-200 rounded-lg shadow-lg shadow-purple-400/20"
     >
       {pending ? (
         <>
@@ -116,14 +115,11 @@ export function LoginForm() {
     }, 500);
     return () => clearTimeout(timer);
   };
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="login-email" className="text-sm font-medium">Email</Label>
-        <div className="relative">
-          {/* <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 " /> */}
-          <Input 
+        <Label htmlFor="login-email" className="text-sm font-medium text-white">Email</Label>
+        <div className="relative">          <Input 
             autoFocus
             id="login-email"
             name="email"
@@ -133,26 +129,24 @@ export function LoginForm() {
             onBlur={() => setFieldTouched('email')}
             placeholder="you@example.com"
             required
-            // className="pl-10"
             validation={validations.email}
             isTouched={touchedFields.email}
             autoComplete="username"
+            className="bg-black border-purple-400/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 hover:bg-black hover:border-purple-400/50 focus:bg-black"
           />
         </div>
       </div>
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <Label htmlFor="login-password" className="text-sm font-medium">Password</Label>
+          <Label htmlFor="login-password" className="text-sm font-medium text-white">Password</Label>
           <Link 
             href="/auth/reset-password"
-            className="text-sm text-muted-foreground hover:text-violet-600 transition-colors"
+            className="text-sm text-gray-400 hover:text-purple-400 transition-colors"
           >
             Forgot password?
           </Link>
         </div>
-        <div className="relative">
-          {/* <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-black" /> */}
-          <Input
+        <div className="relative">          <Input
             id="login-password"
             name="password"
             type="password"
@@ -162,15 +156,15 @@ export function LoginForm() {
             placeholder="••••••••"
             required
             minLength={6}
-            // className="pl-10"
             validation={validations.password}
             isTouched={touchedFields.password}
             autoComplete="current-password"
+            className="bg-black border-purple-400/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 hover:bg-black hover:border-purple-400/50 focus:bg-black"
           />
         </div>
       </div>
       {error && (
-        <Alert variant="destructive" className="bg-red-50/50 text-red-900 border-red-200/50">
+        <Alert variant="destructive" className="bg-red-500/10 text-red-400 border-red-500/20 rounded-lg">
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}

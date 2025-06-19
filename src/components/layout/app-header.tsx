@@ -46,8 +46,7 @@ export function AppHeader({ children }: AppHeaderProps) {
       <div className="absolute inset-0 bg-[radial-gradient(circle_600px_at_100%_100%,#f3e8ff20_0%,transparent_100%)] pointer-events-none" />
 
       {/* Content Container */}
-      <div className="max-w-[2000px] mx-auto h-full px-3 flex items-center justify-between relative">
-        {/* Left Section - Logo and Title */}
+      <div className="max-w-[2000px] mx-auto h-full px-3 flex items-center justify-between relative">        {/* Left Section - Logo and Title */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-shrink">
           <Logo className="text-xl flex-shrink-0" />
           <div className="h-5 w-px bg-purple-200/50 hidden sm:block flex-shrink-0" />

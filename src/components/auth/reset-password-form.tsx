@@ -45,16 +45,20 @@ export function ResetPasswordForm() {
   }
 
   return (
-    <div className="grid gap-6">
+    <div className="bg-black p-6 rounded-2xl border border-purple-400/20 max-w-md mx-auto">
+      <div className="mb-6 text-center">
+        <h2 className="text-xl font-semibold text-white mb-2">Reset Password</h2>
+        <p className="text-sm text-gray-400">Enter your email to receive a reset link</p>
+      </div>
+
       {formState.error && (
-        <Alert variant="destructive" className="bg-red-50/50 text-red-900 border-red-200/50">
+        <Alert variant="destructive" className="bg-red-500/10 text-red-400 border-red-500/20 rounded-lg mb-4">
           <AlertDescription>{formState.error}</AlertDescription>
         </Alert>
       )}
       
       {formState.success ? (
-        <Alert className="bg-emerald-50/50 text-emerald-900 border-emerald-200/50">
-          <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+        <Alert className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 rounded-lg">
           <AlertDescription>
             Check your email for a password reset link.
           </AlertDescription>
@@ -62,9 +66,8 @@ export function ResetPasswordForm() {
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="text-sm font-medium text-white">Email</Label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" />
               <Input
                 id="email"
                 name="email"
@@ -73,7 +76,7 @@ export function ResetPasswordForm() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="pl-10 bg-white/50 border-white/40 focus:border-violet-500/50 focus:ring-violet-500/30 transition-all duration-300"
+                className="bg-black border-purple-400/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 hover:bg-black hover:border-purple-400/50 focus:bg-black"
               />
             </div>
           </div>
@@ -81,7 +84,7 @@ export function ResetPasswordForm() {
           <Button 
             type="submit" 
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-violet-600 via-blue-600 to-violet-600 hover:from-violet-500 hover:via-blue-500 hover:to-violet-500 shadow-lg shadow-violet-500/25 transition-all duration-500 animate-gradient-x"
+            className="w-full h-10 bg-purple-400 hover:bg-purple-500 text-white font-medium transition-all duration-200 rounded-lg shadow-lg shadow-purple-400/20"
           >
             {isLoading ? (
               <>
@@ -96,7 +99,7 @@ export function ResetPasswordForm() {
           <div className="text-center text-sm">
             <Link 
               href="/"
-              className="text-muted-foreground hover:text-violet-600 transition-colors"
+              className="text-gray-400 hover:text-purple-400 transition-colors"
             >
               Back to login
             </Link>

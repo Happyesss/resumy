@@ -69,9 +69,8 @@ export function FreeAnnouncement() {
         animate={isInView ? "visible" : "hidden"}
       >
         {/* Heading */}
-        <motion.div variants={itemVariants} className="mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent mb-6">
-            100% Free & Open Source
+        <motion.div variants={itemVariants} className="mb-16">          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent mb-6">
+            About the Project
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             ResumeLM is completely free to use. No subscriptions, no payments, no limitations. 

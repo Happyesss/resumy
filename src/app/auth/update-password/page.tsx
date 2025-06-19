@@ -70,86 +70,85 @@ export default function UpdatePasswordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50/50 via-sky-50/50 to-violet-50/50">
+    <div className="min-h-screen bg-black">
       <div className="container relative flex pt-20 flex-col items-center justify-center lg:px-0">
-        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-          <div className="flex flex-col space-y-2 text-center">
-            <h1 className="text-2xl font-semibold tracking-tight">
-              Update your password
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              Enter your new password below.
-            </p>
-          </div>
+        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[420px]">
+          <div className="bg-black p-6 rounded-2xl border border-purple-400/20">
+            <div className="mb-6 text-center">
+              <h1 className="text-xl font-semibold text-white mb-2">
+                Update your password
+              </h1>
+              <p className="text-sm text-gray-400">
+                Enter your new password below.
+              </p>
+            </div>
 
-          <div className="grid gap-6">
-            {error && (
-              <Alert variant="destructive" className="bg-red-50/50 text-red-900 border-red-200/50">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-            
-            {success ? (
-              <Alert className="bg-emerald-50/50 text-emerald-900 border-emerald-200/50">
-                <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                <AlertDescription>
-                  Password updated successfully! Redirecting to login...
-                </AlertDescription>
-              </Alert>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="password">New Password</Label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" />
-                    <Input
-                      id="password"
-                      name="password"
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••"
-                      required
-                      minLength={6}
-                      className="pl-10 bg-white/50 border-white/40 focus:border-violet-500/50 focus:ring-violet-500/30 transition-all duration-300"
-                    />
+            <div className="grid gap-6">
+              {error && (
+                <Alert variant="destructive" className="bg-red-500/10 text-red-400 border-red-500/20 rounded-lg">
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
+              
+              {success ? (
+                <Alert className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 rounded-lg">
+                  <AlertDescription>
+                    Password updated successfully! Redirecting to login...
+                  </AlertDescription>
+                </Alert>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="password" className="text-sm font-medium text-white">New Password</Label>
+                    <div className="relative">
+                      <Input
+                        id="password"
+                        name="password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="••••••••"
+                        required
+                        minLength={6}
+                        className="bg-black border-purple-400/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 hover:bg-black hover:border-purple-400/50 focus:bg-black"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirm New Password</Label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" />
-                    <Input
-                      id="confirmPassword"
-                      name="confirmPassword"
-                      type="password"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      placeholder="••••••••"
-                      required
-                      minLength={6}
-                      className="pl-10 bg-white/50 border-white/40 focus:border-violet-500/50 focus:ring-violet-500/30 transition-all duration-300"
-                    />
+                  <div className="space-y-2">
+                    <Label htmlFor="confirmPassword" className="text-sm font-medium text-white">Confirm New Password</Label>
+                    <div className="relative">
+                      <Input
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        type="password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        placeholder="••••••••"
+                        required
+                        minLength={6}
+                        className="bg-black border-purple-400/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 hover:bg-black hover:border-purple-400/50 focus:bg-black"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <Button 
-                  type="submit" 
-                  disabled={isLoading}
-                  className="w-full bg-gradient-to-r from-violet-600 via-blue-600 to-violet-600 hover:from-violet-500 hover:via-blue-500 hover:to-violet-500 shadow-lg shadow-violet-500/25 transition-all duration-500 animate-gradient-x"
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Updating password...
-                    </>
-                  ) : (
-                    "Update Password"
-                  )}
-                </Button>
-              </form>
-            )}
+                  <Button 
+                    type="submit" 
+                    disabled={isLoading}
+                    className="w-full h-10 bg-purple-400 hover:bg-purple-500 text-white font-medium transition-all duration-200 rounded-lg shadow-lg shadow-purple-400/20"
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Updating password...
+                      </>
+                    ) : (
+                      "Update Password"
+                    )}
+                  </Button>
+                </form>
+              )}
+            </div>
           </div>
         </div>
       </div>

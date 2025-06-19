@@ -33,15 +33,14 @@ function TabButton({ value, children }: TabButtonProps) {
     <TabsTrigger 
       value={value}
       className="
-        relative flex-1 h-12 px-6 text-sm font-medium rounded-xl
+        relative flex-1 h-9 px-4 text-sm font-medium rounded-lg
         transition-all duration-300 ease-out
-        data-[state=inactive]:text-slate-600 data-[state=inactive]:bg-transparent
-        data-[state=active]:text-white data-[state=active]:bg-gradient-to-r 
-        data-[state=active]:from-violet-600 data-[state=active]:to-blue-600
-        data-[state=inactive]:hover:text-slate-900 data-[state=inactive]:hover:bg-slate-100/60
+        data-[state=inactive]:text-gray-400 data-[state=inactive]:bg-transparent
+        data-[state=active]:text-white data-[state=active]:bg-purple-400
+        data-[state=inactive]:hover:text-white data-[state=inactive]:hover:bg-purple-400/50
         border-0 shadow-none
-        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2
-        data-[state=active]:shadow-lg data-[state=active]:shadow-violet-500/25
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black
+        data-[state=active]:shadow-lg data-[state=active]:shadow-purple-400/20
       "
     >
       <span className="relative z-10 font-semibold">{children}</span>
@@ -70,13 +69,13 @@ function SocialAuth() {
   };
 
   return (
-    <div className="space-y-4 mt-6">
+    <div className="space-y-2 mt-2">
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <Separator className="bg-slate-200" />
+          <Separator className="bg-purple-400/20" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-white px-4 text-slate-500 font-medium">
+          <span className="bg-black px-3 text-gray-400 font-medium">
             Or continue with
           </span>
         </div>
@@ -84,22 +83,22 @@ function SocialAuth() {
       <Button
         variant="outline"
         className="
-          w-full h-12 bg-white border-slate-200 hover:bg-slate-50 hover:border-slate-300
-          text-slate-700 font-medium transition-all duration-200
-          focus:ring-2 focus:ring-violet-500 focus:ring-offset-2
-          rounded-xl
+          w-full h-9 bg-black border-purple-400/30 hover:bg-purple-400/10 hover:border-purple-400/50
+          text-white font-medium transition-all duration-200
+          focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-black
+          rounded-lg
         "
         onClick={handleGithubSignIn}
         disabled={isLoading}
       >
         {isLoading ? (
           <>
-            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             Connecting...
           </>
         ) : (
           <>
-            <Github className="mr-2 h-5 w-5" />
+            <Github className="mr-2 h-4 w-4" />
             Continue with GitHub
           </>
         )}
@@ -139,41 +138,34 @@ export function AuthDialog({ children }: AuthDialogProps) {
 
       <DialogContent 
         className="
-          sm:max-w-[580px] w-full max-h-[80vh] p-0 bg-white border border-slate-200/80 shadow-2xl 
+          sm:max-w-[420px] w-full max-h-[90vh] p-0 bg-black border border-purple-400/20 shadow-2xl 
           animate-in fade-in-0 zoom-in-95 duration-200
           rounded-2xl overflow-hidden overflow-y-auto
         "
       >
         <AuthProvider>
           {/* Header Section */}
-          <div className="px-8 py-4 border-b border-slate-100/80 bg-gradient-to-br from-slate-50/50 to-white">
+          <div className="px-6 py-3 border-b border-purple-400/10 bg-black">
             <DialogTitle className="sr-only">Authentication</DialogTitle>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="p-1.5 rounded-lg bg-gradient-to-br from-violet-500/10 to-blue-500/10 border border-violet-100">
-                  <Sparkles className="w-4 h-4 text-violet-600" aria-hidden="true" />
-                </div>
+            <div className="flex items-center justify-center">
+              <div className="flex items-center">
                 <div className="flex flex-col">
-                  <Logo className="text-lg text-slate-900" asLink={false} />
-                  <span className="text-xs font-medium text-slate-500">AI Resume Builder</span>
+                  <Logo className="text-xl text-white" asLink={false} />
                 </div>
               </div>
-              <DialogDescription className="text-sm text-slate-600 leading-snug">
-                Create professional resumes with AI
-              </DialogDescription>
             </div>
           </div>
 
           {/* Tabs Section */}
-          <div className="px-8 pt-6">
+          <div className="px-6 pt-4">
             <Tabs 
               value={activeTab} 
               onValueChange={(value) => setActiveTab(value as "login" | "signup")} 
               className="w-full"
             >
               <TabsList className="
-                w-full h-14 bg-slate-100/80 border-0 p-2
-                flex gap-2 rounded-2xl backdrop-blur-sm
+                w-full h-10 bg-purple-400/10 border border-purple-400/20 p-1
+                flex gap-1 rounded-xl backdrop-blur-sm
               ">
                 <TabButton value="login">
                   Sign In
@@ -184,20 +176,20 @@ export function AuthDialog({ children }: AuthDialogProps) {
               </TabsList>
 
               {/* Forms Content */}
-              <div className="mt-6 pb-8">
-                <TabsContent value="login" className="mt-0 space-y-6">
+              <div className="mt-3 pb-4">
+                <TabsContent value="login" className="mt-0 space-y-3">
                   <div>
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2">Welcome back</h3>
-                    <p className="text-sm text-slate-600 mb-6">Sign in to your account to continue</p>
+                    <h3 className="text-lg font-semibold text-white mb-1">Welcome back</h3>
+                    <p className="text-sm text-gray-400 mb-2">Sign in to your account to continue</p>
                     <LoginForm />
                   </div>
                   <SocialAuth />
                 </TabsContent>
                 
-                <TabsContent value="signup" className="mt-0 space-y-6">
+                <TabsContent value="signup" className="mt-0 space-y-3">
                   <div>
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2">Get started for free</h3>
-                    <p className="text-sm text-slate-600 mb-6">Create your account and build your first resume</p>
+                    <h3 className="text-lg font-semibold text-white mb-1">Get started for free</h3>
+                    <p className="text-sm text-gray-400 mb-2">Create your account and build your first resume</p>
                     <SignupForm />
                   </div>
                   <SocialAuth />

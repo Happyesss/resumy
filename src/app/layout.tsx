@@ -12,21 +12,20 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   metadataBase: new URL("https://resumelm.com"),
   title: {
-    default: "ResumeLM - AI-Powered Resume Builder",
-    template: "%s | ResumeLM"
+    default: "Resumy - AI-Powered Resume Builder",
+    template: "%s | Resumy"
   },
   description: "Create tailored, ATS-optimized resumes powered by AI. Land your dream tech job with personalized resume optimization.",
-  applicationName: "ResumeLM",
+  applicationName: "Resumy",
   keywords: ["resume builder", "AI resume", "ATS optimization", "tech jobs", "career tools", "job application"],
-  authors: [{ name: "ResumeLM" }],
-  creator: "ResumeLM",
-  publisher: "ResumeLM",
+  authors: [{ name: "Resumy" }],
+  creator: "Resumy",
+  publisher: "Resumy",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
-  },
-  icons: {
+  },  icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon-16x16.png",
     apple: "/apple-touch-icon.png",
@@ -34,24 +33,23 @@ export const metadata: Metadata = {
   // manifest: "/site.webmanifest",
   openGraph: {
     type: "website",
-    siteName: "ResumeLM",
-    title: "ResumeLM - AI-Powered Resume Builder",
+    siteName: "Resumy",
+    title: "Resumy - AI-Powered Resume Builder",
     description: "Create tailored, ATS-optimized resumes powered by AI. Land your dream tech job with personalized resume optimization.",
     images: [
       {
         url: "/og.webp",
         width: 1200,
         height: 630,
-        alt: "ResumeLM - AI Resume Builder",
+        alt: "Resumy - AI Resume Builder",
       },
     ],
-  },
-  twitter: {
+  },  twitter: {
     card: "summary_large_image",
-    title: "ResumeLM - AI-Powered Resume Builder",
+    title: "Resumy - AI-Powered Resume Builder",
     description: "Create tailored, ATS-optimized resumes powered by AI. Land your dream tech job with personalized resume optimization.",
     images: ["/og.webp"],
-    creator: "@resumelm",
+    creator: "@resumy",
   },
   robots: {
     index: true,
