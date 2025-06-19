@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { User, Linkedin, Briefcase, GraduationCap, Wrench, FolderGit2, Upload, Save, Trash2} from "lucide-react";
+import { User, Linkedin, Briefcase, GraduationCap, Wrench, FolderGit2, Upload, Save, Trash2, PanelLeft} from "lucide-react";
 
 import {
   Dialog,
@@ -20,6 +20,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Loader2 } from "lucide-react";
 import { ProfileBasicInfoForm } from "@/components/profile/profile-basic-info-form";
 import { ProfileWorkExperienceForm } from "@/components/profile/profile-work-experience-form";
@@ -48,6 +49,8 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
   const [isProcessingResume, setIsProcessingResume] = useState(false);
   const [apiKeyError, setApiKeyError] = useState("");
   const [isResumeDragging, setIsResumeDragging] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("basic");
   const router = useRouter();
 
   // Sync with server state when initialProfile changes
@@ -315,21 +318,30 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
 
   return (
     <div className="relative mx-auto">
-      
-
       {/* Main content container with consistent styling */}
-      <div className="relative px-6 md:px-8 lg:px-10 pb-10">
-        {/* Import Actions Row */}
-        
+      <div className="relative px-4 sm:px-6 md:px-8 lg:px-10 pb-10">
+        {/* Mobile Navigation Toggle Button */}
+        <div className="md:hidden sticky top-16 z-30 flex justify-between items-center bg-black/80 backdrop-blur-md py-3 px-2 border-b border-gray-700 mb-4">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => setIsNavOpen(true)}
+            className="flex items-center gap-2 border-gray-600 text-gray-300 hover:text-white"
+          >
+            <PanelLeft className="h-5 w-5" />
+            <span>Navigation</span>
+          </Button>
+          <div className="text-white font-medium">Profile Editor</div>
+        </div>
 
         {/* Tabs layout with vertical navbar and content side by side */}
         <div className="relative">
-          <Tabs defaultValue="basic" className="w-full h-full">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full h-full">
             <div className="flex flex-col md:flex-row gap-6 h-full min-h-[600px]">
-              {/* Left Navbar Start */}
-              <div className="min-w-[220px] w-[240px] lg:w-[260px] shrink-0 h-full flex flex-col">
+              {/* Left Navbar - Desktop view */}
+              <div className="hidden md:flex min-w-[220px] w-[240px] lg:w-[260px] shrink-0 h-full flex-col">
                 {/* Import Options at the top */}
-                <div className="bg-black/70 backdrop-blur-md rounded-lg border border-purple-200/40 shadow-sm mt-4 mb-4 px-4 py-3 flex flex-col gap-3">
+                <div className="bg-black/70 backdrop-blur-md rounded-lg border border-gray-500 shadow-sm mt-4 mb-4 px-4 py-3 flex flex-col gap-3">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="inline-block w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 shadow-sm shadow-purple-500/20" />
                     <span className="font-semibold text-sm text-purple-700">Import Options</span>
@@ -459,10 +471,10 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                 </div>
 
                 {/* Divider before tabs */}
-                <div className="my-2 border-t border-purple-400/30 w-full" />
+                <div className="my-2 border-t border-gray-400 w-full" />
 
                 {/* Tab List and rest of sidebar... */}
-                <TabsList className="flex flex-col w-full h-full bg-black text-white border border-purple-400/20 rounded-xl shadow-lg overflow-hidden min-h-[500px] justify-start">
+                <TabsList className="flex flex-col w-full h-full bg-black text-white border border-gray-500 rounded-xl shadow-lg overflow-hidden min-h-[500px] justify-start">
                   <TabsTrigger 
                     value="basic" 
                     className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
@@ -525,7 +537,7 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                   </TabsTrigger>
 
                   {/* Divider after last tab */}
-                  <div className="my-3 border-t border-purple-400/30 w-full" />
+                  <div className="my-3 border-t border-gray-500 w-full" />
 
                   {/* Save and Reset buttons in navbar */}
                   <div className="flex flex-col gap-2 px-4 pb-4">
@@ -579,13 +591,13 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                 </TabsList>
               </div>
               {/* Content area on the right */}
-              <div className="flex-1 relative">
-                <div className="absolute inset-0   pointer-events-none rounded-xl"></div>
-                <div className="relative space-y-6">
+              <div className="flex-1 relative w-full">
+                <div className="absolute inset-0 pointer-events-none rounded-xl"></div>
+                <div className="relative space-y-6 px-1 sm:px-2 md:px-4">
                   <TabsContent value="basic" className="animate-in fade-in-50 slide-in-from-left-2 duration-300">
-                    <Card className="bg-gray-900 text-white border-purple-400/20 shadow-xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] rounded-xl overflow-hidden">
-                      <div className="p-6">
-                        <h2 className="text-lg font-semibold mb-6 text-purple-400">Personal Information</h2>
+                    <Card className="bg-black text-white border-gray-500 shadow-xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] rounded-xl overflow-hidden w-full">
+                      <div className="p-3 sm:p-4 md:p-6">
+                        <h2 className="text-lg font-semibold mb-4 md:mb-6 text-purple-400">Personal Information</h2>
                         <ProfileBasicInfoForm
                           profile={profile}
                           onChange={(field, value) => {
@@ -599,9 +611,9 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                   </TabsContent>
 
                   <TabsContent value="experience" className="animate-in fade-in-50 slide-in-from-left-2 duration-300">
-                    <Card className="bg-black text-white border-purple-400/20 shadow-xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] rounded-xl overflow-hidden">
-                      <div className="p-6">
-                        <h2 className="text-lg font-semibold mb-6 text-purple-400">Work Experience</h2>
+                    <Card className="bg-black text-white border-gray-500 shadow-xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] rounded-xl overflow-hidden w-full">
+                      <div className="p-3 sm:p-4 md:p-6">
+                        <h2 className="text-lg font-semibold mb-4 md:mb-6 text-purple-400">Work Experience</h2>
                         <ProfileWorkExperienceForm
                           experiences={profile.work_experience}
                           onChange={(experiences) => updateField('work_experience', experiences)}
@@ -611,9 +623,9 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                   </TabsContent>
 
                   <TabsContent value="projects" className="animate-in fade-in-50 slide-in-from-left-2 duration-300">
-                    <Card className="bg-black text-white border-purple-400/20 shadow-xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] rounded-xl overflow-hidden">
-                      <div className="p-6">
-                        <h2 className="text-lg font-semibold mb-6 text-purple-400">Projects</h2>
+                    <Card className="bg-black text-white border-gray-500 shadow-xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] rounded-xl overflow-hidden w-full">
+                      <div className="p-3 sm:p-4 md:p-6">
+                        <h2 className="text-lg font-semibold mb-4 md:mb-6 text-purple-400">Projects</h2>
                         <ProfileProjectsForm
                           projects={profile.projects}
                           onChange={(projects) => updateField('projects', projects)}
@@ -623,9 +635,9 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                   </TabsContent>
 
                   <TabsContent value="education" className="animate-in fade-in-50 slide-in-from-left-2 duration-300">
-                    <Card className="bg-black text-white border-purple-400/20 shadow-xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] rounded-xl overflow-hidden">
-                      <div className="p-6">
-                        <h2 className="text-lg font-semibold mb-6 text-purple-400">Education</h2>
+                    <Card className="bg-black text-white border-gray-500 shadow-xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] rounded-xl overflow-hidden w-full">
+                      <div className="p-3 sm:p-4 md:p-6">
+                        <h2 className="text-lg font-semibold mb-4 md:mb-6 text-purple-400">Education</h2>
                         <ProfileEducationForm
                           education={profile.education}
                           onChange={(education) => updateField('education', education)}
@@ -635,9 +647,9 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                   </TabsContent>
 
                   <TabsContent value="skills" className="animate-in fade-in-50 slide-in-from-left-2 duration-300">
-                    <Card className="bg-black text-white border-purple-400/20 shadow-xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] rounded-xl overflow-hidden">
-                      <div className="p-6">
-                        <h2 className="text-lg font-semibold mb-6 text-purple-400">Skills</h2>
+                    <Card className="bg-black text-white border-gray-500 shadow-xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] rounded-xl overflow-hidden w-full">
+                      <div className="p-3 sm:p-4 md:p-6">
+                        <h2 className="text-lg font-semibold mb-4 md:mb-6 text-purple-400">Skills</h2>
                         <ProfileSkillsForm
                           skills={profile.skills}
                           onChange={(skills) => updateField('skills', skills)}
@@ -652,6 +664,178 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
           </Tabs>
         </div>
       </div>
+
+      {/* Mobile Navigation Slide-out */}
+      <Sheet open={isNavOpen} onOpenChange={setIsNavOpen}>
+        <SheetContent side="left" className="w-[280px] sm:w-[320px] bg-black border-r border-gray-600 p-0">
+          <SheetHeader className="sr-only">
+            <SheetTitle>Profile Navigation</SheetTitle>
+            <SheetDescription>Navigate between different sections of your profile</SheetDescription>
+          </SheetHeader>
+          <div className="flex flex-col h-full">
+            {/* Import Options - Mobile */}
+            <div className="bg-black/70 backdrop-blur-md border-b border-gray-500 shadow-sm px-4 py-3 flex flex-col gap-3 mt-4">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="inline-block w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 shadow-sm shadow-purple-500/20" />
+                <span className="font-semibold text-sm text-white">Import Options</span>
+              </div>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  handleLinkedInImport();
+                  setIsNavOpen(false);
+                }}
+                className="w-full flex items-center gap-2 text-[#0077b5] border-[#0077b5]/30 hover:bg-[#0077b5]/10 hover:border-[#0077b5]/50 py-2 px-3 text-sm font-medium rounded-md transition-all"
+              >
+                <Linkedin className="h-4 w-4" />
+                LinkedIn Import
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setIsResumeDialogOpen(true);
+                  setIsNavOpen(false);
+                }}
+                className="w-full flex items-center gap-2 text-violet-400 border-violet-400/30 hover:bg-violet-400/10 hover:border-violet-500/50 py-2 px-3 text-sm font-medium rounded-md transition-all"
+              >
+                <Upload className="h-4 w-4" />
+                Resume Upload
+              </Button>
+            </div>
+
+            {/* Mobile Tab Navigation */}
+            <div className="flex-1 overflow-y-auto">
+              <Tabs value={activeTab} onValueChange={(value) => {
+                setActiveTab(value);
+                setIsNavOpen(false);
+              }} className="w-full h-full">
+                <TabsList className="flex flex-col w-full h-full bg-black text-white border-none shadow-none overflow-hidden justify-start">
+                <TabsTrigger 
+                  value="basic" 
+                  className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
+                    data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-900 data-[state=active]:to-black
+                    data-[state=active]:border-l-purple-400 data-[state=active]:text-white
+                    data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 hover:bg-purple-900/20"
+                >
+                  <div className="p-2 rounded-full bg-purple-400/10 transition-transform duration-300 group-data-[state=active]:scale-110 group-data-[state=active]:bg-purple-400/20">
+                    <User className="h-5 w-5 text-purple-400 transition-colors" />
+                  </div>
+                  <span className="font-medium">Basic Info</span>
+                </TabsTrigger>
+                
+                <TabsTrigger 
+                  value="experience" 
+                  className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
+                    data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-900 data-[state=active]:to-black
+                    data-[state=active]:border-l-purple-400 data-[state=active]:text-white
+                    data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 hover:bg-purple-900/20"
+                >
+                  <div className="p-2 rounded-full bg-purple-400/10 transition-transform duration-300 group-data-[state=active]:scale-110 group-data-[state=active]:bg-purple-400/20">
+                    <Briefcase className="h-5 w-5 text-purple-400 transition-colors" />
+                  </div>
+                  <span className="font-medium">Work Experience</span>
+                </TabsTrigger>
+                
+                <TabsTrigger 
+                  value="projects" 
+                  className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
+                    data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-900 data-[state=active]:to-black
+                    data-[state=active]:border-l-purple-400 data-[state=active]:text-white
+                    data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 hover:bg-purple-900/20"
+                >
+                  <div className="p-2 rounded-full bg-purple-400/10 transition-transform duration-300 group-data-[state=active]:scale-110 group-data-[state=active]:bg-purple-400/20">
+                    <FolderGit2 className="h-5 w-5 text-purple-400 transition-colors" />
+                  </div>
+                  <span className="font-medium">Projects</span>
+                </TabsTrigger>
+                
+                <TabsTrigger 
+                  value="education" 
+                  className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
+                    data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-900 data-[state=active]:to-black
+                    data-[state=active]:border-l-purple-400 data-[state=active]:text-white
+                    data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 hover:bg-purple-900/20"
+                >
+                  <div className="p-2 rounded-full bg-purple-400/10 transition-transform duration-300 group-data-[state=active]:scale-110 group-data-[state=active]:bg-purple-400/20">
+                    <GraduationCap className="h-5 w-5 text-purple-400 transition-colors" />
+                  </div>
+                  <span className="font-medium">Education</span>
+                </TabsTrigger>
+                
+                <TabsTrigger 
+                  value="skills" 
+                  className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
+                    data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-900 data-[state=active]:to-black
+                    data-[state=active]:border-l-purple-400 data-[state=active]:text-white
+                    data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 hover:bg-purple-900/20"
+                >
+                  <div className="p-2 rounded-full bg-purple-400/10 transition-transform duration-300 group-data-[state=active]:scale-110 group-data-[state=active]:bg-purple-400/20">
+                    <Wrench className="h-5 w-5 text-purple-400 transition-colors" />
+                  </div>
+                  <span className="font-medium">Skills</span>
+                </TabsTrigger>
+              </TabsList>
+              </Tabs>
+            </div>
+            {/* Mobile Save/Reset Buttons */}
+            <div className="flex flex-col gap-2 p-4 border-t border-gray-600">
+              <Button 
+                onClick={() => {
+                  handleSubmit();
+                  setIsNavOpen(false);
+                }}
+                disabled={isSubmitting}
+                size="sm"
+                className="w-full bg-gradient-to-r from-teal-500 to-green-500 text-white font-semibold rounded-md shadow-sm hover:from-teal-600 hover:to-green-600 hover:shadow-md transition-all duration-200 h-9 px-3 flex items-center justify-center gap-2 text-sm"
+              >
+                {isSubmitting ? (
+                  <><Loader2 className="h-4 w-4 animate-spin" />Saving...</>
+                ) : (
+                  <><Save className="h-4 w-4" />Save Changes</>
+                )}
+              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="w-full border border-rose-500 text-rose-400 font-medium rounded-md hover:bg-rose-900/20 hover:border-rose-400 transition-all duration-200 h-9 px-3 flex items-center justify-center gap-2 text-sm"
+                    disabled={isResetting}
+                  >
+                    {isResetting ? (
+                      <><Loader2 className="h-4 w-4 animate-spin" />Resetting...</>
+                    ) : (
+                      <><Trash2 className="h-4 w-4" />Reset Profile</>
+                    )}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Reset Profile</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This will reset your entire profile and remove all your information. This action cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel disabled={isResetting}>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleReset}
+                      disabled={isResetting}
+                      className="bg-rose-500 hover:bg-rose-600"
+                    >
+                      {isResetting ? (
+                        <><Loader2 className="h-4 w-4 animate-spin mr-2" />Resetting...</>
+                      ) : (
+                        "Reset Profile"
+                      )}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

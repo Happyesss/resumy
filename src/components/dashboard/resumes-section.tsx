@@ -1,5 +1,6 @@
 'use client';
 
+import * as React from 'react';
 import { Trash2, Copy, FileText, Sparkles, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -11,8 +12,7 @@ import { ResumeSortControls, type SortOption, type SortDirection } from '@/compo
 import type { Profile, Resume } from '@/lib/types';
 import { deleteResume, copyResume } from '@/utils/actions/resumes/actions';
 import { Pagination, PaginationContent, PaginationItem } from '@/components/ui/pagination';
-import { useState, useOptimistic, useTransition, useEffect } from 'react';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { toast } from 'sonner';
 
 interface OptimisticResume extends Resume {
@@ -52,33 +52,33 @@ export function ResumesSection({
   baseResumes = [],
   canCreateMore
 }: ResumesSectionProps) {
-  const [optimisticResumes, dispatchOptimistic] = useOptimistic(
+  const [optimisticResumes, dispatchOptimistic] = React.useOptimistic(
     resumes as OptimisticResume[],
-    (state, action: OptimisticAction) => {
+    (state: OptimisticResume[], action: OptimisticAction) => {
       switch (action.type) {
         case 'ADD':
           return [action.resume, ...state];
         case 'REMOVE':
-          return state.filter(resume => resume.id !== action.resumeId);
+          return state.filter((resume: OptimisticResume) => resume.id !== action.resumeId);
         default:
           return state;
       }
     }
   );
 
-  const [, startTransition] = useTransition();
-  const [deletingResumes, setDeletingResumes] = useState<Set<string>>(new Set());
-  const [copyingResumes, setCopyingResumes] = useState<Set<string>>(new Set());
-  const [isMounted, setIsMounted] = useState(false);
+  const [, startTransition] = React.useTransition();
+  const [deletingResumes, setDeletingResumes] = React.useState<Set<string>>(new Set());
+  const [copyingResumes, setCopyingResumes] = React.useState<Set<string>>(new Set());
+  const [isMounted, setIsMounted] = React.useState(false);
 
   // Renamed to avoid any potential name collision
-  const [paginationState, setPaginationState] = useState<PaginationState>({
+  const [paginationState, setPaginationState] = React.useState<PaginationState>({
     currentPage: 1,
     itemsPerPage: 7
   });
 
   // Ensure component is mounted before rendering hooks
-  useEffect(() => {
+  React.useEffect(() => {
     setIsMounted(true);
   }, []);
 
@@ -112,7 +112,7 @@ export function ResumesSection({
   }[type];
 
   const handleDeleteResume = async (resumeId: string, resumeName: string) => {
-    setDeletingResumes(prev => new Set(prev).add(resumeId));
+    setDeletingResumes((prev: Set<string>) => new Set(prev).add(resumeId));
     
     // Only remove this specific resume ID from the UI - don't affect other resumes
     dispatchOptimistic({ type: 'REMOVE', resumeId });
@@ -126,7 +126,7 @@ export function ResumesSection({
       console.error('Failed to delete resume:', error);
       toast.error(`Failed to delete "${resumeName}". Please try again.`, { id: resumeId });
     } finally {
-      setDeletingResumes(prev => {
+      setDeletingResumes((prev: Set<string>) => {
         const newSet = new Set(prev);
         newSet.delete(resumeId);
         return newSet;
@@ -135,7 +135,7 @@ export function ResumesSection({
   };
 
   const handleCopyResume = async (sourceResume: OptimisticResume) => {
-    setCopyingResumes(prev => new Set(prev).add(sourceResume.id));
+    setCopyingResumes((prev: Set<string>) => new Set(prev).add(sourceResume.id));
     
     const optimisticCopy: OptimisticResume = {
       ...sourceResume,
@@ -157,7 +157,7 @@ export function ResumesSection({
       console.error('Failed to copy resume:', error);
       toast.error(`Failed to copy "${sourceResume.name}". Please try again.`, { id: `copy-${sourceResume.id}` });
     } finally {
-      setCopyingResumes(prev => {
+      setCopyingResumes((prev: Set<string>) => {
         const newSet = new Set(prev);
         newSet.delete(sourceResume.id);
         return newSet;
@@ -170,7 +170,7 @@ export function ResumesSection({
   const paginatedResumes = optimisticResumes.slice(startIndex, endIndex);
 
   function handlePageChange(page: number) {
-    setPaginationState(prev => ({
+    setPaginationState((prev: PaginationState) => ({
       ...prev,
       currentPage: page
     }));

@@ -61,14 +61,14 @@ export function ProfileProjectsForm({ projects, onChange }: ProfileProjectsFormP
           <AccordionItem
             key={index}
             value={`project-${index}`}
-            className="bg-gradient-to-r from-violet-500/5 via-violet-500/10 to-purple-500/5 backdrop-blur-md border border-violet-500/30 hover:border-violet-500/40 hover:shadow-lg transition-all duration-300 shadow-sm rounded-md overflow-hidden"
+            className="bg-gray-900 border-2 border-gray-800 hover:border-purple-400/40 hover:shadow-lg transition-all duration-300 shadow-sm rounded-md overflow-hidden"
           >
             <AccordionTrigger className="px-4 py-2 hover:no-underline">
               <div className="flex items-center justify-between gap-3 flex-1">
-                <div className="flex-1 text-left text-sm font-medium text-violet-900">
+                <div className="flex-1 text-left text-sm font-medium text-purple-400">
                   {project.name || "Untitled Project"}
                 </div>
-                <div className="flex items-center gap-2 text-xs text-gray-500">
+                <div className="flex items-center gap-2 text-xs text-gray-400">
                   {project.date && <span>{project.date}</span>}
                   {project.technologies && project.technologies.length > 0 && (
                     <span className="max-w-[200px] truncate">
@@ -86,13 +86,13 @@ export function ProfileProjectsForm({ projects, onChange }: ProfileProjectsFormP
                     <Input
                       value={project.name}
                       onChange={(e) => updateProject(index, 'name', e.target.value)}
-                      className="text-base bg-white/50 border-gray-200 rounded-md h-8
-                        focus:border-violet-500/40 focus:ring-1 focus:ring-violet-500/20
-                        hover:border-violet-500/30 hover:bg-white/60 transition-colors
-                        placeholder:text-gray-400"
+                      className="text-base bg-gray-800 border-gray-700 rounded-md h-8
+                        focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
+                        hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
+                        placeholder:text-gray-500 text-white"
                       placeholder="Project Name"
                     />
-                    <div className="absolute -top-2.5 left-2 px-1 bg-white/80 text-[9px] font-medium text-violet-700">
+                    <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[9px] font-medium text-purple-400 border border-gray-700">
                       PROJECT NAME
                     </div>
                   </div>
@@ -107,19 +107,19 @@ export function ProfileProjectsForm({ projects, onChange }: ProfileProjectsFormP
                 </div>
 
                 {/* URLs Row */}
-                <div className="flex flex-col md:flex-row md:items-start gap-3 text-gray-600">
+                <div className="flex flex-col md:flex-row md:items-start gap-3 text-gray-400">
                   <div className="relative group flex-1">
                     <Input
                       type="url"
                       value={project.url || ''}
                       onChange={(e) => updateProject(index, 'url', e.target.value)}
-                      className="bg-white/50 border-gray-200 rounded-md h-8
-                        focus:border-violet-500/40 focus:ring-1 focus:ring-violet-500/20
-                        hover:border-violet-500/30 hover:bg-white/60 transition-colors
-                        placeholder:text-gray-400 text-sm"
+                      className="bg-gray-800 border-gray-700 rounded-md h-8
+                        focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
+                        hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
+                        placeholder:text-gray-500 text-sm text-white"
                       placeholder="https://your-project.com"
                     />
-                    <div className="absolute -top-2.5 left-2 px-1 bg-white/80 text-[9px] font-medium text-violet-700">
+                    <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[9px] font-medium text-purple-400 border border-gray-700">
                       LIVE URL
                     </div>
                   </div>
@@ -128,13 +128,13 @@ export function ProfileProjectsForm({ projects, onChange }: ProfileProjectsFormP
                       type="url"
                       value={project.github_url || ''}
                       onChange={(e) => updateProject(index, 'github_url', e.target.value)}
-                      className="bg-white/50 border-gray-200 rounded-md h-8
-                        focus:border-violet-500/40 focus:ring-1 focus:ring-violet-500/20
-                        hover:border-violet-500/30 hover:bg-white/60 transition-colors
-                        placeholder:text-gray-400 text-sm"
+                      className="bg-gray-800 border-gray-700 rounded-md h-8
+                        focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
+                        hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
+                        placeholder:text-gray-500 text-sm text-white"
                       placeholder="https://github.com/username/project"
                     />
-                    <div className="absolute -top-2.5 left-2 px-1 bg-white/80 text-[9px] font-medium text-violet-700">
+                    <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[9px] font-medium text-purple-400 border border-gray-700">
                       GITHUB URL
                     </div>
                   </div>
@@ -143,8 +143,8 @@ export function ProfileProjectsForm({ projects, onChange }: ProfileProjectsFormP
                 {/* Technologies */}
                 <div className="space-y-1.5">
                   <div className="flex justify-between items-baseline">
-                    <Label className="text-xs font-medium text-violet-700">Technologies & Tools Used</Label>
-                    <span className="text-[9px] text-gray-500">Separate with commas</span>
+                    <Label className="text-xs font-medium text-purple-400 rounded-full">Technologies & Tools Used</Label>
+                    <span className="text-[9px] text-gray-400">Separate with commas</span>
                   </div>
                   <Input
                     value={techInputs[index] || ''}
@@ -178,10 +178,10 @@ export function ProfileProjectsForm({ projects, onChange }: ProfileProjectsFormP
                       }));
                     }}
                     placeholder="React, TypeScript, Node.js, etc."
-                    className="bg-white/50 border-gray-200 rounded-md h-8
-                      focus:border-violet-500/40 focus:ring-1 focus:ring-violet-500/20
-                      hover:border-violet-500/30 hover:bg-white/60 transition-colors
-                      placeholder:text-gray-400 text-sm"
+                    className="bg-gray-800 border-gray-700 rounded-md h-8
+                      focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
+                      hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
+                      placeholder:text-gray-500 text-sm text-white"
                   />
                 </div>
 
@@ -191,12 +191,12 @@ export function ProfileProjectsForm({ projects, onChange }: ProfileProjectsFormP
                     type="text"
                     value={project.date || ''}
                     onChange={(e) => updateProject(index, 'date', e.target.value)}
-                    className="w-full bg-white/50 border-gray-200 rounded-md h-8
-                      focus:border-violet-500/40 focus:ring-1 focus:ring-violet-500/20
-                      hover:border-violet-500/30 hover:bg-white/60 transition-colors text-sm"
+                    className="w-full bg-gray-800 border-gray-700 rounded-md h-8
+                      focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
+                      hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors text-sm text-white"
                     placeholder="e.g., &apos;Jan 2023 - Present&apos; or &apos;Summer 2023&apos;"
                   />
-                  <div className="absolute -top-2.5 left-2 px-1 bg-white/80 text-[9px] font-medium text-violet-700">
+                  <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[9px] font-medium text-purple-400 border border-gray-700">
                     DATE
                   </div>
                 </div>
@@ -204,7 +204,7 @@ export function ProfileProjectsForm({ projects, onChange }: ProfileProjectsFormP
                 {/* Description */}
                 <div className="space-y-1.5">
                   <div className="flex justify-between items-baseline">
-                    <Label className="text-xs font-medium text-violet-700">Description</Label>
+                    <Label className="text-xs font-medium text-purple-400 rounded-full">Description</Label>
                     <Button
                       variant="ghost"
                       size="sm"
@@ -213,7 +213,7 @@ export function ProfileProjectsForm({ projects, onChange }: ProfileProjectsFormP
                         updated[index].description = [...updated[index].description, ""];
                         onChange(updated);
                       }}
-                      className="text-violet-600 hover:text-violet-700 transition-colors h-7 text-xs"
+                      className="text-purple-400 hover:text-purple-500 transition-colors h-7 text-xs"
                     >
                       <Plus className="h-3.5 w-3.5 mr-1" />
                       Add Point
@@ -231,10 +231,10 @@ export function ProfileProjectsForm({ projects, onChange }: ProfileProjectsFormP
                               onChange(updated);
                             }}
                             placeholder="Describe a key feature or achievement"
-                            className="bg-white/50 border-gray-200 rounded-md h-8
-                              focus:border-violet-500/40 focus:ring-1 focus:ring-violet-500/20
-                              hover:border-violet-500/30 hover:bg-white/60 transition-colors
-                              placeholder:text-gray-400 text-sm"
+                            className="bg-gray-800 border-gray-700 rounded-md h-8
+                              focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
+                              hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
+                              placeholder:text-gray-500 text-sm text-white"
                           />
                         </div>
                         <Button
@@ -265,7 +265,7 @@ export function ProfileProjectsForm({ projects, onChange }: ProfileProjectsFormP
       </Accordion>
       <Button 
         variant="outline" 
-        className="w-full bg-gradient-to-r from-violet-500/5 via-violet-500/10 to-purple-500/5 hover:from-violet-500/10 hover:via-violet-500/15 hover:to-purple-500/10 border-dashed border-violet-500/30 hover:border-violet-500/40 text-violet-700 hover:text-violet-800 transition-all duration-300 h-8 text-sm"
+        className="w-full bg-gray-900 hover:bg-gray-800 border-dashed border-gray-800 hover:border-purple-400/40 text-purple-400 hover:text-purple-500 transition-all duration-300 h-8 text-sm"
         onClick={addProject}
       >
         <Plus className="h-3.5 w-3.5 mr-1.5" />
@@ -273,4 +273,4 @@ export function ProfileProjectsForm({ projects, onChange }: ProfileProjectsFormP
       </Button>
     </div>
   );
-} 
+}

@@ -61,14 +61,14 @@ export function ProfileWorkExperienceForm({ experiences, onChange }: ProfileWork
           <AccordionItem
             key={index}
             value={`experience-${index}`}
-            className="bg-gradient-to-r from-cyan-500/5 via-cyan-500/10 to-blue-500/5 backdrop-blur-md border border-cyan-500/30 hover:border-cyan-500/40 hover:shadow-lg transition-all duration-300 shadow-sm rounded-md overflow-hidden"
+            className="bg-gray-900 border-2 border-gray-800 hover:border-purple-400/40 hover:shadow-lg transition-all duration-300 shadow-sm rounded-md overflow-hidden"
           >
             <AccordionTrigger className="px-4 py-2 hover:no-underline">
               <div className="flex items-center justify-between gap-3 flex-1">
-                <div className="flex-1 text-left text-sm font-medium text-cyan-900">
+                <div className="flex-1 text-left text-sm font-medium text-purple-400">
                   {exp.position || "Untitled Position"} {exp.company && `at ${exp.company}`}
                 </div>
-                <div className="flex items-center gap-2 text-xs text-gray-500">
+                <div className="flex items-center gap-2 text-xs text-gray-400">
                   {exp.date && <span>{exp.date}</span>}
                   {exp.technologies && exp.technologies.length > 0 && (
                     <span className="max-w-[200px] truncate">
@@ -86,13 +86,13 @@ export function ProfileWorkExperienceForm({ experiences, onChange }: ProfileWork
                     <Input
                       value={exp.position}
                       onChange={(e) => updateExperience(index, 'position', e.target.value)}
-                      className="text-base bg-white/50 border-gray-200 rounded-md h-8
-                        focus:border-cyan-500/40 focus:ring-1 focus:ring-cyan-500/20
-                        hover:border-cyan-500/30 hover:bg-white/60 transition-colors
-                        placeholder:text-gray-400"
+                      className="text-base bg-gray-800 border-gray-700 rounded-md h-8
+                        focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
+                        hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
+                        placeholder:text-gray-500 text-white"
                       placeholder="Position Title"
                     />
-                    <div className="absolute -top-2.5 left-2 px-1 bg-white/80 text-[9px] font-medium text-cyan-700">
+                    <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[9px] font-medium text-purple-400 border border-gray-700">
                       POSITION
                     </div>
                   </div>
@@ -111,13 +111,13 @@ export function ProfileWorkExperienceForm({ experiences, onChange }: ProfileWork
                   <Input
                     value={exp.company}
                     onChange={(e) => updateExperience(index, 'company', e.target.value)}
-                    className="bg-white/50 border-gray-200 rounded-md h-8
-                      focus:border-cyan-500/40 focus:ring-1 focus:ring-cyan-500/20
-                      hover:border-cyan-500/30 hover:bg-white/60 transition-colors
-                      placeholder:text-gray-400 text-sm"
+                    className="bg-gray-800 border-gray-700 rounded-md h-8
+                      focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
+                      hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
+                      placeholder:text-gray-500 text-sm text-white"
                     placeholder="Company Name"
                   />
-                  <div className="absolute -top-2.5 left-2 px-1 bg-white/80 text-[9px] font-medium text-cyan-700">
+                  <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[9px] font-medium text-purple-400 border border-gray-700">
                     COMPANY
                   </div>
                 </div>
@@ -129,13 +129,13 @@ export function ProfileWorkExperienceForm({ experiences, onChange }: ProfileWork
                       type="text"
                       value={exp.date}
                       onChange={(e) => updateExperience(index, 'date', e.target.value)}
-                      className="bg-white/50 border-gray-200 rounded-md h-8
-                        focus:border-cyan-500/40 focus:ring-1 focus:ring-cyan-500/20
-                        hover:border-cyan-500/30 hover:bg-white/60 transition-colors
-                        placeholder:text-gray-400 text-sm"
+                      className="bg-gray-800 border-gray-700 rounded-md h-8
+                        focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
+                        hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
+                        placeholder:text-gray-500 text-sm text-white"
                       placeholder="e.g., Jan 2023 - Present"
                     />
-                    <div className="absolute -top-2.5 left-2 px-1 bg-white/80 text-[9px] font-medium text-cyan-700">
+                    <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[9px] font-medium text-purple-400 border border-gray-700">
                       DATE
                     </div>
                   </div>
@@ -143,13 +143,13 @@ export function ProfileWorkExperienceForm({ experiences, onChange }: ProfileWork
                     <Input
                       value={exp.location}
                       onChange={(e) => updateExperience(index, 'location', e.target.value)}
-                      className="bg-white/50 border-gray-200 rounded-md h-8
-                        focus:border-cyan-500/40 focus:ring-1 focus:ring-cyan-500/20
-                        hover:border-cyan-500/30 hover:bg-white/60 transition-colors
-                        placeholder:text-gray-400 text-sm"
+                      className="bg-gray-800 border-gray-700 rounded-md h-8
+                        focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
+                        hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
+                        placeholder:text-gray-500 text-sm text-white"
                       placeholder="e.g., Vancouver, BC"
                     />
-                    <div className="absolute -top-2.5 left-2 px-1 bg-white/80 text-[9px] font-medium text-cyan-700">
+                    <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[9px] font-medium text-purple-400 border border-gray-700">
                       LOCATION
                     </div>
                   </div>
@@ -158,7 +158,7 @@ export function ProfileWorkExperienceForm({ experiences, onChange }: ProfileWork
                 {/* Technologies */}
                 <div className="space-y-1.5">
                   <div className="flex justify-between items-baseline">
-                    <Label className="text-xs font-medium text-cyan-700">Technologies & Skills Used</Label>
+                    <Label className="text-xs font-medium text-purple-400 rounded-full">Technologies & Skills Used</Label>
                     <span className="text-[9px] text-gray-500">Separate with commas</span>
                   </div>
                   <Input
@@ -193,17 +193,17 @@ export function ProfileWorkExperienceForm({ experiences, onChange }: ProfileWork
                       }));
                     }}
                     placeholder="React, TypeScript, Node.js, etc."
-                    className="bg-white/50 border-gray-200 rounded-md h-8
-                      focus:border-cyan-500/40 focus:ring-1 focus:ring-cyan-500/20
-                      hover:border-cyan-500/30 hover:bg-white/60 transition-colors
-                      placeholder:text-gray-400 text-sm"
+                    className="bg-gray-800 border-gray-700 rounded-md h-8
+                      focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
+                      hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
+                      placeholder:text-gray-500 text-sm text-white"
                   />
                 </div>
 
                 {/* Description */}
                 <div className="space-y-1.5">
                   <div className="flex justify-between items-baseline">
-                    <Label className="text-xs font-medium text-cyan-700">Key Responsibilities & Achievements</Label>
+                    <Label className="text-xs font-medium text-purple-400 rounded-full">Key Responsibilities & Achievements</Label>
                     <Button
                       variant="ghost"
                       size="sm"
@@ -230,10 +230,10 @@ export function ProfileWorkExperienceForm({ experiences, onChange }: ProfileWork
                               onChange(updated);
                             }}
                             placeholder="Start with a strong action verb"
-                            className="bg-white/50 border-gray-200 rounded-md h-8
-                              focus:border-cyan-500/40 focus:ring-1 focus:ring-cyan-500/20
-                              hover:border-cyan-500/30 hover:bg-white/60 transition-colors
-                              placeholder:text-gray-400 text-sm"
+                            className="bg-gray-800 border-gray-700 rounded-md h-8
+                              focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
+                              hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
+                              placeholder:text-gray-500 text-sm text-white"
                           />
                         </div>
                         <Button
@@ -266,11 +266,11 @@ export function ProfileWorkExperienceForm({ experiences, onChange }: ProfileWork
       <Button 
         variant="outline" 
         onClick={addExperience}
-        className="w-full bg-gradient-to-r from-cyan-500/5 via-cyan-500/10 to-blue-500/5 hover:from-cyan-500/10 hover:via-cyan-500/15 hover:to-blue-500/10 border-dashed border-cyan-500/30 hover:border-cyan-500/40 text-cyan-700 hover:text-cyan-800 transition-all duration-300 h-8 text-sm"
+        className="w-full bg-gray-900 hover:bg-gray-800 border-dashed border-gray-800 hover:border-purple-400/40 text-purple-400 hover:text-purple-500 transition-all duration-300 h-8 text-sm"
       >
         <Plus className="h-3.5 w-3.5 mr-1.5" />
         Add Work Experience
       </Button>
     </div>
   );
-} 
+}

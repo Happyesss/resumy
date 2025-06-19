@@ -25,10 +25,10 @@ export default async function EditProfilePage() {
   }
 
   return (
-    <main className="min-h-screen relative">
+    <main className="min-h-screen relative bg-black">
       {/* Main Content Layer */}
-      <div className="relative z-10">
-        <Suspense fallback={<div>Loading...</div>}>
+      <div className="relative z-10 w-full">
+        <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}>
           <ProfileEditForm profile={profile} />
         </Suspense>
       </div>
