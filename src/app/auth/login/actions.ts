@@ -22,14 +22,24 @@ export async function login(formData: FormData): Promise<AuthResult> {
     password: formData.get('password') as string,
   }
 
-  const { error } = await supabase.auth.signInWithPassword(data)
+  const { error, data: authData } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    return { success: false, error: error.message }
+    console.error('Login error:', error);
+    return { success: false, error: error.message };
   }
 
-  redirect('/')
-  return { success: true }
+  // Verify the user is actually authenticated
+  if (!authData?.user) {
+    return { success: false, error: 'Authentication failed' };
+  }
+
+  // Add a small delay to ensure the session is properly established
+  await new Promise(resolve => setTimeout(resolve, 100));
+  
+  // Don't use redirect() here as it throws and gets caught as an error
+  // Instead, let the client handle the redirect
+  return { success: true };
 }
 
 // Signup

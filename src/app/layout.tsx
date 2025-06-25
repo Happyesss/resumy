@@ -5,7 +5,7 @@ import { AppHeader } from "@/components/layout/app-header";
 import { createClient } from "@/utils/supabase/server";
 import { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react"
-import ClientAppWrapper from "@/components/layout/client-app-wrapper";
+import ClientAppWrapper from "@/components/layout/AppClientWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 

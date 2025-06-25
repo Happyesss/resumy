@@ -10,7 +10,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "./auth-context";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -35,6 +36,7 @@ function SubmitButton() {
 export function LoginForm() {
   const [error, setError] = useState<string>();
   const searchParams = useSearchParams();
+  const router = useRouter();
   const { 
     formData, 
     setFormData, 
@@ -94,12 +96,29 @@ export function LoginForm() {
       formDataToSend.append('password', formData.password);
       
       const result = await login(formDataToSend);
+      
       if (!result.success) {
-        setError("Invalid credentials. If you just signed up, please check your email for a verification link.");
+        // Give more specific error messages based on the error
+        if (result.error?.includes('Invalid login credentials')) {
+          setError("Invalid email or password. Please check your credentials and try again.");
+        } else if (result.error?.includes('Email not confirmed')) {
+          setError("Please check your email and click the confirmation link before logging in.");
+        } else if (result.error?.includes('Too many requests')) {
+          setError("Too many login attempts. Please wait a moment before trying again.");
+        } else {
+          setError(result.error || "Invalid credentials. If you just signed up, please check your email for a verification link.");
+        }
+      } else {
+        // Show success message and redirect
+        toast.success("Login successful! Redirecting...");
+        // Small delay to show the success message before redirect
+        setTimeout(() => {
+          router.push('/');
+        }, 500);
       }
     } catch (error: unknown) {
-      setError("An error occurred during login");
       console.error("Login error:", error);
+      setError("An unexpected error occurred. Please try again.");
     } finally {
       setFieldLoading('submit', false);
     }
@@ -108,12 +127,8 @@ export function LoginForm() {
   const handleInputChange = (field: 'email' | 'password', value: string) => {
     setFormData({ [field]: value });
     validateField(field, value);
-    // Simulate field validation loading state
-    setFieldLoading(field, true);
-    const timer = setTimeout(() => {
-      setFieldLoading(field, false);
-    }, 500);
-    return () => clearTimeout(timer);
+    // Remove the artificial loading delay for better UX
+    setFieldLoading(field, false);
   };
   return (
     <form onSubmit={handleSubmit} className="space-y-4">

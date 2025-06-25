@@ -19,18 +19,21 @@ export default function AuthErrorHandler() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
+      // Only handle sign out events, let successful logins flow naturally
       if (event === 'SIGNED_OUT') {
         // User signed out, redirect to login
         router.push('/auth/login')
       }
       
-      // If there's a token error in the URL, show a message
-      if (window.location.search.includes('error=token_refresh_error')) {
+      // Handle token refresh errors from URL parameters
+      if (typeof window !== 'undefined' && window.location.search.includes('error=token_refresh_error')) {
         toast.error('Your session has expired. Please log in again.')
+        // Clear the error from URL
+        window.history.replaceState({}, '', window.location.pathname)
       }
     })
 
-    // Set up an interval to check authentication status
+    // Set up an interval to check authentication status (less frequent to avoid conflicts)
     const checkInterval = setInterval(async () => {
       try {
         const { data, error } = await supabase.auth.getSession()
@@ -43,7 +46,7 @@ export default function AuthErrorHandler() {
           handleAuthError(err)
         }
       }
-    }, 60000) // Check every minute
+    }, 300000) // Check every 5 minutes instead of every minute
 
     // Function to handle authentication errors
     const handleAuthError = (error: AuthError) => {
