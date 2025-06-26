@@ -3,7 +3,6 @@ import { Hero } from "@/components/landing/Hero";
 import { VideoShowcase } from "@/components/landing/VideoShowcase";
 import { FreeAnnouncement } from "@/components/landing/FreeAnnouncement";
 import { FAQ } from "@/components/landing/FAQ";
-import { Footer } from "@/components/layout/footer";
 import { NavLinks } from "@/components/layout/nav-links";
 import { Logo } from "@/components/ui/logo";
 import { createClient } from "@/utils/supabase/server";
@@ -101,8 +100,6 @@ export default async function Page() {
         
         {/* FAQ Section */}
         <FAQ />
-
-        <Footer variant="static"/>
       </main>
     </>
   );

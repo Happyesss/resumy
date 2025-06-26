@@ -344,23 +344,23 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                 <div className="bg-black/70 backdrop-blur-md rounded-lg border border-gray-500 shadow-sm mt-4 mb-4 px-4 py-3 flex flex-col gap-3">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="inline-block w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 shadow-sm shadow-purple-500/20" />
-                    <span className="font-semibold text-sm text-purple-700">Import Options</span>
+                    <span className="font-semibold text-sm text-gray-200">Import Options</span>
                   </div>
                   <Button
                     variant="outline"
                     onClick={handleLinkedInImport}
-                    className="w-full flex items-center gap-2 text-[#0077b5] border-[#0077b5]/30 hover:bg-[#0077b5]/10 hover:border-[#0077b5]/50 py-2 px-3 text-sm font-medium rounded-md transition-all"
+                    className="w-full flex items-center gap-2 bg-[#0077b5] text-white border-[#0077b5] hover:bg-[#005983] hover:border-[#005983] py-2 px-3 text-sm font-medium rounded-md transition-all"
                   >
-                    <Linkedin className="h-4 w-4" />
+                    <Linkedin className="h-4 w-4 text-white" />
                     LinkedIn Import
                   </Button>
                   <Dialog open={isResumeDialogOpen} onOpenChange={setIsResumeDialogOpen}>
                     <DialogTrigger asChild>
                       <Button
                         variant="outline"
-                        className="w-full flex items-center gap-2 text-violet-700 border-violet-400/30 hover:bg-violet-100/40 hover:border-violet-500/50 py-2 px-3 text-sm font-medium rounded-md transition-all"
+                        className="w-full flex items-center gap-2 bg-white text-black border-gray-300 hover:bg-gray-100 hover:border-gray-400 py-2 px-3 text-sm font-medium rounded-md transition-all"
                       >
-                        <Upload className="h-4 w-4" />
+                        <Upload className="h-4 w-4 text-black" />
                         Resume Upload
                       </Button>
                     </DialogTrigger>

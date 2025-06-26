@@ -9,7 +9,6 @@ import { PageTitle } from "./page-title";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useState, useEffect } from "react";
-import { ModelSelector, type ApiKey } from "@/components/shared/model-selector";
 
 interface AppHeaderProps {
   children?: React.ReactNode;
@@ -17,39 +16,14 @@ interface AppHeaderProps {
 
 export function AppHeader({ children }: AppHeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
-
-  // Load stored data on mount
-  useEffect(() => {
-    // Load API keys
-    const storedKeys = localStorage.getItem('resumelm-api-keys');
-    if (storedKeys) {
-      try {
-        setApiKeys(JSON.parse(storedKeys));
-      } catch (error) {
-        console.error('Error loading API keys:', error);
-      }
-    }
-
-    // Always set default model to Gemini 2.0 Flash
-    localStorage.setItem('resumelm-default-model', 'gemini-1.5-flash-8b');
-  }, []);
 
   return (
-    <header className="h-14 border-b backdrop-blur-xl fixed top-0 left-0 right-0 z-40 shadow-md border-purple-200/50">
-      {/* Gradient backdrop with blur */}
-      <div className="absolute inset-0 bg-gradient-to-r from-purple-50/95 via-white/95 to-purple-50/95" />
-      
-      {/* Gradient Overlays */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#f3e8ff30_0%,#ffffff40_50%,#f3e8ff30_100%)] pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_-40%,#f3e8ff30_0%,transparent_100%)] pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_600px_at_100%_100%,#f3e8ff20_0%,transparent_100%)] pointer-events-none" />
-
+    <header className="h-14 border-b backdrop-blur-xl fixed top-0 left-0 right-0 z-40 shadow-md border-gray-200/50">
       {/* Content Container */}
       <div className="max-w-[2000px] mx-auto h-full px-3 flex items-center justify-between relative">        {/* Left Section - Logo and Title */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-shrink">
           <Logo className="text-xl flex-shrink-0" />
-          <div className="h-5 w-px bg-purple-200/50 hidden sm:block flex-shrink-0" />
+          <div className="h-5 w-px bg-gray-200/50 hidden sm:block flex-shrink-0" />
           <div className="flex items-center min-w-0 max-w-[140px] sm:max-w-[300px] lg:max-w-[600px]">
             <div className="truncate max-w-[80ch] overflow-hidden text-ellipsis">
               <PageTitle />
@@ -65,33 +39,19 @@ export function AppHeader({ children }: AppHeaderProps) {
             <>
               {/* Desktop Navigation */}
               <nav className="hidden md:flex items-center gap-1 lg:gap-2">
-                {/* Model Selector - Responsive Width */}
-                <div className="mr-2 lg:mr-3">
-                  <ModelSelector
-                    value="gemini-1.5-flash-8b"
-                    onValueChange={() => {}}
-                    apiKeys={apiKeys}
-                    className="w-[220px] lg:w-[260px] xl:w-[300px] h-8 text-xs"
-                    placeholder="Gemini 1.5 Flash 8B"
-                    showToast={false}
-                  />
-                </div>
-                <div className="h-4 w-px bg-purple-200/50" />
-                
                 <div className="flex items-center px-2 lg:px-3 py-1">
                   <Link 
                     href="/profile" 
                     className={cn(
-                      "flex items-center gap-1.5 px-2 lg:px-3 py-1",
-                      "text-sm font-medium text-purple-600/80 hover:text-purple-800",
-                      "transition-colors duration-200"
+                      "flex items-center gap-1.5 px-2 lg:px-3 py-1 text-purple-400 hover:text-purple-300",
+                      "text-sm font-medium transition-colors duration-200"
                     )}
                   >
                     <User className="h-4 w-4" />
                     <span className="hidden lg:inline">Profile</span>
                   </Link>
-                  <div className="mx-1 lg:mx-2 h-4 w-px bg-purple-200/50" />
-                  <LogoutButton />
+                  <div className="mx-1 lg:mx-2 h-4 w-px" />
+                  <LogoutButton className="text-red-500 hover:text-red-700" />
                 </div>
               </nav>
 
@@ -99,40 +59,31 @@ export function AppHeader({ children }: AppHeaderProps) {
               <Sheet open={isOpen} onOpenChange={setIsOpen}>
                 <SheetTrigger asChild className="md:hidden">
                   <Button variant="ghost" size="icon" className="h-9 w-9">
-                    <Menu className="h-5 w-5" />
+                    <Menu className="h-5 w-5 text-white" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="w-[280px] sm:w-[320px]">
+                <SheetContent 
+                  side="right" 
+                  className="w-[50vw] max-w-[400px] min-w-[220px] h-[50vh] mt-14 bg-black/95 rounded-l-2xl rounded-bl-2xl border-l border-purple-400/20 flex flex-col justify-start"
+                  style={{ top: '0', bottom: 'auto' }}
+                >
                   <SheetHeader>
                     <SheetTitle>Menu</SheetTitle>
                   </SheetHeader>
                   <div className="flex flex-col gap-4 pt-6">
-                    {/* Mobile Model Selector */}
-                    <div className="px-1">
-                      <ModelSelector
-                        value="gemini-1.5-flash-8b"
-                        onValueChange={() => {}}
-                        apiKeys={apiKeys}
-                        className="w-full h-10 text-sm"
-                        placeholder="Gemini 1.5 Flash 8B"
-                        showToast={false}
-                      />
-                    </div>
-                    
                     <Link
                       href="/profile"
                       onClick={() => setIsOpen(false)}
                       className={cn(
-                        "flex items-center gap-2 px-4 py-2 rounded-md",
-                        "text-sm font-medium text-purple-600/80 hover:text-purple-800",
-                        "hover:bg-purple-50 transition-colors duration-200"
+                        "flex items-center gap-2 px-4 py-2 rounded-md text-purple-400 hover:text-purple-300",
+                        "text-sm font-medium transition-colors duration-200"
                       )}
                     >
                       <User className="h-4 w-4" />
                       Profile
                     </Link>
                     <div className="px-4">
-                      <LogoutButton className="w-full justify-start" />
+                      <LogoutButton className="w-full justify-start text-red-500 hover:text-red-700" />
                     </div>
                   </div>
                 </SheetContent>

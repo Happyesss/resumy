@@ -1,6 +1,5 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Footer } from "@/components/layout/footer";
 import { AppHeader } from "@/components/layout/app-header";
 import { createClient } from "@/utils/supabase/server";
 import { Metadata } from "next";
@@ -86,7 +85,6 @@ export default async function RootLayout({
               {children}
               <Analytics />
             </main>
-            {user && <Footer /> }
           </div>
         </ClientAppWrapper>
       </body>
