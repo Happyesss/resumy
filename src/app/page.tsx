@@ -63,7 +63,7 @@ export default async function Page() {
         }}
       />
     
-      <main aria-label="ResumeLM landing page" className=" ">
+      <main aria-label="ResumeLM landing page" className="bg-black ">
         {/* Simplified Navigation */}
         <nav aria-label="Main navigation" className="border-b border-gray-600 fixed top-0 w-full z-[1000] transition-all duration-300 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

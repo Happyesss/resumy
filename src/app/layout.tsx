@@ -81,7 +81,7 @@ export default async function RootLayout({
           <div className="relative min-h-screen h-screen flex flex-col">
             {user && <AppHeader />}
             {/* Padding for header and footer */}
-            <main className="pt-14 h-full">
+            <main className="pt-16 h-full bg-black">
               {children}
               <Analytics />
             </main>

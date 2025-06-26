@@ -22,7 +22,7 @@ export function Hero() {
   }, [score]);
 
   return (
-    <section className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 py-6 md:py-10 lg:py-14 w-full">
+    <section className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 py-6 md:py-10 lg:py-14 w-full ">
       {/* Left Content */}
       <div className="w-full lg:w-1/2 space-y-4">
         {/* Tagline with gradient text and subtle animation */}
