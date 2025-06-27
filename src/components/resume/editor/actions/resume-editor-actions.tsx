@@ -97,7 +97,7 @@ export function ResumeEditorActions({
   );
 
   return (
-    <div className="px-1 py-2 @container">
+    <div className="px-1 py-2 @container bg-black">
       <div className="grid grid-cols-3 gap-2">
         {/* Text Import Button */}
         <TextImport
@@ -144,11 +144,7 @@ export function ResumeEditorActions({
                           backgroundColor: 'red',
                           useCORS: true,
                           letterRendering: true,
-                          // width: 700,
-                          // height: 1000,
-                          // windowWidth: 700,
                           logging: true,
-                          // windowHeight: 2000
                         },
                         jsPDF: { 
                           unit: 'in', 

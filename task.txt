@@ -1,7 +1,0 @@
-My sign up form is not functioning correctly. When a user enters a duplicate email, the front end still allows the registration to proceed, displaying messages that the email is created and a confirmation mail is sent. However, the back end does not actually register the user. The system should instead display an appropriate error message and prevent registration when a duplicate email is detected.
-
-In the login form, do not implement any input validations.
-
-Add a password input field to the login form. Remove any tick mark and cross mark symbols from the input fields. Instead, add an eye icon button to toggle the visibility of the password.
-
-Fix the following issue: The pattern attribute value `[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$` is not a valid regular expression and causes a syntax error. Update the pattern to use a valid regular expression for email validation.
