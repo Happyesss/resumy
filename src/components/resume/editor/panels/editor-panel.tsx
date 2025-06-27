@@ -4,7 +4,7 @@ import { Resume, Profile, Job } from "@/lib/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Accordion } from "@/components/ui/accordion";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { Suspense, useRef } from "react";
+import { Suspense, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { ResumeEditorActions } from "../actions/resume-editor-actions";
 import { TailoredJobAccordion } from "../../management/cards/tailored-job-card";
@@ -39,6 +39,8 @@ export function EditorPanel({
 }: EditorPanelProps) {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
+  const [activeTab, setActiveTab] = useState("basic");
+
   return (
     <div className="flex flex-col sm:mr-4 relative h-full max-h-full  ">
       <div className="flex-1 flex flex-col overflow-scroll">
@@ -53,6 +55,7 @@ export function EditorPanel({
               <div className="flex flex-col gap-4">
                 <ResumeEditorActions
                   onResumeChange={onResumeChange}
+                  setActiveTab={setActiveTab}
                 />
               </div>
             </div>
@@ -68,7 +71,7 @@ export function EditorPanel({
             </Accordion>
 
             {/* Tabs */}  
-            <Tabs defaultValue="basic" className="mb-4">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-4">
               <ResumeEditorTabs />
 
               {/* Basic Info Form */}

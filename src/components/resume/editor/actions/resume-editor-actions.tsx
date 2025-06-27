@@ -2,10 +2,10 @@
 
 import { Resume } from "@/lib/types";
 import { Button } from "@/components/ui/button";
-import { Download, Loader2, Save } from "lucide-react";
+import { Download, Loader2, Save, FileText } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { pdf } from '@react-pdf/renderer';
-import { TextImport } from "../../text-import";
+import { TextImportDialog } from "../../management/dialogs/text-import-dialog";
 import { ResumePDFDocument } from "../preview/resume-pdf-document";
 import { cn } from "@/lib/utils";
 import { useResumeContext } from "../resume-editor-context";
@@ -15,12 +15,16 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 
+import { Dispatch, SetStateAction } from "react";
+
 interface ResumeEditorActionsProps {
   onResumeChange: (field: keyof Resume, value: Resume[keyof Resume]) => void;
+  setActiveTab: Dispatch<SetStateAction<string>>;
 }
 
 export function ResumeEditorActions({
-  onResumeChange
+  onResumeChange,
+  setActiveTab
 }: ResumeEditorActionsProps) {
   const { state, dispatch } = useResumeContext();
   const { resume, isSaving } = state;
@@ -97,20 +101,72 @@ export function ResumeEditorActions({
   );
 
   return (
-    <div className="px-1 py-2 @container bg-black">
-      <div className="grid grid-cols-3 gap-2">
-        {/* Text Import Button */}
-        <TextImport
-          resume={resume}
-          onResumeChange={onResumeChange}
-          className={importButtonClasses}
-        />
-
-        {/* Download Button */}
+    <div className="px-1 py-2 @container bg-black flex items-center justify-between">
+      {/* Left side: Cover Letter and Resume Score icons */}
+      <div className="flex items-center gap-4 pl-2">
+        {/* Cover Letter Icon */}
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button 
+              <button
+                className="hover:opacity-80 transition-opacity"
+                type="button"
+                onClick={() => setActiveTab("cover-letter")}
+              >
+                <svg className="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                  <line x1="10" y1="9" x2="8" y2="9"/>
+                </svg>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">Cover Letter</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
+        {/* Resume Score Icon */}
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                className="hover:opacity-80 transition-opacity"
+                type="button"
+                onClick={() => setActiveTab("resume-score")}
+              >
+                <svg className="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">Resume Score</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
+
+      {/* Right side: Import, Download, Save icons */}
+      <div className="flex items-center gap-3 pr-2">
+        {/* Import Icon */}
+        <TextImportDialog
+          resume={resume}
+          onResumeChange={onResumeChange}
+          trigger={
+            <button
+              className="px-3 py-1 text-sm font-medium text-indigo-400 hover:text-indigo-500 bg-transparent border border-indigo-500 rounded-md focus:outline-none transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-md"
+              style={{ minWidth: 0 }}
+            >
+              Import
+            </button>
+          }
+        />
+
+        {/* Download Icon */}
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button 
                 onClick={async () => {
                   try {
                     // Download Resume if selected
@@ -141,10 +197,8 @@ export function ResumeEditorActions({
                         filename: `${resume.first_name}_${resume.last_name}_Cover_Letter.pdf`,
                         image: { type: 'jpeg', quality: 0.98 },
                         html2canvas: {
-                          backgroundColor: 'red',
                           useCORS: true,
                           letterRendering: true,
-                          logging: true,
                         },
                         jsPDF: { 
                           unit: 'in', 
@@ -169,76 +223,34 @@ export function ResumeEditorActions({
                     });
                   }
                 }}
-                className={actionButtonClasses}
+                className="w-8 h-8 flex items-center justify-center bg-transparent border-none shadow-none focus:outline-none group"
               >
-                <Download className="mr-1.5 h-3.5 w-3.5" />
-                Download
-              </Button>
+                <Download className="h-5 w-5 text-blue-400 group-hover:text-blue-500 transition-colors" />
+              </button>
             </TooltipTrigger>
-            <TooltipContent 
-              side="bottom" 
-              align="start"
-              sideOffset={5}
-              className={cn(
-                "w-48 p-3",
-                resume.is_base_resume 
-                  ? "bg-indigo-50 border-2 border-indigo-200"
-                  : "bg-rose-50 border-2 border-rose-200",
-                "rounded-lg shadow-lg"
-              )}
-            >
-              <div className="space-y-3">
-                <label className="flex items-center space-x-2">
-                  <Checkbox 
-                    checked={downloadOptions.resume}
-                    onCheckedChange={(checked) => 
-                      setDownloadOptions(prev => ({ ...prev, resume: checked as boolean }))
-                    }
-                    className={cn(
-                      resume.is_base_resume 
-                        ? "border-indigo-400 data-[state=checked]:bg-indigo-600 data-[state=checked]:border-indigo-600"
-                        : "border-rose-400 data-[state=checked]:bg-rose-600 data-[state=checked]:border-rose-600"
-                    )}
-                  />
-                  <span className="text-sm font-medium text-foreground">Resume</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <Checkbox 
-                    checked={downloadOptions.coverLetter}
-                    onCheckedChange={(checked) => 
-                      setDownloadOptions(prev => ({ ...prev, coverLetter: checked as boolean }))
-                    }
-                    className={cn(
-                      resume.is_base_resume 
-                        ? "border-indigo-400 data-[state=checked]:bg-indigo-600 data-[state=checked]:border-indigo-600"
-                        : "border-rose-400 data-[state=checked]:bg-rose-600 data-[state=checked]:border-rose-600"
-                    )}
-                  />
-                  <span className="text-sm font-medium text-foreground">Cover Letter</span>
-                </label>
-              </div>
-            </TooltipContent>
+            <TooltipContent side="bottom">Download</TooltipContent>
           </Tooltip>
         </TooltipProvider>
 
-        {/* Save Button */}
-        <Button 
-          onClick={handleSave} 
-          disabled={isSaving}
-          className={actionButtonClasses}
-        >
-          {isSaving ? (
-            <>
-              <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
-              Saving...
-            </>
-          ) : (
-            <>
-              <Save className="mr-1.5 h-3.5 w-3.5" />
-              Save
-            </>
-          )}
-        </Button>
+        {/* Save Icon */}
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button 
+                onClick={handleSave}
+                disabled={isSaving}
+                className="w-8 h-8 flex items-center justify-center bg-transparent border-none shadow-none focus:outline-none group"
+              >
+                {isSaving ? (
+                  <Loader2 className="h-5 w-5 text-green-500 animate-spin" />
+                ) : (
+                  <Save className="h-5 w-5 text-green-500 group-hover:text-green-600 transition-colors" />
+                )}
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">Save</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
     </div>
   );
