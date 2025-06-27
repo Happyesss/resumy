@@ -83,10 +83,12 @@ function SocialAuth() {
       <Button
         variant="outline"
         className="
-          w-full h-9 bg-black border-purple-400/30 hover:bg-purple-400/10 hover:border-purple-400/50
+          w-full h-9 bg-black border-purple-400/30
+          hover:bg-black hover:border-white hover:text-white
           text-white font-medium transition-all duration-200
           focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-black
           rounded-lg
+          transform hover:scale-105 hover:-translate-y-0.5
         "
         onClick={handleGithubSignIn}
         disabled={isLoading}
@@ -201,4 +203,4 @@ export function AuthDialog({ children }: AuthDialogProps) {
       </DialogContent>
     </Dialog>
   );
-} 
+}

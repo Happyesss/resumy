@@ -1,6 +1,5 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { CheckCircle2, XCircle } from "lucide-react"
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   validation?: {
@@ -17,7 +16,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const showStatus = showValidation && typeof isValid !== 'undefined' && isTouched;
     
     return (
-      <div className="relative w-full">        <input
+      <div className="relative w-full">
+        <input
           type={type}
           className={cn(
             // Base styles
@@ -33,12 +33,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             
             // Dark theme styles for auth forms will be applied through className
             // We'll make sure these take precedence by applying them directly in the forms
-              // Validation states - only show when touched
+            // Validation states - only show when touched
             showStatus && isValid && "border-emerald-400/50 focus:border-emerald-400/60 focus:ring-emerald-400/20",
             showStatus && !isValid && "border-red-400/50 focus:border-red-400/60 focus:ring-red-400/20",
-            
-            // Icon padding
-            showStatus && "pr-10",
             
             // Disabled state
             "disabled:cursor-not-allowed disabled:opacity-50",
@@ -53,25 +50,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
         
-        {/* Validation Icons */}
-        {showStatus && (
-          <div 
-            className={cn(
-              "absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none",
-              "transition-opacity duration-200",
-              isTouched ? "opacity-100" : "opacity-0"
-            )}
-          >            {isValid ? (
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 transition-transform duration-200" />
-            ) : (
-              <XCircle className="w-4 h-4 text-red-400 transition-transform duration-200" />
-            )}
-          </div>
-        )}
-        
         {/* Validation Message */}
         {showStatus && validation?.message && !isValid && (
-          <p            className={cn(
+          <p
+            className={cn(
               "text-xs text-red-400 mt-1 ml-1",
               "transition-all duration-200",
               isTouched ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1"

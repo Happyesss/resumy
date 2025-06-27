@@ -1,29 +1,7 @@
-Remove the Settings Section Completely
+My sign up form is not functioning correctly. When a user enters a duplicate email, the front end still allows the registration to proceed, displaying messages that the email is created and a confirmation mail is sent. However, the back end does not actually register the user. The system should instead display an appropriate error message and prevent registration when a duplicate email is detected.
 
-Delete all Settings-related files, folders, and components.
+In the login form, do not implement any input validations.
 
-Remove all imports and references to the Settings section across the codebase.
+Add a password input field to the login form. Remove any tick mark and cross mark symbols from the input fields. Instead, add an eye icon button to toggle the visibility of the password.
 
-Ensure any Settings-related data, collections, or schemas in the database are deleted as well.
-
-Confirm that no residual logic or UI elements tied to Settings remain.
-
-Use Gemini 2.0 Flash as the Only Model
-
-Set Gemini 2.0 Flash as the default and only model used across the entire project.
-
-Remove all other models (e.g., GPT, Claude etc.) from:
-
-Codebase (including imports and components)
-
-Model selectors or dropdowns
-
-The database (schemas, config tables, or settings)
-
-Ensure that only Gemini 2.0 Flash is referenced anywhere a model is used.
-
-The goal is to streamline the project by:
-
-Eliminating all Settings-related functionality
-
-Standardizing on Gemini 2.0 Flash only for all AI interactions
+Fix the following issue: The pattern attribute value `[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$` is not a valid regular expression and causes a syntax error. Update the pattern to use a valid regular expression for email validation.

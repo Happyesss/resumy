@@ -46,16 +46,36 @@ export async function login(formData: FormData): Promise<AuthResult> {
 export async function signup(formData: FormData): Promise<AuthResult> {
   const supabase = await createServiceClient();
 
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
+  const name = formData.get('name') as string;
+
+  // First check if user already exists by trying to list users with this email
+  const { data: existingUsers, error: checkError } = await supabase.auth.admin.listUsers();
+  
+  if (checkError) {
+    console.error('Error checking existing user:', checkError);
+    return { success: false, error: 'Unable to verify email availability. Please try again.' };
+  }
+
+  // Check if any user has this email
+  const userExists = existingUsers?.users?.some(user => user.email === email);
+  
+  if (userExists) {
+    return { success: false, error: 'An account with this email already exists. Please use a different email or try logging in.' };
+  }
+
   const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
+    email,
+    password,
     options: {
       data: {
-        full_name: formData.get('name') as string,
+        full_name: name,
       },
       emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/confirm`
     }
   }
+  
   const { error: signupError } = await supabase.auth.signUp(data);
 
   if (signupError) {
@@ -66,6 +86,12 @@ export async function signup(formData: FormData): Promise<AuthResult> {
       status: signupError.status,
       name: signupError.name
     });
+    
+    // Handle specific error cases
+    if (signupError.message.includes('User already registered')) {
+      return { success: false, error: 'An account with this email already exists. Please use a different email or try logging in.' };
+    }
+    
     return { success: false, error: signupError.message }
   }
 

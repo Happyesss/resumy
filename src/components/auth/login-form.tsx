@@ -7,9 +7,8 @@ import { login } from "@/app/auth/login/actions";
 import { useState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
-import { useAuth } from "./auth-context";
 import { useSearchParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -37,15 +36,11 @@ export function LoginForm() {
   const [error, setError] = useState<string>();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { 
-    formData, 
-    setFormData, 
-    setFieldLoading, 
-    validations, 
-    validateField,
-    touchedFields,
-    setFieldTouched 
-  } = useAuth();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+  const [showPassword, setShowPassword] = useState(false);
   
   // Check for error parameters in URL
   useEffect(() => {
@@ -66,31 +61,11 @@ export function LoginForm() {
       setError(errorMessage);
     }
   }, [searchParams]);
- 
-
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(undefined);
 
-    // Mark all fields as touched on submit
-    const fields = ['email', 'password'] as const;
-    fields.forEach(field => setFieldTouched(field));
-
-    // Validate all fields
-    Object.entries(formData).forEach(([field, value]) => {
-      validateField(field as keyof typeof formData, value);
-    });
-
-    // Check if all required fields are valid
-    const isValid = fields.every(field => validations[field]?.isValid);
-
-    if (!isValid) {
-      setError("Please fix the validation errors before submitting");
-      return;
-    }
-
     try {
-      setFieldLoading('submit', true);
       const formDataToSend = new FormData();
       formDataToSend.append('email', formData.email);
       formDataToSend.append('password', formData.password);
@@ -119,33 +94,26 @@ export function LoginForm() {
     } catch (error: unknown) {
       console.error("Login error:", error);
       setError("An unexpected error occurred. Please try again.");
-    } finally {
-      setFieldLoading('submit', false);
     }
   }
 
   const handleInputChange = (field: 'email' | 'password', value: string) => {
-    setFormData({ [field]: value });
-    validateField(field, value);
-    // Remove the artificial loading delay for better UX
-    setFieldLoading(field, false);
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="login-email" className="text-sm font-medium text-white">Email</Label>
-        <div className="relative">          <Input 
+        <div className="relative">
+          <Input 
             autoFocus
             id="login-email"
             name="email"
             type="email"
             value={formData.email}
             onChange={(e) => handleInputChange('email', e.target.value)}
-            onBlur={() => setFieldTouched('email')}
             placeholder="you@example.com"
             required
-            validation={validations.email}
-            isTouched={touchedFields.email}
             autoComplete="username"
             className="bg-black border-purple-400/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 hover:bg-black hover:border-purple-400/50 focus:bg-black"
           />
@@ -161,21 +129,30 @@ export function LoginForm() {
             Forgot password?
           </Link>
         </div>
-        <div className="relative">          <Input
+        <div className="relative">
+          <Input
             id="login-password"
             name="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             value={formData.password}
             onChange={(e) => handleInputChange('password', e.target.value)}
-            onBlur={() => setFieldTouched('password')}
             placeholder="••••••••"
             required
             minLength={6}
-            validation={validations.password}
-            isTouched={touchedFields.password}
             autoComplete="current-password"
-            className="bg-black border-purple-400/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 hover:bg-black hover:border-purple-400/50 focus:bg-black"
+            className="bg-black border-purple-400/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 hover:bg-black hover:border-purple-400/50 focus:bg-black pr-10"
           />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-400 transition-colors"
+          >
+            {showPassword ? (
+              <EyeOff className="h-4 w-4" />
+            ) : (
+              <Eye className="h-4 w-4" />
+            )}
+          </button>
         </div>
       </div>
       {error && (

@@ -56,6 +56,9 @@ function validatePassword(password: string): ValidationState {
   if (!/[0-9]/.test(password)) {
     return { isValid: false, message: 'Password must contain at least one number' };
   }
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    return { isValid: false, message: 'Password must contain at least one special symbol' };
+  }
   return { isValid: true };
 }
 
@@ -180,4 +183,4 @@ export function useAuth() {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-} 
+}
