@@ -4,7 +4,7 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { useChat } from 'ai/react';
 import { Card } from "@/components/ui/card";
-import { Bot, Trash2, Pencil, ChevronDown, RefreshCw } from "lucide-react";
+import { Bot, Trash2, Pencil, ChevronDown, ChevronLeft, RefreshCw } from "lucide-react";
 import { Education, Project, Resume, Skill, WorkExperience, Job } from '@/lib/types';
 import { Message } from 'ai';
 import { cn } from '@/lib/utils';
@@ -56,15 +56,15 @@ function ScrollToBottom() {
       <button
         className={cn(
           "absolute z-50 rounded-full p-2",
-          "bg-white/80 hover:bg-white",
-          "border border-purple-200/60 hover:border-purple-300/60",
-          "shadow-lg shadow-purple-500/5 hover:shadow-purple-500/10",
+          "bg-gray-800/90 hover:bg-gray-700",
+          "border border-gray-600/60 hover:border-gray-500/60",
+          "shadow-lg shadow-black/20 hover:shadow-black/30",
           "transition-all duration-300",
           "left-[50%] translate-x-[-50%] bottom-4"
         )}
         onClick={() => scrollToBottom()}
       >
-        <ChevronDown className="h-4 w-4 text-purple-600" />
+        <ChevronDown className="h-4 w-4 text-gray-300" />
       </button>
     )
   );
@@ -281,399 +281,400 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
   }, [setMessages]);
 
   return (
-    <Card className={cn(
-      "flex flex-col w-full l mx-auto",
-      "bg-gradient-to-br from-purple-400/20 via-purple-400/50 to-indigo-400/50",
-      "border-2 border-purple-200/60",
-      "shadow-lg shadow-purple-500/5",
-      "transition-all duration-500",
-      "hover:shadow-xl hover:shadow-purple-500/10",
-      "overflow-hidden",
-      "relative",
-      "data-[state=closed]:shadow-md data-[state=closed]:border data-[state=closed]:border-purple-200/40 "
-    )}>
-      
-
-      <Accordion
-        type="single"
-        collapsible
-        value={accordionValue}
-        onValueChange={setAccordionValue}
-        className="relative z-10 "
-      >
-        <AccordionItem value="chat" className="border-none py-0 my-0">
-
-          {/* Accordion Trigger */}
-          <div className="relative">
-            <AccordionTrigger className={cn(
-              "px-2 py-2",
-              "hover:no-underline",
-              "group",
+    <>
+      {/* Floating Chat Button */}
+      <div className={cn(
+        "fixed left-6 bottom-6 z-[9999]",
+        "transition-all duration-300 ease-in-out"
+      )}>
+        {accordionValue !== "chat" ? (
+          // Collapsed circular button
+          <button
+            onClick={() => setAccordionValue("chat")}
+            className={cn(
+              "w-16 h-16 rounded-full",
+              "bg-gradient-to-br from-purple-500 to-indigo-500",
+              "shadow-xl shadow-purple-500/25",
+              "hover:shadow-2xl hover:shadow-purple-500/40",
+              "hover:scale-110",
               "transition-all duration-300",
-              "data-[state=open]:border-b border-purple-200/60",
-              "data-[state=closed]:opacity-80 data-[state=closed]:hover:opacity-100",
-              "data-[state=closed]:py-1"
-            )}>
-              <div className={cn(
-                "flex items-center w-full",
-                "transition-transform duration-300",
-                "group-hover:scale-[0.99]",
-                "group-data-[state=closed]:scale-95"
-              )}>
-                <div className="flex items-center gap-1.5">
-                  <div className={cn(
-                    "p-1 rounded-lg",
-                    "bg-purple-100/80 text-purple-600",
-                    "group-hover:bg-purple-200/80",
-                    "transition-colors duration-300",
-                    "group-data-[state=closed]:bg-white/60",
-                    "group-data-[state=closed]:p-0.5"
-                  )}>
-                    <Bot className="h-3 w-3" />
-                  </div>
-                  <Logo className="text-xs" asLink={false} />
+              "flex items-center justify-center",
+              "border-2 border-white/20",
+              "backdrop-blur-sm",
+              "group"
+            )}
+          >
+            <Bot className="h-7 w-7 text-white group-hover:scale-110 transition-transform duration-300" />
+          </button>
+        ) : (
+          // Expanded chat interface
+          <Card className={cn(
+            "w-96 h-[80vh]",
+            "bg-gradient-to-br from-gray-900/95 via-slate-800/95 to-gray-900/95",
+            "border-2 border-gray-700/60",
+            "shadow-2xl shadow-black/40",
+            "backdrop-blur-xl",
+            "overflow-hidden",
+            "flex flex-col",
+            "animate-in slide-in-from-left-2 fade-in-0 duration-300"
+          )}>
+            {/* Header with close button */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-700/60">
+              <div className="flex items-center gap-2">
+                <div className="p-2 rounded-lg bg-purple-600/80 text-white">
+                  <Bot className="h-4 w-4" />
                 </div>
+                <Logo className="text-sm text-white" asLink={false} />
               </div>
-            </AccordionTrigger>
-
-            <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
-              <AlertDialogTrigger asChild>
-                <Button
-                  className={cn(
-                    "absolute right-8 top-1/2 -translate-y-1/2",
-                    "px-3 py-1 rounded-lg",
-                    "bg-purple-100/40 text-purple-500/80 border border-purple-500",
-                    "hover:bg-purple-200/60 hover:text-purple-600",
-                    "transition-all duration-300",
-                    "focus:outline-none focus:ring-2 focus:ring-purple-400/40",
-                    "disabled:opacity-50",
-                    "flex items-center gap-2",
-                    (accordionValue !== "chat" || isAlertOpen) && "hidden",
-                    
-                
-                  )}
-                  disabled={messages.length === 0}
-                  aria-label="Clear chat history"
-                  variant="ghost"
-                  size="sm"
-                >
-                  <RefreshCw className="h-3 w-3" />
-                  <span className="text-xs font-medium">Clear Chat History</span>
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent className={cn(
-                "bg-white/95 backdrop-blur-xl",
-                "border-purple-200/60",
-                "shadow-lg shadow-purple-500/5"
-              )}>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Clear Chat History</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This will remove all messages and reset the chat. This action can&apos;t be undone.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel className={cn(
-                    "border-purple-200/60",
-                    "hover:bg-purple-50/50",
-                    "hover:text-purple-700"
-                  )}>
-                    Cancel
-                  </AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={handleClearChat}
+              <button
+                onClick={() => setAccordionValue("")}
+                className={cn(
+                  "p-2 rounded-lg mr-2",
+                  "hover:bg-gray-700/60",
+                  "text-gray-300 hover:text-white",
+                  "transition-colors duration-200"
+                )}
+                style={{ alignSelf: 'flex-start' }}
+                aria-label="Close chat"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
+                <AlertDialogTrigger asChild>
+                  <Button
                     className={cn(
-                      "bg-purple-500 text-white",
-                      "hover:bg-purple-600",
-                      "focus:ring-purple-400"
+                      "px-3 py-1 rounded-lg",
+                      "bg-gray-700/60 text-gray-300 border border-gray-600",
+                      "hover:bg-gray-600/60 hover:text-white",
+                      "transition-all duration-300",
+                      "focus:outline-none focus:ring-2 focus:ring-purple-400/40",
+                      "disabled:opacity-50",
+                      "flex items-center gap-2"
                     )}
+                    disabled={messages.length === 0}
+                    aria-label="Clear chat history"
+                    variant="ghost"
+                    size="sm"
                   >
-                    Clear Chat
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </div>
+                    <RefreshCw className="h-3 w-3" />
+                    <span className="text-xs font-medium">Clear</span>
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent className={cn(
+                  "bg-gray-900/95 backdrop-blur-xl",
+                  "border-gray-700/60",
+                  "shadow-lg shadow-black/20",
+                  "text-white"
+                )}>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle className="text-white">Clear Chat History</AlertDialogTitle>
+                    <AlertDialogDescription className="text-gray-300">
+                      This will remove all messages and reset the chat. This action can&apos;t be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className={cn(
+                      "border-gray-600/60 bg-gray-800/60 text-gray-300",
+                      "hover:bg-gray-700/60",
+                      "hover:text-white"
+                    )}>
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleClearChat}
+                      className={cn(
+                        "bg-purple-600 text-white",
+                        "hover:bg-purple-700",
+                        "focus:ring-purple-400"
+                      )}
+                    >
+                      Clear Chat
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
 
-          {/* Accordion Content */}
-          <AccordionContent className="space-y-4">
-            <StickToBottom className="h-[60vh] px-4 relative custom-scrollbar" resize="smooth" initial="smooth">
-              <StickToBottom.Content className="flex flex-col custom-scrollbar">
-                {messages.length === 0 ? (
-                  <QuickSuggestions onSuggestionClick={handleSubmit} />
-                ) : (
-                  <>
-                    {/* Messages */}
-                    {messages.map((m: Message, index) => (
-                      <React.Fragment key={index}>
+            {/* Chat Content */}
+            <div className="flex-1 flex flex-col overflow-hidden min-h-0">
+              <StickToBottom className="flex-1 px-4 relative overflow-y-auto custom-scrollbar" resize="smooth" initial="smooth">
+                <StickToBottom.Content className="flex flex-col space-y-4 py-4 pb-8">
+                  {messages.length === 0 ? (
+                    <QuickSuggestions onSuggestionClick={handleSubmit} />
+                  ) : (
+                    <>
+                      {/* Messages */}
+                      {messages.map((m: Message, index) => (
+                        <React.Fragment key={index}>
 
-                        {/* Regular Message Content */}
-                        {m.content && (
-                          <div className="my-2">
-                            <div className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                              <div className={cn(
-                                "rounded-2xl px-4 py-2 max-w-[90%] text-sm relative group items-center",
-                                m.role === 'user' ? [
-                                  "bg-gradient-to-br from-purple-500 to-indigo-500",
-                                  "text-white",
-                                  "shadow-md shadow-purple-500/10",
-                                  "ml-auto pb-0 text-white"
-                                ] : [
-                                  "bg-white/60",
-                                  "border border-purple-200/60",
-                                  "shadow-sm",
-                                  "backdrop-blur-sm pb-0"
-                                ]
-                              )}>
+                          {/* Regular Message Content */}
+                          {m.content && (
+                            <div className="mb-4">
+                              <div className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                <div className={cn(
+                                  "rounded-2xl px-4 py-2 max-w-[90%] text-sm relative group items-center mb-6",
+                                  m.role === 'user' ? [
+                                    "bg-gradient-to-br from-purple-600 to-indigo-600",
+                                    "text-white",
+                                    "shadow-md shadow-purple-500/20",
+                                    "ml-auto pb-0"
+                                  ] : [
+                                    "bg-gray-800/80",
+                                    "border border-gray-700/60",
+                                    "shadow-sm",
+                                    "backdrop-blur-sm pb-0",
+                                    "text-gray-100"
+                                  ]
+                                )}>
 
-                                {/* Edit Message */}
-                                {editingMessageId === m.id ? (
-                                  <div className="flex flex-col gap-2">
-                                    <Textarea
-                                      value={editContent}
-                                      onChange={(e) => setEditContent(e.target.value)}
-                                      className={cn(
-                                        "w-full min-h-[100px] p-2 rounded-lg",
-                                        "bg-white/80 backdrop-blur-sm",
-                                        m.role === 'user' 
-                                          ? "text-purple-900 placeholder-purple-400"
-                                          : "text-gray-900 placeholder-gray-400",
-                                        "border border-purple-200/60 focus:border-purple-400/60",
-                                        "focus:outline-none focus:ring-1 focus:ring-purple-400/60"
-                                      )}
-                                    />
+                                  {/* Edit Message */}
+                                  {editingMessageId === m.id ? (
+                                    <div className="flex flex-col gap-2">
+                                      <Textarea
+                                        value={editContent}
+                                        onChange={(e) => setEditContent(e.target.value)}
+                                        className={cn(
+                                          "w-full min-h-[100px] p-2 rounded-lg",
+                                          "bg-gray-900/80 backdrop-blur-sm",
+                                          "text-gray-100 placeholder-gray-400",
+                                          "border border-gray-600/60 focus:border-purple-400/60",
+                                          "focus:outline-none focus:ring-1 focus:ring-purple-400/60"
+                                        )}
+                                      />
+                                      <button
+                                        onClick={() => handleSaveEdit(m.id)}
+                                        className={cn(
+                                          "self-end px-3 py-1 rounded-lg text-xs",
+                                          "bg-purple-600 text-white",
+                                          "hover:bg-purple-700",
+                                          "transition-colors duration-200"
+                                        )}
+                                      >
+                                        Save
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <MemoizedMarkdown id={m.id} content={m.content} />
+                                  )}
+
+                                  {/* Message Actions */}
+                                  <div className="absolute -bottom-8 left-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <button
-                                      onClick={() => handleSaveEdit(m.id)}
+                                      onClick={() => handleDelete(m.id)}
                                       className={cn(
-                                        "self-end px-3 py-1 rounded-lg text-xs",
-                                        "bg-purple-500 text-white",
-                                        "hover:bg-purple-600",
-                                        "transition-colors duration-200"
+                                        "transition-colors duration-200",
+                                        m.role === 'user' 
+                                          ? "text-purple-300/70 hover:text-purple-200"
+                                          : "text-gray-400/70 hover:text-gray-300",
                                       )}
+                                      aria-label="Delete message"
                                     >
-                                      Save
+                                      <Trash2 className="h-3 w-3" />
+                                    </button>
+                                    <button
+                                      onClick={() => handleEdit(m.id, m.content)}
+                                      className={cn(
+                                        "transition-colors duration-200",
+                                        m.role === 'user' 
+                                          ? "text-purple-300/70 hover:text-purple-200"
+                                          : "text-gray-400/70 hover:text-gray-300",
+                                      )}
+                                      aria-label="Edit message"
+                                    >
+                                      <Pencil className="h-3 w-3" />
                                     </button>
                                   </div>
-                                ) : (
-                                  <MemoizedMarkdown id={m.id} content={m.content} />
-                                )}
-
-                                {/* Message Actions */}
-                                <div className="absolute -bottom-4 left-2 flex gap-2">
-                                  <button
-                                    onClick={() => handleDelete(m.id)}
-                                    className={cn(
-                                      "transition-colors duration-200",
-                                      m.role === 'user' 
-                                        ? "text-purple-500/60 hover:text-purple-600"
-                                        : "text-purple-400/60 hover:text-purple-500",
-                                    )}
-                                    aria-label="Delete message"
-                                  >
-                                    <Trash2 className="h-3 w-3" />
-                                  </button>
-                                  <button
-                                    onClick={() => handleEdit(m.id, m.content)}
-                                    className={cn(
-                                      "transition-colors duration-200",
-                                      m.role === 'user' 
-                                        ? "text-purple-500/60 hover:text-purple-600"
-                                        : "text-purple-400/60 hover:text-purple-500",
-                                    )}
-                                    aria-label="Edit message"
-                                  >
-                                    <Pencil className="h-3 w-3" />
-                                  </button>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        )}
-                        
-                        {/* Tool Invocations as Separate Bubbles */}
-                        {m.toolInvocations?.map((toolInvocation: ToolInvocation) => {
-                          const { toolName, toolCallId, state, args } = toolInvocation;
-                          switch (state) {
-                            case 'partial-call':
-                            case 'call':
-                              return (
-                                <div key={toolCallId} className="mt-2 max-w-[90%]">
-                                  <div className="flex justify-start max-w-[90%]">
-                                    {toolName === 'getResume' ? (
-                                      <div className={cn(
-                                        "rounded-2xl px-4 py-2 max-w-[90%] text-sm",
-                                        "bg-white/60 border border-purple-200/60",
-                                        "shadow-sm backdrop-blur-sm"
-                                      )}>
-                                        Reading Resume...
-                                      </div>
-                                    ) : toolName === 'modifyWholeResume' ? (
-                                      <div className={cn(
-                                        "w-full rounded-2xl px-4 py-2",
-                                        "bg-white/60 border border-purple-200/60",
-                                        "shadow-sm backdrop-blur-sm"
-                                      )}>
-                                        Preparing resume modifications...
-                                      </div>
-                                    ) : toolName.startsWith('suggest_') ? (
-                                      <SuggestionSkeleton />
-                                    ) : null}
-                                    {toolName === 'displayWeather' ? (
-                                      <div>Loading weather...</div>
-                                    ) : null}
-                                  </div>
-                                </div>
-                              );
-
-                            case 'result':
-                              // Map tool names to resume sections and handle suggestions
-                              const toolConfig = {
-                                suggest_work_experience_improvement: {
-                                  type: 'work_experience' as const,
-                                  field: 'work_experience',
-                                  content: 'improved_experience',
-                                },
-                                suggest_project_improvement: {
-                                  type: 'project' as const,
-                                  field: 'projects',
-                                  content: 'improved_project',
-                                },
-                                suggest_skill_improvement: {
-                                  type: 'skill' as const,
-                                  field: 'skills',
-                                  content: 'improved_skill',
-                                },
-                                suggest_education_improvement: {
-                                  type: 'education' as const,
-                                  field: 'education',
-                                  content: 'improved_education',
-                                },
-                                modifyWholeResume: {
-                                  type: 'whole_resume' as const,
-                                  field: 'all',
-                                  content: null,
-                                },
-                              } as const;
-                              const config = toolConfig[toolName as keyof typeof toolConfig];
-
-                              if (!config) return null;
-
-                              // Handle specific tool results
-                              if (toolName === 'getResume') {
+                          )}
+                          
+                          {/* Tool Invocations as Separate Bubbles */}
+                          {m.toolInvocations?.map((toolInvocation: ToolInvocation) => {
+                            const { toolName, toolCallId, state, args } = toolInvocation;
+                            switch (state) {
+                              case 'partial-call':
+                              case 'call':
                                 return (
-                                  <div key={toolCallId} className="mt-2 w-[90%]">
-                                    <div className="flex justify-start">
-                                      <div className={cn(
-                                        "rounded-2xl px-4 py-2 max-w-[90%] text-sm",
-                                        "bg-white/60 border border-purple-200/60",
-                                        "shadow-sm backdrop-blur-sm"
-                                      )}>
-                                        <p>Read Resume ({args.sections?.join(', ') || 'all'}) ✅</p>
-                                      </div>
+                                  <div key={toolCallId} className="mt-2 max-w-[90%]">
+                                    <div className="flex justify-start max-w-[90%]">
+                                      {toolName === 'getResume' ? (
+                                        <div className={cn(
+                                          "rounded-2xl px-4 py-2 max-w-[90%] text-sm",
+                                          "bg-gray-800/80 border border-gray-700/60",
+                                          "shadow-sm backdrop-blur-sm text-gray-200"
+                                        )}>
+                                          Reading Resume...
+                                        </div>
+                                      ) : toolName === 'modifyWholeResume' ? (
+                                        <div className={cn(
+                                          "w-full rounded-2xl px-4 py-2",
+                                          "bg-gray-800/80 border border-gray-700/60",
+                                          "shadow-sm backdrop-blur-sm text-gray-200"
+                                        )}>
+                                          Preparing resume modifications...
+                                        </div>
+                                      ) : toolName.startsWith('suggest_') ? (
+                                        <SuggestionSkeleton />
+                                      ) : null}
+                                      {toolName === 'displayWeather' ? (
+                                        <div>Loading weather...</div>
+                                      ) : null}
                                     </div>
                                   </div>
                                 );
-                              }
 
-                              if (config.type === 'whole_resume') {
+                              case 'result':
+                                // Map tool names to resume sections and handle suggestions
+                                const toolConfig = {
+                                  suggest_work_experience_improvement: {
+                                    type: 'work_experience' as const,
+                                    field: 'work_experience',
+                                    content: 'improved_experience',
+                                  },
+                                  suggest_project_improvement: {
+                                    type: 'project' as const,
+                                    field: 'projects',
+                                    content: 'improved_project',
+                                  },
+                                  suggest_skill_improvement: {
+                                    type: 'skill' as const,
+                                    field: 'skills',
+                                    content: 'improved_skill',
+                                  },
+                                  suggest_education_improvement: {
+                                    type: 'education' as const,
+                                    field: 'education',
+                                    content: 'improved_education',
+                                  },
+                                  modifyWholeResume: {
+                                    type: 'whole_resume' as const,
+                                    field: 'all',
+                                    content: null,
+                                  },
+                                } as const;
+                                const config = toolConfig[toolName as keyof typeof toolConfig];
+
+                                if (!config) return null;
+
+                                // Handle specific tool results
+                                if (toolName === 'getResume') {
+                                  return (
+                                    <div key={toolCallId} className="mt-2 w-[90%]">
+                                      <div className="flex justify-start">
+                                        <div className={cn(
+                                          "rounded-2xl px-4 py-2 max-w-[90%] text-sm",
+                                          "bg-gray-800/80 border border-gray-700/60",
+                                          "shadow-sm backdrop-blur-sm text-gray-200"
+                                        )}>
+                                          <p>Read Resume ({args.sections?.join(', ') || 'all'}) ✅</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  );
+                                }
+
+                                if (config.type === 'whole_resume') {
+                                  return (
+                                    <div key={toolCallId} className="mt-2 w-[90%]">
+                                      <WholeResumeSuggestion
+                                        onReject={() => {
+                                          if (originalResume) {
+                                            Object.keys(originalResume).forEach((key) => {
+                                              if (key !== 'id' && key !== 'created_at' && key !== 'updated_at') {
+                                                onResumeChange(key as keyof Resume, originalResume[key as keyof Resume]);
+                                              }
+                                            });
+                                            setOriginalResume(null);
+                                          }
+                                        }}
+                                      />
+                                    </div>
+                                  );
+                                }
+
                                 return (
                                   <div key={toolCallId} className="mt-2 w-[90%]">
-                                    <WholeResumeSuggestion
-                                      onReject={() => {
-                                        if (originalResume) {
-                                          Object.keys(originalResume).forEach((key) => {
-                                            if (key !== 'id' && key !== 'created_at' && key !== 'updated_at') {
-                                              onResumeChange(key as keyof Resume, originalResume[key as keyof Resume]);
-                                            }
-                                          });
-                                          setOriginalResume(null);
-                                        }
-                                      }}
-                                    />
+                                    <div className="">
+                                      <Suggestion
+                                        type={config.type}
+                                        content={args[config.content]}
+                                        currentContent={resume[config.field][args.index]}
+                                        onAccept={() => onResumeChange(config.field, 
+                                          resume[config.field].map((item: WorkExperience | Education | Project | Skill, i: number) => 
+                                            i === args.index ? args[config.content] : item
+                                          )
+                                        )}
+                                        onReject={() => {}}
+                                      />
+                                    </div>
                                   </div>
                                 );
-                              }
 
-                              return (
-                                <div key={toolCallId} className="mt-2 w-[90%]">
-                                  <div className="">
-                                    <Suggestion
-                                      type={config.type}
-                                      content={args[config.content]}
-                                      currentContent={resume[config.field][args.index]}
-                                      onAccept={() => onResumeChange(config.field, 
-                                        resume[config.field].map((item: WorkExperience | Education | Project | Skill, i: number) => 
-                                          i === args.index ? args[config.content] : item
-                                        )
-                                      )}
-                                      onReject={() => {}}
-                                    />
-                                  </div>
+                              default:
+                                return null;
+                            }
+                          })}
+
+
+                          {/* Loading Dots Message - Modified condition */}
+                          {((isInitialLoading && index === messages.length - 1 && m.role === 'user') ||
+                            (isLoading && index === messages.length - 1 && m.role === 'assistant')) && (
+                            <div className="mb-4">
+                              <div className="flex justify-start">
+                                <div className={cn(
+                                  "rounded-2xl px-4 py-2.5 min-w-[60px]",
+                                  "bg-gray-800/80",
+                                  "border border-gray-700/60",
+                                  "shadow-sm",
+                                  "backdrop-blur-sm"
+                                )}>
+                                  <LoadingDots className="text-purple-400" />
                                 </div>
-                              );
-
-                            default:
-                              return null;
-                          }
-                        })}
-
-
-                        {/* Loading Dots Message - Modified condition */}
-                        {((isInitialLoading && index === messages.length - 1 && m.role === 'user') ||
-                          (isLoading && index === messages.length - 1 && m.role === 'assistant')) && (
-                          <div className="mt-2">
-                            <div className="flex justify-start">
-                              <div className={cn(
-                                "rounded-2xl px-4 py-2.5 min-w-[60px]",
-                                "bg-white/60",
-                                "border border-purple-200/60",
-                                "shadow-sm",
-                                "backdrop-blur-sm"
-                              )}>
-                                <LoadingDots className="text-purple-600" />
                               </div>
                             </div>
-                          </div>
-                        )}
-                      </React.Fragment>
-                    ))}
-                  </>
-                )}
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </>
+                  )}
+                
+                  {error && (
+                    error.message === "Rate limit exceeded. Try again later." ? (
+                      <div className={cn(
+                        "rounded-lg p-4 text-sm",
+                        "bg-red-900/50 border border-red-800/60",
+                        "text-red-200"
+                      )}>
+                        <p>You&apos;ve used all your available messages. Please try again after:</p>
+                        <p className="font-medium mt-2">
+                          {new Date(Date.now() + 5 * 60 * 60 * 1000).toLocaleString()} {/* 5 hours from now */}
+                        </p>
+                      </div>
+                    ) : (
+                      <ApiKeyErrorAlert 
+                        error={error} 
+                        router={router} 
+                      />
+                    )
+                  )}
+                </StickToBottom.Content>
+
+                <ScrollToBottom />
+              </StickToBottom>
               
-                {error && (
-                  error.message === "Rate limit exceeded. Try again later." ? (
-                    <div className={cn(
-                      "rounded-lg p-4 text-sm",
-                      "bg-pink-50 border border-pink-200",
-                      "text-pink-700"
-                    )}>
-                      <p>You&apos;ve used all your available messages. Please try again after:</p>
-                      <p className="font-medium mt-2">
-                        {new Date(Date.now() + 5 * 60 * 60 * 1000).toLocaleString()} {/* 5 hours from now */}
-                      </p>
-                    </div>
-                  ) : (
-                    <ApiKeyErrorAlert 
-                      error={error} 
-                      router={router} 
-                    />
-                  )
-                )}
-              </StickToBottom.Content>
-
-              <ScrollToBottom />
-            </StickToBottom>
-            
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-
-      {/* Input Bar */}
-      <ChatInput
-        isLoading={isLoading}
-        onSubmit={handleSubmit}
-        onStop={stop}
-      />
-    </Card>
+              {/* Input Bar */}
+              <div className="border-t border-gray-700/60 bg-gray-900/60 backdrop-blur-sm">
+                <ChatInput
+                  isLoading={isLoading}
+                  onSubmit={handleSubmit}
+                  onStop={stop}
+                />
+              </div>
+            </div>
+          </Card>
+        )}
+      </div>
+    </>
   );
 }

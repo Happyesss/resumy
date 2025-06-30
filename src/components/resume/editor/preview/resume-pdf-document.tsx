@@ -66,6 +66,11 @@ const HeaderSection = memo(function HeaderSection({
   resume: Resume; 
   styles: ReturnType<typeof createResumeStyles>;
 }) {
+  // Add safety checks
+  if (!resume || !resume.first_name || !resume.last_name) {
+    return null;
+  }
+
   return (
     <View style={styles.header}>
       <Text style={styles.name}>{resume.first_name} {resume.last_name}</Text>
@@ -129,7 +134,10 @@ const SkillsSection = memo(function SkillsSection({
   skills: Resume['skills']; 
   styles: ReturnType<typeof createResumeStyles>;
 }) {
-  if (!skills?.length) return null;
+  // Add comprehensive null checking
+  if (!skills || !Array.isArray(skills) || skills.length === 0) {
+    return null;
+  }
   
   return (
     <View style={styles.skillsSection}>
@@ -154,7 +162,11 @@ const ExperienceSection = memo(function ExperienceSection({
   styles: ReturnType<typeof createResumeStyles>;
 }) {
   const processText = useTextProcessor();
-  if (!experiences?.length) return null;
+  
+  // Add comprehensive null checking
+  if (!experiences || !Array.isArray(experiences) || experiences.length === 0) {
+    return null;
+  }
 
   return (
     <View style={styles.experienceSection}>
@@ -200,7 +212,11 @@ const ProjectsSection = memo(function ProjectsSection({
   styles: ReturnType<typeof createResumeStyles>;
 }) {
   const processText = useTextProcessor();
-  if (!projects?.length) return null;
+  
+  // Add comprehensive null checking
+  if (!projects || !Array.isArray(projects) || projects.length === 0) {
+    return null;
+  }
 
   return (
     <View style={styles.projectsSection}>
@@ -260,7 +276,11 @@ const EducationSection = memo(function EducationSection({
   styles: ReturnType<typeof createResumeStyles>;
 }) {
   const processText = useTextProcessor();
-  if (!education?.length) return null;
+  
+  // Add comprehensive null checking
+  if (!education || !Array.isArray(education) || education.length === 0) {
+    return null;
+  }
 
   return (
     <View style={styles.educationSection}>
@@ -561,6 +581,35 @@ interface ResumePDFDocumentProps {
 }
 
 export const ResumePDFDocument = memo(function ResumePDFDocument({ resume }: ResumePDFDocumentProps) {
+  // Ensure resume data is properly initialized with safe defaults
+  const safeResume = useMemo(() => {
+    if (!resume) {
+      console.warn('No resume data provided to PDF generator');
+      return null;
+    }
+
+    return {
+      ...resume,
+      first_name: resume.first_name || '',
+      last_name: resume.last_name || '',
+      email: resume.email || '',
+      phone_number: resume.phone_number || '',
+      location: resume.location || '',
+      website: resume.website || '',
+      linkedin_url: resume.linkedin_url || '',
+      github_url: resume.github_url || '',
+      work_experience: Array.isArray(resume.work_experience) ? resume.work_experience : [],
+      education: Array.isArray(resume.education) ? resume.education : [],
+      projects: Array.isArray(resume.projects) ? resume.projects : [],
+      skills: Array.isArray(resume.skills) ? resume.skills : [],
+    };
+  }, [resume]);
+
+  // Don't render if resume data is invalid
+  if (!safeResume) {
+    return null;
+  }
+
   const defaultResumeStyles = {
     document_font_size: 10,
     document_line_height: 1.5,
@@ -591,11 +640,11 @@ export const ResumePDFDocument = memo(function ResumePDFDocument({ resume }: Res
   return (
     <PDFDocument>
       <PDFPage size="LETTER" style={styles.page}>
-        <HeaderSection resume={resume} styles={styles} />
-        <SkillsSection skills={resume.skills} styles={styles} />
-        <ExperienceSection experiences={resume.work_experience} styles={styles} />
-        <ProjectsSection projects={resume.projects} styles={styles} />
-        <EducationSection education={resume.education} styles={styles} />
+        <HeaderSection resume={safeResume} styles={styles} />
+        <SkillsSection skills={safeResume.skills} styles={styles} />
+        <ExperienceSection experiences={safeResume.work_experience} styles={styles} />
+        <ProjectsSection projects={safeResume.projects} styles={styles} />
+        <EducationSection education={safeResume.education} styles={styles} />
         
         {false && (
           <View style={styles.footer}>

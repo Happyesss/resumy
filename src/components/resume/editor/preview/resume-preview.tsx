@@ -111,18 +111,16 @@ interface ResumePreviewProps {
 export const ResumePreview = memo(function ResumePreview({ resume, variant = 'base', containerWidth }: ResumePreviewProps) {
   const [url, setUrl] = useState<string | null>(null);
   const [numPages, setNumPages] = useState<number>(0);
-  const debouncedWidth = useDebouncedValue(containerWidth, 100);
+  const debouncedWidth = useDebouncedValue(containerWidth, 300); // Increased debounce time
   
 
   // Convert percentage to pixels based on parent container
   const getPixelWidth = useCallback(() => {
     if (typeof window === 'undefined') return 0;
-    // console.log('debouncedWidth (INSIDE)'+containerWidth);
-    // console.log('debouncedWidth * 10 (INSIDE)'+debouncedWidth * 10);
-    return ((debouncedWidth));
+    return debouncedWidth;
   }, [debouncedWidth]);
 
-  // Generate resume hash for caching
+  // Generate resume hash for caching - memoized to prevent unnecessary recalculations
   const resumeHash = useMemo(() => generateResumeHash(resume), [resume]);
 
   // Add styles to document head
@@ -140,22 +138,57 @@ export const ResumePreview = memo(function ResumePreview({ resume, variant = 'ba
     let currentUrl: string | null = null;
 
     async function generatePDF() {
-      // Check cache first
-      const cached = pdfCache.get(resumeHash);
-      if (cached) {
-        currentUrl = cached.url;
-        setUrl(cached.url);
-        return;
-      }
+      try {
+        // Validate resume data before generating PDF
+        if (!resume || typeof resume !== 'object') {
+          console.warn('Invalid resume data provided to PDF generator');
+          return;
+        }
 
-      // Generate new PDF if not in cache
-      const blob = await pdf(<ResumePDFDocument resume={resume} variant={variant} />).toBlob();
-      const newUrl = URL.createObjectURL(blob);
-      currentUrl = newUrl;
-      
-      // Store in cache with timestamp
-      pdfCache.set(resumeHash, { url: newUrl, timestamp: Date.now() });
-      setUrl(newUrl);
+        // Ensure all required array fields exist and are arrays
+        const validatedResume = {
+          ...resume,
+          first_name: resume.first_name || 'First',
+          last_name: resume.last_name || 'Last', 
+          email: resume.email || '',
+          phone_number: resume.phone_number || '',
+          location: resume.location || '',
+          website: resume.website || '',
+          linkedin_url: resume.linkedin_url || '',
+          github_url: resume.github_url || '',
+          work_experience: Array.isArray(resume.work_experience) ? resume.work_experience : [],
+          education: Array.isArray(resume.education) ? resume.education : [],
+          projects: Array.isArray(resume.projects) ? resume.projects : [],
+          skills: Array.isArray(resume.skills) ? resume.skills : [],
+        };
+
+        // Check cache first
+        const cached = pdfCache.get(resumeHash);
+        if (cached) {
+          currentUrl = cached.url;
+          setUrl(cached.url);
+          return;
+        }
+
+        // Generate new PDF if not in cache with try-catch for PDF generation
+        let blob;
+        try {
+          blob = await pdf(<ResumePDFDocument resume={validatedResume} variant={variant} />).toBlob();
+        } catch (pdfError) {
+          console.warn('PDF component rendering error (non-critical):', pdfError);
+          return; // Exit gracefully if PDF can't be generated
+        }
+        
+        const newUrl = URL.createObjectURL(blob);
+        currentUrl = newUrl;
+        
+        // Store in cache with timestamp
+        pdfCache.set(resumeHash, { url: newUrl, timestamp: Date.now() });
+        setUrl(newUrl);
+      } catch (error) {
+        console.error('PDF generation error:', error);
+        // Don't throw error, just log it as PDF preview is not critical
+      }
     }
 
     generatePDF();
@@ -178,20 +211,47 @@ export const ResumePreview = memo(function ResumePreview({ resume, variant = 'ba
     };
   }, [resumeHash, url]);
 
-  // Add state for text layer visibility
+  // Add state for text layer visibility with better management
   const [shouldRenderTextLayer, setShouldRenderTextLayer] = useState(false);
+  const [textLayerTimeout, setTextLayerTimeout] = useState<NodeJS.Timeout | null>(null);
 
   // Modify Page component to conditionally render text layer
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
-    // Enable text layer after document is stable
-    setTimeout(() => setShouldRenderTextLayer(true), 1000);
+    
+    // Clear any existing timeout
+    if (textLayerTimeout) {
+      clearTimeout(textLayerTimeout);
+    }
+    
+    // Enable text layer after document is stable with longer delay
+    const timeout = setTimeout(() => {
+      setShouldRenderTextLayer(true);
+      setTextLayerTimeout(null);
+    }, 2000);
+    
+    setTextLayerTimeout(timeout);
   }
 
-  // Disable text layer during updates
+  // Disable text layer during updates and cleanup timeouts
   useEffect(() => {
     setShouldRenderTextLayer(false);
+    
+    // Clear any pending text layer timeout
+    if (textLayerTimeout) {
+      clearTimeout(textLayerTimeout);
+      setTextLayerTimeout(null);
+    }
   }, [resumeHash, variant]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (textLayerTimeout) {
+        clearTimeout(textLayerTimeout);
+      }
+    };
+  }, [textLayerTimeout]);
 
   // Show loading state while PDF is being generated
   if (!url) {
@@ -254,12 +314,16 @@ export const ResumePreview = memo(function ResumePreview({ resume, variant = 'ba
     );
   }
 
-  // Display the generated PDF using react-pdf
+  // Display the generated PDF using react-pdf with better error handling
   return (
     <div className=" h-full relative bg-black/15">
         <Document
           file={url}
           onLoadSuccess={onDocumentLoadSuccess}
+          onLoadError={(error) => {
+            console.error('PDF load error:', error);
+            // Don't show TextLayer errors to user as they're not critical
+          }}
           className="relative h-full   "
           externalLinkTarget="_blank"
           loading={
@@ -328,6 +392,14 @@ export const ResumePreview = memo(function ResumePreview({ resume, variant = 'ba
               width={getPixelWidth()}
               renderAnnotationLayer={true}
               renderTextLayer={shouldRenderTextLayer}
+              onRenderError={(error) => {
+                // Silently handle TextLayer errors - they're not critical for PDF display
+                if (error.message?.includes('TextLayer')) {
+                  console.warn('TextLayer warning (non-critical):', error.message);
+                } else {
+                  console.error('PDF render error:', error);
+                }
+              }}
             />
           ))}
         </Document>

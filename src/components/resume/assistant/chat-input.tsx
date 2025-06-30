@@ -47,10 +47,9 @@ export default function ChatInput({
     return (
       <form onSubmit={handleSubmit} className={cn(
         "relative z-10",
-        "p-1 border-t border-purple-200/60",
-        "bg-white/40",
-        "backdrop-blur-sm",
-        "flex gap-1.5"
+        "p-3 border-t border-gray-600/50",
+        "bg-gray-800/80 backdrop-blur-sm",
+        "flex gap-2 items-end"
       )}>
         <Textarea
           ref={textareaRef}
@@ -71,19 +70,18 @@ export default function ChatInput({
           rows={1}
           className={cn(
             "flex-1",
-            "bg-white/60",
-            "border-purple-200/60",
-            "focus:border-purple-300",
-            "focus:ring-2 focus:ring-purple-500/10",
-            "placeholder:text-purple-400",
+            "bg-gray-700/80 border-gray-600/50",
+            "text-white placeholder:text-gray-400",
+            "focus:border-purple-400/60 focus:ring-2 focus:ring-purple-400/20",
+            "hover:border-gray-500/60",
             "text-sm",
-            "min-h-[32px]",
+            "min-h-[40px]",
             "max-h-[144px]", // Approximately 6 lines
             "resize-none",
             "overflow-y-auto",
-            "px-2 py-1.5",
-            "transition-height duration-200",
-            "scrollbar-thin scrollbar-thumb-purple-200 scrollbar-track-transparent"
+            "px-3 py-2",
+            "rounded-lg",
+            "transition-all duration-200"
           )}
         />
         <Button 
@@ -104,13 +102,14 @@ export default function ChatInput({
             "transition-all duration-300",
             "hover:scale-105 hover:shadow-lg",
             "hover:-translate-y-0.5",
-            "px-2 h-8"
+            "px-3 h-10 min-w-[40px]",
+            "self-end"
           )}
         >
           {isLoading ? (
-            <X className="h-3.5 w-3.5" />
+            <X className="h-4 w-4" />
           ) : (
-            <Send className="h-3.5 w-3.5" />
+            <Send className="h-4 w-4" />
           )}
         </Button>
       </form>
