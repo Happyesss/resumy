@@ -365,7 +365,7 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
       </DialogTrigger>
       <DialogContent className={cn(
         "sm:max-w-[700px] p-0 max-h-[85vh] overflow-y-auto",
-        "bg-white border border-gray-200 shadow-lg rounded-lg"
+        "bg-black border border-gray-800 shadow-lg rounded-lg"
       )}>
         <style jsx global>{`
           @keyframes shake {
@@ -379,86 +379,143 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
         `}</style>
         
         {/* Header */}
-        <div className="px-6 py-4 border-b border-gray-100">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-purple-50 border border-purple-100">
-              <FileText className="w-5 h-5 text-purple-600" />
+        <div className="relative px-6 py-6 border-b border-gray-800 bg-gradient-to-r from-neutral-900 via-black to-neutral-900">
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-purple-700 rounded-xl opacity-20 blur-sm"></div>
+              <div className="relative p-3 rounded-xl bg-gradient-to-br from-purple-400 to-purple-600 shadow-lg">
+                <FileText className="w-6 h-6 text-white" />
+              </div>
             </div>
             <div className="flex-1">
-              <DialogTitle className="text-lg font-semibold text-gray-900">
+              <DialogTitle className="text-xl font-bold bg-gradient-to-r from-purple-700 to-purple-900 bg-clip-text text-transparent">
                 Create Base Resume
               </DialogTitle>
-              <DialogDescription className="text-sm text-gray-600">
+              <DialogDescription className="text-sm text-gray-600 mt-1">
                 {currentStep === 1 
                   ? "Start by entering your target role"
                   : "Configure your resume content"
                 }
               </DialogDescription>
             </div>
-            {/* Step indicator */}
-            <div className="flex items-center gap-2">
-              <div className={cn(
-                "w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium",
-                currentStep >= 1 ? "bg-purple-600 text-white" : "bg-gray-200 text-gray-600"
-              )}>
-                1
-              </div>
-              <div className={cn(
-                "w-4 h-0.5",
-                currentStep >= 2 ? "bg-purple-600" : "bg-gray-200"
-              )} />
-              <div className={cn(
-                "w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium",
-                currentStep >= 2 ? "bg-purple-600 text-white" : "bg-gray-200 text-gray-600"
-              )}>
-                2
+            {/* Enhanced Step indicator */}
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <div className={cn(
+                  "relative w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300",
+                  currentStep >= 1 
+                    ? "bg-gradient-to-r from-purple-400 to-purple-600 text-white shadow-lg" 
+                    : "bg-gray-200 text-gray-600"
+                )}>
+                  1
+                  {currentStep >= 1 && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full animate-pulse opacity-30"></div>
+                  )}
+                </div>
+                <div className={cn(
+                  "w-6 h-1 rounded-full transition-all duration-300",
+                  currentStep >= 2 ? "bg-gradient-to-r from-purple-400 to-purple-600" : "bg-gray-200"
+                )} />
+                <div className={cn(
+                  "relative w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300",
+                  currentStep >= 2 
+                    ? "bg-gradient-to-r from-purple-400 to-purple-600 text-white shadow-lg" 
+                    : "bg-gray-200 text-gray-600"
+                )}>
+                  2
+                  {currentStep >= 2 && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full animate-pulse opacity-30"></div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Content */}
-        <div className="px-6 py-6 min-h-[300px]">
+        <div className="px-6 py-8 min-h-[300px] bg-black">
           {currentStep === 1 && (
-            <div className="space-y-6">
-              <div className="text-center space-y-2">
-                <h3 className="text-xl font-semibold text-gray-900">What role are you targeting?</h3>
-                <p className="text-gray-600">This helps us tailor your resume content and format</p>
+            <div className="space-y-8">
+              {/* Hero Section */}
+              <div className="text-center space-y-4">
+                <div className="relative mx-auto w-20 h-20 mb-4">
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full animate-pulse opacity-20"></div>
+                  <div className="relative w-full h-full bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                    <FileText className="w-8 h-8 text-white" />
+                  </div>
+                </div>
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">
+                  What role are you targeting?
+                </h3>
+                <p className="text-gray-400 max-w-lg mx-auto leading-relaxed">
+                  This helps us tailor your resume content and format to match your career goals
+                </p>
               </div>
               
-              <div className="space-y-4 max-w-md mx-auto">
-                <div className="space-y-2">
-                  <Label htmlFor="target-role" className="text-sm font-medium text-gray-900">
-                    Target Role <span className="text-red-500">*</span>
-                  </Label>
-                  <Input
-                    id="target-role"
-                    placeholder="e.g., Senior Software Engineer, Product Manager, Data Scientist"
-                    value={targetRole}
-                    onChange={(e) => setTargetRole(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        handleNext();
-                      }
-                    }}
-                    className={cn(
-                      "h-12 text-base focus:border-purple-500 focus:ring-purple-500/20",
-                      isTargetRoleInvalid && "border-red-500 shake"
-                    )}
-                    required
-                    autoFocus
-                  />
+              {/* Form Section */}
+              <div className="max-w-md mx-auto">
+                <div className="bg-neutral-900 rounded-2xl p-6 shadow-xl border border-gray-800 backdrop-blur-sm">
+                  <div className="space-y-4">
+                    <div className="space-y-3">
+                      <Label htmlFor="target-role" className="text-sm font-semibold text-gray-200 flex items-center gap-2">
+                        <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                        Target Role <span className="text-red-500">*</span>
+                      </Label>
+                      <div className="relative group">
+                        <Input
+                          id="target-role"
+                          placeholder="e.g., Senior Software Engineer, Product Manager, Data Scientist"
+                          value={targetRole}
+                          onChange={(e) => setTargetRole(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              handleNext();
+                            }
+                          }}
+                          className={cn(
+                            "h-14 text-base px-4 bg-neutral-950 border-2 border-gray-800 rounded-xl text-white transition-all duration-300",
+                            "focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 focus:bg-neutral-900",
+                            "group-hover:border-purple-400",
+                            "placeholder:text-gray-400",
+                            isTargetRoleInvalid && "border-red-500 bg-red-950/50 shake"
+                          )}
+                          required
+                          autoFocus
+                        />
+                        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-purple-400 opacity-0 group-focus-within:opacity-100 transition-opacity">
+                          <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Enhanced Tips Section */}
+                    <div className="mt-6 p-4 bg-gradient-to-r from-purple-900/30 to-indigo-900/30 rounded-xl border border-purple-800/30">
+                      <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center mt-0.5">
+                          <span className="text-white text-xs font-bold">💡</span>
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm font-semibold text-purple-300">Tips for better results:</p>
+                          <ul className="text-xs text-purple-400 space-y-1.5">
+                            <li className="flex items-center gap-2">
+                              <div className="w-1 h-1 bg-purple-400 rounded-full"></div>
+                              Be specific (e.g., "Frontend Developer" vs "Developer")
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <div className="w-1 h-1 bg-purple-400 rounded-full"></div>
+                              Include seniority level if relevant
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <div className="w-1 h-1 bg-purple-400 rounded-full"></div>
+                              Match the job posting language when possible
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                
-                                 <div className="text-xs text-gray-500 space-y-1">
-                   <p>💡 <strong>Tips for better results:</strong></p>
-                   <ul className="list-disc list-inside space-y-0.5 ml-4">
-                     <li>Be specific (e.g., &ldquo;Frontend Developer&rdquo; vs &ldquo;Developer&rdquo;)</li>
-                     <li>Include seniority level if relevant</li>
-                     <li>Match the job posting language when possible</li>
-                   </ul>
-                 </div>
               </div>
             </div>
           )}
@@ -467,14 +524,14 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
             <div className="space-y-5">
               {/* Show selected target role */}
               <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
-                <div className="text-sm text-purple-800">
+                <div className="text-sm text-purple-600">
                   <span className="font-medium">Target Role:</span> {targetRole}
                 </div>
               </div>
 
               {/* Import Options */}
               <div className="space-y-3">
-                <Label className="text-sm font-medium text-gray-900">Resume Content</Label>
+                <Label className="text-sm font-medium text-gray-400">Resume Content</Label>
                 <div className="grid grid-cols-3 gap-2">
                   {[
                     { id: 'import-profile', icon: Copy, label: 'From Profile', desc: 'Use existing profile data' },
@@ -494,14 +551,17 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
                       <Label
                         htmlFor={option.id}
                         className={cn(
-                          "flex flex-col items-center p-3 rounded-lg border cursor-pointer transition-all",
+                          "flex flex-col items-center p-3 rounded-lg border cursor-pointer transition-all ",
                           "hover:border-purple-200 hover:bg-purple-50/50",
                           "peer-checked:border-purple-500 peer-checked:bg-purple-50 peer-checked:shadow-sm"
                         )}
                       >
                         <option.icon className="w-5 h-5 text-purple-600 mb-2" />
                         <div className="text-xs font-medium text-center">
-                          <div className="text-gray-900">{option.label}</div>
+                          <div className={cn(
+                            "text-gray-200 transition-colors",
+                            importOption === option.id && "text-black"
+                          )}>{option.label}</div>
                           <div className="text-gray-500 mt-0.5">{option.desc}</div>
                         </div>
                       </Label>
@@ -512,7 +572,7 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
                 {/* Profile Import Content Selection */}
                 {importOption === 'import-profile' && (
                   <div className="mt-4 space-y-3">
-                    <div className="text-sm font-medium text-gray-900">Select Content to Include</div>
+                    <div className="text-sm font-medium text-gray-400">Select Content to Include</div>
                     <div className="grid grid-cols-2 gap-3">
                       {[
                         { key: 'work_experience', label: 'Work Experience', data: profile.work_experience },
@@ -532,7 +592,7 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
                               />
                               <AccordionTrigger className="flex-1 py-0 hover:no-underline">
                                 <div className="flex items-center justify-between w-full">
-                                  <span className="text-sm font-medium">{section.label}</span>
+                                  <span className="text-sm text-gray-200 font-medium">{section.label} ----</span>
                                   <span className="text-xs text-gray-500">{section.data.length}</span>
                                 </div>
                               </AccordionTrigger>
@@ -638,33 +698,54 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
         />
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-gray-100 bg-gray-50/50">
-          <div className="flex justify-between">
+        <div className="px-6 py-4 border-t border-gray-800 bg-gradient-to-r from-neutral-900 via-black to-neutral-900">
+          <div className="flex justify-between items-center">
             <div>
               {currentStep === 2 && (
-                <Button variant="outline" onClick={handleBack} size="sm">
-                  Back
+                <Button 
+                  variant="outline" 
+                  onClick={handleBack} 
+                  className="h-10 px-6 border-2 text-gray-200 border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all duration-200"
+                >
+                  <span className="flex items-center gap-2">
+                    ← Back
+                  </span>
                 </Button>
               )}
             </div>
-            <div className="flex gap-2">
-              <Button variant="outline" onClick={() => setOpen(false)} size="sm">
+            <div className="flex gap-3">
+              <Button 
+                variant="outline" 
+                onClick={() => setOpen(false)} 
+                className="h-10 px-6 border-2 text-gray-200 border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all duration-200"
+              >
                 Cancel
               </Button>
               {currentStep === 1 && (
-                <Button onClick={handleNext} size="sm" className="bg-purple-600 hover:bg-purple-700">
-                  Next
+                <Button 
+                  onClick={handleNext} 
+                className="h-10 px-6 bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                >
+                  <span className="flex items-center gap-2">
+                    Next →
+                  </span>
                 </Button>
               )}
               {currentStep === 2 && (
-                <Button onClick={handleCreate} disabled={isCreating} size="sm" className="bg-purple-600 hover:bg-purple-700">
+                <Button 
+                  onClick={handleCreate} 
+                  disabled={isCreating} 
+                className="h-10 px-6 bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold shadow-lg hover:shadow-xl disabled:shadow-none transition-all duration-200"
+                >
                   {isCreating ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <span className="flex items-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin" />
                       Creating...
-                    </>
+                    </span>
                   ) : (
-                    'Create Resume'
+                    <span className="flex items-center gap-2">
+                      Create Resume
+                    </span>
                   )}
                 </Button>
               )}

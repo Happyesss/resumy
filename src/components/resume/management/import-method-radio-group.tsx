@@ -31,18 +31,18 @@ function ImportMethodRadioItem({
         className={cn(
           "flex flex-col items-center justify-center rounded-xl p-4",
           "bg-white/80 border-2 shadow-sm h-full",
-          "hover:border-pink-200 hover:bg-pink-50/50",
+          "hover:border-blue-200 hover:bg-blue-50/50",
           "transition-all duration-300",
-          "peer-checked:border-pink-500 peer-checked:bg-pink-50",
-          "peer-checked:shadow-md peer-checked:shadow-pink-100",
-          "focus:outline-none focus:ring-2 focus:ring-pink-500/50"
+          "peer-checked:border-blue-500 peer-checked:bg-blue-50",
+          "peer-checked:shadow-md peer-checked:shadow-blue-100",
+          "focus:outline-none focus:ring-2 focus:ring-blue-500/50"
         )}
       >
         <div className="flex flex-col items-center text-center">
-          <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-100 flex items-center justify-center mb-3">
+          <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-100 flex items-center justify-center mb-3">
             {icon}
           </div>
-          <div className="font-semibold text-sm text-pink-950 mb-1.5">{title}</div>
+          <div className="font-semibold text-sm text-blue-950 mb-1.5">{title}</div>
           <span className="text-xs leading-relaxed text-gray-600">{description}</span>
         </div>
       </div>
@@ -66,7 +66,7 @@ export function ImportMethodRadioGroup({ value, onChange }: ImportMethodRadioGro
         onChange={() => onChange('ai')}
         title="Tailor with AI"
         description="Let AI analyze the job description and optimize your resume for the best match"
-        icon={<Brain className="h-6 w-6 text-pink-600" />}
+        icon={<Brain className="h-6 w-6 text-blue-600" />}
       />
       
       <ImportMethodRadioItem
@@ -77,7 +77,7 @@ export function ImportMethodRadioGroup({ value, onChange }: ImportMethodRadioGro
         onChange={() => onChange('import-profile')}
         title="Copy Base Resume"
         description="Create a copy of your base resume. Add a job description to link it to a specific position."
-        icon={<Copy className="h-6 w-6 text-pink-600" />}
+        icon={<Copy className="h-6 w-6 text-blue-600" />}
       />
     </div>
   );

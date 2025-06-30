@@ -55,7 +55,7 @@ export function MiniResumePreview({
       <div className="relative h-full p-4 flex flex-col">
         {/* Header Section */}
         <div className="text-center mb-3 pb-2 border-b border-gray-200">
-          <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2">
+          <h3 className="font-semibold text-gray-900 mb-1 text-xs leading-tight overflow-hidden break-words">
             {name}
           </h3>
           <div className={cn(

@@ -194,7 +194,7 @@ export function ImportFromProfileDialog<T extends ImportItem>({
           <Button
             variant="outline"
             onClick={() => setOpen(false)}
-            className="border-gray-200"
+            className="text-gray-200 border-gray-200"
           >
             Cancel
           </Button>
