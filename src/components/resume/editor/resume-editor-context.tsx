@@ -1,5 +1,5 @@
 import { createContext, useContext,  Dispatch } from 'react';
-import { Resume } from '@/lib/types';
+import { Resume, WorkExperience } from '@/lib/types';
 
 interface ResumeState {
   resume: Resume;
@@ -21,17 +21,29 @@ const ResumeContext = createContext<{
 
 function resumeReducer(state: ResumeState, action: ResumeAction): ResumeState {
   switch (action.type) {
-    case 'UPDATE_FIELD':
+    case 'UPDATE_FIELD': {
+      // Handle special case for work_experience to ensure it's properly initialized
+      let fieldValue = action.value;
+      if (action.field === 'work_experience' && Array.isArray(fieldValue)) {
+        fieldValue = (fieldValue as WorkExperience[]).map(exp => ({
+          company: exp.company || '',
+          position: exp.position || '',
+          location: exp.location || '',
+          date: exp.date || '',
+          description: Array.isArray(exp.description) ? exp.description.map((desc: string) => desc || '') : [],
+          technologies: Array.isArray(exp.technologies) ? exp.technologies : []
+        }));
+      }
+
       const newState = {
         ...state,
         resume: {
           ...state.resume,
-          [action.field]: action.value
+          [action.field]: fieldValue
         }
       };
       return newState;
-
-
+    }
       
     case 'SET_SAVING':
       // console.log('Resume Editor Context - Saving State:', action.value);

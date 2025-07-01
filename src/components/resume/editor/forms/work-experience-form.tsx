@@ -59,7 +59,7 @@ function areWorkExperiencePropsEqual(
 
 // Export the memoized component
 export const WorkExperienceForm = memo(function WorkExperienceFormComponent({ 
-  experiences, 
+  experiences = [], 
   onChange, 
   profile, 
   targetRole = "Software Engineer" 
@@ -88,18 +88,30 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
   }, [popoverOpen]);
 
   const addExperience = () => {
-    onChange([{
+    const newExperience: WorkExperience = {
       company: "",
       position: "",
       location: "",
       date: "",
       description: [],
       technologies: []
-    }, ...experiences]);
+    };
+    onChange([newExperience, ...(experiences || [])]);
   };
 
   const updateExperience = (index: number, field: keyof WorkExperience, value: string | string[]) => {
     const updated = [...experiences];
+    // Ensure the experience object exists
+    if (!updated[index]) {
+      updated[index] = {
+        company: "",
+        position: "",
+        location: "",
+        date: "",
+        description: [],
+        technologies: []
+      };
+    }
     updated[index] = { ...updated[index], [field]: value };
     onChange(updated);
   };
@@ -114,6 +126,8 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
 
   const generateAIPoints = async (index: number) => {
     const exp = experiences[index];
+    if (!exp) return; // Safety check
+    
     const config = aiConfig[index] || { numPoints: 3, customPrompt: '' };
     setLoadingAI(prev => ({ ...prev, [index]: true }));
     setPopoverOpen(prev => ({ ...prev, [index]: false }));
@@ -180,6 +194,19 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
 
   const approveSuggestion = (expIndex: number, suggestion: AISuggestion) => {
     const updated = [...experiences];
+    if (!updated[expIndex]) {
+      updated[expIndex] = {
+        company: "",
+        position: "",
+        location: "",
+        date: "",
+        description: [],
+        technologies: []
+      };
+    }
+    if (!updated[expIndex].description) {
+      updated[expIndex].description = [];
+    }
     updated[expIndex].description = [...updated[expIndex].description, suggestion.point];
     onChange(updated);
     
@@ -199,8 +226,9 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
 
   const rewritePoint = async (expIndex: number, pointIndex: number) => {
     const exp = experiences[expIndex];
-    const point = exp.description[pointIndex];
-    const customPrompt = improvementConfig[expIndex]?.[pointIndex];
+    if (!exp) return;  // Safety check
+    const point = exp.description?.[pointIndex] || "";  // Add default value
+    const customPrompt = improvementConfig[expIndex]?.[pointIndex] || "";  // Add default value
     
     setLoadingPointAI(prev => ({
       ...prev,
@@ -328,7 +356,7 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
           </div>
         </div>
 
-        {experiences.map((exp, index) => (
+        {(experiences || []).map((exp, index) => (
           <Card 
             key={index} 
             className={cn(
@@ -351,7 +379,7 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                 <div className="flex items-start gap-2 sm:gap-3">
                   <div className="relative flex-1">
                     <Input
-                      value={exp.position}
+                      value={exp.position || ""}
                       onChange={(e) => updateExperience(index, 'position', e.target.value)}
                       className={cn(
                         "text-sm font-semibold tracking-tight h-9",
@@ -380,7 +408,7 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                   <div className="relative">
                     <Input
-                      value={exp.company}
+                      value={exp.company || ""}
                       onChange={(e) => updateExperience(index, 'company', e.target.value)}
                       className={cn(
                         "text-sm font-medium bg-white/50 border-gray-200 rounded-lg h-9",
@@ -396,7 +424,7 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                   </div>
                   <div className="relative">
                     <Input
-                      value={exp.location}
+                      value={exp.location || ""}
                       onChange={(e) => updateExperience(index, 'location', e.target.value)}
                       className={cn(
                         "bg-white/50 border-gray-200 rounded-lg h-9",
@@ -416,7 +444,7 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                 <div className="relative group">
                   <Input
                     type="text"
-                    value={exp.date}
+                    value={exp.date || ""}
                     onChange={(e) => updateExperience(index, 'date', e.target.value)}
                     className={cn(
                       "w-full bg-white/50 border-gray-200 rounded-lg h-9",
@@ -437,13 +465,16 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                     Key Responsibilities & Achievements
                   </Label>
                   <div className="space-y-2 pl-0">
-                    {exp.description.map((desc, descIndex) => (
+                    {(exp.description || []).map((desc, descIndex) => (
                       <div key={descIndex} className="flex gap-1 items-start group/item">
                         <div className="flex-1">
                           <Tiptap
-                            content={desc} 
+                            content={desc || ""} 
                             onChange={(newContent) => {
                               const updated = [...experiences];
+                              if (!updated[index].description) {
+                                updated[index].description = [];
+                              }
                               updated[index].description[descIndex] = newContent;
                               onChange(updated);
 
@@ -542,10 +573,15 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                                 size="icon"
                                 onClick={() => {
                                   const updated = [...experiences];
+                                  if (!updated[index].description) {
+                                    updated[index].description = [];
+                                    onChange(updated);
+                                    return;
+                                  }
                                   updated[index].description = updated[index].description.filter((_, i) => i !== descIndex);
                                   onChange(updated);
                                 }}
-                                className="p-0 group-hover/item:opacity-100 text-gray-400 hover:text-red-500 transition-all duration-300"
+                                className="p-0 group-hover:item:opacity-100 text-gray-400 hover:text-red-500 transition-all duration-300"
                               >
                                 <Trash2 className="h-4 w-4" />
                               </Button>
@@ -630,6 +666,9 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                       size="sm"
                       onClick={() => {
                         const updated = [...experiences];
+                        if (!updated[index].description) {
+                          updated[index].description = [];
+                        }
                         updated[index].description = [...updated[index].description, ""];
                         onChange(updated);
                       }}
@@ -686,4 +725,4 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
       />
     </>
   );
-}, areWorkExperiencePropsEqual); 
+}, areWorkExperiencePropsEqual);

@@ -8,10 +8,11 @@ import { Resume } from "@/lib/types";
 function normalizeResumeData(resume: Resume): Resume {
   return {
     ...resume,
-    // Normalize work experience dates
+    // Normalize work experience dates and ensure it exists
     work_experience: resume.work_experience?.map(exp => ({
       ...exp,
-      date: exp.date || ''
+      date: exp.date || '',
+      description: exp.description || [] // Ensure description array exists
     })) || [],
     // Normalize education dates
     education: resume.education?.map(edu => ({
