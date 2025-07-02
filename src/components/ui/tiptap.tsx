@@ -29,7 +29,14 @@ const Tiptap = memo(
   ({ content, onChange, className, readOnly, variant = 'default', editorProps: customEditorProps }: TiptapProps) => {
     // Transform content to HTML before loading
     const transformContent = useCallback((content: string) => {
-      return content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      // First handle bold formatting
+      const withBoldFormatting = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      
+      // Then handle newlines by converting them to paragraph tags
+      return withBoldFormatting
+        .split(/\n\n+/) // Split on double newlines which represent paragraphs
+        .map(paragraph => `<p>${paragraph}</p>`)
+        .join('');
     }, []);
 
     // Debounce the onChange callback
@@ -75,8 +82,10 @@ const Tiptap = memo(
         // Convert <strong> tags back to asterisks
         const textWithAsterisks = html
           .replace(/<strong>(.*?)<\/strong>/g, '**$1**')
+          // Replace paragraph tags with newlines, preserving double newlines for paragraph breaks
           .replace(/<p>/g, '')
-          .replace(/<\/p>/g, '')
+          .replace(/<\/p>/g, '\n\n')
+          .replace(/\n\n+/g, '\n\n') // Normalize multiple newlines to just double newlines
           .trim();
         debouncedOnChange(textWithAsterisks);
       },

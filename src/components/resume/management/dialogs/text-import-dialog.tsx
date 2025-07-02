@@ -8,7 +8,7 @@ import { Loader2, Upload, AlertTriangle } from "lucide-react";
 import { Resume } from "@/lib/types";
 
 import { toast } from "sonner";
-import { addTextToResume } from "@/utils/actions/resumes/ai";
+import { convertTextToResume } from "@/utils/actions/resumes/ai";
 import pdfToText from "react-pdftotext";
 import { cn } from "@/lib/utils";
 
@@ -90,8 +90,13 @@ export function TextImportDialog({
 
     setIsProcessing(true);
     try {
-      const updatedResume = await addTextToResume(content, resume);
-      
+      // Provide a default AIConfig to use the environment variable for Gemini
+      const aiConfig = {
+        model: 'gemini-1.5-flash-8b',
+        apiKeys: [],
+      };
+      // Use convertTextToResume for better extraction
+      const updatedResume = await convertTextToResume(content, resume, resume.target_role || "", aiConfig);
       // Update each field of the resume
       (Object.keys(updatedResume) as Array<keyof Resume>).forEach((key) => {
         onResumeChange(key, updatedResume[key] as Resume[keyof Resume]);

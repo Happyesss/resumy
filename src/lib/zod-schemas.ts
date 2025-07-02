@@ -170,7 +170,16 @@ export const simplifiedResumeSchema = z.object({
     education: z.array(educationSchema).optional(),
     skills: z.array(skillSchema).optional(),
     projects: z.array(projectSchema).optional(),
-    target_role: z.string()
+    target_role: z.string(),
+    // Include basic personal information
+    first_name: z.string().optional(),
+    last_name: z.string().optional(),
+    email: z.string().optional(),
+    phone_number: z.string().optional(),
+    location: z.string().optional(),
+    website: z.string().optional(),
+    linkedin_url: z.string().optional(),
+    github_url: z.string().optional(),
   });
 
 // Add type inference helper

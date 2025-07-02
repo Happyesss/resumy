@@ -264,21 +264,31 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile }: C
 
       
       // 5. Create the tailored resume with job reference
-      const resume = await createTailoredResume(
-        baseResume,
-        jobEntry.id,
-        formattedJobListing.position_title || '',
-        formattedJobListing.company_name || '',
-        tailoredContent,
-      );
+      try {
+        const resume = await createTailoredResume(
+          baseResume,
+          jobEntry.id,
+          formattedJobListing.position_title || '',
+          formattedJobListing.company_name || '',
+          tailoredContent,
+        );
 
-      toast({
-        title: "Success",
-        description: "Resume created successfully",
-      });
+        toast({
+          title: "Success",
+          description: "Resume created successfully",
+        });
 
-      router.push(`/resumes/${resume.id}`);
-      setOpen(false);
+        router.push(`/resumes/${resume.id}`);
+        setOpen(false);
+      } catch (tailorError) {
+        console.error('Error in createTailoredResume:', tailorError);
+        toast({
+          title: "Error",
+          description: tailorError instanceof Error ? tailorError.message : "Failed to create tailored resume",
+          variant: "destructive",
+        });
+        setIsCreating(false);
+      }
     } catch (error: unknown) {
       console.error('Failed to create resume:', error);
       toast({

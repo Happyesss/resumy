@@ -261,21 +261,57 @@ export async function createTailoredResume(
     throw new Error('User not authenticated');
   }
 
-  const newResume = {
+  // Extract the ID from base resume to prevent duplicate ID error
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { id: _baseId, ...baseResumeWithoutId } = baseResume;
+
+  // Ensure all properties of tailoredContent are properly initialized
+  const normalizedTailoredContent = {
     ...tailoredContent,
+    work_experience: (tailoredContent.work_experience || []).map(exp => ({
+      company: exp.company || '',
+      position: exp.position || '',
+      location: exp.location || '',
+      date: exp.date || '',
+      description: Array.isArray(exp.description) ? exp.description.map(desc => desc || '') : [],
+      technologies: Array.isArray(exp.technologies) ? exp.technologies : []
+    })),
+    education: (tailoredContent.education || []),
+    skills: (tailoredContent.skills || []),
+    projects: (tailoredContent.projects || []),
+  };
+
+  const newResume = {
+    // Start with all fields from base resume (except ID) to ensure nothing is lost
+    ...baseResumeWithoutId,
+    // Override with normalized fields from tailored content
+    ...normalizedTailoredContent,
+    // Ensure required fields are set correctly
     user_id: user.id,
     job_id: jobId,
     is_base_resume: false,
-    first_name: baseResume.first_name,
-    last_name: baseResume.last_name,
-    email: baseResume.email,
-    phone_number: baseResume.phone_number,
-    location: baseResume.location,
-    website: baseResume.website,
-    linkedin_url: baseResume.linkedin_url,
-    github_url: baseResume.github_url,
+    // Override with fields from base resume that should be preserved
+    first_name: tailoredContent.first_name || baseResume.first_name,
+    last_name: tailoredContent.last_name || baseResume.last_name,
+    email: tailoredContent.email || baseResume.email,
+    phone_number: tailoredContent.phone_number || baseResume.phone_number,
+    location: tailoredContent.location || baseResume.location,
+    website: tailoredContent.website || baseResume.website,
+    linkedin_url: tailoredContent.linkedin_url || baseResume.linkedin_url,
+    github_url: tailoredContent.github_url || baseResume.github_url,
+    // Ensure section configurations are preserved
     section_configs: baseResume.section_configs,
     section_order: baseResume.section_order,
+    // Ensure work experience is properly transferred
+    work_experience: tailoredContent.work_experience?.map(exp => ({
+      ...exp,
+      description: exp.description || []
+    })) || baseResume.work_experience || [],
+    // Ensure other sections are properly transferred
+    education: tailoredContent.education || baseResume.education || [],
+    skills: tailoredContent.skills || baseResume.skills || [],
+    projects: tailoredContent.projects || baseResume.projects || [],
+    // Set the resume title/name
     resume_title: `${jobTitle} at ${companyName}`,
     name: `${jobTitle} at ${companyName}`,
     created_at: new Date().toISOString(),
@@ -288,7 +324,19 @@ export async function createTailoredResume(
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    console.error('Error creating tailored resume:', error);
+    
+    // Provide more specific error messages based on error codes
+    if (error.code === '23505') {
+      throw new Error('A resume with this information already exists. Please try again with different details.');
+    } else if (error.code === '23503') {
+      throw new Error('Referenced job or user does not exist. Please check your job information.');
+    } else {
+      throw error;
+    }
+  }
+  
   return data;
 }
 

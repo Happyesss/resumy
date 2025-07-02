@@ -298,7 +298,9 @@ const EducationSection = memo(function EducationSection({
             <View key={bulletIndex} style={styles.bulletPoint}>
               <Text style={styles.bulletDot}>•</Text>
               <View style={styles.bulletText}>
-                {processText(achievement)}
+                <Text style={styles.bulletTextContent}>
+                  {processText(achievement)}
+                </Text>
               </View>
             </View>
           ))}

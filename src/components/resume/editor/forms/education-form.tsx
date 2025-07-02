@@ -29,7 +29,7 @@ function areEducationPropsEqual(
 }
 
 export const EducationForm = memo(function EducationFormComponent({
-  education,
+  education = [],
   onChange,
   profile
 }: EducationFormProps) {
@@ -42,21 +42,32 @@ export const EducationForm = memo(function EducationFormComponent({
       date: "",
       gpa: undefined,
       achievements: []
-    }, ...education]);
+    }, ...(education || [])]);
   };
 
   const updateEducation = (index: number, field: keyof Education, value: Education[keyof Education]) => {
-    const updated = [...education];
+    const updated = [...(education || [])];
+    if (!updated[index]) {
+      updated[index] = {
+        school: "",
+        degree: "",
+        field: "",
+        location: "",
+        date: "",
+        gpa: undefined,
+        achievements: []
+      };
+    }
     updated[index] = { ...updated[index], [field]: value };
     onChange(updated);
   };
 
   const removeEducation = (index: number) => {
-    onChange(education.filter((_, i) => i !== index));
+    onChange((education || []).filter((_, i) => i !== index));
   };
 
   const handleImportFromProfile = (importedEducation: Education[]) => {
-    onChange([...importedEducation, ...education]);
+    onChange([...(importedEducation || []), ...(education || [])]);
   };
 
   return (
@@ -100,7 +111,7 @@ export const EducationForm = memo(function EducationFormComponent({
         </div>
       </div>
 
-      {education.map((edu, index) => (
+      {(education || []).map((edu, index) => (
         <Card 
           key={index} 
           className={cn(
@@ -116,7 +127,7 @@ export const EducationForm = memo(function EducationFormComponent({
               <div className="flex items-center justify-between gap-2 sm:gap-3">
                 <div className="relative group flex-1 min-w-0">
                   <Input
-                    value={edu.school}
+                    value={edu.school || ''}
                     onChange={(e) => updateEducation(index, 'school', e.target.value)}
                     className={cn(
                       "text-sm font-semibold h-9",
@@ -144,7 +155,7 @@ export const EducationForm = memo(function EducationFormComponent({
               {/* Location */}
               <div className="relative group">
                 <Input
-                  value={edu.location}
+                  value={edu.location || ''}
                   onChange={(e) => updateEducation(index, 'location', e.target.value)}
                   className={cn(
                     "h-9 bg-white/50 border-gray-200 rounded-lg",
@@ -156,7 +167,7 @@ export const EducationForm = memo(function EducationFormComponent({
                   placeholder="City, Country"
                 />
                 <div className="absolute -top-2 left-2 px-1 bg-white/80 text-[7px] sm:text-[9px] font-medium text-indigo-700">
-                  LOCATION
+                    LOCATION
                 </div>
               </div>
 
@@ -164,7 +175,7 @@ export const EducationForm = memo(function EducationFormComponent({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                 <div className="relative group">
                   <Input
-                    value={edu.degree}
+                    value={edu.degree || ''}
                     onChange={(e) => updateEducation(index, 'degree', e.target.value)}
                     className={cn(
                       "h-9 bg-white/50 border-gray-200 rounded-lg",
@@ -181,7 +192,7 @@ export const EducationForm = memo(function EducationFormComponent({
                 </div>
                 <div className="relative group">
                   <Input
-                    value={edu.field}
+                    value={edu.field || ''}
                     onChange={(e) => updateEducation(index, 'field', e.target.value)}
                     className={cn(
                       "h-9 bg-white/50 border-gray-200 rounded-lg",
@@ -202,7 +213,7 @@ export const EducationForm = memo(function EducationFormComponent({
               <div className="relative group">
                 <Input
                   type="text"
-                  value={edu.date}
+                  value={edu.date || ''}
                   onChange={(e) => updateEducation(index, 'date', e.target.value)}
                   className={cn(
                     "w-full h-9 bg-white/50 border-gray-200 rounded-lg",
@@ -252,13 +263,19 @@ export const EducationForm = memo(function EducationFormComponent({
                   <span className="text-[8px] sm:text-[10px] text-gray-500">One achievement per line</span>
                 </div>
                 <Tiptap
-                  content={(edu.achievements || []).join('\n')}
-                  onChange={(newContent) => updateEducation(index, 'achievements', 
-                    newContent.split('\n').filter(Boolean)
-                  )}
+                  content={(edu.achievements || []).map(achievement => achievement.trim()).join('\n\n') || ''}
+                  onChange={(newContent) => {
+                    // Process the content to extract each paragraph as a separate achievement
+                    const achievements = newContent
+                      .split(/\n+/)
+                      .map(line => line.trim())
+                      .filter(line => line.trim() !== ''); // Remove empty lines
+                    
+                    updateEducation(index, 'achievements', achievements);
+                  }}
                   editorProps={{
                     attributes: {
-                      placeholder: "• Dean's List 2020-2021\n• President of Computer Science Club\n• First Place in Hackathon 2022"
+                      placeholder: "• Dean's List 2020-2021\n\n• President of Computer Science Club\n\n• First Place in Hackathon 2022"
                     }
                   }}
                   className={cn(
@@ -276,4 +293,4 @@ export const EducationForm = memo(function EducationFormComponent({
       ))}
     </div>
   );
-}, areEducationPropsEqual); 
+}, areEducationPropsEqual);
