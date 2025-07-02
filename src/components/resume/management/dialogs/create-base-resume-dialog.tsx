@@ -364,9 +364,25 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
         {children}
       </DialogTrigger>
       <DialogContent className={cn(
-        "sm:max-w-[700px] p-0 max-h-[85vh] overflow-y-auto",
-        "bg-black border border-gray-800 shadow-lg rounded-lg"
+        "sm:max-w-[520px] p-0 max-h-[85vh] overflow-y-auto",
+        "bg-black border border-gray-800 shadow-lg rounded-2xl",
+        "relative",
       )}>
+        {/* Force close icon to top-right with red color */}
+        <style jsx global>{`
+          .dialog-close {
+            position: absolute !important;
+            top: 18px !important;
+            right: 18px !important;
+            z-index: 50 !important;
+            margin-left: 16px !important;
+          }
+          .dialog-close svg {
+            color: #ef4444 !important;
+            width: 1.5rem !important;
+            height: 1.5rem !important;
+          }
+        `}</style>
         <style jsx global>{`
           @keyframes shake {
             0%, 100% { transform: translateX(0); }
@@ -377,9 +393,8 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
             animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both;
           }
         `}</style>
-        
-        {/* Header */}
-        <div className="relative px-6 py-6 border-b border-gray-800 bg-gradient-to-r from-neutral-900 via-black to-neutral-900">
+        {/* Compact Header */}
+        <div className="relative px-6 py-4 border-b border-gray-800 bg-gradient-to-r from-neutral-900 via-black to-neutral-900">
           <div className="flex items-center gap-4">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-purple-700 rounded-xl opacity-20 blur-sm"></div>
@@ -387,131 +402,83 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
                 <FileText className="w-6 h-6 text-white" />
               </div>
             </div>
-            <div className="flex-1">
-              <DialogTitle className="text-xl font-bold bg-gradient-to-r from-purple-700 to-purple-900 bg-clip-text text-transparent">
-                Create Base Resume
-              </DialogTitle>
-              <DialogDescription className="text-sm text-gray-600 mt-1">
-                {currentStep === 1 
-                  ? "Start by entering your target role"
-                  : "Configure your resume content"
-                }
-              </DialogDescription>
-            </div>
-            {/* Enhanced Step indicator */}
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2">
-                <div className={cn(
-                  "relative w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300",
-                  currentStep >= 1 
-                    ? "bg-gradient-to-r from-purple-400 to-purple-600 text-white shadow-lg" 
-                    : "bg-gray-200 text-gray-600"
-                )}>
-                  1
-                  {currentStep >= 1 && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full animate-pulse opacity-30"></div>
-                  )}
-                </div>
-                <div className={cn(
-                  "w-6 h-1 rounded-full transition-all duration-300",
-                  currentStep >= 2 ? "bg-gradient-to-r from-purple-400 to-purple-600" : "bg-gray-200"
-                )} />
-                <div className={cn(
-                  "relative w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300",
-                  currentStep >= 2 
-                    ? "bg-gradient-to-r from-purple-400 to-purple-600 text-white shadow-lg" 
-                    : "bg-gray-200 text-gray-600"
-                )}>
-                  2
-                  {currentStep >= 2 && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full animate-pulse opacity-30"></div>
-                  )}
-                </div>
+            <DialogTitle className="text-lg font-bold bg-gradient-to-r from-purple-700 to-purple-900 bg-clip-text text-transparent">
+              Base Resume
+            </DialogTitle>
+            <div className="flex-1" />
+            {/* Stepper: use icons instead of numbers */}
+            <div className="flex items-center gap-2">
+              <div className={cn(
+                "w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300",
+                currentStep >= 1 
+                  ? "bg-gradient-to-r from-purple-400 to-purple-600 text-white shadow-lg" 
+                  : "bg-gray-200 text-gray-600"
+              )}>
+                <FileText className="w-4 h-4" />
+              </div>
+              <div className={cn(
+                "w-6 h-1 rounded-full transition-all duration-300 mx-1",
+                currentStep >= 2 ? "bg-gradient-to-r from-purple-400 to-purple-600" : "bg-gray-200"
+              )} />
+              <div className={cn(
+                "w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300",
+                currentStep >= 2 
+                  ? "bg-gradient-to-r from-purple-400 to-purple-600 text-white shadow-lg" 
+                  : "bg-gray-200 text-gray-600"
+              )}>
+                <Upload className="w-4 h-4" />
               </div>
             </div>
           </div>
         </div>
 
         {/* Content */}
-        <div className="px-6 py-8 min-h-[300px] bg-black">
+        <div className="px-8 py-8 min-h-[240px] bg-black">
           {currentStep === 1 && (
-            <div className="space-y-8">
-              {/* Hero Section */}
-              <div className="text-center space-y-4">
-                <div className="relative mx-auto w-20 h-20 mb-4">
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full animate-pulse opacity-20"></div>
-                  <div className="relative w-full h-full bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
-                    <FileText className="w-8 h-8 text-white" />
-                  </div>
-                </div>
+            <div className="space-y-6">
+              {/* Medium Hero Section */}
+              <div className="flex flex-col items-center gap-3 mb-3">
+                <FileText className="w-10 h-10 text-purple-400 mb-1" />
                 <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">
-                  What role are you targeting?
+                  Target Role
                 </h3>
-                <p className="text-gray-400 max-w-lg mx-auto leading-relaxed">
-                  This helps us tailor your resume content and format to match your career goals
+                <p className="text-sm text-gray-400 text-center max-w-md">
+                  Tailor your resume for your career goals
                 </p>
               </div>
-              
-              {/* Form Section */}
+              {/* Medium Form Section */}
               <div className="max-w-md mx-auto">
                 <div className="bg-neutral-900 rounded-2xl p-6 shadow-xl border border-gray-800 backdrop-blur-sm">
                   <div className="space-y-4">
-                    <div className="space-y-3">
-                      <Label htmlFor="target-role" className="text-sm font-semibold text-gray-200 flex items-center gap-2">
-                        <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-                        Target Role <span className="text-red-500">*</span>
-                      </Label>
-                      <div className="relative group">
-                        <Input
-                          id="target-role"
-                          placeholder="e.g., Senior Software Engineer, Product Manager, Data Scientist"
-                          value={targetRole}
-                          onChange={(e) => setTargetRole(e.target.value)}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                              e.preventDefault();
-                              handleNext();
-                            }
-                          }}
-                          className={cn(
-                            "h-14 text-base px-4 bg-neutral-950 border-2 border-gray-800 rounded-xl text-white transition-all duration-300",
-                            "focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 focus:bg-neutral-900",
-                            "group-hover:border-purple-400",
-                            "placeholder:text-gray-400",
-                            isTargetRoleInvalid && "border-red-500 bg-red-950/50 shake"
-                          )}
-                          required
-                          autoFocus
-                        />
-                        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-purple-400 opacity-0 group-focus-within:opacity-100 transition-opacity">
-                          <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Enhanced Tips Section */}
-                    <div className="mt-6 p-4 bg-gradient-to-r from-purple-900/30 to-indigo-900/30 rounded-xl border border-purple-800/30">
-                      <div className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center mt-0.5">
-                          <span className="text-white text-xs font-bold">💡</span>
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-sm font-semibold text-purple-300">Tips for better results:</p>
-                          <ul className="text-xs text-purple-400 space-y-1.5">
-                            <li className="flex items-center gap-2">
-                              <div className="w-1 h-1 bg-purple-400 rounded-full"></div>
-                              Be specific (e.g., "Frontend Developer" vs "Developer")
-                            </li>
-                            <li className="flex items-center gap-2">
-                              <div className="w-1 h-1 bg-purple-400 rounded-full"></div>
-                              Include seniority level if relevant
-                            </li>
-                            <li className="flex items-center gap-2">
-                              <div className="w-1 h-1 bg-purple-400 rounded-full"></div>
-                              Match the job posting language when possible
-                            </li>
-                          </ul>
-                        </div>
+                    <Label htmlFor="target-role" className="text-sm font-semibold text-gray-200 flex items-center gap-2">
+                      <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                      <span>Role</span>
+                      <span className="text-red-500">*</span>
+                    </Label>
+                    <div className="relative group">
+                      <Input
+                        id="target-role"
+                        placeholder="e.g. Senior Engineer"
+                        value={targetRole}
+                        onChange={(e) => setTargetRole(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            handleNext();
+                          }
+                        }}
+                        className={cn(
+                          "h-12 text-base px-4 bg-neutral-950 border-2 border-gray-800 rounded-xl text-white transition-all duration-300",
+                          "focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 focus:bg-neutral-900",
+                          "group-hover:border-purple-400",
+                          "placeholder:text-gray-400",
+                          isTargetRoleInvalid && "border-red-500 bg-red-950/50 shake"
+                        )}
+                        required
+                        autoFocus
+                      />
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2 text-purple-400 opacity-0 group-focus-within:opacity-100 transition-opacity">
+                        <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
                       </div>
                     </div>
                   </div>
