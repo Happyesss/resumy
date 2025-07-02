@@ -40,6 +40,9 @@ interface ProfileEditFormProps {
   profile: Profile;
 }
 
+// Tab order for navigation
+const PROFILE_TABS = ["basic", "experience", "projects", "education", "skills"];
+
 export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProps) {
   const [profile, setProfile] = useState(initialProfile);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -51,6 +54,17 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
   const [isResumeDragging, setIsResumeDragging] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("basic");
+
+  // Helpers for navigation
+  const currentTabIdx = PROFILE_TABS.indexOf(activeTab);
+  const isFirstTab = currentTabIdx === 0;
+  const isLastTab = currentTabIdx === PROFILE_TABS.length - 1;
+  const goToPrev = () => {
+    if (!isFirstTab) setActiveTab(PROFILE_TABS[currentTabIdx - 1]);
+  };
+  const goToNext = () => {
+    if (!isLastTab) setActiveTab(PROFILE_TABS[currentTabIdx + 1]);
+  };
   const router = useRouter();
 
   // Sync with server state when initialProfile changes
@@ -660,6 +674,21 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
 
                 </div>
               </div>
+            </div>
+            {/* Mobile Nav Buttons OUTSIDE the card */}
+            <div className="flex md:hidden justify-between gap-2 mt-4 px-1 sm:px-2 md:px-4 text-gray-200">
+              <Button variant="outline" onClick={goToPrev} disabled={isFirstTab} className="flex-1">
+                Previous
+              </Button>
+              {isLastTab ? (
+                <Button variant="default" onClick={handleSubmit} disabled={isSubmitting} className="flex-1">
+                  {isSubmitting ? "Saving..." : "Save"}
+                </Button>
+              ) : (
+                <Button variant="default" onClick={goToNext} disabled={isLastTab} className="flex-1">
+                  Next
+                </Button>
+              )}
             </div>
           </Tabs>
         </div>

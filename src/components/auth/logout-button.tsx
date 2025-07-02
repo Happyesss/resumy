@@ -43,7 +43,7 @@ export function LogoutButton({ className }: LogoutButtonProps) {
       disabled={isLoading}
     >
       <LogOut className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-      <span className="hidden sm:inline">{isLoading ? 'Signing out...' : 'Logout'}</span>
+      <span className="inline">{isLoading ? 'Signing out...' : 'Logout'}</span>
     </Button>
   );
 } 
