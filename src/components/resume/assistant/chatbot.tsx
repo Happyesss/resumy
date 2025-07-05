@@ -321,12 +321,7 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
             {/* Header with close button */}
             <div className="flex items-center justify-between p-4 border-b border-gray-700/60">
               <div className="flex items-center gap-2">
-                <div className="p-2 rounded-lg bg-purple-600/80 text-white">
-                  <Bot className="h-4 w-4" />
-                </div>
-                <Logo className="text-sm text-white" asLink={false} />
-              </div>
-              <button
+                <button
                 onClick={() => setAccordionValue("")}
                 className={cn(
                   "p-2 rounded-lg mr-2",
@@ -339,6 +334,12 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
+                <div className="p-2 rounded-lg bg-purple-600/80 text-white">
+                  <Bot className="h-4 w-4" />
+                </div>
+                <Logo className="text-sm text-white" asLink={false} />
+              </div>
+              
               <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
                 <AlertDialogTrigger asChild>
                   <Button

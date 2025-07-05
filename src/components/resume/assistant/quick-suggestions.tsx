@@ -41,8 +41,8 @@ export function QuickSuggestions({ onSuggestionClick }: QuickSuggestionsProps) {
               onClick={() => onSuggestionClick(suggestion.text)}
               className={cn(
                 "h-9 px-3",
-                "bg-white/40",
-                "text-purple-700 text-sm",
+                "bg-transparent",
+                "text-gray-200 text-sm",
                 "border border-purple-100",
                 "hover:bg-purple-50/60 hover:border-purple-200",
                 "transition-colors"

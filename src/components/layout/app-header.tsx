@@ -8,7 +8,9 @@ import { Menu, User } from "lucide-react";
 import { PageTitle } from "./page-title";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 interface AppHeaderProps {
   children?: React.ReactNode;
@@ -17,12 +19,25 @@ interface AppHeaderProps {
 export function AppHeader({ children }: AppHeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const pathname = usePathname();
+  // Detect if on landing page
+  const isLanding = pathname === "/";
+
   return (
     <header className="h-14 border-b backdrop-blur-xl fixed top-0 left-0 right-0 z-40 shadow-md border-gray-200/50">
       {/* Content Container */}
-      <div className="max-w-[2000px] mx-auto h-full px-3 flex items-center justify-between relative">        {/* Left Section - Logo and Title */}
+      <div className="max-w-[2000px] mx-auto h-full px-3 flex items-center justify-between relative">
+        {/* Left Section - Logo and Title */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-shrink">
-          <Logo className="text-xl flex-shrink-0" />
+          {/* Hide logo on mobile except landing page */}
+          <span
+            className={cn(
+              "text-xl flex-shrink-0",
+              !isLanding ? "hidden sm:inline-flex" : ""
+            )}
+          >
+            <Logo />
+          </span>
           <div className="h-5 w-px bg-gray-200/50 hidden sm:block flex-shrink-0" />
           <div className="flex items-center min-w-0 max-w-[140px] sm:max-w-[300px] lg:max-w-[600px]">
             <div className="truncate max-w-[80ch] overflow-hidden text-ellipsis">
@@ -40,8 +55,8 @@ export function AppHeader({ children }: AppHeaderProps) {
               {/* Desktop Navigation */}
               <nav className="hidden md:flex items-center gap-1 lg:gap-2">
                 <div className="flex items-center px-2 lg:px-3 py-1">
-                  <Link 
-                    href="/profile" 
+                  <Link
+                    href="/profile"
                     className={cn(
                       "flex items-center gap-1.5 px-2 lg:px-3 py-1 text-purple-400 hover:text-purple-300",
                       "text-sm font-medium transition-colors duration-200"
@@ -62,8 +77,8 @@ export function AppHeader({ children }: AppHeaderProps) {
                     <Menu className="h-5 w-5 text-white" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent 
-                  side="right" 
+                <SheetContent
+                  side="right"
                   className="w-[50vw] max-w-[400px] min-w-[220px] h-[50vh] mt-14 bg-black/95 rounded-l-2xl rounded-bl-2xl border-l border-purple-400/20 flex flex-col justify-start"
                   style={{ top: '0', bottom: 'auto' }}
                 >

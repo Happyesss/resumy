@@ -26,6 +26,8 @@ interface ResumeSortControlsProps {
   currentDirection?: SortDirection;
 }
 
+import { usePathname } from "next/navigation";
+
 export function ResumeSortControls({ 
   sortParam = 'sort',
   directionParam = 'direction',
@@ -34,7 +36,8 @@ export function ResumeSortControls({
 }: ResumeSortControlsProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
-  
+  const pathname = usePathname();
+
   const currentSort = propCurrentSort || (searchParams.get(sortParam) as SortOption) || 'createdAt'
   const direction = propCurrentDirection || (searchParams.get(directionParam) as SortDirection) || 'desc'
 
@@ -53,8 +56,10 @@ export function ResumeSortControls({
     router.push(`?${params.toString()}`)
   }
 
+  // Hide sort controls on mobile screens
+  // Use "hidden sm:flex" to hide on mobile, show on sm+
   return (
-    <div className="flex items-center gap-2">
+    <div className="hidden sm:flex items-center gap-2">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" className="gap-2 bg-white">
@@ -74,14 +79,6 @@ export function ResumeSortControls({
         </DropdownMenuContent>
       </DropdownMenu>
       
-      <Button
-        variant="outline"
-        size="icon"
-        onClick={toggleDirection}
-        className="bg-white"
-      >
-        {direction === 'asc' ? <ArrowUpAZ /> : <ArrowDownAZ />}
-      </Button>
     </div>
   )
-} 
+}
