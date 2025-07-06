@@ -1,7 +1,7 @@
 'use server';
 import { generateObject, LanguageModelV1 } from 'ai';
 import { z } from 'zod';
-import { RESUME_FORMATTER_SYSTEM_MESSAGE } from "@/lib/prompts";
+import { RESUME_FORMATTER_SYSTEM_MESSAGE, TEXT_IMPORT_SYSTEM_MESSAGE } from "@/lib/prompts";
 import { initializeAIClient, type AIConfig } from '@/utils/ai-tools';
 import { sanitizeUnknownStrings } from '@/lib/utils';
 
@@ -12,7 +12,6 @@ export async function formatProfileWithAI(
 ) {
     try {
       const aiClient = initializeAIClient(config);
-  
       
       const { object } = await generateObject({
         model: aiClient as LanguageModelV1,
@@ -37,12 +36,13 @@ export async function formatProfileWithAI(
             education: z.array(z.object({
               school: z.string(),
               degree: z.string(),
-              field: z.string(),
-              date: z.string(),
+              field: z.string().optional(),
+              date: z.string().optional(),
+              description: z.array(z.string()).optional(),
               location: z.string().optional(),
               gpa: z.string().optional(),
               achievements: z.array(z.string()).optional()
-            })).optional(),
+            })).default([]).optional(),
             skills: z.array(z.object({
               category: z.string(),
               items: z.array(z.string())
@@ -57,19 +57,34 @@ export async function formatProfileWithAI(
             })).optional()
           })
         }),
-        prompt: `Please analyze this resume text and extract all relevant information into a structured profile format. 
-                Include all sections (personal info, work experience, education, skills, projects) if present.
-                Ensure all arrays (like description, technologies, achievements) are properly formatted as arrays.
-                For any missing or unclear information, use optional fields rather than making assumptions.
-  
-                Resume Text:
-  ${userMessages}`,
-        system: RESUME_FORMATTER_SYSTEM_MESSAGE.content as string,
-      });
+        prompt: `You are an expert resume parser. Analyze this resume text and extract ALL information into the required structured format.
 
-  
-    //   console.dir(object.content, { depth: null, colors: true });
-      console.log('USING THE MODEL: ', aiClient);
+                CRITICAL REQUIREMENTS:
+                1. Extract EVERY section present in the resume
+                2. Pay special attention to EDUCATION - this is frequently missed
+                3. Look for education under various headings: "Education", "Academic Background", "Qualifications", "Degrees"
+                4. Education information may appear in different formats
+
+                EDUCATION EXTRACTION RULES:
+                - Always include education if ANY educational information is present
+                - Look for: universities, colleges, schools, degrees, certifications
+                - Extract: institution name, degree type, field of study, dates, GPA, achievements
+                - Common patterns: "Bachelor of Science in Computer Science", "BS Computer Science", "University of XYZ"
+                - Include relevant coursework, honors, thesis information in achievements array
+
+                OTHER SECTIONS:
+                - Personal info: name, contact details, location
+                - Work experience: company, position, dates, responsibilities, technologies
+                - Skills: technical skills grouped by category
+                - Projects: personal/professional projects with descriptions and technologies
+
+                Format all arrays properly. If information is unclear, include it rather than omit it.
+                Return empty arrays [] for missing sections, never undefined.
+
+                Resume Text:
+                ${userMessages}`,
+        system: TEXT_IMPORT_SYSTEM_MESSAGE.content as string,
+      });
   
       return sanitizeUnknownStrings(object.content);
     } catch (error) {

@@ -205,7 +205,7 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
               }))
             : [],
           education: Array.isArray(result.education)
-            ? result.education.map((edu: Partial<Education>) => ({
+            ? result.education.map((edu: Partial<Education & { description?: string[] }>) => ({
                 school: edu.school || '',
                 degree: edu.degree || '',
                 field: edu.field || '',
@@ -214,7 +214,9 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                 gpa: edu.gpa ? parseFloat(edu.gpa.toString()) : undefined,
                 achievements: Array.isArray(edu.achievements) 
                   ? edu.achievements 
-                  : []
+                  : Array.isArray(edu.description)
+                    ? edu.description
+                    : []
               }))
             : [],
           skills: Array.isArray(result.skills)
@@ -245,10 +247,13 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
         
         await importResume(cleanedProfile);
         
-        setProfile(prev => ({
-          ...prev,
-          ...cleanedProfile
-        }));
+        setProfile(prev => {
+          const newProfile = {
+            ...prev,
+            ...cleanedProfile
+          };
+          return newProfile;
+        });
         toast.success("Content imported successfully - Don't forget to save your changes", {
           position: "bottom-right",
           className: "bg-gradient-to-r from-emerald-500 to-green-500 text-white border-none",

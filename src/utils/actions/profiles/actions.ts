@@ -34,11 +34,10 @@ export async function updateProfile(data: Partial<Profile>): Promise<Profile> {
 
 export async function importResume(data: Partial<Profile>): Promise<Profile> {
   const supabase = await createClient();
-  const { data: { user }, error: userError } = await supabase.auth.getUser();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
   
-  if (userError || !user) {
-    void userError
-    throw new Error(`Failed to fetch current profile: ${userError?.message || 'Unknown error'}`);
+  if (authError || !user) {
+    throw new Error('User not authenticated');
   }
 
   // First, get the current profile
@@ -88,15 +87,15 @@ export async function importResume(data: Partial<Profile>): Promise<Profile> {
     return currentProfile;
   }
 
-  const { data: profile, error } = await supabase
+  const { data: profile, error: updateError } = await supabase
     .from('profiles')
     .update(updateData)
     .eq('user_id', user.id)
     .select()
     .single();
 
-  if (error) {
-    throw new Error(`Failed to update profile: ${error.message}`);
+  if (updateError) {
+    throw new Error(`Failed to update profile: ${updateError.message}`);
   }
 
   // Revalidate all routes that might display profile data
