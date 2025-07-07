@@ -87,15 +87,21 @@ const Tiptap = memo(
           .replace(/<\/p>/g, '\n\n')
           .replace(/\n\n+/g, '\n\n') // Normalize multiple newlines to just double newlines
           .trim();
-        debouncedOnChange(textWithAsterisks);
+        
+        // Call onChange immediately, then also call the debounced version
+        onChange(textWithAsterisks); // Immediate update for UI feedback
+        debouncedOnChange(textWithAsterisks); // Debounced update for performance
       },
-      immediatelyRender: false,
+      immediatelyRender: true, // Ensure immediate rendering
     });
 
     // Sync editor content when content prop changes
     useEffect(() => {
-      if (editor && content !== editor.getHTML().replace(/<p>/g, '').replace(/<\/p>/g, '').trim()) {
-        editor.commands.setContent(transformContent(content));
+      if (editor) {
+        const editorContent = editor.getHTML().replace(/<p>/g, '').replace(/<\/p>/g, '').trim();
+        if (content !== editorContent) {
+          editor.commands.setContent(transformContent(content));
+        }
       }
     }, [content, editor, transformContent]);
 

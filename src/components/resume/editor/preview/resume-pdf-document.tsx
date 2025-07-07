@@ -291,6 +291,7 @@ const EducationSection = memo(function EducationSection({
             <View>
               <Text style={styles.schoolName}>{processText(edu.school, true)}</Text>
               <Text style={styles.degree}>{processText(`${edu.degree} ${edu.field}`)}</Text>
+              {edu.gpa && <Text style={styles.gpaText}>GPA: {edu.gpa}</Text>}
             </View>
             <Text style={styles.dateRange}>{edu.date}</Text>
           </View>
@@ -560,6 +561,11 @@ function createResumeStyles(settings = {
       fontSize: document_font_size,
       color: '#111827',
     },
+    gpaText: {
+      fontSize: document_font_size,
+      color: '#374151',
+      marginTop: 2,
+    },
     footer: {
       position: 'absolute',
       bottom: 20,
@@ -643,10 +649,10 @@ export const ResumePDFDocument = memo(function ResumePDFDocument({ resume }: Res
     <PDFDocument>
       <PDFPage size="LETTER" style={styles.page}>
         <HeaderSection resume={safeResume} styles={styles} />
-        <SkillsSection skills={safeResume.skills} styles={styles} />
-        <ExperienceSection experiences={safeResume.work_experience} styles={styles} />
         <ProjectsSection projects={safeResume.projects} styles={styles} />
+        <ExperienceSection experiences={safeResume.work_experience} styles={styles} />
         <EducationSection education={safeResume.education} styles={styles} />
+        <SkillsSection skills={safeResume.skills} styles={styles} />
         
         {false && (
           <View style={styles.footer}>
