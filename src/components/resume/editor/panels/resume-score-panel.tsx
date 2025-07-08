@@ -5,7 +5,7 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { generateResumeScore } from "@/utils/actions/resumes/actions";
@@ -55,7 +55,7 @@ export interface ResumeScoreMetrics {
     };
   };
 
-  miscellaneous: {
+  miscellaneous?: {
     [key: string]: {
       score: number;
       reason: string;
@@ -106,6 +106,7 @@ function updateStoredScores(resumeId: string, score: ResumeScoreMetrics) {
 
 export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
   const [isCalculating, setIsCalculating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [scoreData, setScoreData] = useState<ResumeScoreMetrics | null>(() => {
     // Initialize with stored score if available
     return getStoredScores(resume.id);
@@ -121,13 +122,23 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
 
   const handleRecalculate = async () => {
     setIsCalculating(true);
+    setError(null);
     try {
         const MODEL_STORAGE_KEY = 'resumelm-default-model';
-        // const LOCAL_STORAGE_KEY = 'resumelm-api-keys';
+        const API_KEYS_STORAGE_KEY = 'resumelm-api-keys';
   
         const selectedModel = localStorage.getItem(MODEL_STORAGE_KEY);
-        // const storedKeys = localStorage.getItem(LOCAL_STORAGE_KEY);
-        const apiKeys: string[] = [];
+        const storedKeys = localStorage.getItem(API_KEYS_STORAGE_KEY);
+        
+        // Parse stored API keys or use empty array as fallback
+        let apiKeys: ApiKey[] = [];
+        if (storedKeys) {
+          try {
+            apiKeys = JSON.parse(storedKeys);
+          } catch (e) {
+            console.warn('Failed to parse stored API keys');
+          }
+        }
         
       // Call the generateResumeScore action with current resume
       const newScore = await generateResumeScore({
@@ -135,8 +146,8 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
         section_configs: undefined,
         section_order: undefined
       }, {
-        model: selectedModel || '',
-        apiKeys: apiKeys as unknown as ApiKey[]
+        model: selectedModel || 'gemini-2.5-flash-lite-preview-06-17',
+        apiKeys: apiKeys
       });
 
       // Update state and storage
@@ -144,6 +155,8 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
       updateStoredScores(resume.id, newScore as ResumeScoreMetrics);
     } catch (error) {
       console.error("Error generating score:", error);
+      const errorMessage = error instanceof Error ? error.message : "Failed to generate resume score. Please try again.";
+      setError(errorMessage);
     } finally {
       setIsCalculating(false);
     }
@@ -153,6 +166,17 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
   if (!scoreData) {
     return (
       <div className="max-w-3xl mx-auto space-y-4 p-6">
+        {error && (
+          <Card className="border-red-200 bg-red-50">
+            <div className="p-4 flex items-center gap-3">
+              <AlertCircle className="h-5 w-5 text-red-500" />
+              <div>
+                <h3 className="text-sm font-medium text-red-800">Error generating score</h3>
+                <p className="text-sm text-red-600 mt-1">{error}</p>
+              </div>
+            </div>
+          </Card>
+        )}
         <Card className="relative overflow-hidden bg-gradient-to-br from-white/50 to-white/30 backdrop-blur-xl border-white/40">
           <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-transparent to-cyan-500/10" />
           <div className="relative p-8 flex flex-col items-center gap-6 text-center">
@@ -185,6 +209,17 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
   // When we have score data, show the full analysis
   return (
     <div className="max-w-3xl mx-auto space-y-4 p-6">
+      {error && (
+        <Card className="border-red-200 bg-red-50">
+          <div className="p-4 flex items-center gap-3">
+            <AlertCircle className="h-5 w-5 text-red-500" />
+            <div>
+              <h3 className="text-sm font-medium text-red-800">Error generating score</h3>
+              <p className="text-sm text-red-600 mt-1">{error}</p>
+            </div>
+          </div>
+        </Card>
+      )}
       <div className="flex justify-end">
         <Button
           onClick={handleRecalculate}
@@ -250,7 +285,10 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
       {Object.entries({
         Completeness: scoreData.completeness,
         "Impact Score": scoreData.impactScore,
-        "Role Match": scoreData.roleMatch
+        "Role Match": scoreData.roleMatch,
+        ...(scoreData.miscellaneous && Object.keys(scoreData.miscellaneous).length > 0 && {
+          "Additional Metrics": scoreData.miscellaneous
+        })
       }).map(([title, metrics]) => (
         <MetricsCard key={title} title={title} metrics={metrics} />
       ))}
@@ -259,13 +297,24 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
 }
 
 function MetricsCard({ title, metrics }: { title: string; metrics: Record<string, { score: number; reason: string }> }) {
+  // Handle case where metrics might be undefined or null
+  if (!metrics || typeof metrics !== 'object') {
+    return null;
+  }
+
   return (
     <Card className="bg-gradient-to-br from-white/50 to-white/30 backdrop-blur-xl border-white/40 p-6">
       <h2 className="text-xl font-semibold mb-6 text-teal-700">{title}</h2>
       <div className="grid gap-8">
-        {Object.entries(metrics).map(([label, data]) => (
-          <ScoreItem key={label} label={label} {...data} />
-        ))}
+        {Object.entries(metrics).map(([label, data]) => {
+          // Additional safety check for each metric
+          if (!data || typeof data !== 'object' || typeof data.score !== 'number' || typeof data.reason !== 'string') {
+            return null;
+          }
+          return (
+            <ScoreItem key={label} label={label} {...data} />
+          );
+        })}
       </div>
     </Card>
   );

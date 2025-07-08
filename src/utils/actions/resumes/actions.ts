@@ -459,35 +459,67 @@ export async function generateResumeScore(
   resume: Resume, 
   config?: AIConfig
 ) {
-  const aiClient = initializeAIClient(config);
-
-
-  console.log("RESUME IS", resume);
-  // console.log("AICLIENT IS", aiClient);
-
   try {
+    const aiClient = initializeAIClient(config);
+    console.log("RESUME IS", resume);
+
     const { object } = await generateObject({
       model: aiClient,
       schema: resumeScoreSchema,
       prompt: `
-      Generate a score for this resume: ${JSON.stringify(resume)}
-      MUST include a 'miscellaneous' field with 2-3 metrics following this format:
-      {
-        "metricName": {
-          "score": number,
-          "reason": "string explanation"
+      You are a professional resume reviewer. Analyze this resume and provide a comprehensive score breakdown.
+
+      Resume to analyze: ${JSON.stringify(resume)}
+
+      Please provide scores for:
+      
+      1. Overall Score (0-100): A holistic assessment
+      2. Completeness: 
+         - Contact Information: Check if email, phone, location are present
+         - Detail Level: Assess if work experience, skills, and education have sufficient detail
+      3. Impact Score:
+         - Active Voice Usage: Look for action verbs and active voice
+         - Quantified Achievements: Check for numbers, percentages, and measurable results
+      4. Role Match:
+         - Skills Relevance: How relevant are the listed skills
+         - Experience Alignment: How well does experience match typical job requirements
+         - Education Fit: How appropriate is the education level
+      5. Miscellaneous: Provide exactly 3 additional metrics such as:
+         - keywordOptimization: Use of industry keywords
+         - formatting: Visual appeal and structure
+         - lengthAppropriate: Appropriate length for experience level
+
+      Each score should be 0-100 with a clear reason explaining the rating.
+      Provide 3-5 overall improvement suggestions.
+      
+      Be specific and constructive in your feedback.
+      
+      IMPORTANT: Make sure to include the miscellaneous section with exactly 3 metrics in the following format:
+      "miscellaneous": {
+        "keywordOptimization": {
+          "score": 85,
+          "reason": "Good use of industry keywords but could add more variation"
+        },
+        "formatting": {
+          "score": 90,
+          "reason": "Clean layout and professional appearance"
+        },
+        "lengthAppropriate": {
+          "score": 75,
+          "reason": "Good length for experience level but could be more concise"
         }
-      }
-      Example: 
-      "keywordOptimization": {
-        "score": 85,
-        "reason": "Good use of industry keywords but could add more variation"
       }
       `
     });
 
-    // console.log("THE OUTPUTTED object", object);
-    return object
+    console.log("THE OUTPUTTED object", object);
+    
+    // Validate the response has required fields
+    if (!object.overallScore || !object.completeness || !object.impactScore || !object.roleMatch) {
+      throw new Error('Invalid AI response: missing required score fields');
+    }
+    
+    return object;
   } catch (error) {
     console.error('Error SCORING resume:', error);
     throw error;
