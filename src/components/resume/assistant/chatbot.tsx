@@ -74,7 +74,7 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
   const router = useRouter();
   const [accordionValue, setAccordionValue] = React.useState<string>("");
   const [apiKeys, setApiKeys] = React.useState<ApiKey[]>([]);
-  const [defaultModel, setDefaultModel] = React.useState<string>('gemini-1.5-flash-8b');
+  const [defaultModel, setDefaultModel] = React.useState<string>('gemini-2.5-flash-lite-preview-06-17');
   const [originalResume, setOriginalResume] = React.useState<Resume | null>(null);
   const [isInitialLoading, setIsInitialLoading] = React.useState(false);
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null);

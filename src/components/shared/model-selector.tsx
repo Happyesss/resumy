@@ -41,8 +41,8 @@ const PROVIDERS: {
 ]
 
 const AI_MODELS: AIModel[] = [
-  // Use Gemini 1.5 Flash 8B
-  { id: 'gemini-1.5-flash-8b', name: 'Gemini 1.5 Flash 8B', provider: 'google', unstable: false }
+  // Use Gemini 2.5 Flash-Lite Preview 06-17
+  { id: 'gemini-2.5-flash-lite-preview-06-17', name: 'Gemini 2.5 Flash-Lite Preview 06-17', provider: 'google', unstable: false }
 ]
 
 interface ModelSelectorProps {

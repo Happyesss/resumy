@@ -74,7 +74,7 @@ export function ApiKeyErrorAlert({ error, router }: ApiKeyErrorAlertProps) {
                   ? "There was an issue processing the response. Please try your request again."
                   : ((error as Error)?.message?.includes('Google API key not found') ||
                       JSON.stringify(error).includes('Google API key not found'))
-                      ? "Google API key not found. Please add your Google API key in the profile settings to use Gemini 1.5 Flash 8B."
+                      ? "Google API key not found. Please add your Google API key in the profile settings to use Gemini 2.5 Flash-Lite Preview 06-17."
                       : ((error as Error)?.message?.includes('invalid_api_key') ||
                           JSON.stringify(error).includes('invalid_api_key'))
                           ? "Your Google API key is invalid. Please check your key and try again."
