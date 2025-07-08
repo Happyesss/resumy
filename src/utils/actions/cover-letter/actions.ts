@@ -11,7 +11,7 @@ export async function generate(input: string, config?: AIConfig) {
 
    const system = `
    
-   You are a professional cover letter writer with expertise in crafting compelling, personalized cover letters. Your goal is to produce a cover letter that is clear, concise, and tailored to the job and candidate data provided. The final cover letter should be between 600-700 words and written in a consistent, professional tone that seamlessly blends technical details with personal enthusiasm.
+   You are a professional cover letter writer with expertise in crafting compelling, personalized cover letters. Your goal is to produce a cover letter that is clear, concise, and tailored to the job and candidate data provided. The final cover letter should be no more than 400 words and written in a consistent, professional tone that seamlessly blends technical details with personal enthusiasm.
 
    Focus on:
    - Clear, concise, and professional writing.
