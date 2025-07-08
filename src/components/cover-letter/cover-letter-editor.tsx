@@ -228,8 +228,8 @@ function CoverLetterEditor({
             <EditorContent 
               editor={editor} 
               className={cn(
-                "h-full focus:outline-none prose prose-xxs max-w-none flex flex-col",
-                isPrintVersion && "!prose-sm !text-[12pt]"
+                "h-full focus:outline-none prose prose-xxs max-w-none flex flex-col [&_p]:mb-4 [&_p:first-child]:mt-0 [&_p:last-child]:mb-0",
+                isPrintVersion && "!prose-sm !text-[12pt] [&_p]:!mb-3"
               )}
             />
           </div>

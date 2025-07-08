@@ -19,39 +19,43 @@ export async function generate(input: string, config?: AIConfig) {
    - Matching the candidate’s qualifications to the job requirements.
    - Maintaining authenticity by using only the information available in the job or resume data.
    - Enforcing the target word count without omitting key details.
-   - **Distinctly separating each section as its own paragraph** — output each paragraph with exactly one <br /> tag at the end, with no extra spacing or additional line breaks.
+   - **Creating properly formatted paragraphs with standard spacing.**
 
    Ensure your output is in HTML format (do NOT start with HTML tags) and strictly follow these formatting rules:
 
    CRITICAL FORMATTING REQUIREMENTS – YOU MUST FOLLOW THESE EXACTLY:
    1. Do NOT use any square brackets [] in the output.
    2. Only include information that is available in the job or resume data.
-   3. Each piece of information MUST be on its own separate line using <br /> tags.
+   3. Use <p> tags for paragraphs - avoid excessive <br /> tags.
    4. Use actual values directly, not placeholders.
-   5. Format the header EXACTLY like this (but without the brackets, using real data):
+   5. Format the header as a single paragraph:
 
       <p>
       [Date]<br />
       [Company Name]<br />
       [Company Address]<br />
-      [City, Province/State, Country]<br />
+      [City, Province/State, Country]
       </p>
-      - If certain data (like company address) is missing, adjust the header accordingly without leaving placeholders.
-   6. Format the signature EXACTLY like this (but without the brackets, using real data):
-      <p>
-      Sincerely,<br /><br />
-      [Full Name]<br />
+      
+   6. Format the salutation as its own paragraph:
+      <p>Dear Hiring Manager,</p>
+      
+   7. Each main content section should be its own <p> tag with no extra breaks.
+   
+   8. Format the signature properly:
+      <p>Sincerely,<br /><br />
+      [Full Name]
       </p>
       
       <p>
       [Email Address]<br />
       [Phone Number]<br />
-      [LinkedIn URL]<br />
+      [LinkedIn URL]
       </p>
-   7. NEVER combine multiple pieces of information on the same line; ALWAYS use <br /> tags between each piece.
-   8. Add an extra <br /> after the date and after "Sincerely,".
+   
+   9. Do NOT add empty paragraphs or excessive spacing between sections.
 
-   Divide the cover letter into the following sections, ensuring **each section is output as a separate paragraph** (use <p> tags or <br /> for clear breaks):
+   Divide the cover letter into the following sections, ensuring **each section is output as a separate <p> tag**:
 
    1. **Opening Paragraph:**  
       Start with a strong hook that demonstrates your understanding of the company's mission and challenges. Express genuine enthusiasm for the position and how it aligns with your career goals. Mention any personal connection to the company or industry. (4-5 sentences)
@@ -77,10 +81,10 @@ export async function generate(input: string, config?: AIConfig) {
    - Ensure each paragraph offers unique insights and does not repeat content from other sections.
    - Maintain a consistent, professional tone throughout the letter.
    - Use only the information provided in the job and resume data; do not introduce unsupported details.
-   - **Each section must be distinctly separated from the others. Do not output the cover letter as one continuous block.**
+   - **Each section must be formatted as a single <p> tag with no extra spacing.**
    - If any data fields (like company address or LinkedIn URL) are missing, adjust the output accordingly without leaving placeholders.
 
-   Generate the cover letter as specified above, ensuring that each section is clearly separated into distinct paragraphs.
+   Generate the cover letter as specified above, ensuring proper paragraph formatting with no excessive spacing.
 
    
    `;

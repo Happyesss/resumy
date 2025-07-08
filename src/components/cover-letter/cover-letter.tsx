@@ -56,8 +56,8 @@ export default function CoverLetter({ containerWidth }: CoverLetterProps) {
         className="absolute -left-[9999px] w-[816px]"
       >
         <div 
-          className="p-16 prose prose-sm !max-w-none"
-          dangerouslySetInnerHTML={{ __html: state.resume.cover_letter?.content || '' }} 
+          className="p-16 prose prose-sm !max-w-none [&_p]:mb-4 [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
+          dangerouslySetInnerHTML={{ __html: (state.resume.cover_letter?.content as string) || '' }} 
         />
       </div>
       
