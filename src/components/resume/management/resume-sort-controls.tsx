@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { ArrowDownAZ, ArrowUpAZ, Calendar } from "lucide-react"
+import { Briefcase, ArrowDownAZ, Calendar } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 
 export type SortOption = 'name' | 'jobTitle' | 'createdAt'
@@ -15,7 +15,7 @@ export type SortDirection = 'asc' | 'desc'
 
 const sortOptions = [
   { value: 'name', label: 'Name', icon: ArrowDownAZ },
-  { value: 'jobTitle', label: 'Job Title', icon: ArrowDownAZ },
+  { value: 'jobTitle', label: 'Job Title', icon: Briefcase },
   { value: 'createdAt', label: 'Creation Date', icon: Calendar },
 ]
 

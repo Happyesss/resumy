@@ -3,8 +3,9 @@ import { Hero } from "@/components/landing/Hero";
 import { VideoShowcase } from "@/components/landing/VideoShowcase";
 import { FreeAnnouncement } from "@/components/landing/FreeAnnouncement";
 import { FAQ } from "@/components/landing/FAQ";
-import { NavLinks } from "@/components/layout/nav-links";
+import { NavLinks, MobileNavLinks } from "@/components/layout/nav-links";
 import { Logo } from "@/components/ui/logo";
+import { AuthDialog } from "@/components/auth/auth-dialog";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
@@ -64,22 +65,62 @@ export default async function Page() {
       />
     
       <main aria-label="ResumeLM landing page" className="bg-black ">
-        {/* Simplified Navigation */}
-        <nav aria-label="Main navigation" className="border-b border-gray-600 fixed top-0 w-full z-[1000] transition-all duration-300 shadow-sm">
+        {/* Enhanced Navigation */}
+        <nav aria-label="Main navigation" className="bg-black border-b border-gray-800 fixed top-0 w-full z-[1000] transition-all duration-300 shadow-lg backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
+              {/* Left - Logo */}
               <div className="flex items-center gap-2">
                 <Logo />
               </div>
-              <NavLinks />
+              
+              {/* Middle - Navigation Links */}
+              <div className="hidden md:flex flex-1 justify-center">
+                <NavLinks />
+              </div>
+              
+              {/* Right - Auth Buttons */}
+              <div className="flex items-center gap-3">
+                {/* Desktop Auth Buttons */}
+                <div className="hidden md:flex items-center gap-3">
+                  <AuthDialog defaultTab="login">
+                    <button className="px-4 py-2 text-sm font-medium text-white border border-white hover:bg-white hover:text-black transition-all duration-200 rounded-lg">
+                      Login
+                    </button>
+                  </AuthDialog>
+                  <AuthDialog defaultTab="signup">
+                    <button className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg">
+                      Sign Up
+                    </button>
+                  </AuthDialog>
+                </div>
+                
+                {/* Mobile Auth Buttons and Menu */}
+                <div className="md:hidden flex items-center gap-2">
+                  <AuthDialog defaultTab="login">
+                    <button className="px-3 py-1.5 text-xs font-medium text-white border border-white hover:bg-white hover:text-black transition-all duration-200 rounded-md">
+                      Login
+                    </button>
+                  </AuthDialog>
+                  <AuthDialog defaultTab="signup">
+                    <button className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium rounded-md transition-all duration-200">
+                      Sign Up
+                    </button>
+                  </AuthDialog>
+                  {/* Mobile Menu - moved here */}
+                  <MobileNavLinks />
+                </div>
+              </div>
             </div>
           </div>
         </nav>
         
+        {/* Hero Section - Full width */}
+        <Hero />
+        
         {/* Main content */}
         <div className="relative z-10 mx-auto px-4 sm:px-6 lg:px-24 flex flex-col justify-center">
-          {/* Hero Section */}
-          <Hero />
+          {/* Other sections will go here if needed */}
         </div>
         
         {/* Video Showcase Section */}

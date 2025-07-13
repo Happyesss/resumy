@@ -26,6 +26,7 @@ interface TabButtonProps {
 
 interface AuthDialogProps {
   children?: React.ReactNode;
+  defaultTab?: "login" | "signup";
 }
 
 function TabButton({ value, children }: TabButtonProps) {
@@ -109,12 +110,20 @@ function SocialAuth() {
   );
 }
 
-export function AuthDialog({ children }: AuthDialogProps) {
+export function AuthDialog({ children, defaultTab = "login" }: AuthDialogProps) {
   const [open, setOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"login" | "signup">("login");
+  const [activeTab, setActiveTab] = useState<"login" | "signup">(defaultTab);
+
+  // Reset to defaultTab when dialog opens
+  const handleOpenChange = (newOpen: boolean) => {
+    if (newOpen) {
+      setActiveTab(defaultTab);
+    }
+    setOpen(newOpen);
+  };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
 
       {/* AUTH DIALOG TRIGGER BUTTON */}
       <DialogTrigger asChild>
@@ -146,20 +155,10 @@ export function AuthDialog({ children }: AuthDialogProps) {
         "
       >
         <AuthProvider>
-          {/* Header Section */}
-          <div className="px-6 py-3 border-b border-purple-400/10 bg-black">
-            <DialogTitle className="sr-only">Authentication</DialogTitle>
-            <div className="flex items-center justify-center">
-              <div className="flex items-center">
-                <div className="flex flex-col">
-                  <Logo className="text-xl text-white" asLink={false} />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Tabs Section */}
-          <div className="px-6 pt-4">
+          <DialogTitle className="sr-only">Authentication</DialogTitle>
+          <DialogDescription className="sr-only">Sign in to your account or create a new account</DialogDescription>
+          {/* Tabs Section - Header removed */}
+          <div className="px-6 pt-6">
             <Tabs 
               value={activeTab} 
               onValueChange={(value) => setActiveTab(value as "login" | "signup")} 

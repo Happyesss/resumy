@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { countResumes } from "@/utils/actions/resumes/actions";
-import {User } from "lucide-react";
+import { User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { WelcomeDialog } from "@/components/dashboard/welcome-dialog";
@@ -18,7 +18,7 @@ export default async function Home({
 }) {
 
   const supabase = await createClient();
-  
+
 
   const {
     data: { user },
@@ -28,7 +28,7 @@ export default async function Home({
 
   const userId = user?.id;
   void userId;
-  
+
   const params = await searchParams;
   const isNewSignup = params?.type === 'signup' && params?.token_hash;
 
@@ -63,8 +63,8 @@ export default async function Home({
         case 'createdAt':
         default:
           return modifier * (new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-      
-    }
+
+      }
     });
   }
 
@@ -72,7 +72,7 @@ export default async function Home({
   // Sort both resume lists
   const baseResumes = sortResumes(unsortedBaseResumes, baseSort, baseDirection);
   const tailoredResumes = sortResumes(unsortedTailoredResumes, tailoredSort, tailoredDirection);
-  
+
   // Count resumes for base and tailored sections
   const baseResumesCount = await countResumes('base');
   const tailoredResumesCount = await countResumes('tailored');
@@ -103,8 +103,16 @@ export default async function Home({
   }
 
   return (
-    
-    <main className="min-h-screen relative sm:pb-12 pb-40 bg-black">
+
+    <main
+      className="min-h-screen relative sm:pb-12 pb-40 bg-black"
+      style={{
+        backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.4) 1.5px, transparent 1.5px)`,
+        backgroundSize: '40px 40px',
+        backgroundPosition: '0 -1.2rem',
+        backgroundAttachment: 'fixed'
+      }}
+    >
 
       {/* Welcome Dialog for New Signups */}
       <WelcomeDialog isOpen={!!isNewSignup} />
@@ -112,17 +120,21 @@ export default async function Home({
         <div className="pl-2 sm:pl-0 sm:container sm:max-none  max-w-7xl mx-auto  lg:px-8 md:px-8 sm:px-6 pt-4 ">
           <div className="mb-6 space-y-4">
             <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-2xl font-semibold bg-gradient-to-r text-slate-100">
+              <div
+                className="p-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-[0_8px_24px_rgba(0,0,0,0.2)]"
+                style={{
+                  WebkitBackdropFilter: 'blur(12px)',
+                  backdropFilter: 'blur(12px)',
+                }}
+              >
+                <h1 className="text-2xl font-semibold bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
                   Hi there, {profile.first_name}
                 </h1>
-                <p className="text-sm text-muted-foreground mt-0.5">
+                <p className="text-sm text-slate-300 mt-0.5">
                   Welcome to your resume dashboard
                 </p>
               </div>
             </div>
-
-            
 
             {/* Resume Bookshelf */}
             <div className="">
