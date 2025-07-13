@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { User, Linkedin, Briefcase, GraduationCap, Wrench, FolderGit2, Upload, Save, Trash2, PanelLeft} from "lucide-react";
+import { User, Briefcase, GraduationCap, Wrench, FolderGit2, Upload, Save, Trash2, PanelLeft} from "lucide-react";
 
 import {
   Dialog,
@@ -363,16 +363,8 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                 <div className="bg-black/70 backdrop-blur-md rounded-lg border border-gray-500 shadow-sm mt-4 mb-4 px-4 py-3 flex flex-col gap-3">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="inline-block w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 shadow-sm shadow-purple-500/20" />
-                    <span className="font-semibold text-sm text-gray-200">Import Options</span>
+                    <span className="font-semibold text-sm text-gray-200">Import From Resume</span>
                   </div>
-                  <Button
-                    variant="outline"
-                    onClick={handleLinkedInImport}
-                    className="w-full flex items-center gap-2 bg-[#0077b5] text-white border-[#0077b5] hover:bg-[#005983] hover:border-[#005983] py-2 px-3 text-sm font-medium rounded-md transition-all"
-                  >
-                    <Linkedin className="h-4 w-4 text-white" />
-                    LinkedIn Import
-                  </Button>
                   <Dialog open={isResumeDialogOpen} onOpenChange={setIsResumeDialogOpen}>
                     <DialogTrigger asChild>
                       <Button
@@ -708,22 +700,12 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
           </SheetHeader>
           <div className="flex flex-col h-full">
             {/* Import Options - Mobile */}
-            <div className="bg-black/70 backdrop-blur-md border-b border-gray-500 shadow-sm px-4 py-3 flex flex-col gap-3 mt-4">
+            <div className="bg-black/70 backdrop-blur-md border-b border-gray-500 shadow-sm px-4 py-3 flex flex-col gap-3 mt-8 mb-4">
               <div className="flex items-center gap-2 mb-2">
                 <span className="inline-block w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 shadow-sm shadow-purple-500/20" />
-                <span className="font-semibold text-sm text-white">Import Options</span>
+                <span className="font-semibold text-sm text-white">Import From Resume</span>
               </div>
-              <Button
-                variant="outline"
-                onClick={() => {
-                  handleLinkedInImport();
-                  setIsNavOpen(false);
-                }}
-                className="w-full flex items-center gap-2 text-[#0077b5] border-[#0077b5]/30 hover:bg-[#0077b5]/10 hover:border-[#0077b5]/50 py-2 px-3 text-sm font-medium rounded-md transition-all"
-              >
-                <Linkedin className="h-4 w-4" />
-                LinkedIn Import
-              </Button>
+              
               <Button
                 variant="outline"
                 onClick={() => {

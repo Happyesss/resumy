@@ -3,7 +3,7 @@
 import { Profile } from "@/lib/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Mail, Phone, MapPin, Globe, Linkedin, Github, User } from "lucide-react";
+import { Mail, Phone, MapPin, Globe, Github, User } from "lucide-react";
 
 interface ProfileBasicInfoFormProps {
   profile: Profile;
@@ -156,7 +156,7 @@ export function ProfileBasicInfoForm({ profile, onChange }: ProfileBasicInfoForm
               <div className="relative group flex-1">
                 <div className="absolute right-3 top-1/2 -translate-y-1/2">
                   <div className="p-1.5 rounded-full bg-blue-400/20 transition-transform duration-300 group-focus-within:scale-110">
-                    <Linkedin className="h-4 w-4 text-blue-400" />
+                    {/* Linkedin icon removed */}
                   </div>
                 </div>
                 <Input

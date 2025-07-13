@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Github, Linkedin, Mail, MapPin } from "lucide-react";
+import { Github, Mail, MapPin } from "lucide-react";
 
 export function MockResume() {
   return (
@@ -26,7 +26,7 @@ export function MockResume() {
             <span>github.com/davidzhang-dev</span>
           </div>
           <div className="flex items-center gap-1">
-            <Linkedin className="w-2.5 h-2.5" />
+            {/* Linkedin icon removed */}
             <span>linkedin.com/in/davidzhang-dev</span>
           </div>
         </div>

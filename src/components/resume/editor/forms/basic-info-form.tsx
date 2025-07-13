@@ -3,7 +3,7 @@
 import { Profile, Resume } from "@/lib/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Mail, Phone, MapPin, Globe, Linkedin, Github, User, UserCircle2, LucideIcon } from "lucide-react";
+import { Mail, Phone, MapPin, Globe, Github, User, UserCircle2, LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useResumeContext } from '../resume-editor-context';
 import { memo, useCallback } from 'react';
@@ -173,7 +173,7 @@ export const BasicInfoForm = memo(function BasicInfoFormComponent({
                 field="linkedin_url"
                 value={resume.linkedin_url || ''}
                 label="LINKEDIN"
-                icon={Linkedin}
+                icon={User}
                 placeholder="https://linkedin.com/in/username"
                 type="url"
               />
@@ -192,4 +192,4 @@ export const BasicInfoForm = memo(function BasicInfoFormComponent({
       </Card>
     </div>
   );
-}, areBasicInfoPropsEqual); 
+}, areBasicInfoPropsEqual);
