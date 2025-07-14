@@ -294,6 +294,10 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
       if (trigger) {
         (trigger as HTMLElement).focus();
       }
+      document.body.classList.remove('no-scroll');
+    } else {
+      document.body.classList.add('no-scroll');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     setOpen(newOpen);
     if (newOpen) {
@@ -364,7 +368,7 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
         {children}
       </DialogTrigger>
       <DialogContent className={cn(
-        "sm:max-w-[520px] p-0 max-h-[85vh] overflow-y-auto",
+        "dialog-content sm:max-w-[520px] p-0 max-h-[85vh] overflow-y-auto",
         "bg-black border border-gray-800 shadow-lg rounded-2xl",
         "relative",
       )}>
@@ -381,6 +385,18 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
             color: #ef4444 !important;
             width: 1.5rem !important;
             height: 1.5rem !important;
+          }
+          body.no-scroll {
+            overflow: hidden !important;
+          }
+          .dialog-content {
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            z-index: 1000 !important;
+            max-height: 85vh !important;
+            overflow-y: auto !important;
           }
         `}</style>
         <style jsx global>{`
