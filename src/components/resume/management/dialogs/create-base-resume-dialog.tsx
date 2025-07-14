@@ -446,10 +446,10 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
                   Tailor your resume for your career goals
                 </p>
               </div>
-              {/* Medium Form Section */}
-              <div className="max-w-md mx-auto">
-                <div className="bg-neutral-900 rounded-2xl p-6 shadow-xl border border-gray-800 backdrop-blur-sm">
-                  <div className="space-y-4">
+              {/* Smaller Form Section */}
+              <div className="max-w-xs mx-auto">
+                <div className="bg-neutral-900 rounded-xl p-4 shadow border border-gray-800 backdrop-blur-sm">
+                  <div className="space-y-3">
                     <Label htmlFor="target-role" className="text-sm font-semibold text-gray-200 flex items-center gap-2">
                       <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
                       <span>Role</span>
@@ -468,7 +468,7 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
                           }
                         }}
                         className={cn(
-                          "h-12 text-base px-4 bg-neutral-950 border-2 border-gray-800 rounded-xl text-white transition-all duration-300",
+                          "h-10 text-base px-3 bg-neutral-950 border-2 border-gray-800 rounded-lg text-white transition-all duration-300",
                           "focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 focus:bg-neutral-900",
                           "group-hover:border-purple-400",
                           "placeholder:text-gray-400",
@@ -477,7 +477,7 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
                         required
                         autoFocus
                       />
-                      <div className="absolute right-4 top-1/2 -translate-y-1/2 text-purple-400 opacity-0 group-focus-within:opacity-100 transition-opacity">
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2 text-purple-400 opacity-0 group-focus-within:opacity-100 transition-opacity">
                         <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
                       </div>
                     </div>
@@ -722,4 +722,4 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
       </DialogContent>
     </Dialog>
   );
-} 
+}
