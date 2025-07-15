@@ -4,6 +4,7 @@ import { Resume } from "@/lib/types";
 import { Document as PDFDocument, Page as PDFPage, Text, View, StyleSheet, Link, Image } from '@react-pdf/renderer';
 import { memo, useMemo, useCallback } from 'react';
 import type { ReactNode } from 'react';
+import { ClassicResumePDF } from '../../templates/classic-resume-pdf';
 
 // Base styles that don't depend on resume settings
 const baseStyles = {
@@ -588,7 +589,7 @@ interface ResumePDFDocumentProps {
   variant?: 'base' | 'tailored';
 }
 
-export const ResumePDFDocument = memo(function ResumePDFDocument({ resume }: ResumePDFDocumentProps) {
+export const ResumePDFDocument = memo(function ResumePDFDocument({ resume, variant = 'base' }: ResumePDFDocumentProps) {
   // Ensure resume data is properly initialized with safe defaults
   const safeResume = useMemo(() => {
     if (!resume) {
@@ -645,6 +646,14 @@ export const ResumePDFDocument = memo(function ResumePDFDocument({ resume }: Res
   };
   const styles = useMemo(() => createResumeStyles(defaultResumeStyles), []);
 
+  // Check template and render appropriate component
+  if (safeResume.template && (safeResume.template.includes('classic') || safeResume.template === 'classic-1')) {
+    return <ClassicResumePDF resume={safeResume} variant={variant} />;
+  }
+
+  // Default template
+
+  // Default template
   return (
     <PDFDocument>
       <PDFPage size="LETTER" style={styles.page}>

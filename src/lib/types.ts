@@ -84,6 +84,7 @@ export interface Resume {
   };
   has_cover_letter: boolean;
   cover_letter?: Record<string, unknown> | null;
+  template?: 'default' | 'classic' | 'classic-1' | 'modern' | 'modern-1' | 'modern-2' | 'creative' | 'creative-1' | 'creative-2' | 'minimal' | 'minimal-1';
 }
 
 // Document settings have been removed

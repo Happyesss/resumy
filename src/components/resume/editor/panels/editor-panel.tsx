@@ -19,6 +19,7 @@ import {
 } from '../dynamic-components';
 import { ResumeEditorTabs } from "../header/resume-editor-tabs";
 import ResumeScorePanel from "./resume-score-panel";
+import { TemplatesPanel } from "./templates-panel";
 
 
 
@@ -145,6 +146,19 @@ export function EditorPanel({
                     profile={profile}
                   />
                 </Suspense>
+              </TabsContent>
+
+              {/* Templates Form */}
+              <TabsContent value="templates">
+                <TemplatesPanel
+                  resume={resume}
+                  onTemplateSelect={(templateId) => {
+                    // Handle template selection logic here
+                    console.log('Selected template:', templateId);
+                    // Update the resume template field
+                    onResumeChange('template', templateId as Resume['template']);
+                  }}
+                />
               </TabsContent>
 
               {/* Document Settings removed */}

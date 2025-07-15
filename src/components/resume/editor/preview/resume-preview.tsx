@@ -51,6 +51,7 @@ function generateResumeHash(resume: Resume): string {
       education: resume.education,
     },
     settings: {},
+    template: resume.template, // Include template in hash
   });
   
   // Simple hash function
