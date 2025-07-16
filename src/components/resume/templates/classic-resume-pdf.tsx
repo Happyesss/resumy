@@ -349,42 +349,6 @@ export const ClassicResumePDF = memo(function ClassicResumePDF({ resume, variant
     );
   };
 
-  const renderLeadership = () => {
-    const hasAchievements = resume.education?.some(edu => edu.achievements && edu.achievements.length > 0);
-    if (!hasAchievements) return null;
-
-    return (
-      <View>
-        <Text style={classicStyles.sectionTitle}>Leadership / Extracurricular</Text>
-        {resume.education.map((edu, index) => (
-          edu.achievements && edu.achievements.length > 0 && (
-            <View key={index} style={classicStyles.entryContainer}>
-              <View style={classicStyles.entryHeader}>
-                <View style={classicStyles.entryLeft}>
-                  <Text style={classicStyles.company}>Activities at {edu.school}</Text>
-                  <Text style={classicStyles.position}>Student Leadership</Text>
-                </View>
-                <View style={classicStyles.entryRight}>
-                  <Text>{edu.date}</Text>
-                </View>
-              </View>
-              <View style={classicStyles.bulletList}>
-                {edu.achievements.map((achievement, achIndex) => (
-                  <View key={achIndex} style={classicStyles.bulletItem}>
-                    <Text style={classicStyles.bullet}>• </Text>
-                    <Text style={classicStyles.bulletText}>
-                      {parseMarkdownText(achievement)}
-                    </Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-          )
-        ))}
-      </View>
-    );
-  };
-
   return (
     <PDFDocument>
       <PDFPage size="LETTER" style={classicStyles.page}>
@@ -411,8 +375,7 @@ export const ClassicResumePDF = memo(function ClassicResumePDF({ resume, variant
         {/* Technical Skills */}
         {renderTechnicalSkills()}
 
-        {/* Leadership */}
-        {renderLeadership()}
+        {/* Leadership / Extracurricular section removed */}
       </PDFPage>
     </PDFDocument>
   );
