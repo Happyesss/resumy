@@ -4,70 +4,92 @@ import { Resume } from "@/lib/types";
 import { Document as PDFDocument, Page as PDFPage, Text, View, StyleSheet, Link } from '@react-pdf/renderer';
 import { memo } from 'react';
 
+// Utility function to parse markdown and render mixed text with bold formatting
+const parseMarkdownText = (text: string) => {
+  if (!text) return null;
+  
+  // Split by **bold** patterns while preserving the delimiters
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  
+  return parts.map((part, index) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      // Remove the ** and make it bold
+      const boldText = part.slice(2, -2);
+      return (
+        <Text key={index} style={{ fontFamily: 'Times-Bold' }}>
+          {boldText}
+        </Text>
+      );
+    }
+    return <Text key={index}>{part}</Text>;
+  });
+};
+
 const classicStyles = StyleSheet.create({
   page: {
     fontFamily: 'Times-Roman',
     fontSize: 11,
-    paddingTop: 40,
-    paddingBottom: 40,
-    paddingHorizontal: 40,
-    lineHeight: 1.4,
+    paddingTop: 30,
+    paddingBottom: 30,
+    paddingHorizontal: 30,
+    lineHeight: 1.2,
   },
   header: {
     textAlign: 'center',
-    marginBottom: 20,
-    borderBottomWidth: 2,
-    borderBottomColor: '#000000',
-    paddingBottom: 10,
+    paddingBottom: 4,
   },
   name: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: 'Times-Bold',
     textTransform: 'uppercase',
-    letterSpacing: 2,
-    marginBottom: 5,
+    letterSpacing: 1.5,
+    marginBottom: 4,
+    textAlign: 'center',
   },
   contactInfo: {
-    fontSize: 10,
+    fontSize: 9,
     flexDirection: 'row',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    gap: 10,
-    marginBottom: 5,
+    marginBottom: 3,
+    textAlign: 'center',
   },
   contactItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    marginHorizontal: 3,
   },
   location: {
-    fontSize: 10,
+    fontSize: 9,
     fontStyle: 'italic',
-    marginTop: 3,
+    marginTop: 2,
+    textAlign: 'center',
   },
   sectionTitle: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: 'Times-Bold',
     borderBottomWidth: 1,
     borderBottomColor: '#000000',
-    paddingBottom: 2,
-    marginTop: 15,
-    marginBottom: 8,
+    paddingBottom: 1,
+    marginTop: 10,
+    marginBottom: 6,
   },
   entryContainer: {
-    marginBottom: 10,
+    marginBottom: 8,
   },
   entryHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 2,
+    marginBottom: 1,
   },
   entryLeft: {
     flex: 1,
   },
   entryRight: {
     textAlign: 'right',
-    fontSize: 10,
+    fontSize: 9,
+    width: 120,
+    color: '#000000',
+    fontFamily: 'Times-Bold',
   },
   institution: {
     fontFamily: 'Times-Bold',
@@ -75,8 +97,8 @@ const classicStyles = StyleSheet.create({
   },
   degree: {
     fontStyle: 'italic',
-    fontSize: 11,
-    marginTop: 1,
+    fontSize: 10,
+    marginTop: 0,
   },
   company: {
     fontFamily: 'Times-Bold',
@@ -84,28 +106,32 @@ const classicStyles = StyleSheet.create({
   },
   position: {
     fontStyle: 'italic',
-    fontSize: 11,
-    marginTop: 1,
+    fontSize: 10,
+    marginTop: 0,
   },
   entryLocation: {
-    fontSize: 10,
-    marginTop: 1,
+    fontSize: 9,
+    marginTop: 0,
+    fontFamily: 'Times-Roman',
   },
   bulletList: {
-    marginTop: 5,
+    marginTop: 2,
+    marginLeft: 0,
   },
   bulletItem: {
     flexDirection: 'row',
-    marginBottom: 2,
-    fontSize: 10,
+    marginBottom: 1,
+    fontSize: 9,
   },
   bullet: {
-    width: 10,
-    fontSize: 10,
+    width: 8,
+    fontSize: 9,
+    paddingRight: 2,
   },
   bulletText: {
     flex: 1,
-    fontSize: 10,
+    fontSize: 9,
+    lineHeight: 1.3,
   },
   skillsGrid: {
     flexDirection: 'row',
@@ -113,41 +139,43 @@ const classicStyles = StyleSheet.create({
   },
   skillsColumn: {
     width: '50%',
-    paddingRight: 10,
+    paddingRight: 8,
   },
   skillCategory: {
-    marginBottom: 5,
+    marginBottom: 3,
   },
   skillCategoryName: {
     fontFamily: 'Times-Bold',
-    fontSize: 10,
+    fontSize: 9,
   },
   skillItems: {
-    fontSize: 10,
-    marginLeft: 10,
+    fontSize: 9,
+    marginLeft: 0,
   },
   technicalSkill: {
     flexDirection: 'row',
-    marginBottom: 3,
+    marginBottom: 2,
+    alignItems: 'flex-start',
   },
   projectHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 2,
+    marginBottom: 1,
   },
   projectName: {
     fontFamily: 'Times-Bold',
     fontSize: 11,
   },
   projectTech: {
-    fontSize: 10,
+    fontSize: 9,
     fontFamily: 'Times-Roman',
+    fontWeight: 'normal',
   },
   link: {
-    color: '#0000FF',
+    color: '#000000',
     textDecoration: 'underline',
-    fontSize: 10,
+    fontSize: 9,
   },
 });
 
@@ -160,20 +188,17 @@ export const ClassicResumePDF = memo(function ClassicResumePDF({ resume, variant
   
   const renderContactInfo = () => {
     const contactItems = [
-      resume.phone_number && `📞 ${resume.phone_number}`,
-      resume.email && `✉ ${resume.email}`,
-      resume.linkedin_url && `🔗 ${resume.linkedin_url.replace('https://', '')}`,
-      resume.github_url && `🐱 ${resume.github_url.replace('https://', '')}`,
+      resume.phone_number,
+      resume.email,
+      resume.linkedin_url?.replace('https://', '').replace('http://', ''),
+      resume.github_url?.replace('https://', '').replace('http://', ''),
     ].filter(Boolean);
 
     return (
       <View style={classicStyles.contactInfo}>
-        {contactItems.map((item, index) => (
-          <Text key={index} style={classicStyles.contactItem}>
-            {item}
-            {index < contactItems.length - 1 && <Text>   </Text>}
-          </Text>
-        ))}
+        <Text>
+          {contactItems.join('    ')}
+        </Text>
       </View>
     );
   };
@@ -192,44 +217,17 @@ export const ClassicResumePDF = memo(function ClassicResumePDF({ resume, variant
                 <Text style={classicStyles.degree}>
                   {edu.degree}{edu.field && ` in ${edu.field}`}
                 </Text>
-                {edu.location && (
-                  <Text style={classicStyles.entryLocation}>{edu.location}</Text>
-                )}
               </View>
               <View style={classicStyles.entryRight}>
                 <Text>{edu.date}</Text>
+                {edu.location && (
+                  <Text style={classicStyles.entryLocation}>{edu.location}</Text>
+                )}
                 {edu.gpa && <Text>GPA: {edu.gpa}</Text>}
               </View>
             </View>
           </View>
         ))}
-      </View>
-    );
-  };
-
-  const renderRelevantCoursework = () => {
-    if (!resume.skills || resume.skills.length === 0) return null;
-
-    return (
-      <View>
-        <Text style={classicStyles.sectionTitle}>Relevant Coursework</Text>
-        <View style={classicStyles.skillsGrid}>
-          {resume.skills.map((skillCategory, index) => (
-            <View key={index} style={classicStyles.skillsColumn}>
-              <View style={classicStyles.skillCategory}>
-                <View style={classicStyles.technicalSkill}>
-                  <Text style={classicStyles.bullet}>• </Text>
-                  <Text style={classicStyles.skillCategoryName}>
-                    {skillCategory.category}:
-                  </Text>
-                </View>
-                <Text style={classicStyles.skillItems}>
-                  {skillCategory.items.join(', ')}
-                </Text>
-              </View>
-            </View>
-          ))}
-        </View>
       </View>
     );
   };
@@ -246,12 +244,12 @@ export const ClassicResumePDF = memo(function ClassicResumePDF({ resume, variant
               <View style={classicStyles.entryLeft}>
                 <Text style={classicStyles.company}>{exp.company}</Text>
                 <Text style={classicStyles.position}>{exp.position}</Text>
-                {exp.location && (
-                  <Text style={classicStyles.entryLocation}>{exp.location}</Text>
-                )}
               </View>
               <View style={classicStyles.entryRight}>
                 <Text>{exp.date}</Text>
+                {exp.location && (
+                  <Text style={classicStyles.entryLocation}>{exp.location}</Text>
+                )}
               </View>
             </View>
             {exp.description && exp.description.length > 0 && (
@@ -259,7 +257,9 @@ export const ClassicResumePDF = memo(function ClassicResumePDF({ resume, variant
                 {exp.description.map((desc, descIndex) => (
                   <View key={descIndex} style={classicStyles.bulletItem}>
                     <Text style={classicStyles.bullet}>• </Text>
-                    <Text style={classicStyles.bulletText}>{desc}</Text>
+                    <Text style={classicStyles.bulletText}>
+                      {parseMarkdownText(desc)}
+                    </Text>
                   </View>
                 ))}
               </View>
@@ -293,13 +293,13 @@ export const ClassicResumePDF = memo(function ClassicResumePDF({ resume, variant
                   {project.name}
                   {project.technologies && project.technologies.length > 0 && (
                     <Text style={classicStyles.projectTech}>
-                      {' | '}{project.technologies.join(', ')}
+                      {' ('}{project.technologies.join(', ')}{')'}
                     </Text>
                   )}
                 </Text>
                 {project.url && (
                   <Link src={project.url} style={classicStyles.link}>
-                    {project.url.replace('https://', '')}
+                    {project.url.replace('https://', '').replace('http://', '')}
                   </Link>
                 )}
               </View>
@@ -312,7 +312,9 @@ export const ClassicResumePDF = memo(function ClassicResumePDF({ resume, variant
                 {project.description.map((desc, descIndex) => (
                   <View key={descIndex} style={classicStyles.bulletItem}>
                     <Text style={classicStyles.bullet}>• </Text>
-                    <Text style={classicStyles.bulletText}>{desc}</Text>
+                    <Text style={classicStyles.bulletText}>
+                      {parseMarkdownText(desc)}
+                    </Text>
                   </View>
                 ))}
               </View>
@@ -329,16 +331,20 @@ export const ClassicResumePDF = memo(function ClassicResumePDF({ resume, variant
     return (
       <View>
         <Text style={classicStyles.sectionTitle}>Technical Skills</Text>
-        {resume.skills.map((skillCategory, index) => (
-          <View key={index} style={classicStyles.technicalSkill}>
-            <Text style={classicStyles.skillCategoryName}>
-              {skillCategory.category}: 
-            </Text>
-            <Text style={classicStyles.bulletText}>
-              {' '}{skillCategory.items.join(', ')}
-            </Text>
-          </View>
-        ))}
+        <View style={classicStyles.skillsGrid}>
+          {resume.skills.map((skillCategory, index) => (
+            <View key={index} style={classicStyles.skillsColumn}>
+              <View style={classicStyles.technicalSkill}>
+                <Text style={classicStyles.skillCategoryName}>
+                  {skillCategory.category}:{' '}
+                </Text>
+                <Text style={classicStyles.bulletText}>
+                  {skillCategory.items.join(', ')}
+                </Text>
+              </View>
+            </View>
+          ))}
+        </View>
       </View>
     );
   };
@@ -366,7 +372,9 @@ export const ClassicResumePDF = memo(function ClassicResumePDF({ resume, variant
                 {edu.achievements.map((achievement, achIndex) => (
                   <View key={achIndex} style={classicStyles.bulletItem}>
                     <Text style={classicStyles.bullet}>• </Text>
-                    <Text style={classicStyles.bulletText}>{achievement}</Text>
+                    <Text style={classicStyles.bulletText}>
+                      {parseMarkdownText(achievement)}
+                    </Text>
                   </View>
                 ))}
               </View>
@@ -393,9 +401,6 @@ export const ClassicResumePDF = memo(function ClassicResumePDF({ resume, variant
 
         {/* Education */}
         {renderEducation()}
-
-        {/* Relevant Coursework */}
-        {renderRelevantCoursework()}
 
         {/* Experience */}
         {renderExperience()}

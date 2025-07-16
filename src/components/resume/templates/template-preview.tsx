@@ -11,6 +11,27 @@ export function TemplatePreview({ templateId, className }: TemplatePreviewProps)
   // This would render different template previews based on templateId
   const getTemplatePreview = (id: string) => {
     switch (id) {
+      case 'default':
+        return (
+          <div className="w-full h-full bg-white p-3 text-xs">
+            <div className="text-center border-b pb-1 mb-2">
+              <div className="h-2 bg-gray-800 w-3/4 mx-auto mb-1"></div>
+              <div className="h-1 bg-gray-600 w-1/2 mx-auto"></div>
+            </div>
+            <div className="space-y-2">
+              <div>
+                <div className="h-1 bg-gray-700 w-1/4 mb-1"></div>
+                <div className="h-0.5 bg-gray-500 w-full"></div>
+                <div className="h-0.5 bg-gray-500 w-4/5"></div>
+              </div>
+              <div>
+                <div className="h-1 bg-gray-700 w-1/3 mb-1"></div>
+                <div className="h-0.5 bg-gray-500 w-full"></div>
+                <div className="h-0.5 bg-gray-500 w-3/4"></div>
+              </div>
+            </div>
+          </div>
+        );
       case 'modern-1':
         return (
           <div className="w-full h-full bg-white p-2 text-xs">
@@ -51,21 +72,6 @@ export function TemplatePreview({ templateId, className }: TemplatePreviewProps)
                 <div className="w-1/4 text-right">
                   <div className="h-0.5 bg-gray-500 w-full"></div>
                   <div className="h-0.5 bg-gray-400 w-2/3 ml-auto"></div>
-                </div>
-              </div>
-            </div>
-
-            {/* Coursework */}
-            <div className="mb-3">
-              <div className="h-1 bg-black w-1/3 mb-1 border-b border-black"></div>
-              <div className="grid grid-cols-2 gap-1">
-                <div className="space-y-0.5">
-                  <div className="h-0.5 bg-gray-600 w-full"></div>
-                  <div className="h-0.5 bg-gray-500 w-4/5"></div>
-                </div>
-                <div className="space-y-0.5">
-                  <div className="h-0.5 bg-gray-600 w-full"></div>
-                  <div className="h-0.5 bg-gray-500 w-3/4"></div>
                 </div>
               </div>
             </div>

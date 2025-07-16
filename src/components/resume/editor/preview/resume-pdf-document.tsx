@@ -651,9 +651,7 @@ export const ResumePDFDocument = memo(function ResumePDFDocument({ resume, varia
     return <ClassicResumePDF resume={safeResume} variant={variant} />;
   }
 
-  // Default template
-
-  // Default template
+  // Default template (includes 'default' and undefined template)
   return (
     <PDFDocument>
       <PDFPage size="LETTER" style={styles.page}>

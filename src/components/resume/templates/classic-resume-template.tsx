@@ -18,20 +18,20 @@ export function ClassicResumeTemplate({ resume, className }: ClassicResumeTempla
         </h1>
         <div className="flex justify-center items-center gap-4 text-sm mt-2 flex-wrap">
           {resume.phone_number && (
-            <span>📞 {resume.phone_number}</span>
+            <span>{resume.phone_number}</span>
           )}
           {resume.email && (
-            <span>✉ {resume.email}</span>
+            <span>{resume.email}</span>
           )}
           {resume.linkedin_url && (
-            <span>🔗 {resume.linkedin_url.replace('https://', '')}</span>
+            <span>{resume.linkedin_url.replace('https://', '').replace('http://', '')}</span>
           )}
           {resume.github_url && (
-            <span>🐱 {resume.github_url.replace('https://', '')}</span>
+            <span>{resume.github_url.replace('https://', '').replace('http://', '')}</span>
           )}
         </div>
         {resume.location && (
-          <div className="text-sm mt-1 italic">
+          <div className="text-sm mt-1">
             {resume.location}
           </div>
         )}
@@ -40,18 +40,18 @@ export function ClassicResumeTemplate({ resume, className }: ClassicResumeTempla
       {/* Education Section */}
       {resume.education && resume.education.length > 0 && (
         <div className="mb-6">
-          <h2 className="text-xl font-bold border-b border-black mb-3">Education</h2>
+          <h2 className="text-xl font-bold border-b border-black mb-3 uppercase">Education</h2>
           {resume.education.map((edu, index) => (
             <div key={index} className="mb-4">
               <div className="flex justify-between items-start">
-                <div>
-                  <div className="font-bold">{edu.school}</div>
-                  <div className="italic">
+                <div className="flex-1">
+                  <div className="font-bold text-lg">{edu.school}</div>
+                  <div className="italic text-gray-700">
                     {edu.degree} {edu.field && `in ${edu.field}`}
                   </div>
-                  {edu.location && <div className="text-sm">{edu.location}</div>}
+                  {edu.location && <div className="text-sm text-gray-600">{edu.location}</div>}
                 </div>
-                <div className="text-right text-sm">
+                <div className="text-right text-sm text-gray-600">
                   <div>{edu.date}</div>
                   {edu.gpa && <div>GPA: {edu.gpa}</div>}
                 </div>
@@ -61,44 +61,30 @@ export function ClassicResumeTemplate({ resume, className }: ClassicResumeTempla
         </div>
       )}
 
-      {/* Relevant Coursework */}
-      {resume.skills && resume.skills.length > 0 && (
-        <div className="mb-6">
-          <h2 className="text-xl font-bold border-b border-black mb-3">Relevant Coursework</h2>
-          <div className="grid grid-cols-2 gap-x-8">
-            {resume.skills.map((skillCategory, index) => (
-              <div key={index} className="mb-2">
-                <span className="font-semibold">• {skillCategory.category}:</span>
-                <div className="ml-4">
-                  {skillCategory.items.join(', ')}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+
 
       {/* Experience Section */}
       {resume.work_experience && resume.work_experience.length > 0 && (
         <div className="mb-6">
-          <h2 className="text-xl font-bold border-b border-black mb-3">Experience</h2>
+          <h2 className="text-xl font-bold border-b border-black mb-3 uppercase">Experience</h2>
           {resume.work_experience.map((exp, index) => (
             <div key={index} className="mb-4">
               <div className="flex justify-between items-start">
-                <div>
-                  <div className="font-bold">{exp.company}</div>
-                  <div className="italic">{exp.position}</div>
-                  {exp.location && <div className="text-sm">{exp.location}</div>}
+                <div className="flex-1">
+                  <div className="font-bold text-lg">{exp.company}</div>
+                  <div className="italic text-gray-700">{exp.position}</div>
+                  {exp.location && <div className="text-sm text-gray-600">{exp.location}</div>}
                 </div>
-                <div className="text-right text-sm">
+                <div className="text-right text-sm text-gray-600">
                   {exp.date}
                 </div>
               </div>
               {exp.description && exp.description.length > 0 && (
-                <ul className="mt-2 space-y-1">
+                <ul className="mt-2 space-y-1 ml-4">
                   {exp.description.map((desc, descIndex) => (
-                    <li key={descIndex} className="text-sm">
-                      • {desc}
+                    <li key={descIndex} className="text-sm relative">
+                      <span className="absolute -left-4">•</span>
+                      {desc.replace(/^[-•*]\s*/, '')}
                     </li>
                   ))}
                 </ul>
@@ -116,36 +102,37 @@ export function ClassicResumeTemplate({ resume, className }: ClassicResumeTempla
       {/* Projects Section */}
       {resume.projects && resume.projects.length > 0 && (
         <div className="mb-6">
-          <h2 className="text-xl font-bold border-b border-black mb-3">Projects</h2>
+          <h2 className="text-xl font-bold border-b border-black mb-3 uppercase">Projects</h2>
           {resume.projects.map((project, index) => (
             <div key={index} className="mb-4">
               <div className="flex justify-between items-start">
-                <div>
-                  <div className="font-bold">
+                <div className="flex-1">
+                  <div className="font-bold text-lg">
                     {project.name}
                     {project.technologies && project.technologies.length > 0 && (
-                      <span className="font-normal text-sm">
-                        {' | '}{project.technologies.join(', ')}
+                      <span className="font-normal text-sm text-gray-600 ml-2">
+                        | {project.technologies.join(', ')}
                       </span>
                     )}
                   </div>
                   {project.url && (
-                    <div className="text-sm">
+                    <div className="text-sm text-gray-600">
                       <a href={project.url} className="underline">
-                        {project.url.replace('https://', '')}
+                        {project.url.replace('https://', '').replace('http://', '')}
                       </a>
                     </div>
                   )}
                 </div>
-                <div className="text-right text-sm">
+                <div className="text-right text-sm text-gray-600">
                   {project.date}
                 </div>
               </div>
               {project.description && project.description.length > 0 && (
-                <ul className="mt-2 space-y-1">
+                <ul className="mt-2 space-y-1 ml-4">
                   {project.description.map((desc, descIndex) => (
-                    <li key={descIndex} className="text-sm">
-                      • {desc}
+                    <li key={descIndex} className="text-sm relative">
+                      <span className="absolute -left-4">•</span>
+                      {desc.replace(/^[-•*]\s*/, '')}
                     </li>
                   ))}
                 </ul>
@@ -158,36 +145,39 @@ export function ClassicResumeTemplate({ resume, className }: ClassicResumeTempla
       {/* Technical Skills Section */}
       {resume.skills && resume.skills.length > 0 && (
         <div className="mb-6">
-          <h2 className="text-xl font-bold border-b border-black mb-3">Technical Skills</h2>
-          {resume.skills.map((skillCategory, index) => (
-            <div key={index} className="mb-2">
-              <span className="font-bold">{skillCategory.category}:</span>{' '}
-              {skillCategory.items.join(', ')}
-            </div>
-          ))}
+          <h2 className="text-xl font-bold border-b border-black mb-3 uppercase">Skills</h2>
+          <div className="grid grid-cols-1 gap-2">
+            {resume.skills.map((skillCategory, index) => (
+              <div key={index} className="flex">
+                <span className="font-bold text-gray-800 w-32 flex-shrink-0">{skillCategory.category}:</span>
+                <span className="text-gray-700">{skillCategory.items.join(', ')}</span>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
       {/* Leadership / Extracurricular Section */}
       {resume.education && resume.education.some(edu => edu.achievements && edu.achievements.length > 0) && (
         <div className="mb-6">
-          <h2 className="text-xl font-bold border-b border-black mb-3">Leadership / Extracurricular</h2>
+          <h2 className="text-xl font-bold border-b border-black mb-3 uppercase">Leadership / Extracurricular</h2>
           {resume.education.map((edu, index) => (
             edu.achievements && edu.achievements.length > 0 && (
               <div key={index} className="mb-4">
                 <div className="flex justify-between items-start">
-                  <div>
-                    <div className="font-bold">Activities at {edu.school}</div>
-                    <div className="italic">Student Leadership</div>
+                  <div className="flex-1">
+                    <div className="font-bold text-lg">Activities at {edu.school}</div>
+                    <div className="italic text-gray-700">Student Leadership</div>
                   </div>
-                  <div className="text-right text-sm">
+                  <div className="text-right text-sm text-gray-600">
                     {edu.date}
                   </div>
                 </div>
-                <ul className="mt-2 space-y-1">
+                <ul className="mt-2 space-y-1 ml-4">
                   {edu.achievements.map((achievement, achIndex) => (
-                    <li key={achIndex} className="text-sm">
-                      • {achievement}
+                    <li key={achIndex} className="text-sm relative">
+                      <span className="absolute -left-4">•</span>
+                      {achievement.replace(/^[-•*]\s*/, '')}
                     </li>
                   ))}
                 </ul>

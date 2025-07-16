@@ -29,6 +29,15 @@ interface TemplateSelectionModalProps {
 // Mock template data - replace with actual templates
 const templates: Template[] = [
   {
+    id: 'default',
+    name: 'Default',
+    description: 'Simple and clean default resume format',
+    category: 'minimal',
+    image: '/templates/default.png',
+    features: ['ATS Optimized', 'Simple Layout', 'Standard Format'],
+    premium: false
+  },
+  {
     id: 'modern-1',
     name: 'Modern Professional',
     description: 'Clean and contemporary design perfect for tech and corporate roles',
