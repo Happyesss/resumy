@@ -43,19 +43,19 @@ export function TemplatesPanel({ resume, onTemplateSelect }: TemplatesPanelProps
       </div>
 
       {/* Clean Main CTA Card */}
-      <Card className="border border-gray-200 bg-white hover:border-gray-300 transition-all duration-200 hover:shadow-sm">
+      <Card className="border border-gray-700 bg-gray-900 hover:border-gray-600 transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10">
         <CardContent className="p-6 text-center">
           <div className="space-y-4">
             <div className="flex items-center justify-center gap-2">
-              <Sparkles className="h-5 w-5 text-purple-500" />
-              <h3 className="text-lg font-semibold text-gray-900">
+              <Sparkles className="h-5 w-5 text-purple-400" />
+              <h3 className="text-lg font-semibold text-gray-100">
                 Transform Your Resume
               </h3>
             </div>
-            <p className="text-gray-600 text-sm max-w-md mx-auto">
+            <p className="text-gray-300 text-sm max-w-md mx-auto">
               Browse our template collection and give your resume a professional makeover.
               {resume?.template && (
-                <span className="block mt-2 text-xs text-purple-600">
+                <span className="block mt-2 text-xs text-purple-400">
                   Current template: <span className="font-medium">{resume.template}</span>
                 </span>
               )}
@@ -67,7 +67,7 @@ export function TemplatesPanel({ resume, onTemplateSelect }: TemplatesPanelProps
             </p>
             <Button
               onClick={() => setIsModalOpen(true)}
-              className="bg-purple-600 hover:bg-purple-700 text-white text-sm px-4 py-2 h-auto"
+              className="bg-purple-600 hover:bg-purple-700 text-white text-sm px-4 py-2 h-auto shadow-lg hover:shadow-purple-500/20"
             >
               <Palette className="h-4 w-4 mr-2" />
               Browse Templates
@@ -78,10 +78,10 @@ export function TemplatesPanel({ resume, onTemplateSelect }: TemplatesPanelProps
       </Card>
 
       {/* Features List */}
-      <Card className="bg-white border border-gray-200">
+      <Card className="bg-gray-900 border border-gray-700">
         <CardHeader>
-          <CardTitle className="text-base flex items-center gap-2 text-gray-900">
-            <Sparkles className="h-4 w-4 text-purple-500" />
+          <CardTitle className="text-base flex items-center gap-2 text-gray-100">
+            <Sparkles className="h-4 w-4 text-purple-400" />
             Template Features
           </CardTitle>
         </CardHeader>
@@ -89,30 +89,30 @@ export function TemplatesPanel({ resume, onTemplateSelect }: TemplatesPanelProps
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-purple-500 rounded-full" />
-                <span className="text-sm text-gray-700">ATS-Optimized Formatting</span>
+                <div className="w-2 h-2 bg-purple-400 rounded-full" />
+                <span className="text-sm text-gray-300">ATS-Optimized Formatting</span>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-purple-500 rounded-full" />
-                <span className="text-sm text-gray-700">Professional Typography</span>
+                <div className="w-2 h-2 bg-purple-400 rounded-full" />
+                <span className="text-sm text-gray-300">Professional Typography</span>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-purple-500 rounded-full" />
-                <span className="text-sm text-gray-700">Customizable Colors</span>
+                <div className="w-2 h-2 bg-purple-400 rounded-full" />
+                <span className="text-sm text-gray-300">Customizable Colors</span>
               </div>
             </div>
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-purple-500 rounded-full" />
-                <span className="text-sm text-gray-700">Multiple Layout Options</span>
+                <div className="w-2 h-2 bg-purple-400 rounded-full" />
+                <span className="text-sm text-gray-300">Multiple Layout Options</span>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-purple-500 rounded-full" />
-                <span className="text-sm text-gray-700">Industry-Specific Designs</span>
+                <div className="w-2 h-2 bg-purple-400 rounded-full" />
+                <span className="text-sm text-gray-300">Industry-Specific Designs</span>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-purple-500 rounded-full" />
-                <span className="text-sm text-gray-700">One-Click Application</span>
+                <div className="w-2 h-2 bg-purple-400 rounded-full" />
+                <span className="text-sm text-gray-300">One-Click Application</span>
               </div>
             </div>
           </div>

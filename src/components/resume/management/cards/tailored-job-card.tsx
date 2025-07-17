@@ -194,22 +194,22 @@ export function TailoredJobCard({
     >
       <div className="flex items-start justify-between mb-3">
         <div className="space-y-3 w-3/4">
-          <div className="h-6 bg-gradient-to-r from-pink-200/50 via-rose-200/50 to-pink-200/50 rounded-xl animate-pulse" />
-          <div className="h-4 bg-gradient-to-r from-pink-100/50 via-rose-100/50 to-pink-100/50 rounded-lg w-2/3 animate-pulse" />
+          <div className="h-6 bg-gradient-to-r from-blue-500/30 via-cyan-500/30 to-blue-500/30 rounded-xl animate-pulse" />
+          <div className="h-4 bg-gradient-to-r from-blue-400/20 via-cyan-400/20 to-blue-400/20 rounded-lg w-2/3 animate-pulse" />
         </div>
-        <div className="h-8 w-8 bg-gradient-to-r from-pink-200/50 via-rose-200/50 to-pink-200/50 rounded-xl animate-pulse" />
+        <div className="h-8 w-8 bg-gradient-to-r from-blue-500/30 via-cyan-500/30 to-blue-500/30 rounded-xl animate-pulse" />
       </div>
       <div className="grid grid-cols-2 gap-4">
         {[1, 2, 3, 4].map((i) => (
           <div key={i} className="flex items-center gap-2">
-            <div className="h-4 w-4 rounded-full bg-gradient-to-r from-pink-200/50 via-rose-200/50 to-pink-200/50 animate-pulse" />
-            <div className="h-4 flex-1 bg-gradient-to-r from-pink-100/50 via-rose-100/50 to-pink-100/50 rounded-lg animate-pulse" />
+            <div className="h-4 w-4 rounded-full bg-gradient-to-r from-blue-500/30 via-cyan-500/30 to-blue-500/30 animate-pulse" />
+            <div className="h-4 flex-1 bg-gradient-to-r from-blue-400/20 via-cyan-400/20 to-blue-400/20 rounded-lg animate-pulse" />
           </div>
         ))}
       </div>
       <div className="flex gap-2">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-6 w-20 bg-gradient-to-r from-pink-100/50 via-rose-100/50 to-pink-100/50 rounded-full animate-pulse" />
+          <div key={i} className="h-6 w-20 bg-gradient-to-r from-blue-400/20 via-cyan-400/20 to-blue-400/20 rounded-full animate-pulse" />
         ))}
       </div>
     </motion.div>
@@ -251,30 +251,28 @@ export function TailoredJobCard({
   if (!jobId) {
     return (
       <Card className="relative group">
-        <div className="relative p-8 flex flex-col items-center justify-center space-y-6 text-center">
-          <div className="p-4 rounded-2xl bg-gradient-to-br from-pink-500/5 to-rose-500/5 border border-pink-200/20 group-hover:scale-110 transition-transform duration-500">
-            <Plus className="w-8 h-8 text-pink-500" />
-          </div>
-          
-          <div className="space-y-2">
-            <h3 className="text-xl font-semibold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
-              No Job Currently Linked
-            </h3>
-            <p className="text-sm text-gray-500/90 max-w-sm">
-              Create a new job listing to track the position you&apos;re applying for and tailor your resume accordingly.
-            </p>
-          </div>
-
-          <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
+      <div className="relative p-8 flex flex-col items-center justify-center space-y-6 text-center">
+        <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-400/20 group-hover:scale-110 transition-transform duration-500">
+          <Plus className="w-8 h-8 text-blue-400" />
+        </div>
+        
+        <div className="space-y-2">
+          <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+            No Job Currently Linked
+          </h3>
+          <p className="text-sm text-gray-400 max-w-sm">
+            Create a new job listing to track the position you&apos;re applying for and tailor your resume accordingly.
+          </p>
+        </div>          <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
             <DialogTrigger asChild>
               <Button
                 className={cn(
                   "relative overflow-hidden",
-                  "bg-gradient-to-r from-pink-500 to-rose-500",
+                  "bg-gradient-to-r from-blue-500 to-cyan-500",
                   "text-white font-medium",
-                  "border border-pink-400/20",
-                  "shadow-lg shadow-pink-500/10",
-                  "hover:shadow-xl hover:shadow-pink-500/20",
+                  "border border-blue-400/20",
+                  "shadow-lg shadow-blue-500/20",
+                  "hover:shadow-xl hover:shadow-blue-500/30",
                   "hover:scale-105",
                   "transition-all duration-500"
                 )}
@@ -288,16 +286,16 @@ export function TailoredJobCard({
             <DialogContent 
               className={cn(
                 "sm:max-w-[600px]",
-                "bg-gradient-to-b from-white/95 to-white/90",
+                "bg-gradient-to-b from-gray-900/95 to-gray-950/90",
                 "backdrop-blur-xl",
-                "border-pink-200/40",
-                "shadow-xl shadow-pink-500/10"
+                "border-blue-500/40",
+                "shadow-xl shadow-blue-500/20"
               )}
             >
-              <DialogTitle className="text-xl font-semibold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
+              <DialogTitle className="text-xl font-semibold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
                 Create New Job Listing
               </DialogTitle>
-              <DialogDescription className="text-muted-foreground">
+              <DialogDescription className="text-gray-400">
                 Paste the job description below and let our AI format it automatically.
               </DialogDescription>
 
@@ -309,12 +307,13 @@ export function TailoredJobCard({
                     onChange={handleJobDescriptionChange}
                     className={cn(
                       "min-h-[200px]",
-                      "bg-white/80 backdrop-blur-sm",
+                      "bg-gray-800/80 backdrop-blur-sm",
                       "border transition-all duration-300",
                       "placeholder:text-gray-400",
+                      "text-gray-100",
                       validationErrors.jobDescription 
-                        ? "border-red-300 focus:border-red-500 focus:ring-red-500/20" 
-                        : "border-gray-200 focus:border-pink-500 focus:ring-pink-500/20"
+                        ? "border-red-500 focus:border-red-400 focus:ring-red-500/20" 
+                        : "border-gray-600 focus:border-blue-400 focus:ring-blue-500/20"
                     )}
                     aria-invalid={!!validationErrors.jobDescription}
                     aria-describedby="job-description-error"
@@ -334,8 +333,8 @@ export function TailoredJobCard({
                     variant="outline"
                     onClick={() => setCreateDialogOpen(false)}
                     className={cn(
-                      "border-gray-200",
-                      "hover:bg-gray-50",
+                      "border-gray-600",
+                      "hover:bg-gray-700",
                       "transition-colors duration-300"
                     )}
                   >
@@ -346,12 +345,12 @@ export function TailoredJobCard({
                     disabled={isFormatting || isCreating || !!validationErrors.jobDescription}
                     className={cn(
                       "relative overflow-hidden",
-                      "bg-gradient-to-r from-pink-500 to-rose-500",
-                      "hover:from-pink-600 hover:to-rose-600",
+                      "bg-gradient-to-r from-blue-500 to-cyan-500",
+                      "hover:from-blue-600 hover:to-cyan-600",
                       "text-white font-medium",
                       "shadow-lg hover:shadow-xl",
                       "disabled:opacity-50 disabled:cursor-not-allowed",
-                      "disabled:hover:from-pink-500 disabled:hover:to-rose-500",
+                      "disabled:hover:from-blue-500 disabled:hover:to-cyan-500",
                       "transition-all duration-300"
                     )}
                     aria-busy={isFormatting || isCreating}
@@ -384,7 +383,7 @@ export function TailoredJobCard({
 
   return (
     <Card className={cn(
-      "relative group border-none px-8",
+      "relative group border-none px-8 bg-black/100",
     )}>
 
       <div className="relative">
@@ -403,10 +402,10 @@ export function TailoredJobCard({
               {/* Job Details Grid */}
               <div className="grid grid-cols-2 gap-x-2 gap-y-3">
                 {[
-                  { icon: MapPin, text: effectiveJob.location || 'Location not specified', color: 'pink' },
-                  { icon: Briefcase, text: formatWorkLocation(effectiveJob.work_location), color: 'rose' },
-                  { icon: DollarSign, text: effectiveJob.salary_range || 'Salary not specified', color: 'pink' },
-                  { icon: Clock, text: effectiveJob.employment_type?.replace('_', ' ') || 'Employment type not specified', color: 'rose' }
+                  { icon: MapPin, text: effectiveJob.location || 'Location not specified', color: 'blue' },
+                  { icon: Briefcase, text: formatWorkLocation(effectiveJob.work_location), color: 'cyan' },
+                  { icon: DollarSign, text: effectiveJob.salary_range || 'Salary not specified', color: 'blue' },
+                  { icon: Clock, text: effectiveJob.employment_type?.replace('_', ' ') || 'Employment type not specified', color: 'cyan' }
                 ].map((item, index) => (
                   <motion.div
                     key={index}
@@ -415,8 +414,8 @@ export function TailoredJobCard({
                     transition={{ delay: 0.1 + index * 0.1 }}
                     className={cn(
                       "flex items-center gap-2",
-                      "text-sm text-gray-600",
-                      `group-hover:text-${item.color}-600`,
+                      "text-sm text-gray-300",
+                      `group-hover:text-${item.color}-300`,
                       "transition-colors duration-300"
                     )}
                   >
@@ -429,8 +428,8 @@ export function TailoredJobCard({
               {/* Description */}
               {effectiveJob.description && (
                 <div className="space-y-2">
-                  <h4 className="text-sm font-medium text-gray-700">Description</h4>
-                  <p className="text-sm text-gray-600 whitespace-pre-wrap">
+                  <h4 className="text-sm font-medium text-gray-300">Description</h4>
+                  <p className="text-sm text-gray-400 whitespace-pre-wrap">
                     {effectiveJob.description}
                   </p>
                 </div>
@@ -448,11 +447,11 @@ export function TailoredJobCard({
                     <Badge 
                       variant="secondary" 
                       className={cn(
-                        "text-xs py-0.5",
-                        "bg-gradient-to-r from-pink-50/50 to-rose-50/50",
-                        "hover:from-pink-100/50 hover:to-rose-100/50",
-                        "text-pink-700",
-                        "border border-pink-100/20",
+                        "text-xs py-0.5 px-2 font-semibold",
+                        "bg-gradient-to-r from-blue-600/80 to-cyan-500/80",
+                        "hover:from-blue-500 hover:to-cyan-400",
+                        "text-white shadow-sm",
+                        "border border-blue-400/60",
                         "transition-all duration-300",
                         "cursor-default"
                       )}
@@ -511,17 +510,17 @@ export function TailoredJobAccordion({
   };
 
   return (
-    <AccordionItem value="job" className="mb-4 backdrop-blur-xl rounded-lg shadow-lg bg-white border-pink-600/50 border-2">
+    <AccordionItem value="job" className="mb-4 backdrop-blur-xl rounded-lg shadow-lg border-blue-500/50 border-2">
       <div className="px-4">
         <AccordionTrigger className="hover:no-underline group">
           <div className="flex items-center gap-2">
-            <div className={cn("p-1 rounded-md transition-transform duration-300 group-data-[state=open]:scale-105", "bg-pink-100/80")}>
-              <BriefcaseIcon className={cn("h-3.5 w-3.5", "text-pink-600")} />
+            <div className={cn("p-1 rounded-md transition-transform duration-300 group-data-[state=open]:scale-105", "bg-blue-500/20")}>
+              <BriefcaseIcon className={cn("h-3.5 w-3.5", "text-blue-400")} />
             </div>
             <div className="flex flex-col items-start">
-              <span className={cn("text-sm font-medium", "text-pink-900")}>{title}</span>
+              <span className={cn("text-sm font-medium", "text-blue-100")}>{title}</span>
               {company && (
-                <span className="text-xs text-pink-600/80">{company}</span>
+                <span className="text-xs text-blue-300/80">{company}</span>
               )}
             </div>
           </div>
@@ -544,7 +543,7 @@ export function TailoredJobAccordion({
                 className={cn(
                   "text-gray-400",
                   "hover:text-red-500",
-                  "hover:bg-red-50/50",
+                  "hover:bg-black/50",
                   "transition-all duration-300",
                   "rounded-lg",
                   "gap-2"
