@@ -1,5 +1,4 @@
 // Migration script to remove old creative templates and update existing data
-// This updates any resumes using the removed 'creative-1' or 'creative-2' templates
 
 import { createClient } from '@supabase/supabase-js'
 

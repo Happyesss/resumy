@@ -33,7 +33,7 @@ export default function CoverLetter({ containerWidth }: CoverLetterProps) {
         <Button
           variant="outline"
           size="sm"
-          className="w-full border-emerald-600/50 text-emerald-700 hover:bg-emerald-50"
+          className="w-full border-purple-600/50 text-purple-700 hover:bg-purple-50"
           onClick={() => dispatch({
             type: 'UPDATE_FIELD',
             field: 'has_cover_letter',
