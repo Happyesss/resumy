@@ -69,16 +69,6 @@ export default function CoverLetter({ containerWidth }: CoverLetterProps) {
           containerWidth={containerWidth}
         />
       </div>
-      
-      {/* <Button
-        variant="outline"
-        size="sm"
-        className="w-full border-blue-600/50 text-blue-700 hover:bg-blue-50"
-        onClick={handleExportPDF}
-      >
-        <Download className="h-4 w-4 mr-2" />
-        Export as PDF
-      </Button> */}
     </div>
   );
 }
