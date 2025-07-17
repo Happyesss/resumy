@@ -55,7 +55,7 @@ const creativeMinimalStyles = StyleSheet.create({
   name: {
     fontSize: 22, // smaller name
     color: '#111827',
-    marginBottom: 12,
+    marginBottom: 20, // increased space below name
     textAlign: 'center',
   },
   nameFirst: {
@@ -166,6 +166,26 @@ const creativeMinimalStyles = StyleSheet.create({
     height: 2,
     backgroundColor: '#10b981', // Emerald-400
     borderRadius: 1,
+  },
+  // Circular skill tags
+  skillTagsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: 4,
+    marginTop: 5,
+  },
+  skillTag: {
+    backgroundColor: '#10b981', // Emerald-500
+    color: '#ffffff',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 15,
+    fontSize: 7,
+    fontFamily: 'Helvetica-Bold',
+    textAlign: 'center',
+    marginBottom: 4,
+    minWidth: 50,
   },
   // Education styles
   educationItem: {
@@ -399,22 +419,13 @@ export const CreativeMinimalPDF = memo(function CreativeMinimalPDF({ resume, var
             <Text style={creativeMinimalStyles.skillCategoryTitle}>
               {skillCategory.category}
             </Text>
-            {skillCategory.items.map((skill, skillIndex) => (
-              <View key={skillIndex} style={creativeMinimalStyles.skillItem}>
-                <View style={creativeMinimalStyles.skillItemContent}>
-                  <View style={creativeMinimalStyles.skillDot} />
-                  <Text style={creativeMinimalStyles.skillText}>{skill}</Text>
-                </View>
-                <View style={creativeMinimalStyles.skillLevel}>
-                  <View 
-                    style={[
-                      creativeMinimalStyles.skillLevelFill,
-                      { width: `${75 + (skillIndex * 5) % 25}%` }
-                    ]} 
-                  />
-                </View>
-              </View>
-            ))}
+            <View style={creativeMinimalStyles.skillTagsContainer}>
+              {skillCategory.items.map((skill, skillIndex) => (
+                <Text key={skillIndex} style={creativeMinimalStyles.skillTag}>
+                  {skill}
+                </Text>
+              ))}
+            </View>
           </View>
         ))}
       </View>

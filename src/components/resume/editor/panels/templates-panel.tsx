@@ -18,33 +18,6 @@ interface TemplatesPanelProps {
 export function TemplatesPanel({ resume, onTemplateSelect }: TemplatesPanelProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const templateCategories = [
-    {
-      id: 'modern',
-      name: 'Modern',
-      description: 'Clean and contemporary designs',
-      icon: Zap,
-      color: 'from-blue-500 to-cyan-500',
-      count: 8
-    },
-    {
-      id: 'classic',
-      name: 'Classic',
-      description: 'Traditional and professional',
-      icon: Eye,
-      color: 'from-indigo-500 to-purple-500',
-      count: 6
-    },
-    {
-      id: 'creative',
-      name: 'Creative',
-      description: 'Bold and artistic layouts',
-      icon: Palette,
-      color: 'from-purple-500 to-pink-500',
-      count: 6
-    }
-  ];
-
   const handleTemplateSelect = (templateId: string) => {
     onTemplateSelect?.(templateId);
     // Here you would apply the template to the resume
@@ -103,40 +76,6 @@ export function TemplatesPanel({ resume, onTemplateSelect }: TemplatesPanelProps
           </div>
         </CardContent>
       </Card>
-
-      {/* Template Categories */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {templateCategories.map((category) => {
-          const Icon = category.icon;
-          return (
-            <Card
-              key={category.id}
-              className="cursor-pointer border border-gray-200 bg-white hover:border-gray-300 transition-all duration-200 hover:shadow-sm"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <div className={cn(
-                    "p-2 rounded-lg bg-gradient-to-r",
-                    category.color
-                  )}>
-                    <Icon className="h-4 w-4 text-white" />
-                  </div>
-                  <Badge variant="secondary" className="text-xs bg-gray-100 text-gray-600 border-0">
-                    {category.count}
-                  </Badge>
-                </div>
-                <CardTitle className="text-base text-gray-900">{category.name}</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <CardDescription className="text-sm text-gray-600">
-                  {category.description}
-                </CardDescription>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
 
       {/* Features List */}
       <Card className="bg-white border border-gray-200">

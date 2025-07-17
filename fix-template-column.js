@@ -31,7 +31,7 @@ async function addTemplateColumn() {
     console.log('ALTER TABLE public.resumes')
     console.log('ADD COLUMN IF NOT EXISTS template text')
     console.log("DEFAULT 'default'")
-    console.log("CHECK (template IN ('default', 'classic', 'classic-1', 'modern', 'modern-1', 'modern-2', 'creative', 'creative-1', 'creative-2', 'minimal', 'minimal-1'));")
+    console.log("CHECK (template IN ('default', 'classic', 'classic-1', 'modern', 'modern-1', 'modern-2', 'creative', 'creative-modern', 'creative-minimal', 'minimal', 'minimal-1'));")
     console.log('')
     console.log('-- Update existing records')
     console.log('UPDATE public.resumes')

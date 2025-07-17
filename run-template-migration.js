@@ -36,7 +36,7 @@ async function addTemplateColumn() {
         ) THEN
           ALTER TABLE public.resumes 
           ADD CONSTRAINT resumes_template_check 
-          CHECK (template IN ('default', 'classic', 'classic-1', 'modern', 'modern-1', 'modern-2', 'creative', 'creative-1', 'creative-2', 'minimal', 'minimal-1'));
+          CHECK (template IN ('default', 'classic', 'classic-1', 'modern', 'modern-1', 'modern-2', 'creative', 'creative-modern', 'creative-minimal', 'minimal', 'minimal-1'));
         END IF;
       END $$;
     `

@@ -101,22 +101,7 @@ export function TemplatePreview({ templateId, className }: TemplatePreviewProps)
             </div>
           </div>
         );
-      case 'creative-1':
-        return (
-          <div className="w-full h-full bg-gradient-to-br from-purple-50 to-pink-50 p-2 text-xs">
-            <div className="flex items-start gap-1 mb-2">
-              <div className="w-6 h-6 bg-purple-500 rounded-full flex-shrink-0"></div>
-              <div className="flex-1">
-                <div className="h-2 bg-gray-800 w-4/5 mb-1"></div>
-                <div className="h-1 bg-gray-500 w-3/5"></div>
-              </div>
-            </div>
-            <div className="space-y-1">
-              <div className="h-1 bg-gray-600 w-full"></div>
-              <div className="h-1 bg-gray-600 w-4/5"></div>
-            </div>
-          </div>
-        );
+
       case 'creative-modern':
         return (
           <div className="w-full h-full flex text-xs">

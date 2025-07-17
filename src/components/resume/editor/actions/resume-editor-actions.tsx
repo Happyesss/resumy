@@ -2,7 +2,7 @@
 
 import { Resume } from "@/lib/types";
 import { Button } from "@/components/ui/button";
-import { Download, Loader2, Save, FileText } from "lucide-react";
+import { Download, Loader2, Save, FileText, Palette } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { pdf } from '@react-pdf/renderer';
 import { TextImportDialog } from "../../management/dialogs/text-import-dialog";
@@ -102,7 +102,7 @@ export function ResumeEditorActions({
 
   return (
     <div className="px-1 py-2 @container bg-black flex items-center justify-between">
-      {/* Left side: Cover Letter and Resume Score icons */}
+      {/* Left side: Cover Letter, Resume Score, and Templates tabs */}
       <div className="flex items-center gap-4 pl-2">
         {/* Cover Letter Icon */}
         <TooltipProvider>
@@ -142,6 +142,26 @@ export function ResumeEditorActions({
               </button>
             </TooltipTrigger>
             <TooltipContent side="bottom">Resume Score</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
+        {/* Templates Tab */}
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                onClick={() => setActiveTab("templates")}
+                className="group flex items-center gap-1.5 px-2 py-1 rounded-md font-medium relative transition-all duration-300
+                  data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500/20 data-[state=active]:to-orange-500/20
+                  data-[state=active]:border-amber-500/30 data-[state=active]:shadow-md hover:bg-gray-800/80
+                  data-[state=active]:text-white data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200"
+              >
+                {/* Palette icon from lucide-react, no background */}
+                <Palette className="h-5 w-5 text-orange-400 transition-colors group-data-[state=inactive]:text-amber-500/70" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">Templates</TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </div>
@@ -254,4 +274,4 @@ export function ResumeEditorActions({
       </div>
     </div>
   );
-} 
+}

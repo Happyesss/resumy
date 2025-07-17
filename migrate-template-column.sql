@@ -4,7 +4,7 @@
 -- Add the template column to the resumes table
 ALTER TABLE public.resumes 
 ADD COLUMN IF NOT EXISTS template text 
-CHECK (template IN ('default', 'classic', 'classic-1', 'modern', 'modern-1', 'modern-2', 'creative', 'creative-1', 'creative-2', 'minimal', 'minimal-1'))
+CHECK (template IN ('default', 'classic', 'classic-1', 'modern', 'modern-1', 'modern-2', 'creative', 'creative-modern', 'creative-minimal', 'minimal', 'minimal-1'))
 DEFAULT 'default';
 
 -- Update existing resumes to have a default template value

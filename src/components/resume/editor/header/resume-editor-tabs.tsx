@@ -92,23 +92,6 @@ export function ResumeEditorTabs() {
             <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full bg-rose-400 scale-x-0 transition-transform duration-300 group-data-[state=active]:scale-x-100"></div>
           </span>
         </TabsTrigger>
-
-        {/* Templates Tab */}
-        <TabsTrigger 
-          value="templates" 
-          className="group flex items-center gap-1.5 px-2 py-1 rounded-md font-medium relative transition-all duration-300
-            data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500/20 data-[state=active]:to-orange-500/20
-            data-[state=active]:border-amber-500/30 data-[state=active]:shadow-md hover:bg-gray-800/80
-            data-[state=active]:text-white data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200"
-        >
-          <div className="p-1 rounded-md bg-amber-900/80 transition-transform duration-300 group-data-[state=active]:scale-105 group-data-[state=active]:bg-amber-900">
-            <Palette className="h-3.5 w-3.5 text-amber-400 transition-colors group-data-[state=inactive]:text-amber-500/70" />
-          </div>
-          <span className="relative text-xs whitespace-nowrap">
-            Templates
-            <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full bg-amber-400 scale-x-0 transition-transform duration-300 group-data-[state=active]:scale-x-100"></div>
-          </span>
-        </TabsTrigger>
       </TabsList>
     </>
   );

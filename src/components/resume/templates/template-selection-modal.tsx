@@ -55,15 +55,7 @@ const templates: Template[] = [
     features: ['Professional', 'Time-tested', 'Executive Ready'],
     premium: false
   },
-  {
-    id: 'creative-1',
-    name: 'Creative Designer',
-    description: 'Eye-catching design for creative professionals and designers',
-    category: 'creative',
-    image: '/templates/creative-1.png',
-    features: ['Visual Impact', 'Creative Layout', 'Portfolio Ready'],
-    premium: true
-  },
+
   {
     id: 'minimal-1',
     name: 'Minimal Clean',
@@ -82,15 +74,7 @@ const templates: Template[] = [
     features: ['Tech Optimized', 'Startup Ready', 'Skills Focused'],
     premium: true
   },
-  {
-    id: 'creative-2',
-    name: 'Brand Designer',
-    description: 'Bold and creative template for branding and marketing professionals',
-    category: 'creative',
-    image: '/templates/creative-2.png',
-    features: ['Brand Focus', 'Marketing Ready', 'Visual Elements'],
-    premium: true
-  },
+
   {
     id: 'creative-modern',
     name: 'Creative Modern',
