@@ -90,6 +90,24 @@ const templates: Template[] = [
     image: '/templates/creative-2.png',
     features: ['Brand Focus', 'Marketing Ready', 'Visual Elements'],
     premium: true
+  },
+  {
+    id: 'creative-modern',
+    name: 'Creative Modern',
+    description: 'Professional creative design with modern sidebar layout and gradient accents',
+    category: 'creative',
+    image: '/templates/creative-modern.png',
+    features: ['Modern Layout', 'Gradient Design', 'Professional Appeal', 'ATS Optimized'],
+    premium: false
+  },
+  {
+    id: 'creative-minimal',
+    name: 'Creative Minimal',
+    description: 'Clean minimal design with creative elements and sophisticated typography',
+    category: 'creative',
+    image: '/templates/creative-minimal.png',
+    features: ['Minimal Design', 'Creative Elements', 'Typography Focus', 'Clean Layout'],
+    premium: false
   }
 ];
 

@@ -117,6 +117,82 @@ export function TemplatePreview({ templateId, className }: TemplatePreviewProps)
             </div>
           </div>
         );
+      case 'creative-modern':
+        return (
+          <div className="w-full h-full flex text-xs">
+            {/* Left sidebar */}
+            <div className="w-1/3 bg-gradient-to-b from-indigo-600 via-purple-600 to-pink-500 p-1.5 text-white">
+              <div className="w-3 h-3 bg-white/20 rounded-full mb-1"></div>
+              <div className="h-1 bg-white w-3/4 mb-0.5"></div>
+              <div className="h-0.5 bg-indigo-200 w-1/2 mb-2"></div>
+              <div className="space-y-1">
+                <div className="h-0.5 bg-white/60 w-2/3"></div>
+                <div className="h-0.5 bg-white/60 w-3/4"></div>
+                <div className="h-0.5 bg-white/60 w-1/2"></div>
+              </div>
+              <div className="mt-2 space-y-1">
+                <div className="flex gap-0.5">
+                  <div className="w-3 h-2 bg-white/20 rounded-sm"></div>
+                  <div className="w-4 h-2 bg-white/20 rounded-sm"></div>
+                </div>
+              </div>
+            </div>
+            {/* Right content */}
+            <div className="flex-1 p-1.5 bg-white">
+              <div className="flex items-center gap-1 mb-1">
+                <div className="w-2 h-2 bg-indigo-500 rounded"></div>
+                <div className="h-1 bg-gray-800 w-1/3"></div>
+              </div>
+              <div className="space-y-1">
+                <div className="flex justify-between">
+                  <div className="h-1 bg-gray-700 w-2/5"></div>
+                  <div className="h-0.5 bg-indigo-200 w-1/6 rounded-full"></div>
+                </div>
+                <div className="h-0.5 bg-gray-500 w-full"></div>
+                <div className="h-0.5 bg-gray-500 w-4/5"></div>
+              </div>
+            </div>
+          </div>
+        );
+      case 'creative-minimal':
+        return (
+          <div className="w-full h-full bg-white p-2 text-xs">
+            {/* Header with decorative line */}
+            <div className="relative mb-2">
+              <div className="h-0.5 bg-gradient-to-r from-emerald-400 to-cyan-600 w-full mb-1"></div>
+              <div className="text-center">
+                <div className="h-1.5 bg-gray-800 w-1/2 mx-auto mb-0.5"></div>
+                <div className="h-0.5 bg-emerald-600 w-1/3 mx-auto mb-1"></div>
+                <div className="flex justify-center gap-1">
+                  <div className="w-1 h-1 bg-emerald-500 rounded-full"></div>
+                  <div className="w-1 h-1 bg-teal-500 rounded-full"></div>
+                  <div className="w-1 h-1 bg-cyan-500 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Two column layout */}
+            <div className="flex gap-2">
+              <div className="w-1/3 space-y-1">
+                <div className="h-0.5 bg-gray-800 w-3/4 mb-1"></div>
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-1">
+                    <div className="w-0.5 h-0.5 bg-emerald-400 rounded-full"></div>
+                    <div className="h-0.5 bg-gray-600 w-full"></div>
+                  </div>
+                  <div className="ml-1 h-0.5 bg-emerald-400 w-3/4"></div>
+                </div>
+              </div>
+              <div className="flex-1 space-y-1">
+                <div className="bg-gray-50 p-1 rounded border-l-2 border-emerald-400">
+                  <div className="h-0.5 bg-gray-700 w-2/3 mb-0.5"></div>
+                  <div className="h-0.5 bg-emerald-600 w-1/2 mb-0.5"></div>
+                  <div className="h-0.5 bg-gray-500 w-full"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
       case 'minimal-1':
         return (
           <div className="w-full h-full bg-white p-2 text-xs">

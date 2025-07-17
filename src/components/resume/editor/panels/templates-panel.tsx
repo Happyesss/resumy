@@ -41,7 +41,7 @@ export function TemplatesPanel({ resume, onTemplateSelect }: TemplatesPanelProps
       description: 'Bold and artistic layouts',
       icon: Palette,
       color: 'from-purple-500 to-pink-500',
-      count: 4
+      count: 6
     }
   ];
 

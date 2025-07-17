@@ -5,6 +5,8 @@ import { Document as PDFDocument, Page as PDFPage, Text, View, StyleSheet, Link,
 import { memo, useMemo, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import { ClassicResumePDF } from '../../templates/classic-resume-pdf';
+import { CreativeModernPDF } from '../../templates/creative-modern-pdf';
+import { CreativeMinimalPDF } from '../../templates/creative-minimal-pdf';
 
 // Base styles that don't depend on resume settings
 const baseStyles = {
@@ -649,6 +651,14 @@ export const ResumePDFDocument = memo(function ResumePDFDocument({ resume, varia
   // Check template and render appropriate component
   if (safeResume.template && (safeResume.template.includes('classic') || safeResume.template === 'classic-1')) {
     return <ClassicResumePDF resume={safeResume} variant={variant} />;
+  }
+
+  if (safeResume.template && (safeResume.template.includes('creative-modern') || safeResume.template === 'creative-modern')) {
+    return <CreativeModernPDF resume={safeResume} variant={variant} />;
+  }
+
+  if (safeResume.template && (safeResume.template.includes('creative-minimal') || safeResume.template === 'creative-minimal')) {
+    return <CreativeMinimalPDF resume={safeResume} variant={variant} />;
   }
 
   // Default template (includes 'default' and undefined template)
