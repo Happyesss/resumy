@@ -331,10 +331,10 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
               onClick={addExperience}
               className={cn(
                 "flex-1 h-9 min-w-[120px]",
-                "bg-gradient-to-r from-cyan-500/5 via-cyan-500/10 to-blue-500/5",
+                "bg-gray-900 border-2 border-gray-800",
                 "hover:from-cyan-500/10 hover:via-cyan-500/15 hover:to-blue-500/10",
                 "border-2 border-dashed border-cyan-500/30 hover:border-cyan-500/40",
-                "text-cyan-700 hover:text-cyan-800",
+                "text-cyan-400 hover:text-cyan-800",
                 "transition-all duration-300",
                 "rounded-xl",
                 "whitespace-nowrap text-[11px] @[300px]:text-sm"
@@ -361,14 +361,14 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
             key={index} 
             className={cn(
               "relative group transition-all duration-300",
-              "bg-gradient-to-r from-cyan-500/5 via-cyan-500/10 to-blue-500/5",
-              "backdrop-blur-md border-2 border-cyan-500/30",
+              "bg-gray-900 border-2 border-gray-800",
+              "hover:border-cyan-400/40 hover:shadow-lg hover:shadow-cyan-400/10",
               "shadow-sm"
             )}
           >
             <div className="absolute -left-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="bg-cyan-100/80 rounded-lg p-1.5 cursor-move shadow-sm">
-                <GripVertical className="h-4 w-4 text-cyan-600" />
+              <div className="bg-cyan-400/20 rounded-lg p-1.5 cursor-move shadow-sm">
+                <GripVertical className="h-4 w-4 text-cyan-400" />
               </div>
             </div>
             
@@ -383,14 +383,14 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                       onChange={(e) => updateExperience(index, 'position', e.target.value)}
                       className={cn(
                         "text-sm font-semibold tracking-tight h-9",
-                        "bg-white/50 border-gray-200 rounded-lg",
-                        "focus:border-cyan-500/40 focus:ring-2 focus:ring-cyan-500/20",
-                        "hover:border-cyan-500/30 hover:bg-white/60 transition-colors",
-                        "placeholder:text-gray-400"
+                        "bg-gray-800 border-gray-700 rounded-lg",
+                        "focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20",
+                        "hover:border-cyan-400/50 hover:bg-gray-800/90 transition-colors",
+                        "placeholder:text-gray-400 border border-gray-700 text-white focus:bg-gray-800"
                       )}
                       placeholder="Position Title"
                     />
-                    <div className="absolute -top-2 left-2 px-1 bg-white/80 text-[7px] sm:text-[9px] font-medium text-gray-500">
+                    <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-cyan-400 border border-gray-700">
                       POSITION
                     </div>
                   </div>
@@ -411,14 +411,14 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                       value={exp.company || ""}
                       onChange={(e) => updateExperience(index, 'company', e.target.value)}
                       className={cn(
-                        "text-sm font-medium bg-white/50 border-gray-200 rounded-lg h-9",
-                        "focus:border-cyan-500/40 focus:ring-2 focus:ring-cyan-500/20",
-                        "hover:border-cyan-500/30 hover:bg-white/60 transition-colors",
-                        "placeholder:text-gray-400"
+                        "text-sm font-medium bg-gray-800 border-gray-700 rounded-lg h-9",
+                        "focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20",
+                        "hover:border-cyan-400/50 hover:bg-gray-800/90 transition-colors",
+                        "placeholder:text-gray-400 border border-gray-700 text-white focus:bg-gray-800"
                       )}
                       placeholder="Company Name"
                     />
-                    <div className="absolute -top-2 left-2 px-1 bg-white/80 text-[7px] sm:text-[9px] font-medium text-gray-500">
+                    <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-cyan-400 border border-gray-700">
                       COMPANY
                     </div>
                   </div>
@@ -427,14 +427,14 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                       value={exp.location || ""}
                       onChange={(e) => updateExperience(index, 'location', e.target.value)}
                       className={cn(
-                        "bg-white/50 border-gray-200 rounded-lg h-9",
-                        "focus:border-cyan-500/40 focus:ring-2 focus:ring-cyan-500/20",
-                        "hover:border-cyan-500/30 hover:bg-white/60 transition-colors",
-                        "placeholder:text-gray-400"
+                        "bg-gray-800 border-gray-700 rounded-lg h-9",
+                        "focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20",
+                        "hover:border-cyan-400/50 hover:bg-gray-800/90 transition-colors",
+                        "placeholder:text-gray-400 border border-gray-700 text-white focus:bg-gray-800"
                       )}
                       placeholder="Location"
                     />
-                    <div className="absolute -top-2 left-2 px-1 bg-white/80 text-[7px] sm:text-[9px] font-medium text-gray-500">
+                    <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-cyan-400 border border-gray-700">
                       LOCATION
                     </div>
                   </div>
@@ -447,21 +447,22 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                     value={exp.date || ""}
                     onChange={(e) => updateExperience(index, 'date', e.target.value)}
                     className={cn(
-                      "w-full bg-white/50 border-gray-200 rounded-lg h-9",
-                      "focus:border-cyan-500/40 focus:ring-2 focus:ring-cyan-500/20",
-                      "hover:border-cyan-500/30 hover:bg-white/60 transition-colors"
+                      "w-full bg-gray-800 border-gray-700 rounded-lg h-9",
+                      "focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20",
+                      "hover:border-cyan-400/50 hover:bg-gray-800/90 transition-colors",
+                      "placeholder:text-gray-400 border border-gray-700 text-white focus:bg-gray-800"
                     )}
-                    placeholder="e.g., &apos;Jan 2023 - Present&apos; or &apos;2020 - 2022&apos;"
+                    placeholder="e.g., 'Jan 2023 - Present' or '2020 - 2022'"
                   />
-                  <div className="absolute -top-2 left-2 px-1 bg-white/80 text-[7px] sm:text-[9px] font-medium text-gray-500">
+                  <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-cyan-400 border border-gray-700">
                     DATE
                   </div>
-                  <span className="ml-2 text-[8px] sm:text-[10px] text-gray-500">Use &apos;Present&apos; in the date field for current positions</span>
+                  <span className="ml-2 text-[8px] sm:text-[10px] text-gray-400">Use 'Present' in the date field for current positions</span>
                 </div>
 
                 {/* Description Section */}
                 <div className="space-y-3">
-                  <Label className="text-[11px] md:text-xs font-medium text-gray-600">
+                  <Label className="text-[11px] md:text-xs font-medium text-cyan-400">
                     Key Responsibilities & Achievements
                   </Label>
                   <div className="space-y-2 pl-0">
@@ -492,15 +493,15 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                               }
                             }}
                             className={cn(
-                              "min-h-[60px] text-xs md:text-sm bg-white/50 border-gray-200 rounded-lg",
-                              "focus:border-cyan-500/40 focus:ring-2 focus:ring-cyan-500/20",
-                              "hover:border-cyan-500/30 hover:bg-white/60 transition-colors",
-                              "placeholder:text-gray-400",
+                              "min-h-[60px] text-xs md:text-sm bg-gray-800 border-gray-700 rounded-lg",
+                              "focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20",
+                              "hover:border-cyan-400/50 hover:bg-gray-800/90 transition-colors",
+                              "placeholder:text-gray-400 border border-gray-700 text-white focus:bg-gray-800",
                               improvedPoints[index]?.[descIndex] && [
                                 "border-purple-400",
-                                "bg-gradient-to-r from-purple-50/80 to-indigo-50/80",
+                                "bg-gradient-to-r from-purple-900/30 to-indigo-900/30",
                                 "shadow-[0_0_15px_-3px_rgba(168,85,247,0.2)]",
-                                "hover:bg-gradient-to-r hover:from-purple-50/90 hover:to-indigo-50/90"
+                                "hover:bg-gradient-to-r hover:from-purple-900/40 hover:to-indigo-900/40"
                               ]
                             )}
                           />
@@ -555,7 +556,7 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                                   "p-0 group-hover/item:opacity-100",
                                   "h-8 w-8 rounded-lg",
                                   "bg-rose-50/80 hover:bg-rose-100/80",
-                                  "text-rose-600 hover:text-rose-700",
+                                  "text-rose-600 hover:text-rose-400",
                                   "border border-rose-200/60",
                                   "shadow-sm",
                                   "transition-all duration-300",
@@ -655,7 +656,7 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                     />
 
                     {exp.description.length === 0 && !aiSuggestions[index]?.length && (
-                      <div className="text-[11px] md:text-xs text-gray-500 italic px-4 py-3 bg-gray-50/50 rounded-lg">
+                      <div className="text-[11px] md:text-xs text-gray-400 border border-gray-700 italic px-4 py-3 bg-gray-50/50 rounded-lg">
                         Add points to describe your responsibilities and achievements
                       </div>
                     )}
@@ -673,7 +674,7 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                         onChange(updated);
                       }}
                       className={cn(
-                        "flex-1 text-cyan-600 hover:text-cyan-700 transition-colors text-[10px] sm:text-xs",
+                        "flex-1 text-cyan-600 hover:text-cyan-400 transition-colors text-[10px] sm:text-xs",
                         "border-cyan-200 hover:border-cyan-300 hover:bg-cyan-50/50"
                       )}
                     >

@@ -91,10 +91,10 @@ export function SkillsForm({
             variant="outline" 
             className={cn(
               "flex-1 h-9 min-w-[120px]",
-              "bg-gradient-to-r from-rose-500/5 via-rose-500/10 to-pink-500/5",
+              "bg-gray-900 border-2 border-gray-800",
               "hover:from-rose-500/10 hover:via-rose-500/15 hover:to-pink-500/10",
-              "border-2 border-dashed border-rose-500/30 hover:border-rose-500/40",
-              "text-rose-700 hover:text-rose-800",
+              "border-2 border-dashed border-rose-400/30 hover:border-rose-400/40",
+              "text-rose-400 hover:text-rose-300",
               "transition-all duration-300",
               "rounded-xl",
               "whitespace-nowrap text-[11px] @[300px]:text-sm"
@@ -112,10 +112,10 @@ export function SkillsForm({
             buttonClassName={cn(
               "flex-1 mb-0 h-9 min-w-[120px]",
               "whitespace-nowrap text-[11px] @[300px]:text-sm",
-              "bg-gradient-to-r from-rose-500/5 via-rose-500/10 to-pink-500/5",
+              "bg-gray-900 border-2 border-gray-800",
               "hover:from-rose-500/10 hover:via-rose-500/15 hover:to-pink-500/10",
-              "border-2 border-dashed border-rose-500/30 hover:border-rose-500/40",
-              "text-rose-700 hover:text-rose-800"
+              "border-2 border-dashed border-rose-400/30 hover:border-rose-400/40",
+              "text-rose-400 hover:text-rose-300"
             )}
           />
         </div>
@@ -126,8 +126,8 @@ export function SkillsForm({
           key={index} 
           className={cn(
             "relative group transition-all duration-300",
-            "bg-gradient-to-r from-rose-500/5 via-rose-500/10 to-pink-500/5",
-            "backdrop-blur-md border-2 border-rose-500/30",
+            "bg-gray-900 border-2 border-gray-800",
+            "hover:border-rose-400/40 hover:shadow-lg hover:shadow-rose-400/10",
             "shadow-sm"
           )}
         >
@@ -141,14 +141,14 @@ export function SkillsForm({
                     onChange={(e) => updateSkillCategory(index, 'category', e.target.value)}
                     className={cn(
                       "text-sm font-medium h-9",
-                      "bg-white/50 border-gray-200 rounded-lg",
-                      "focus:border-rose-500/40 focus:ring-2 focus:ring-rose-500/20",
-                      "hover:border-rose-500/30 hover:bg-white/60 transition-colors",
-                      "placeholder:text-gray-400"
+                      "bg-gray-800 border-gray-700 rounded-lg",
+                      "focus:border-rose-400 focus:ring-2 focus:ring-rose-400/20",
+                      "hover:border-rose-400/50 hover:bg-gray-800/90 transition-colors",
+                      "placeholder:text-gray-400 border border-gray-700 text-white focus:bg-gray-800"
                     )}
                     placeholder="Category Name"
                   />
-                  <div className="absolute -top-2 left-2 px-1 bg-white/80 text-[7px] sm:text-[9px] font-medium text-rose-700">
+                  <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-rose-400 border border-gray-700">
                     CATEGORY
                   </div>
                 </div>
@@ -170,14 +170,14 @@ export function SkillsForm({
                       key={skillIndex}
                       variant="secondary"
                       className={cn(
-                        "bg-white/60 hover:bg-white/80 text-rose-700 border border-rose-200 py-0.5",
+                        "bg-gray-800 hover:bg-gray-700 text-rose-400 border border-gray-600 py-0.5",
                         "transition-all duration-300 group/badge cursor-default text-[10px] sm:text-xs"
                       )}
                     >
                       {item}
                       <button
                         onClick={() => removeSkill(index, skillIndex)}
-                        className="ml-1.5 hover:text-red-500 opacity-50 hover:opacity-100 transition-opacity"
+                        className="ml-1.5 hover:text-red-400 opacity-50 hover:opacity-100 transition-opacity"
                       >
                         ×
                       </button>
@@ -192,10 +192,10 @@ export function SkillsForm({
                     onChange={(e) => setNewSkills({ ...newSkills, [index]: e.target.value })}
                     onKeyPress={(e) => handleKeyPress(e, index)}
                     className={cn(
-                      "h-9 bg-white/50 border-gray-200 rounded-lg",
-                      "focus:border-rose-500/40 focus:ring-2 focus:ring-rose-500/20",
-                      "hover:border-rose-500/30 hover:bg-white/60 transition-colors",
-                      "placeholder:text-gray-400",
+                      "h-9 bg-gray-800 border-gray-700 rounded-lg",
+                      "focus:border-rose-400 focus:ring-2 focus:ring-rose-400/20",
+                      "hover:border-rose-400/50 hover:bg-gray-800/90 transition-colors",
+                      "placeholder:text-gray-400 border border-gray-700 text-white focus:bg-gray-800",
                       "text-[10px] sm:text-xs"
                     )}
                     placeholder="Type a skill and press Enter or click +"
@@ -204,11 +204,11 @@ export function SkillsForm({
                     variant="outline"
                     size="sm"
                     onClick={() => addSkill(index)}
-                    className="h-9 px-2 bg-white/50 hover:bg-white/60"
+                    className="h-9 px-2 bg-gray-800 hover:bg-gray-700 border-gray-600"
                   >
                     <Plus className="h-4 w-4" />
                   </Button>
-                  <div className="absolute -top-2 left-2 px-1 bg-white/80 text-[7px] sm:text-[9px] font-medium text-rose-700">
+                  <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-rose-400 border border-gray-700">
                     ADD SKILL
                   </div>
                 </div>

@@ -81,10 +81,10 @@ export const EducationForm = memo(function EducationFormComponent({
             variant="outline" 
             className={cn(
               "flex-1 h-9 min-w-[120px]",
-              "bg-gradient-to-r from-indigo-500/5 via-indigo-500/10 to-blue-500/5",
-              "hover:from-indigo-500/10 hover:via-indigo-500/15 hover:to-blue-500/10",
-              "border-2 border-dashed border-indigo-500/30 hover:border-indigo-500/40",
-              "text-indigo-700 hover:text-indigo-800",
+              "bg-gray-900 border-2 border-gray-800",
+              "hover:from-indigo-400/10 hover:via-indigo-400/15 hover:to-blue-400/10",
+              "border-2 border-dashed border-indigo-400/30 hover:border-indigo-400/40",
+              "text-indigo-400 hover:text-indigo-300",
               "transition-all duration-300",
               "rounded-xl",
               "whitespace-nowrap text-[11px] @[300px]:text-sm"
@@ -102,10 +102,10 @@ export const EducationForm = memo(function EducationFormComponent({
             buttonClassName={cn(
               "flex-1 mb-0 h-9 min-w-[120px]",
               "whitespace-nowrap text-[11px] @[300px]:text-sm",
-              "bg-gradient-to-r from-indigo-500/5 via-indigo-500/10 to-blue-500/5",
-              "hover:from-indigo-500/10 hover:via-indigo-500/15 hover:to-blue-500/10",
-              "border-2 border-dashed border-indigo-500/30 hover:border-indigo-500/40",
-              "text-indigo-700 hover:text-indigo-800"
+              "bg-gray-900 border-2 border-gray-800",
+              "hover:from-indigo-400/10 hover:via-indigo-400/15 hover:to-blue-400/10",
+              "border-2 border-dashed border-indigo-400/30 hover:border-indigo-400/40",
+              "text-indigo-400 hover:text-indigo-300"
             )}
           />
         </div>
@@ -116,8 +116,8 @@ export const EducationForm = memo(function EducationFormComponent({
           key={index} 
           className={cn(
             "relative group transition-all duration-300",
-            "bg-gradient-to-r from-indigo-500/5 via-indigo-500/10 to-blue-500/5",
-            "backdrop-blur-md border-2 border-indigo-500/30",
+            "bg-gray-900 border-2 border-gray-800",
+            "hover:border-indigo-400/40 hover:shadow-lg hover:shadow-indigo-400/10",
             "shadow-sm"
           )}
         >
@@ -131,14 +131,14 @@ export const EducationForm = memo(function EducationFormComponent({
                     onChange={(e) => updateEducation(index, 'school', e.target.value)}
                     className={cn(
                       "text-sm font-semibold h-9",
-                      "bg-white/50 border-gray-200 rounded-lg",
-                      "focus:border-indigo-500/40 focus:ring-2 focus:ring-indigo-500/20",
-                      "hover:border-indigo-500/30 hover:bg-white/60 transition-colors",
-                      "placeholder:text-gray-400"
+                      "bg-gray-800 border-gray-700 rounded-lg",
+                      "focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20",
+                      "hover:border-indigo-400/50 hover:bg-gray-800/90 transition-colors",
+                      "placeholder:text-gray-500 text-white focus:bg-gray-800"
                     )}
                     placeholder="Institution Name"
                   />
-                  <div className="absolute -top-2 left-2 px-1 bg-white/80 text-[7px] sm:text-[9px] font-medium text-indigo-700">
+                  <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-indigo-400 border border-gray-700">
                     INSTITUTION
                   </div>
                 </div>
@@ -158,15 +158,15 @@ export const EducationForm = memo(function EducationFormComponent({
                   value={edu.location || ''}
                   onChange={(e) => updateEducation(index, 'location', e.target.value)}
                   className={cn(
-                    "h-9 bg-white/50 border-gray-200 rounded-lg",
-                    "focus:border-indigo-500/40 focus:ring-2 focus:ring-indigo-500/20",
-                    "hover:border-indigo-500/30 hover:bg-white/60 transition-colors",
-                    "placeholder:text-gray-400",
+                    "h-9 bg-gray-800 border-gray-700 rounded-lg",
+                    "focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/20",
+                    "hover:border-indigo-500/30 hover:bg-gray-800/90 transition-colors",
+                    "placeholder:text-gray-400 border border-gray-700 text-white focus:bg-gray-800",
                     "text-[10px] sm:text-xs"
                   )}
                   placeholder="City, Country"
                 />
-                <div className="absolute -top-2 left-2 px-1 bg-white/80 text-[7px] sm:text-[9px] font-medium text-indigo-700">
+                <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-indigo-400 border border-gray-700">
                     LOCATION
                 </div>
               </div>
@@ -178,15 +178,15 @@ export const EducationForm = memo(function EducationFormComponent({
                     value={edu.degree || ''}
                     onChange={(e) => updateEducation(index, 'degree', e.target.value)}
                     className={cn(
-                      "h-9 bg-white/50 border-gray-200 rounded-lg",
-                      "focus:border-indigo-500/40 focus:ring-2 focus:ring-indigo-500/20",
-                      "hover:border-indigo-500/30 hover:bg-white/60 transition-colors",
-                      "placeholder:text-gray-400",
+                      "h-9 bg-gray-800 border-gray-700 rounded-lg",
+                      "focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20",
+                      "hover:border-indigo-400/50 hover:bg-gray-800/90 transition-colors",
+                      "placeholder:text-gray-500 text-white focus:bg-gray-800",
                       "text-[10px] sm:text-xs"
                     )}
                     placeholder="Bachelor's, Master's, etc."
                   />
-                  <div className="absolute -top-2 left-2 px-1 bg-white/80 text-[7px] sm:text-[9px] font-medium text-indigo-700">
+                  <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-indigo-400 border border-gray-700">
                     DEGREE
                   </div>
                 </div>
@@ -195,15 +195,15 @@ export const EducationForm = memo(function EducationFormComponent({
                     value={edu.field || ''}
                     onChange={(e) => updateEducation(index, 'field', e.target.value)}
                     className={cn(
-                      "h-9 bg-white/50 border-gray-200 rounded-lg",
-                      "focus:border-indigo-500/40 focus:ring-2 focus:ring-indigo-500/20",
-                      "hover:border-indigo-500/30 hover:bg-white/60 transition-colors",
-                      "placeholder:text-gray-400",
+                      "h-9 bg-gray-800 border-gray-700 rounded-lg",
+                      "focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20",
+                      "hover:border-indigo-400/50 hover:bg-gray-800/90 transition-colors",
+                      "placeholder:text-gray-500 text-white focus:bg-gray-800",
                       "text-[10px] sm:text-xs"
                     )}
                     placeholder="Field of Study"
                   />
-                  <div className="absolute -top-2 left-2 px-1 bg-white/80 text-[7px] sm:text-[9px] font-medium text-indigo-700">
+                  <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-indigo-400 border border-gray-700">
                     FIELD OF STUDY
                   </div>
                 </div>
@@ -216,21 +216,22 @@ export const EducationForm = memo(function EducationFormComponent({
                   value={edu.date || ''}
                   onChange={(e) => updateEducation(index, 'date', e.target.value)}
                   className={cn(
-                    "w-full h-9 bg-white/50 border-gray-200 rounded-lg",
-                    "focus:border-indigo-500/40 focus:ring-2 focus:ring-indigo-500/20",
-                    "hover:border-indigo-500/30 hover:bg-white/60 transition-colors",
+                    "w-full h-9 bg-gray-800 border-gray-700 rounded-lg",
+                    "focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20",
+                    "hover:border-indigo-400/50 hover:bg-gray-800/90 transition-colors",
+                    "placeholder:text-gray-500 text-white focus:bg-gray-800",
                     "text-[10px] sm:text-xs"
                   )}
-                  placeholder="e.g., &apos;2019 - 2023&apos; or &apos;2020 - Present&apos;"
+                  placeholder="e.g., '2019 - 2023' or '2020 - Present'"
                 />
-                <div className="absolute -top-2 left-2 px-1 bg-white/80 text-[7px] sm:text-[9px] font-medium text-indigo-700">
+                <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-indigo-400 border border-gray-700">
                   DATE
                 </div>
               </div>
 
               {/* Current Status Note */}
               <div className="flex items-center space-x-2 -mt-1">
-                <span className="text-[8px] sm:text-[10px] text-gray-500">Use &apos;Present&apos; in the date field for current education</span>
+                <span className="text-[8px] sm:text-[10px] text-gray-400">Use 'Present' in the date field for current education</span>
               </div>
 
               {/* GPA */}
@@ -243,15 +244,15 @@ export const EducationForm = memo(function EducationFormComponent({
                   value={edu.gpa || ''}
                   onChange={(e) => updateEducation(index, 'gpa', e.target.value ? parseFloat(e.target.value) : undefined)}
                   className={cn(
-                    "h-9 bg-white/50 border-gray-200 rounded-lg",
-                    "focus:border-indigo-500/40 focus:ring-2 focus:ring-indigo-500/20",
-                    "hover:border-indigo-500/30 hover:bg-white/60 transition-colors",
-                    "placeholder:text-gray-400",
+                    "h-9 bg-gray-800 border-gray-700 rounded-lg",
+                    "focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/20",
+                    "hover:border-indigo-500/30 hover:bg-gray-800/90 transition-colors",
+                    "placeholder:text-gray-400 border border-gray-700 text-white focus:bg-gray-800",
                     "text-[10px] sm:text-xs"
                   )}
                   placeholder="0.00"
                 />
-                <div className="absolute -top-2 left-2 px-1 bg-white/80 text-[7px] sm:text-[9px] font-medium text-indigo-700">
+                <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-indigo-400 border border-gray-700">
                   GPA (OPTIONAL)
                 </div>
               </div>
@@ -259,8 +260,8 @@ export const EducationForm = memo(function EducationFormComponent({
               {/* Achievements */}
               <div className="space-y-1.5">
                 <div className="flex justify-between items-baseline">
-                  <Label className="text-[10px] sm:text-xs font-medium text-indigo-700">Achievements & Activities</Label>
-                  <span className="text-[8px] sm:text-[10px] text-gray-500">One achievement per line</span>
+                  <Label className="text-[10px] sm:text-xs font-medium text-indigo-400">Achievements & Activities</Label>
+                  <span className="text-[8px] sm:text-[10px] text-gray-400">One achievement per line</span>
                 </div>
                 <Tiptap
                   content={(edu.achievements || []).map(achievement => achievement.trim()).join('\n\n') || ''}
@@ -279,10 +280,10 @@ export const EducationForm = memo(function EducationFormComponent({
                     }
                   }}
                   className={cn(
-                    "min-h-[120px] bg-white/50 border-gray-200 rounded-lg",
-                    "focus:border-indigo-500/40 focus:ring-2 focus:ring-indigo-500/20",
-                    "hover:border-indigo-500/30 hover:bg-white/60 transition-colors",
-                    "placeholder:text-gray-400",
+                    "min-h-[120px] bg-gray-800 border-gray-700 rounded-lg",
+                    "focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20",
+                    "hover:border-indigo-400/50 hover:bg-gray-800/90 transition-colors",
+                    "placeholder:text-gray-500 text-white focus:bg-gray-800",
                     "text-[10px] sm:text-xs"
                   )}
                 />

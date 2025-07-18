@@ -76,7 +76,7 @@ export function SavedStylesDialog({ currentSettings, onApplyStyle }: SavedStyles
         <Button
           variant="outline"
           size="sm"
-          className="text-xs bg-white/80 hover:bg-gradient-to-r from-teal-500/10 to-cyan-500/10 
+          className="text-xs bg-gray-900 rounded-full hover:bg-gradient-to-r from-teal-500/10 to-cyan-500/10 
           border-teal-600 hover:border-teal-800 text-teal-700 hover:text-teal-800 
           backdrop-blur-sm transition-all duration-500 hover:-translate-y-[1px] w-full 
           shadow-sm hover:shadow-md"
@@ -117,7 +117,7 @@ export function SavedStylesDialog({ currentSettings, onApplyStyle }: SavedStyles
                 placeholder="Enter style name..."
                 value={newStyleName}
                 onChange={(e) => setNewStyleName(e.target.value)}
-                className="flex-1 border-teal-200/40 focus:border-teal-400 bg-white/80"
+                className="flex-1 border-teal-200/40 focus:border-teal-400 bg-gray-900 rounded-full"
                 autoFocus
               />
               <Button
