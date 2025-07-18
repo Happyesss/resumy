@@ -1,13 +1,13 @@
 'use client';
 
-import { User, Briefcase, FolderGit2, GraduationCap, Wrench, Palette } from "lucide-react";
+import { User, Briefcase, FolderGit2, GraduationCap, Wrench, Palette, Mail } from "lucide-react";
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export function ResumeEditorTabs() {
   return (
     <>
 
-      <TabsList className="h-full w-full relative bg-gray-900/90 backdrop-blur-xl border border-gray-800 rounded-lg overflow-hidden grid grid-cols-3 @[500px]:grid-cols-6 gap-0.5 p-0.5 shadow-lg">
+      <TabsList className="h-full w-full relative bg-gray-900/90 backdrop-blur-xl border border-gray-800 rounded-lg overflow-hidden grid grid-cols-3 @[500px]:grid-cols-7 gap-0.5 p-0.5 shadow-lg">
         {/* Basic Info Tab */}
         <TabsTrigger 
           value="basic" 

@@ -11,6 +11,7 @@ import { TailoredJobAccordion } from "../../management/cards/tailored-job-card";
 import { BasicInfoForm } from "../forms/basic-info-form";
 import ChatBot from "../../assistant/chatbot";
 import { CoverLetterPanel } from "./cover-letter-panel";
+import { ColdMailPanel } from "./cold-mail-panel";
 import {
   WorkExperienceForm,
   EducationForm,
@@ -146,6 +147,14 @@ export function EditorPanel({
                     profile={profile}
                   />
                 </Suspense>
+              </TabsContent>
+
+              {/* Cold Mail Form */}
+              <TabsContent value="cold-mail">
+                <ColdMailPanel
+                  resume={resume}
+                  job={job}
+                />
               </TabsContent>
 
               {/* Templates Form */}
