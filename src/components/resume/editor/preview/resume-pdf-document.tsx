@@ -299,7 +299,10 @@ const EducationSection = memo(function EducationSection({
               <Text style={styles.degree}>{processText(`${edu.degree} ${edu.field}`)}</Text>
               {edu.gpa && <Text style={styles.gpaText}>GPA: {edu.gpa}</Text>}
             </View>
-            <Text style={styles.dateRange}>{edu.date}</Text>
+               <View style={{ flexDirection: 'column', alignItems: 'flex-end' }}>
+                 <Text style={styles.dateRange}>{edu.date}</Text>
+                 {edu.location && <Text style={styles.locationText}>{edu.location}</Text>}
+               </View>
           </View>
           {edu.achievements && edu.achievements.map((achievement, bulletIndex) => (
             <View key={bulletIndex} style={styles.bulletPoint}>
