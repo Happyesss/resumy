@@ -35,14 +35,48 @@ export function TemplatePreview({ templateId, className }: TemplatePreviewProps)
       case 'modern-1':
         return (
           <div className="w-full h-full bg-white p-2 text-xs">
-            <div className="border-b pb-1 mb-2">
+            <div className="border-l-2 border-blue-500 pl-2 mb-2">
               <div className="h-2 bg-gray-800 w-3/4 mb-1"></div>
-              <div className="h-1 bg-blue-500 w-1/2"></div>
+              <div className="h-1 bg-blue-500 w-1/2 mb-1"></div>
+              <div className="grid grid-cols-2 gap-1 text-[0.3rem]">
+                <div className="h-0.5 bg-gray-500 w-full"></div>
+                <div className="h-0.5 bg-gray-500 w-3/4"></div>
+              </div>
             </div>
             <div className="space-y-1">
-              <div className="h-1 bg-gray-600 w-full"></div>
-              <div className="h-1 bg-gray-600 w-4/5"></div>
-              <div className="h-1 bg-gray-600 w-3/4"></div>
+              <div className="h-0.5 bg-blue-500 w-1/3 border-b border-blue-500"></div>
+              <div className="bg-gray-50 p-1 border-l-2 border-blue-200">
+                <div className="h-0.5 bg-gray-700 w-2/3 mb-0.5"></div>
+                <div className="h-0.5 bg-blue-500 w-1/2"></div>
+              </div>
+            </div>
+          </div>
+        );
+      case 'modern-2':
+        return (
+          <div className="w-full h-full bg-gray-900 p-2 text-xs font-mono">
+            <div className="border-l-2 border-green-400 pl-2 mb-2 text-white">
+              <div className="h-1.5 bg-white w-3/4 mb-1"></div>
+              <div className="h-0.5 bg-green-400 w-1/2 mb-1"></div>
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-1">
+                  <div className="w-1 h-0.5 bg-green-400"></div>
+                  <div className="h-0.5 bg-gray-300 w-6"></div>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-1 h-0.5 bg-green-400"></div>
+                  <div className="h-0.5 bg-gray-300 w-8"></div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gray-800 p-1 rounded text-green-400">
+              <div className="flex gap-1 mb-1">
+                <div className="w-1 h-1 bg-red-400 rounded-full"></div>
+                <div className="w-1 h-1 bg-yellow-400 rounded-full"></div>
+                <div className="w-1 h-1 bg-green-400 rounded-full"></div>
+              </div>
+              <div className="h-0.5 bg-blue-300 w-2/3 mb-0.5"></div>
+              <div className="h-0.5 bg-yellow-300 w-1/2"></div>
             </div>
           </div>
         );

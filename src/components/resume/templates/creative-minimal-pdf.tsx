@@ -171,21 +171,23 @@ const creativeMinimalStyles = StyleSheet.create({
   skillTagsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     gap: 4,
     marginTop: 5,
   },
   skillTag: {
     backgroundColor: '#10b981', // Emerald-500
     color: '#ffffff',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingHorizontal: 6,
+    paddingTop: 2,
+    paddingBottom: 2,
     borderRadius: 15,
     fontSize: 7,
     fontFamily: 'Helvetica-Bold',
     textAlign: 'center',
     marginBottom: 4,
-    minWidth: 50,
+    alignSelf: 'flex-start',
+    lineHeight: 1.2,
   },
   // Education styles
   educationItem: {
@@ -301,13 +303,16 @@ const creativeMinimalStyles = StyleSheet.create({
     backgroundColor: '#ffffff',
     color: '#374151', // Gray-700
     paddingHorizontal: 6,
-    paddingVertical: 2,
+    paddingTop: 1,
+    paddingBottom: 1,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#e5e7eb', // Gray-200
     fontSize: 6,
     fontFamily: 'Helvetica-Bold',
     marginBottom: 2,
+    textAlign: 'center',
+    lineHeight: 1.2,
   },
   // Project styles
   projectItem: {
