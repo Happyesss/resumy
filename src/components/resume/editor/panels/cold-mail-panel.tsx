@@ -275,7 +275,7 @@ export function ColdMailPanel({
           className="w-full mt-2 bg-blue-600 text-white text-xs py-1"
         >
           {isGenerating ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <Sparkles className="h-4 w-4 mr-1" />}
-          {isGenerating ? "Generating..." : "Send Cold Email"}
+          {isGenerating ? "Generating..." : "Generate Cold Email"}
         </Button>
       </div>
 

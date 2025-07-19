@@ -87,6 +87,24 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
     });
   }, [popoverOpen]);
 
+  // Effect to inject custom styles for Tiptap editor
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .ProseMirror {
+        font-weight: 400 !important; /* Make normal text less bold */
+      }
+      .ProseMirror strong {
+        color: #fff !important;
+        font-weight: 700 !important; /* Make bold text white and strongly bold */
+      }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   const addExperience = () => {
     const newExperience: WorkExperience = {
       company: "",

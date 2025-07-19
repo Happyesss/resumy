@@ -22,7 +22,7 @@ const modernProfessionalStyles = StyleSheet.create({
   
   // Header styles
   header: {
-    marginBottom: 20,
+    marginBottom: 16,
     borderLeft: '3pt solid #2563EB',
     paddingLeft: 15,
   },
@@ -30,7 +30,7 @@ const modernProfessionalStyles = StyleSheet.create({
   name: {
     fontSize: 20,
     fontFamily: 'Helvetica-Bold',
-    marginBottom: 6,
+    marginBottom: 10,
     color: '#111827',
     letterSpacing: 0.5,
   },
@@ -68,14 +68,14 @@ const modernProfessionalStyles = StyleSheet.create({
   
   // Section styles
   section: {
-    marginBottom: 15,
+    marginBottom: 8, 
   },
   
   sectionTitle: {
     fontSize: 13,
     fontFamily: 'Helvetica-Bold',
     color: '#111827',
-    marginBottom: 10,
+    marginBottom: 6, 
     textTransform: 'uppercase',
     letterSpacing: 1,
     borderBottom: '2pt solid #2563EB',
@@ -84,7 +84,7 @@ const modernProfessionalStyles = StyleSheet.create({
   
   // Experience styles
   experienceItem: {
-    marginBottom: 12,
+    marginBottom: 4, 
     paddingLeft: 8,
     borderLeft: '1pt solid #E5E7EB',
     position: 'relative',
@@ -146,14 +146,14 @@ const modernProfessionalStyles = StyleSheet.create({
   
   // Bullet points
   bulletList: {
-    marginTop: 5,
-    marginBottom: 8,
+    marginTop: 3, // reduced from 5
+    marginBottom: 5, // reduced from 8
   },
   
   bulletItem: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 3,
+    marginBottom: 2, // reduced from 3
   },
   
   bulletDot: {
@@ -205,7 +205,7 @@ const modernProfessionalStyles = StyleSheet.create({
   
   // Projects styles
   projectItem: {
-    marginBottom: 10,
+    marginBottom: 6, // reduced from 10
     backgroundColor: '#F9FAFB',
     padding: 8,
     borderRadius: 4,
@@ -216,7 +216,7 @@ const modernProfessionalStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 4,
+    marginBottom: 2, // reduced from 4
   },
   
   projectLeft: {
@@ -249,7 +249,7 @@ const modernProfessionalStyles = StyleSheet.create({
   
   // Education styles
   educationItem: {
-    marginBottom: 8,
+    marginBottom: 5, // reduced from 8
     backgroundColor: '#F9FAFB',
     padding: 8,
     borderRadius: 4,
@@ -303,7 +303,7 @@ const modernProfessionalStyles = StyleSheet.create({
     width: '48%',
     backgroundColor: '#F9FAFB',
     padding: 8,
-    marginBottom: 8,
+    marginBottom: 5, // reduced from 8
     borderRadius: 4,
   },
   
@@ -311,7 +311,7 @@ const modernProfessionalStyles = StyleSheet.create({
     fontSize: 10,
     fontFamily: 'Helvetica-Bold',
     color: '#2563EB',
-    marginBottom: 6,
+    marginBottom: 3, // reduced from 6
   },
   
   skillsContainer: {
@@ -328,7 +328,7 @@ const modernProfessionalStyles = StyleSheet.create({
     paddingTop: 1,
     paddingBottom: 1,
     marginRight: 3,
-    marginBottom: 3,
+    marginBottom: 2, // reduced from 3
     borderRadius: 2,
     border: '0.5pt solid #E5E7EB',
     textAlign: 'center',

@@ -83,6 +83,24 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
     });
   }, [popoverOpen]);
 
+  // Add this style block at the top level of your component file, before the return statement
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .ProseMirror {
+        font-weight: 400 !important; /* Make normal text less bold */
+      }
+      .ProseMirror strong {
+        color: #fff !important;
+        font-weight: 700 !important; /* Make bold text white and strongly bold */
+      }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   const addProject = () => {
     onChange([{
       name: "",
@@ -448,10 +466,12 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                     value={project.date || ''}
                     onChange={(e) => updateProject(index, 'date', e.target.value)}
                     className={cn(
-                      "w-full bg-gray-800 border-gray-700 rounded-lg h-9",
-                      "focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20",
-                      "hover:border-violet-500/30 hover:bg-gray-800/90 transition-colors"
-                    )}
+                    "w-full h-9 bg-gray-800 border-gray-700 rounded-lg",
+                    "focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20",
+                    "hover:border-violet-500/30 hover:bg-gray-800/90 transition-colors",
+                    "placeholder:text-gray-400 text-white focus:bg-gray-800",
+                    "text-[10px] sm:text-xs"
+                  )}
                     placeholder="e.g., &apos;Jan 2023 - Present&apos; or &apos;2020 - 2022&apos;"
                   />
                   <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-violet-400">
@@ -771,4 +791,4 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
       />
     </>
   );
-}, areProjectsPropsEqual); 
+}, areProjectsPropsEqual);
