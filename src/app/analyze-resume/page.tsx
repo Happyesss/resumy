@@ -71,10 +71,9 @@ export default function AnalyzeResumePage() {
 
       {/* Main Content with top padding for fixed navbar */}
       <div className="pt-16">
-        {/* Main Content - Dynamic Layout */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {!scoreData ? (
-            /* Upload Form - Split layout with preview */
+        {!scoreData ? (
+          /* Upload Form - Split layout with preview */
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Left Side - Compact Upload Form */}
               <div className="space-y-6">
@@ -95,16 +94,14 @@ export default function AnalyzeResumePage() {
                 <ResumePreviewCard resumeText={resumeText} />
               </div>
             </div>
-          ) : (
-            /* Results Layout - Only DetailedResults, shifted left */
-            <div className="max-w-2xl mx-auto">
-              <DetailedResults
-                scoreData={scoreData}
-                onAnalyzeAnother={handleAnalyzeAnother}
-              />
-            </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          /* Results Layout - Full Screen DetailedResults */
+          <DetailedResults
+            scoreData={scoreData}
+            onAnalyzeAnother={handleAnalyzeAnother}
+          />
+        )}
       </div>
     </div>
   );
