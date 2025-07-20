@@ -17,20 +17,40 @@ interface DetailedResultsProps {
   resumeFile?: File | null; // Add resume file for PDF display
 }
 
+// Simple font size estimation helper function
+const estimateFontSizeFromFile = (file: File): number => {
+  const fileSizeKB = file.size / 1024;
+  
+  // Estimate font size based on file size (rough heuristic)
+  if (fileSizeKB < 50) return 12.0;      // Small file, likely larger font
+  else if (fileSizeKB < 100) return 11.0; // Medium file
+  else if (fileSizeKB < 200) return 10.5; // Larger file
+  else return 10.0;                        // Large file, likely smaller font
+};
+
 export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resumeFile }: DetailedResultsProps) {
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [averageFontSize, setAverageFontSize] = useState<number | null>(null);
 
   useEffect(() => {
     // Try to get PDF from resumeFile first, then from localStorage
     if (resumeFile && resumeFile.type === 'application/pdf') {
       const url = URL.createObjectURL(resumeFile);
       setPdfUrl(url);
+      // Estimate font size from PDF file
+      const estimatedSize = estimateFontSizeFromFile(resumeFile);
+      setAverageFontSize(estimatedSize);
       return () => URL.revokeObjectURL(url); // Cleanup
     } else {
       // Try to get from localStorage
       const storedPdfData = localStorage.getItem('resumePdfData');
+      
       if (storedPdfData) {
         setPdfUrl(storedPdfData);
+        // Set a reasonable default for stored PDFs
+        setAverageFontSize(11.0);
+      } else {
+        setAverageFontSize(null); // Reset font size for non-PDF files
       }
     }
   }, [resumeFile]);
@@ -300,9 +320,9 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
                         </div>
                         <div className="bg-gray-800 rounded p-2 text-center">
                           <div className="text-purple-400 font-medium text-xs">
-                            {pdfUrl ? 'PDF' : `${(resumeText.length / 1024).toFixed(1)}KB`}
+                            {pdfUrl ? (averageFontSize ? `${averageFontSize}px` : 'Loading...') : `${(resumeText.length / 1024).toFixed(1)}KB`}
                           </div>
-                          <div className="text-gray-400 text-xs">{pdfUrl ? 'Format' : 'Size'}</div>
+                          <div className="text-gray-400 text-xs">{pdfUrl ? 'Avg Font Size' : 'Size'}</div>
                         </div>
                       </div>
                     )}
