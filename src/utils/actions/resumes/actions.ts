@@ -475,7 +475,7 @@ export async function generateResumeScore(
       
       1. Overall Score (0-100): A holistic assessment
       2. Completeness: 
-         - Contact Information: Check if email, phone, location are present
+         - Contact Information: Check if email, phone_number, location are present and filled. Award full points (100) if email, phone_number, and location all have values. Deduct 10-15 points for each missing field.
          - Detail Level: Assess if work experience, skills, and education have sufficient detail
       3. Impact Score:
          - Active Voice Usage: Look for action verbs and active voice

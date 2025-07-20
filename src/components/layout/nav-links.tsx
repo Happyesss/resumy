@@ -1,7 +1,9 @@
 'use client'
 import { cn } from "@/lib/utils";
 import { useState, useEffect, useRef } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface NavLinkProps {
   href: string;
@@ -11,14 +13,45 @@ interface NavLinkProps {
 }
 
 function NavLink({ href, children, className, onClick }: NavLinkProps) {
+  const pathname = usePathname();
+  const isActive = pathname === href;
+
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (href.startsWith('/')) {
+      onClick?.();
+      return;
+    }
+
+    // Anchor link logic
     e.preventDefault();
-    const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
+    if (pathname === '/') {
+      // On landing page, scroll to section
+      const target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // Not on landing page, redirect to landing page with hash
+      window.location.href = `/${href}`;
     }
     onClick?.();
   };
+
+  if (href.startsWith('/')) {
+    return (
+      <Link
+        href={href}
+        onClick={onClick}
+        className={cn(
+          "text-sm font-medium transition-all duration-200",
+          isActive && "bg-gray-800/70 ring-1 ring-teal-400/30",
+          className
+        )}
+      >
+        {children}
+      </Link>
+    );
+  }
 
   return (
     <a
@@ -54,6 +87,13 @@ function DesktopNavLinks() {
         className="text-white hover:text-purple-400 hover:bg-gray-800/50 px-3 py-2 rounded-lg transition-all duration-200"
       >
         About
+      </NavLink>
+      <NavLink 
+        href="/analyze-resume" 
+        className="text-white hover:text-teal-400 hover:bg-gray-800/50 px-3 py-2 rounded-lg transition-all duration-200 font-semibold flex items-center gap-2"
+      >
+        <Sparkles className="inline-block h-5 w-5 text-teal-400" />
+        Analyze Resume
       </NavLink>
     </div>
   );
@@ -109,6 +149,14 @@ function MobileNavMenu() {
               onClick={() => setIsOpen(false)}
             >
               About
+            </NavLink>
+            <NavLink 
+              href="/analyze-resume" 
+              className="text-white hover:text-teal-400 hover:bg-gray-800/50 px-3 py-2 rounded-lg transition-all duration-200 font-semibold flex items-center gap-2"
+              onClick={() => setIsOpen(false)}
+            >
+              <Sparkles className="inline-block h-5 w-5 text-teal-400" />
+              Analyze Resume
             </NavLink>
           </div>
         </div>
