@@ -2,6 +2,7 @@
 import { AuthDialog } from "@/components/auth/auth-dialog";
 import { Sparkles, ArrowRight, Star, Rocket, Brain, Globe2, Trophy, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
+import { DotPattern } from "@/components/magicui/dot-pattern";
 
 export function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -17,12 +18,15 @@ export function Hero() {
   return (
     <section
       className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-black"
-      style={{
-        backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.4) 1.5px, transparent 1.5px)`,
-        backgroundSize: '40px 40px',
-        backgroundPosition: '0 0'
-      }}
     >
+      <DotPattern
+        className="absolute inset-0 text-white/20 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]"
+        width={40}
+        height={40}
+        cx={1.5}
+        cy={1.5}
+        cr={1.5}
+      />
       <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 py-16">
         {/* Hero Content */}
         <div className="text-center space-y-10">
