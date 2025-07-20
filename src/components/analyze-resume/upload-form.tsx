@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { FileText, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import pdfToText from 'react-pdftotext';
+import mammoth from 'mammoth';
 
 interface UploadFormProps {
   resumeText: string;
@@ -66,7 +67,15 @@ export function UploadForm({
       file.type === 'application/msword' ||
       file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     ) {
-      setError('DOC and DOCX files are not yet supported. Please convert to PDF or text, or copy-paste the content.');
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        const result = await mammoth.extractRawText({ arrayBuffer });
+        setResumeText(result.value);
+        setError(null);
+      } catch (err) {
+        console.error('DOCX processing error:', err);
+        setError('Failed to extract text from the DOCX file. Please try again or copy-paste the content manually.');
+      }
     } else {
       setError('Please upload a PDF or text file (.pdf, .txt), or copy-paste your resume content.');
     }
@@ -89,7 +98,9 @@ export function UploadForm({
 
     const files = Array.from(e.dataTransfer.files);
     const file = files.find(
-      (file) => file.type === 'application/pdf' || file.type === 'text/plain'
+      (file) => file.type === 'application/pdf' || 
+               file.type === 'text/plain' ||
+               file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     );
 
     if (file) {
@@ -111,9 +122,19 @@ export function UploadForm({
           setError(null);
         };
         reader.readAsText(file);
+      } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+        try {
+          const arrayBuffer = await file.arrayBuffer();
+          const result = await mammoth.extractRawText({ arrayBuffer });
+          setResumeText(result.value);
+          setError(null);
+        } catch (err) {
+          console.error('DOCX processing error:', err);
+          setError('Failed to extract text from the DOCX file. Please try again or copy-paste the content manually.');
+        }
       }
     } else {
-      setError('Please drop a PDF or text file.');
+      setError('Please drop a PDF, DOCX, or text file.');
     }
   };
 
@@ -189,6 +210,77 @@ export function UploadForm({
           </Button>
         </div>
       </Card>
+
+      {/* Additional content below upload form */}
+      <div className="max-w-md mx-auto mt-6 space-y-4">
+        {/* Features Section */}
+        <div className="grid grid-cols-2 gap-3">
+          <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg p-3">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center">
+                <svg className="w-3 h-3 text-green-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2l4-4" />
+                </svg>
+              </div>
+              <span className="text-white text-sm font-medium">ATS Optimization</span>
+            </div>
+            <p className="text-gray-400 text-xs">Ensure your resume passes applicant tracking systems</p>
+          </div>
+          
+          <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg p-3">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-6 h-6 bg-blue-500/20 rounded-full flex items-center justify-center">
+                <svg className="w-3 h-3 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <span className="text-white text-sm font-medium">Instant Analysis</span>
+            </div>
+            <p className="text-gray-400 text-xs">Get results in seconds, not hours</p>
+          </div>
+        </div>
+
+        {/* Stats Section */}
+        <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg p-4">
+          <div className="text-center mb-3">
+            <h3 className="text-white text-sm font-semibold mb-1">Trusted by Job Seekers</h3>
+            <p className="text-gray-400 text-xs">Join thousands who improved their resume</p>
+          </div>
+          <div className="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <div className="text-purple-400 font-bold text-lg">10K+</div>
+              <div className="text-gray-500 text-xs">Resumes Analyzed</div>
+            </div>
+            <div>
+              <div className="text-purple-400 font-bold text-lg">95%</div>
+              <div className="text-gray-500 text-xs">Success Rate</div>
+            </div>
+            <div>
+              <div className="text-purple-400 font-bold text-lg">24/7</div>
+              <div className="text-gray-500 text-xs">Available</div>
+            </div>
+          </div>
+        </div>
+
+        {/* File Types Support */}
+        <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg p-4">
+          <h3 className="text-white text-sm font-semibold mb-3 text-center">Supported File Types</h3>
+          <div className="flex justify-center gap-4">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-red-500/20 rounded flex items-center justify-center">
+                <span className="text-red-400 text-xs font-bold">PDF</span>
+              </div>
+              <span className="text-gray-300 text-xs">PDF Files</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-blue-500/20 rounded flex items-center justify-center">
+                <span className="text-blue-400 text-xs font-bold">DOC</span>
+              </div>
+              <span className="text-gray-300 text-xs">Word Files</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
