@@ -11,9 +11,10 @@ import { ResumeScoreMetrics } from '@/components/resume/editor/panels/resume-sco
 
 interface DetailedResultsProps {
   scoreData: ResumeScoreMetrics;
+  onAnalyzeAnother?: () => void;
 }
 
-export function DetailedResults({ scoreData }: DetailedResultsProps) {
+export function DetailedResults({ scoreData, onAnalyzeAnother }: DetailedResultsProps) {
   const getScoreColor = (score: number) => {
     if (score >= 90) return { color: '#10b981', label: 'Excellent', bgColor: 'bg-green-500' };
     if (score >= 80) return { color: '#f59e0b', label: 'Very Good', bgColor: 'bg-yellow-500' };
@@ -233,6 +234,20 @@ export function DetailedResults({ scoreData }: DetailedResultsProps) {
                 );
               })}
             </div>
+          </div>
+        </Card>
+      )}
+
+      {/* Add Analyze Another Resume Button */}
+      {onAnalyzeAnother && (
+        <Card className="bg-gray-900/80 border-gray-800 mt-6">
+          <div className="p-6 text-center">
+            <button
+              onClick={onAnalyzeAnother}
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 font-medium"
+            >
+              Analyze Another Resume
+            </button>
           </div>
         </Card>
       )}

@@ -30,6 +30,7 @@ export function UploadForm({
 }: UploadFormProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const formatFileSize = (bytes: number) => {
@@ -40,45 +41,56 @@ export function UploadForm({
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
+  const processFile = async (file: File) => {
+    if (isProcessing) return; // Prevent double processing
+    
+    setIsProcessing(true);
     setUploadedFile(file);
 
-    if (file.type === 'text/plain') {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const text = e.target?.result as string;
-        setResumeText(text);
-        setError(null);
-      };
-      reader.readAsText(file);
-    } else if (file.type === 'application/pdf') {
-      try {
+    try {
+      if (file.type === 'text/plain') {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const text = e.target?.result as string;
+          setResumeText(text);
+          setError(null);
+          setIsProcessing(false);
+        };
+        reader.readAsText(file);
+      } else if (file.type === 'application/pdf') {
         const text = await pdfToText(file);
         setResumeText(text);
         setError(null);
-      } catch (err) {
-        console.error('PDF processing error:', err);
-        setError('Failed to extract text from the PDF. Please try again or copy-paste the content manually.');
-      }
-    } else if (
-      file.type === 'application/msword' ||
-      file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-    ) {
-      try {
+      } else if (
+        file.type === 'application/msword' ||
+        file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      ) {
         const arrayBuffer = await file.arrayBuffer();
         const result = await mammoth.extractRawText({ arrayBuffer });
         setResumeText(result.value);
         setError(null);
-      } catch (err) {
-        console.error('DOCX processing error:', err);
-        setError('Failed to extract text from the DOCX file. Please try again or copy-paste the content manually.');
+      } else {
+        setError('Please upload a PDF or text file (.pdf, .txt), or copy-paste your resume content.');
       }
-    } else {
-      setError('Please upload a PDF or text file (.pdf, .txt), or copy-paste your resume content.');
+    } catch (err) {
+      setError('Failed to extract text from the file. Please try again or copy-paste the content manually.');
+    } finally {
+      setIsProcessing(false);
+      // Reset file input to allow same file upload again
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
+  };
+
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    const file = event.target.files?.[0];
+    if (!file) return;
+    
+    await processFile(file);
   };
 
   const handleDrag = (e: React.DragEvent) => {
@@ -104,35 +116,7 @@ export function UploadForm({
     );
 
     if (file) {
-      setUploadedFile(file);
-      if (file.type === 'application/pdf') {
-        try {
-          const text = await pdfToText(file);
-          setResumeText(text);
-          setError(null);
-        } catch (err) {
-          console.error('PDF processing error:', err);
-          setError('Failed to extract text from the PDF. Please try again or copy-paste the content manually.');
-        }
-      } else if (file.type === 'text/plain') {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const text = e.target?.result as string;
-          setResumeText(text);
-          setError(null);
-        };
-        reader.readAsText(file);
-      } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-        try {
-          const arrayBuffer = await file.arrayBuffer();
-          const result = await mammoth.extractRawText({ arrayBuffer });
-          setResumeText(result.value);
-          setError(null);
-        } catch (err) {
-          console.error('DOCX processing error:', err);
-          setError('Failed to extract text from the DOCX file. Please try again or copy-paste the content manually.');
-        }
-      }
+      await processFile(file);
     } else {
       setError('Please drop a PDF, DOCX, or text file.');
     }
@@ -156,14 +140,14 @@ export function UploadForm({
           <p className="text-gray-200 text-base mb-1">Drop your resume here or choose a file.</p>
           <p className="text-gray-400 text-sm mb-6">PDF & DOCX only. Max 2MB file size.</p>
           <div
-            onClick={() => fileInputRef.current?.click()}
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
             onDragOver={handleDrag}
             onDrop={handleDrop}
             className={cn(
               'border-2 border-dashed rounded-lg p-4 mb-4 text-center transition-colors cursor-pointer',
-              isDragging ? 'border-purple-400 bg-zinc-900' : 'border-zinc-700 hover:border-purple-500 bg-zinc-900'
+              isDragging ? 'border-purple-400 bg-zinc-900' : 'border-zinc-700 hover:border-purple-500 bg-zinc-900',
+              isProcessing && 'opacity-50 cursor-not-allowed'
             )}
           >
             <Input
@@ -173,8 +157,15 @@ export function UploadForm({
               accept=".pdf,.docx"
               onChange={handleFileUpload}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              disabled={isProcessing}
+              onClick={(e) => e.stopPropagation()}
             />
-            {uploadedFile ? (
+            {isProcessing ? (
+              <div className="flex flex-col items-center">
+                <RefreshCw className="h-8 w-8 text-purple-400 mx-auto mb-2 animate-spin" />
+                <p className="text-purple-300 text-sm">Processing file...</p>
+              </div>
+            ) : uploadedFile ? (
               <div className="flex flex-col items-center">
                 <FileText className="h-8 w-8 text-teal-400 mx-auto mb-2" />
                 <p className="text-teal-300 text-sm font-medium mb-1">{uploadedFile.name}</p>
@@ -192,7 +183,7 @@ export function UploadForm({
           </div>
           <Button
             onClick={onAnalyze}
-            disabled={isAnalyzing || !resumeText.trim()}
+            disabled={isAnalyzing || !resumeText.trim() || isProcessing}
             className="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold rounded-lg h-12 text-lg shadow mb-3 disabled:opacity-50 disabled:cursor-not-allowed"
             size="lg"
           >
@@ -217,8 +208,8 @@ export function UploadForm({
         <div className="grid grid-cols-2 gap-3">
           <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg p-3">
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center">
-                <svg className="w-3 h-3 text-green-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <div className="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center">
+                <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2l4-4" />
                 </svg>
               </div>
@@ -229,8 +220,8 @@ export function UploadForm({
           
           <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg p-3">
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-6 h-6 bg-blue-500/20 rounded-full flex items-center justify-center">
-                <svg className="w-3 h-3 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
+                <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>

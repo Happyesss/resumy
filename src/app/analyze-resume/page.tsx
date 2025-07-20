@@ -1,26 +1,33 @@
-'use client'
 
-import { useState } from 'react';
-import { generateResumeScore } from '@/utils/actions/resumes/actions';
-import { ResumeScoreMetrics } from '@/components/resume/editor/panels/resume-score-panel';
-import { Resume } from '@/lib/types';
-import { convertTextToResume } from '@/utils/actions/resumes/ai';
-import { AnalyzeNavbar } from '@/components/analyze-resume/navbar';
-import { AnalyzeHeader } from '@/components/analyze-resume/header';
-import { UploadForm } from '@/components/analyze-resume/upload-form';
-import { DetailedResults } from '@/components/analyze-resume/detailed-results';
-import { ScoreSummary } from '@/components/analyze-resume/score-summary';
-import ResumePreviewCard from '@/components/analyze-resume/resume-preview-card';
+"use client";
+
+import { useState } from "react";
+import { analyzeResumeFull } from "./actions/analyzeResumeFull"; // 🆕 local action
+import { ResumeScoreMetrics } from "@/components/resume/editor/panels/resume-score-panel";
+import { AnalyzeNavbar } from "@/components/analyze-resume/navbar";
+import { UploadForm } from "@/components/analyze-resume/upload-form";
+import { DetailedResults } from "@/components/analyze-resume/detailed-results";
+import ResumePreviewCard from "@/components/analyze-resume/resume-preview-card";
+
 
 export default function AnalyzeResumePage() {
-  const [resumeText, setResumeText] = useState('');
+  const [resumeText, setResumeText] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [scoreData, setScoreData] = useState<ResumeScoreMetrics | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  /**
+   * Enhanced analyze function using the redesigned analyzeResumeFull action
+   * Provides comprehensive analysis with ATS diagnostics and detailed scoring
+   */
   const handleAnalyze = async () => {
     if (!resumeText.trim()) {
-      setError('Please enter your resume content');
+      setError("Please enter your resume content");
+      return;
+    }
+
+    // Prevent double submissions
+    if (isAnalyzing) {
       return;
     }
 
@@ -28,46 +35,24 @@ export default function AnalyzeResumePage() {
     setError(null);
 
     try {
-      // Create a base resume object for conversion
-      const baseResume: Resume = {
-        id: 'temp-analysis',
-        user_id: 'temp',
-        name: 'Resume Analysis',
-        target_role: 'General',
-        first_name: 'John',
-        last_name: 'Doe',
-        email: 'john.doe@example.com',
-        phone_number: '',
-        location: '',
-        website: '',
-        linkedin_url: '',
-        github_url: '',
-        work_experience: [],
-        education: [],
-        skills: [],
-        projects: [],
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        is_base_resume: true,
-        has_cover_letter: false
-      };
-
-      // First, convert the resume text to structured data
-      const structuredResume = await convertTextToResume(resumeText, baseResume, 'General', {
-        model: 'gemini-2.5-flash-lite-preview-06-17',
-        apiKeys: []
+      // � Single comprehensive analysis request with enhanced features
+      const analysisResult = await analyzeResumeFull(resumeText, {
+        model: "gemini-2.5-flash-lite-preview-06-17",
+        atsEnhanced: true, // Enable advanced ATS diagnostics
+        targetRole: "General", // Could be made dynamic based on user input
+        includeDetailedFeedback: true,
+        apiKeys: [], // API keys handled by server-side configuration
       });
 
-      // Then generate the score based on the structured resume data
-      const score = await generateResumeScore(structuredResume as Resume, {
-        model: 'gemini-2.5-flash-lite-preview-06-17',
-        apiKeys: []
-      });
+      // Extract score from the comprehensive result
+      setScoreData(analysisResult.score);
 
-      setScoreData(score as ResumeScoreMetrics);
     } catch (err) {
-      console.error('Error analyzing resume:', err);
-      setError(err instanceof Error ? err.message : 'Failed to analyze resume. Please try again.');
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to analyze resume. Please try again."
+      );
     } finally {
       setIsAnalyzing(false);
     }
@@ -75,7 +60,7 @@ export default function AnalyzeResumePage() {
 
   const handleAnalyzeAnother = () => {
     setScoreData(null);
-    setResumeText('');
+    setResumeText("");
     setError(null);
   };
 
@@ -106,14 +91,16 @@ export default function AnalyzeResumePage() {
 
               {/* Right Side - Resume Preview Component */}
               <div className="space-y-6">
-                <ResumePreviewCard />
+                {/* Pass current text so preview updates live */}
+                <ResumePreviewCard resumeText={resumeText} />
               </div>
             </div>
           ) : (
             /* Results Layout - Only DetailedResults, shifted left */
             <div className="max-w-2xl mx-auto">
-              <DetailedResults 
+              <DetailedResults
                 scoreData={scoreData}
+                onAnalyzeAnother={handleAnalyzeAnother}
               />
             </div>
           )}

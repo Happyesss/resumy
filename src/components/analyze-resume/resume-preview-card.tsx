@@ -4,7 +4,11 @@
 import { motion } from 'framer-motion'
 import { Card } from '@/components/ui/card'
 
-export default function ResumePreviewCard() {
+interface ResumePreviewCardProps {
+  resumeText?: string;
+}
+
+export default function ResumePreviewCard({ resumeText }: ResumePreviewCardProps) {
   return (
     <section className="relative w-[98%] h-screen bg-black flex flex-col items-center justify-start p-4 pt-8">
       {/* Two small CTA boxes connected by a dotted line */}
@@ -99,9 +103,6 @@ export default function ResumePreviewCard() {
 
       {/* Additional static components to fill the page */}
       <div className="w-full max-w-2xl mt-6 space-y-4">
-        {/* Features Section */}
-        
-
         {/* Why Use Our Analyzer Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
