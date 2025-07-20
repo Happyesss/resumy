@@ -12,6 +12,7 @@ import ResumePreviewCard from "@/components/analyze-resume/resume-preview-card";
 
 export default function AnalyzeResumePage() {
   const [resumeText, setResumeText] = useState("");
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [scoreData, setScoreData] = useState<ResumeScoreMetrics | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -61,7 +62,11 @@ export default function AnalyzeResumePage() {
   const handleAnalyzeAnother = () => {
     setScoreData(null);
     setResumeText("");
+    setResumeFile(null);
     setError(null);
+    // Clear localStorage
+    localStorage.removeItem('resumePdfData');
+    localStorage.removeItem('resumePdfName');
   };
 
   return (
@@ -85,6 +90,7 @@ export default function AnalyzeResumePage() {
                   setError={setError}
                   onAnalyze={handleAnalyze}
                   hasResults={false}
+                  setResumeFile={setResumeFile}
                 />
               </div>
 
@@ -100,6 +106,8 @@ export default function AnalyzeResumePage() {
           <DetailedResults
             scoreData={scoreData}
             onAnalyzeAnother={handleAnalyzeAnother}
+            resumeText={resumeText}
+            resumeFile={resumeFile}
           />
         )}
       </div>

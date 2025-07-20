@@ -17,6 +17,7 @@ interface UploadFormProps {
   setError: (error: string | null) => void;
   onAnalyze: () => void;
   hasResults: boolean;
+  setResumeFile?: (file: File | null) => void; // Add optional PDF file setter
 }
 
 export function UploadForm({
@@ -27,6 +28,7 @@ export function UploadForm({
   setError,
   onAnalyze,
   hasResults = false,
+  setResumeFile,
 }: UploadFormProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -58,6 +60,20 @@ export function UploadForm({
         };
         reader.readAsText(file);
       } else if (file.type === 'application/pdf') {
+        // Store the PDF file for iframe display
+        if (setResumeFile) {
+          setResumeFile(file);
+          // Store in localStorage as well for persistence
+          const reader = new FileReader();
+          reader.onload = () => {
+            const result = reader.result as string;
+            localStorage.setItem('resumePdfData', result);
+            localStorage.setItem('resumePdfName', file.name);
+          };
+          reader.readAsDataURL(file);
+        }
+        
+        // Extract text for analysis
         const text = await pdfToText(file);
         setResumeText(text);
         setError(null);

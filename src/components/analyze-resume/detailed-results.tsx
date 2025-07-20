@@ -8,13 +8,33 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { cn } from '@/lib/utils';
 import { ResumeScoreMetrics } from '@/components/resume/editor/panels/resume-score-panel';
+import { useState, useEffect } from 'react';
 
 interface DetailedResultsProps {
   scoreData: ResumeScoreMetrics;
   onAnalyzeAnother?: () => void;
+  resumeText?: string; // Add resume text for preview
+  resumeFile?: File | null; // Add resume file for PDF display
 }
 
-export function DetailedResults({ scoreData, onAnalyzeAnother }: DetailedResultsProps) {
+export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resumeFile }: DetailedResultsProps) {
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Try to get PDF from resumeFile first, then from localStorage
+    if (resumeFile && resumeFile.type === 'application/pdf') {
+      const url = URL.createObjectURL(resumeFile);
+      setPdfUrl(url);
+      return () => URL.revokeObjectURL(url); // Cleanup
+    } else {
+      // Try to get from localStorage
+      const storedPdfData = localStorage.getItem('resumePdfData');
+      if (storedPdfData) {
+        setPdfUrl(storedPdfData);
+      }
+    }
+  }, [resumeFile]);
+
   const getScoreColor = (score: number) => {
     if (score >= 90) return { color: '#22c55e', label: 'Excellent', bgColor: 'bg-green-500', textColor: 'text-green-400' };
     if (score >= 80) return { color: '#eab308', label: 'Very Good', bgColor: 'bg-yellow-500', textColor: 'text-yellow-400' };
@@ -74,9 +94,10 @@ export function DetailedResults({ scoreData, onAnalyzeAnother }: DetailedResults
   return (
     <div className="min-h-screen text-white">
       <div className="px-6 grid grid-cols-1 xl:grid-cols-3 gap-8">
+
         {/* Left Column - Main Score */}
-        <div className="xl:col-span-1">
-          <Card className="bg-gray-800 border-gray-700 p-8 mb-6">
+        <div className="xl:col-span-1 space-y-6">
+          <Card className="bg-gray-800 border-gray-700 p-8">
             <div className="text-center mb-6">
               <div className="w-48 h-48 mx-auto mb-6">
                 <CircularProgressbar
@@ -93,8 +114,8 @@ export function DetailedResults({ scoreData, onAnalyzeAnother }: DetailedResults
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm text-gray-400">
-                  <span>300</span>
-                  <span>850</span>
+                  <span>1</span>
+                  <span>100</span>
                 </div>
                 <div className="w-full bg-gray-700 rounded-full h-2">
                   <div 
@@ -130,11 +151,169 @@ export function DetailedResults({ scoreData, onAnalyzeAnother }: DetailedResults
               </div>
             </Card>
           </div>
+
+          {/* Ready for Another Analysis Card */}
+          {onAnalyzeAnother && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="p-0"
+            >
+              <Card className="bg-gray-800 border-gray-700 p-8">
+                <h3 className="text-xl font-bold text-white mb-4">Ready for Another Analysis?</h3>
+                <p className="text-gray-400 mb-6">Upload a new resume to get detailed insights and recommendations</p>
+                <button
+                  onClick={onAnalyzeAnother}
+                  className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 font-medium"
+                >
+                  Analyze Another Resume
+                </button>
+              </Card>
+            </motion.div>
+          )}
         </div>
 
         {/* Right Column - Categories */}
         <div className="xl:col-span-2 space-y-6">
-          {organizedScores.map((category, categoryIndex) => (
+          {/* Top Row: Completeness and Resume Preview side by side */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Left: Completeness Component */}
+            <Card className="bg-gray-800 border-gray-700">
+              <div className="p-4">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-blue-500/20">
+                    <FileText className="h-4 w-4 text-blue-400" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-white">Completeness</h3>
+                </div>
+
+                <div className="space-y-3">
+                  {organizedScores[0].items.map((item, index) => {
+                    const itemScore = getScoreColor(item.score);
+                    return (
+                      <motion.div
+                        key={item.name}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: index * 0.05 }}
+                        className="bg-gray-900/50 rounded-lg p-3"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <div className="w-5 h-5 bg-gray-700 rounded flex items-center justify-center">
+                              <BarChart className="h-3 w-3 text-gray-400" />
+                            </div>
+                            <h4 className="text-white font-medium text-sm">{item.name}</h4>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-white font-semibold text-sm">{item.score}%</div>
+                            <div className={cn("text-xs", itemScore.textColor)}>
+                              {itemScore.label}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
+                          <div 
+                            className="h-2 rounded-full transition-all duration-1000"
+                            style={{ 
+                              width: `${item.score}%`,
+                              backgroundColor: itemScore.color 
+                            }}
+                          />
+                        </div>
+                        
+                        <p className="text-gray-400 text-xs">{item.reason}</p>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
+            </Card>
+
+            {/* Right: Resume Preview */}
+            {(pdfUrl || resumeText) && (
+              <Card className="bg-gray-800 border-gray-700">
+                <div className="p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-indigo-500/20 rounded-lg flex items-center justify-center">
+                        <FileText className="h-4 w-4 text-indigo-400" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-white">Resume Preview</h3>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-gray-400">
+                      <Eye className="h-3 w-3" />
+                      <span>{pdfUrl ? 'PDF' : 'Text'}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-gray-900/50 rounded-lg p-2">
+                    {pdfUrl ? (
+                      /* Compact PDF Iframe Display */
+                      <div className="bg-white rounded-lg shadow-xl border border-gray-300 overflow-hidden">
+                        {/* Compact PDF Viewer Header */}
+                        <div className="bg-gray-50 px-3 py-2 border-b border-gray-200 flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                              <FileText className="h-2 w-2 text-white" />
+                            </div>
+                            <span className="text-xs font-medium text-gray-700">
+                              {localStorage.getItem('resumePdfName') || 'Resume.pdf'}
+                            </span>
+                          </div>
+                        </div>
+                        
+                        {/* Compact PDF Content in iframe */}
+                        <iframe
+                          src={`${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0`}
+                          className="w-full h-[300px] border-none"
+                          title="Resume PDF"
+                          style={{ border: 'none' }}
+                        />
+                      </div>
+                    ) : (
+                      /* Compact text display */
+                      <div className="bg-white text-black rounded-lg shadow-xl max-h-[300px] overflow-hidden relative border border-gray-300">
+                        <div className="bg-gray-50 px-3 py-2 border-b border-gray-200">
+                          <span className="text-xs font-medium text-gray-700">Resume.txt</span>
+                        </div>
+                        <div className="p-4 h-[260px] overflow-y-auto bg-white">
+                          <div className="text-xs text-black leading-relaxed">
+                            {resumeText?.substring(0, 500)}...
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Compact Document info */}
+                    {resumeText && (
+                      <div className="mt-2 grid grid-cols-3 gap-2 text-xs">
+                        <div className="bg-gray-800 rounded p-2 text-center">
+                          <div className="text-blue-400 font-medium text-xs">{resumeText.split(' ').length}</div>
+                          <div className="text-gray-400 text-xs">Words</div>
+                        </div>
+                        <div className="bg-gray-800 rounded p-2 text-center">
+                          <div className="text-green-400 font-medium text-xs">{resumeText.split('\n').filter(line => line.trim()).length}</div>
+                          <div className="text-gray-400 text-xs">Lines</div>
+                        </div>
+                        <div className="bg-gray-800 rounded p-2 text-center">
+                          <div className="text-purple-400 font-medium text-xs">
+                            {pdfUrl ? 'PDF' : `${(resumeText.length / 1024).toFixed(1)}KB`}
+                          </div>
+                          <div className="text-gray-400 text-xs">{pdfUrl ? 'Format' : 'Size'}</div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </Card>
+            )}
+          </div>
+
+          {/* Remaining categories below */}
+          {organizedScores.slice(1).map((category, categoryIndex) => (
             <Card key={category.title} className="bg-gray-800 border-gray-700">
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-6">
@@ -274,27 +453,6 @@ export function DetailedResults({ scoreData, onAnalyzeAnother }: DetailedResults
           )}
         </div>
       </div>
-
-      {/* Bottom Action */}
-      {onAnalyzeAnother && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mt-12 p-6 text-center"
-        >
-          <Card className="bg-gray-800 border-gray-700 p-8 max-w-2xl mx-auto">
-            <h3 className="text-xl font-bold text-white mb-4">Ready for Another Analysis?</h3>
-            <p className="text-gray-400 mb-6">Upload a new resume to get detailed insights and recommendations</p>
-            <button
-              onClick={onAnalyzeAnother}
-              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 font-medium"
-            >
-              Analyze Another Resume
-            </button>
-          </Card>
-        </motion.div>
-      )}
     </div>
   );
 }
