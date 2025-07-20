@@ -155,16 +155,18 @@ export function UploadForm({
         <div className="w-full text-center">
           <p className="text-gray-200 text-base mb-1">Drop your resume here or choose a file.</p>
           <p className="text-gray-400 text-sm mb-6">PDF & DOCX only. Max 2MB file size.</p>
-          <div
+          <label
+            htmlFor="file-upload"
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
             onDragOver={handleDrag}
             onDrop={handleDrop}
             className={cn(
-              'border-2 border-dashed rounded-lg p-4 mb-4 text-center transition-colors cursor-pointer',
+              'border-2 border-dashed rounded-lg p-4 mb-4 text-center transition-colors cursor-pointer relative',
               isDragging ? 'border-purple-400 bg-zinc-900' : 'border-zinc-700 hover:border-purple-500 bg-zinc-900',
               isProcessing && 'opacity-50 cursor-not-allowed'
             )}
+            style={{ display: 'block' }}
           >
             <Input
               ref={fileInputRef}
@@ -172,31 +174,33 @@ export function UploadForm({
               type="file"
               accept=".pdf,.docx"
               onChange={handleFileUpload}
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
               disabled={isProcessing}
               onClick={(e) => e.stopPropagation()}
             />
-            {isProcessing ? (
-              <div className="flex flex-col items-center">
-                <RefreshCw className="h-8 w-8 text-purple-400 mx-auto mb-2 animate-spin" />
-                <p className="text-purple-300 text-sm">Processing file...</p>
-              </div>
-            ) : uploadedFile ? (
-              <div className="flex flex-col items-center">
-                <FileText className="h-8 w-8 text-teal-400 mx-auto mb-2" />
-                <p className="text-teal-300 text-sm font-medium mb-1">{uploadedFile.name}</p>
-                <p className="text-gray-400 text-xs">{formatFileSize(uploadedFile.size)}</p>
-                <p className="text-gray-300 text-xs mt-2">Click to change file</p>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center">
-                <FileText className="h-8 w-8 text-purple-400 mx-auto mb-2" />
-                <p className="text-gray-200 text-sm">
-                  {isDragging ? 'Drop your resume here' : 'Click or drag to upload'}
-                </p>
-              </div>
-            )}
-          </div>
+            <div className="pointer-events-none">
+              {isProcessing ? (
+                <div className="flex flex-col items-center">
+                  <RefreshCw className="h-8 w-8 text-purple-400 mx-auto mb-2 animate-spin" />
+                  <p className="text-purple-300 text-sm">Processing file...</p>
+                </div>
+              ) : uploadedFile ? (
+                <div className="flex flex-col items-center">
+                  <FileText className="h-8 w-8 text-teal-400 mx-auto mb-2" />
+                  <p className="text-teal-300 text-sm font-medium mb-1">{uploadedFile.name}</p>
+                  <p className="text-gray-400 text-xs">{formatFileSize(uploadedFile.size)}</p>
+                  <p className="text-gray-300 text-xs mt-2">Click to change file</p>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center">
+                  <FileText className="h-8 w-8 text-purple-400 mx-auto mb-2" />
+                  <p className="text-gray-200 text-sm">
+                    {isDragging ? 'Drop your resume here' : 'Click or drag to upload'}
+                  </p>
+                </div>
+              )}
+            </div>
+          </label>
           <Button
             onClick={onAnalyze}
             disabled={isAnalyzing || !resumeText.trim() || isProcessing}
