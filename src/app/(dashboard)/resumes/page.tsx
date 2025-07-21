@@ -2,11 +2,21 @@ import { getDashboardData } from "@/utils/actions";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
+import { Metadata } from "next";
 
 import { cn } from "@/lib/utils";
 import { MiniResumePreview } from "@/components/resume/shared/mini-resume-preview";
 import { ResumeSortControls } from "@/components/resume/management/resume-sort-controls";
 import type { SortOption, SortDirection } from "@/components/resume/management/resume-sort-controls";
+
+export const metadata: Metadata = {
+  title: "My Resumes | Manage Your Professional Resumes - Resumy",
+  description: "View and manage all your professional resumes created with Resumy. Edit, download, and organize your AI-built resumes in one place.",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 const RESUMES_PER_PAGE = 12;
 

@@ -1,12 +1,16 @@
 {
-  "name": "resume-lm",
-  "version": "0.1.0",
+  "name": "resumy",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "build:analyze": "ANALYZE=true npm run build",
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@ai-sdk/google": "^1.0.12",

@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /auth/
+Disallow: /home/
+Disallow: /profile/
+Disallow: /resumes/
+Disallow: /_next/
+Disallow: /static/
+
+# Allow important pages
+Allow: /
+Allow: /analyze-resume
+
+# XML Sitemap
+Sitemap: https://resumy.live/sitemap.xml
+
+# Crawl delay (optional, be respectful)
+Crawl-delay: 1

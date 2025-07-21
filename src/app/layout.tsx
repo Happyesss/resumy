@@ -11,15 +11,43 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   metadataBase: new URL("https://resumy.live"),
   title: {
-    default: "Resumy - AI-Powered Resume Builder",
-    template: "%s | Resumy"
+    default: "Resumy - Free AI-Powered Resume Builder | Create Professional Resumes Online",
+    template: "%s | Resumy - Free AI Resume Builder"
   },
-  description: "Create tailored, ATS-optimized resumes powered by AI. Land your dream tech job with personalized resume optimization.",
+  description: "Resumy is a free AI resume builder that helps you create professional resumes quickly and easily. Build ATS-optimized resumes with AI assistance, get hired faster with our smart resume optimization tools.",
   applicationName: "Resumy",
-  keywords: ["resume builder", "AI resume", "ATS optimization", "tech jobs", "career tools", "job application"],
-  authors: [{ name: "Resumy" }],
+  keywords: [
+    "resume builder",
+    "free resume builder", 
+    "ai resume builder",
+    "professional resume",
+    "create resume online",
+    "ATS optimized resume",
+    "resume maker",
+    "job application",
+    "career builder",
+    "resume templates",
+    "resume generator",
+    "online resume builder",
+    "resume writing",
+    "job search",
+    "tech resume",
+    "software engineer resume",
+    "resume optimization",
+    "resume scanner",
+    "resume creator",
+    "digital resume",
+    "modern resume",
+    "resume design",
+    "hiring tools",
+    "job hunting",
+    "career development"
+  ],
+  authors: [{ name: "Resumy Team", url: "https://resumy.live" }],
   creator: "Resumy",
   publisher: "Resumy",
+  category: "Business",
+  classification: "Resume Building Software",
   formatDetection: {
     email: false,
     address: false,
@@ -40,36 +68,57 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "Resumy",
-    title: "Resumy - AI-Powered Resume Builder",
-    description: "Create tailored, ATS-optimized resumes powered by AI. Land your dream tech job with personalized resume optimization.",
+    title: "Resumy - Free AI-Powered Resume Builder | Create Professional Resumes Online",
+    description: "Resumy is a free AI resume builder that helps you create professional resumes quickly and easily. Build ATS-optimized resumes with AI assistance, get hired faster with our smart resume optimization tools.",
+    url: "https://resumy.live",
+    locale: "en_US",
     images: [
       {
         url: "/og.webp",
         width: 1200,
         height: 630,
-        alt: "Resumy - AI Resume Builder",
+        alt: "Resumy - Free AI Resume Builder",
+        type: "image/webp",
       },
     ],
   },  twitter: {
     card: "summary_large_image",
-    title: "Resumy - AI-Powered Resume Builder",
-    description: "Create tailored, ATS-optimized resumes powered by AI. Land your dream tech job with personalized resume optimization.",
-    images: ["/og.webp"],
+    site: "@resumy",
     creator: "@resumy",
+    title: "Resumy - Free AI-Powered Resume Builder | Create Professional Resumes Online",
+    description: "Resumy is a free AI resume builder that helps you create professional resumes quickly and easily. Build ATS-optimized resumes with AI assistance.",
+    images: ["/og.webp"],
   },
   robots: {
     index: true,
     follow: true,
+    noarchive: false,
+    nosnippet: false,
+    noimageindex: false,
+    nocache: false,
     googleBot: {
       index: true,
       follow: true,
+      noimageindex: false,
+      noarchive: false,
+      nosnippet: false,
       "max-video-preview": -1,
       "max-image-preview": "large",
       "max-snippet": -1,
     },
   },
+  alternates: {
+    canonical: "https://resumy.live",
+  },
+  other: {
+    "google-site-verification": "your-google-verification-code", // Replace with actual verification code
+    "msvalidate.01": "your-bing-verification-code", // Replace with actual verification code
+    "pinterest-domain-verify": "your-pinterest-verification-code", // Replace with actual verification code
+  },
   // verification: {
   //   google: "google-site-verification-code", // Replace with actual verification code
+  //   yandex: "yandex-verification-code", // Replace with actual verification code  
+  //   bing: "bing-verification-code", // Replace with actual verification code
   // },
 };
 

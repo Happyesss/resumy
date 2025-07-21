@@ -1,16 +1,16 @@
-# ResumeLM - AI-Powered Resume Builder
+# Resumy - Free AI-Powered Resume Builder
 
-Try it out at [resumelm.com](https://resumelm.com)!
+Try it out at [resumy.live](https://resumy.live)!
 
-> 🚧 **Under Active Development** 
+> � **Production Ready & SEO Optimized**
 
-A completely free, open-source AI resume builder that helps create and tailor resumes for specific job applications. Simply provide your Gemini API key to unlock powerful AI features. Built with Next.js 15, React 19, TypeScript, and Shadcn UI.
+A completely free, open-source AI resume builder that helps create professional, ATS-optimized resumes for any job application. Simply provide your Gemini API key to unlock powerful AI features. Built with Next.js 15, React 19, TypeScript, and Shadcn UI.
 
 ![Dashboard Screenshot](public/images/ss1.webp)
 
 ## ✨ Live Demo
 
-Check out the live demo at [resumelm.com](https://resumelm.com)
+Check out the live demo at [resumy.live](https://resumy.live)
 
 ## 🌟 Key Features
 
@@ -23,10 +23,10 @@ Check out the live demo at [resumelm.com](https://resumelm.com)
   - Education
   - Projects
   - Skills
-- 📊 Resume scoring system to measure effectiveness
+- 📊 Resume scoring system to measure ATS effectiveness
 - 🗂️ Resume sorting and organization
 - 📱 Mobile-first approach with responsive layouts
-- 🎨 Modern, responsive design with soft gradient minimalist theme
+- 🎨 Modern, professional design optimized for ATS systems
 
 ![Resume Editor](public/images/ss2.webp)
 

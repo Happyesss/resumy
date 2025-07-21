@@ -9,6 +9,16 @@ import {
 } from "./actions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, FileText, FileCheck, FilePlus } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Admin Dashboard | System Management - Resumy",
+  description: "Administrative dashboard for Resumy platform management. Monitor users, resumes, and system analytics.",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default async function AdminPage() {
     try {

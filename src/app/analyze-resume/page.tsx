@@ -9,6 +9,10 @@ import { UploadForm } from "@/components/analyze-resume/upload-form";
 import { DetailedResults } from "@/components/analyze-resume/detailed-results";
 import ResumePreviewCard from "@/components/analyze-resume/resume-preview-card";
 import { createClient } from "@/utils/supabase/client";
+import { Metadata } from "next";
+
+// Note: Client components can't export metadata directly
+// This metadata should be moved to a layout.tsx or page wrapper
 
 interface KeywordAnalysis {
   existingKeywords: string[];

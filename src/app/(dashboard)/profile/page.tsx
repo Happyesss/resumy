@@ -2,10 +2,20 @@ import { redirect } from "next/navigation";
 import { getDashboardData } from "@/utils/actions";
 import { ProfileEditForm } from "@/components/profile/profile-edit-form";
 import { Suspense } from "react";
+import { Metadata } from "next";
 
 // Force dynamic behavior and disable caching
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+
+export const metadata: Metadata = {
+  title: "Profile Settings | Manage Your Resume Builder Account - Resumy",
+  description: "Manage your Resumy profile settings. Update personal information, preferences, and account details for your AI-powered resume builder experience.",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default async function EditProfilePage() {
   // Fetch profile data and handle authentication

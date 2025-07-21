@@ -1,4 +1,14 @@
 import { ResetPasswordForm } from "@/components/auth/reset-password-form";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Reset Password | Secure Account Recovery - Resumy",
+  description: "Reset your Resumy account password securely. Regain access to your AI resume builder account and continue creating professional resumes.",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 
 export default function ResetPasswordPage() {
