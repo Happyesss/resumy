@@ -9,7 +9,7 @@ import ClientAppWrapper from "@/components/layout/AppClientWrapper";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://resumelm.com"),
+  metadataBase: new URL("https://resumy.live"),
   title: {
     default: "Resumy - AI-Powered Resume Builder",
     template: "%s | Resumy"
@@ -26,10 +26,17 @@ export const metadata: Metadata = {
     telephone: false,
   },  icons: {
     icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
+    shortcut: "/favicon/favicon-96x96.png",
+    apple: "/favicon/apple-touch-icon.png",
+    other: [
+      {
+        rel: "icon",
+        type: "image/svg+xml",
+        url: "/favicon/favicon.svg",
+      },
+    ],
   },
-  // manifest: "/site.webmanifest",
+  manifest: "/favicon/site.webmanifest",
   openGraph: {
     type: "website",
     siteName: "Resumy",
