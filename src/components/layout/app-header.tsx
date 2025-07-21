@@ -1,6 +1,5 @@
 'use client';
 
-import { LogoutButton } from "@/components/auth/logout-button";
 import { Logo } from "@/components/ui/logo";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -65,8 +64,6 @@ export function AppHeader({ children }: AppHeaderProps) {
                     <User className="h-4 w-4" />
                     <span className="hidden lg:inline">Profile</span>
                   </Link>
-                  <div className="mx-1 lg:mx-2 h-4 w-px" />
-                  <LogoutButton className="text-red-500 hover:text-red-700" />
                 </div>
               </nav>
 
@@ -97,9 +94,6 @@ export function AppHeader({ children }: AppHeaderProps) {
                       <User className="h-4 w-4" />
                       Profile
                     </Link>
-                    <div className="px-4">
-                      <LogoutButton className="w-full justify-start text-red-500 hover:text-red-700" />
-                    </div>
                   </div>
                 </SheetContent>
               </Sheet>

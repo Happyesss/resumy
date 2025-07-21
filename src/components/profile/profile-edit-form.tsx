@@ -35,6 +35,7 @@ import { AlertTriangle } from "lucide-react";
 import { importResume, updateProfile } from "@/utils/actions/profiles/actions";
 import { cn } from "@/lib/utils";
 import pdfToText from "react-pdftotext";
+import { LogoutButton } from "@/components/auth/logout-button";
 
 interface ProfileEditFormProps {
   profile: Profile;
@@ -598,6 +599,13 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
+                  
+                  {/* Logout Button */}
+                  <div className="mt-3 pt-3 border-t border-gray-500">
+                    <LogoutButton 
+                      className="w-full h-10 px-4 text-sm font-medium border border-red-500/50 text-red-400 hover:bg-red-900/20 hover:border-red-400 hover:text-red-300 transition-all duration-200 rounded-md bg-transparent"
+                    />
+                  </div>
                 </div>
                 </TabsList>
               </div>
@@ -848,6 +856,13 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
+              
+              {/* Logout Button for Mobile */}
+              <div className="mt-3 pt-3 border-t border-gray-500">
+                <LogoutButton 
+                  className="w-full h-10 px-4 text-sm font-medium border border-red-500/50 text-red-400 hover:bg-red-900/20 hover:border-red-400 hover:text-red-300 transition-all duration-200 rounded-md bg-transparent"
+                />
+              </div>
             </div>
           </div>
         </SheetContent>
