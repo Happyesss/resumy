@@ -26,19 +26,21 @@ export function AIImprovementPrompt({
   return (
     <div className="space-y-3">
       <div>
-        <Label className="text-[11px] font-medium text-purple-700">Prompt for AI (Optional)</Label>
+        <Label className="text-[11px] font-medium text-purple-400">Prompt for AI (Optional)</Label>
         <Textarea
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className={cn(
             "h-14 mt-0.5 text-xs",
-            "bg-white",
-            "border-purple-200",
-            "focus:border-purple-400 focus:ring-1 focus:ring-purple-300",
-            "hover:bg-white",
+            "bg-gray-800/90 backdrop-blur-sm",
+            "border-gray-700/80",
+            "focus:border-purple-400/60 focus:ring-2 focus:ring-purple-400/20",
+            "hover:bg-gray-800/95 hover:border-gray-600/80",
             "resize-none",
-            "text-purple-900 placeholder:text-purple-400"
+            "text-gray-100 placeholder:text-gray-400",
+            "transition-all duration-300",
+            "shadow-sm"
           )}
         />
       </div>
@@ -50,14 +52,15 @@ export function AIImprovementPrompt({
           disabled={isLoading}
           className={cn(
             "w-full h-8",
-            "bg-purple-50/80 hover:bg-purple-100/80",
-            "text-purple-600 hover:text-purple-700",
-            "border border-purple-200/60",
-            "shadow-sm",
+            "bg-gray-800/90 hover:bg-gray-700/90",
+            "text-purple-400 hover:text-purple-300",
+            "border border-gray-700/80 hover:border-purple-400/60",
+            "shadow-sm hover:shadow-md",
             "transition-all duration-300",
-            "hover:scale-[1.02] hover:shadow-md",
+            "hover:scale-[1.02]",
             "hover:-translate-y-0.5",
-            "text-xs"
+            "text-xs",
+            "backdrop-blur-sm"
           )}
         >
           {isLoading ? (

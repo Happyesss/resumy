@@ -515,7 +515,7 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                               "placeholder:text-gray-400 border border-gray-700 text-white focus:bg-gray-800",
                               improvedPoints[index]?.[descIndex] && [
                                 "border-purple-400",
-                                "bg-gradient-to-r from-purple-50/80 to-indigo-50/80",
+                                "bg-black",
                                 "shadow-[0_0_15px_-3px_rgba(168,85,247,0.2)]",
                                 "hover:bg-gradient-to-r hover:from-purple-50/90 hover:to-indigo-50/90"
                               ]
@@ -523,7 +523,7 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                           />
 
                           {improvedPoints[index]?.[descIndex] && (
-                            <div className="absolute -top-2.5 right-12 px-2 py-0.5 bg-purple-100 rounded-full">
+                            <div className="absolute -top-2.5 right-12 px-2 py-0.5 rounded-full">
                               <span className="text-[10px] font-medium text-purple-600 flex items-center gap-1">
                                 <Sparkles className="h-3 w-3" />
                                 AI Suggestion
@@ -538,7 +538,6 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                                 variant="ghost"
                                 size="icon"
                                 onClick={() => {
-                                  // Remove the improvement state after accepting
                                   setImprovedPoints(prev => {
                                     const newState = { ...prev };
                                     if (newState[index]) {
@@ -608,7 +607,7 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                                       className={cn(
                                         "p-0 group-hover/item:opacity-100",
                                         "h-8 w-8 rounded-lg",
-                                        "bg-purple-50/80 hover:bg-purple-100/80",
+                                        "hover:bg-black/5",
                                         "text-purple-600 hover:text-purple-700",
                                         "border border-purple-200/60",
                                         "shadow-sm",
@@ -630,7 +629,6 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                                     sideOffset={2}
                                     className={cn(
                                       "w-72 p-3.5",
-                                      "bg-purple-50",
                                       "border-2 border-purple-300",
                                       "shadow-lg shadow-purple-100/50",
                                       "rounded-lg"
@@ -704,15 +702,15 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                         [index]: { ...prev[index], customPrompt: value }
                       }))}
                       colorClass={{
-                        button: "text-violet-600",
-                        border: "border-violet-200",
-                        hoverBorder: "hover:border-violet-300",
-                        hoverBg: "hover:bg-violet-50/50",
-                        tooltipBg: "bg-violet-50",
-                        tooltipBorder: "border-2 border-violet-300",
-                        tooltipShadow: "shadow-lg shadow-violet-100/50",
-                        text: "text-violet-600",
-                        hoverText: "hover:text-violet-400"
+                        button: "text-violet-400 hover:text-violet-300",
+                        border: "border-gray-700/80",
+                        hoverBorder: "hover:border-violet-400/60",
+                        hoverBg: "hover:bg-gray-800/90",
+                        tooltipBg: "bg-gray-900/95 backdrop-blur-sm",
+                        tooltipBorder: "border-2 border-gray-700/80",
+                        tooltipShadow: "shadow-lg shadow-black/20",
+                        text: "text-violet-400",
+                        hoverText: "hover:text-violet-300"
                       }}
                     />
                   </div>

@@ -202,42 +202,42 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
 
     <div className="min-h-screen text-white">
       {/* Compact Professional Header Section */}
-      <div className="px-4 pb-8 -mt-8">
-        <div className="max-w-2xl mx-auto text-center relative">
+      <div className="px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8 -mt-8">
+        <div className="max-w-4xl mx-auto text-center relative">
           {/* Icon and Title Row */}
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-blue-500/10">
-              <Sparkles className="h-5 w-5 text-blue-400" />
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-2">
+            <span className="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-blue-500/10">
+              <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-blue-400" />
             </span>
-            <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-tight">Your Resume Analysis Results</h1>
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-tight text-center">Your Resume Analysis Results</h1>
           </div>
-          <div className="text-gray-300 text-base md:text-lg mb-4">
+          <div className="text-gray-300 text-sm sm:text-base md:text-lg mb-4 px-2">
             Discover how your resume performs against industry standards and get <span className="text-blue-400 font-semibold">AI-powered insights</span> to land your dream job
           </div>
           {/* Score indicator row */}
-          <div className="flex items-center justify-center gap-2 px-4 py-2 bg-gray-800/70 rounded-full border border-gray-700 w-fit mx-auto text-sm">
-            <span className={cn("w-2.5 h-2.5 rounded-full mr-1", scoreInfo.bgColor)} />
+          <div className="flex flex-wrap items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-gray-800/70 rounded-full border border-gray-700 w-fit mx-auto text-xs sm:text-sm">
+            <span className={cn("w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full mr-1", scoreInfo.bgColor)} />
             <span className="text-white font-medium">Overall Score:</span>
             <span className={cn(scoreInfo.textColor, "font-semibold ml-1")}>{scoreData.overallScore.score}/100</span>
-            <Badge variant="outline" className={cn("text-xs border ml-2 px-2 py-0.5", scoreInfo.textColor)}>
+            <Badge variant="outline" className={cn("text-xs border ml-1 sm:ml-2 px-1 sm:px-2 py-0.5", scoreInfo.textColor)}>
               {scoreInfo.label}
             </Badge>
           </div>
         </div>
       </div>
 
-      <div className="px-6 grid grid-cols-1 xl:grid-cols-3 gap-8">
+      <div className="px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
 
         {/* Left Column - Main Score */}
-        <div className="xl:col-span-1 space-y-6">
-          <Card className="bg-gray-800 border-gray-700 p-8">
-            <div className="text-center mb-6">
-              <div className="w-48 h-48 mx-auto mb-6">
+        <div className="lg:col-span-1 space-y-4 sm:space-y-6">
+          <Card className="bg-gray-800 border-gray-700 p-4 sm:p-6 lg:p-8">
+            <div className="text-center mb-4 sm:mb-6">
+              <div className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 mx-auto mb-4 sm:mb-6">
                 <CircularProgressbar
                   value={scoreData.overallScore.score}
                   text={`${scoreData.overallScore.score}`}
                   styles={buildStyles({
-                    textSize: '24px',
+                    textSize: '20px',
                     textColor: '#ffffff',
                     pathColor: scoreInfo.color,
                     trailColor: '#374151',
@@ -246,7 +246,7 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
                 />
               </div>
               <div className="space-y-2">
-                <div className="flex justify-between text-sm text-gray-400">
+                <div className="flex justify-between text-xs sm:text-sm text-gray-400">
                   <span>1</span>
                   <span>100</span>
                 </div>
@@ -259,34 +259,35 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
                     }}
                   />
                 </div>
-                <p className="text-gray-300 text-sm mt-4">{scoreData.overallScore.reason}</p>
+                <p className="text-gray-300 text-xs sm:text-sm mt-4">{scoreData.overallScore.reason}</p>
               </div>
             </div>
             <AuthDialog defaultTab="login">
               <button
                 type="button"
-                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-semibold text-white  bg-purple-500 duration-200 text-base"
+                className="w-full flex items-center justify-center gap-2 py-2.5 sm:py-3 px-3 sm:px-4 rounded-lg font-semibold text-white bg-purple-500 hover:bg-purple-600 transition-all duration-200 text-sm sm:text-base"
               >
-                <Sparkles className="w-5 h-5 text-white drop-shadow" />
-                Enhance your resume score
+                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-white drop-shadow" />
+                <span className="hidden sm:inline">Enhance your resume score</span>
+                <span className="sm:hidden">Enhance Score</span>
               </button>
             </AuthDialog>
           </Card>
 
           {/* Quick Stats */}
-          <div className="grid grid-cols-2 gap-4">
-            <Card className="bg-gray-800 border-gray-700 p-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            <Card className="bg-gray-800 border-gray-700 p-3 sm:p-4">
               <div className="text-center">
                 <div className="text-green-400 text-sm font-medium mb-1">100%</div>
                 <div className="text-xs text-gray-400">High impact</div>
-                <div className="text-xs text-gray-500">Percentage of achievements you've quantified on time</div>
+                <div className="text-xs text-gray-500 hidden sm:block">Percentage of achievements you've quantified on time</div>
               </div>
             </Card>
-            <Card className="bg-gray-800 border-gray-700 p-4">
+            <Card className="bg-gray-800 border-gray-700 p-3 sm:p-4">
               <div className="text-center">
                 <div className="text-red-400 text-sm font-medium mb-1">2%</div>
                 <div className="text-xs text-gray-400">Low impact</div>
-                <div className="text-xs text-gray-500">How much experience you can add compared to your total time</div>
+                <div className="text-xs text-gray-500 hidden sm:block">How much experience you can add compared to your total time</div>
               </div>
             </Card>
           </div>
@@ -299,12 +300,12 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
               transition={{ duration: 0.5 }}
               className="p-0"
             >
-              <Card className="bg-gray-800 border-gray-700 p-8">
-                <h3 className="text-xl font-bold text-white mb-4">Ready for Another Analysis?</h3>
-                <p className="text-gray-400 mb-6">Upload a new resume to get detailed insights and recommendations</p>
+              <Card className="bg-gray-800 border-gray-700 p-4 sm:p-6 lg:p-8">
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">Ready for Another Analysis?</h3>
+                <p className="text-gray-400 mb-4 sm:mb-6 text-sm sm:text-base">Upload a new resume to get detailed insights and recommendations</p>
                 <button
                   onClick={onAnalyzeAnother}
-                  className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 font-medium"
+                  className="w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 font-medium text-sm sm:text-base"
                 >
                   Analyze Another Resume
                 </button>
@@ -322,20 +323,20 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
         </div>
 
         {/* Right Column - Categories */}
-        <div className="xl:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-4 sm:space-y-6">
           {/* Top Row: Completeness and Resume Preview side by side */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
             {/* Left: Completeness Component */}
             <Card className="bg-gray-800 border-gray-700">
-              <div className="p-4">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-blue-500/20">
-                    <FileText className="h-4 w-4 text-blue-400" />
+              <div className="p-3 sm:p-4">
+                <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center bg-blue-500/20">
+                    <FileText className="h-3 w-3 sm:h-4 sm:w-4 text-blue-400" />
                   </div>
-                  <h3 className="text-lg font-semibold text-white">Completeness</h3>
+                  <h3 className="text-base sm:text-lg font-semibold text-white">Completeness</h3>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   {organizedScores[0].items.map((item, index) => {
                     const itemScore = getScoreColor(item.score);
                     return (
@@ -344,26 +345,26 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3, delay: index * 0.05 }}
-                        className="bg-gray-900/50 rounded-lg p-3"
+                        className="bg-gray-900/50 rounded-lg p-2 sm:p-3"
                       >
                         <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-2">
-                            <div className="w-5 h-5 bg-gray-700 rounded flex items-center justify-center">
-                              <BarChart className="h-3 w-3 text-gray-400" />
+                          <div className="flex items-center gap-1.5 sm:gap-2">
+                            <div className="w-4 h-4 sm:w-5 sm:h-5 bg-gray-700 rounded flex items-center justify-center">
+                              <BarChart className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-gray-400" />
                             </div>
-                            <h4 className="text-white font-medium text-sm">{item.name}</h4>
+                            <h4 className="text-white font-medium text-xs sm:text-sm">{item.name}</h4>
                           </div>
                           <div className="text-right">
-                            <div className="text-white font-semibold text-sm">{item.score}%</div>
+                            <div className="text-white font-semibold text-xs sm:text-sm">{item.score}%</div>
                             <div className={cn("text-xs", itemScore.textColor)}>
                               {itemScore.label}
                             </div>
                           </div>
                         </div>
                         
-                        <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
+                        <div className="w-full bg-gray-700 rounded-full h-1.5 sm:h-2 mb-2">
                           <div 
-                            className="h-2 rounded-full transition-all duration-1000"
+                            className="h-1.5 sm:h-2 rounded-full transition-all duration-1000"
                             style={{ 
                               width: `${item.score}%`,
                               backgroundColor: itemScore.color 
@@ -371,7 +372,7 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
                           />
                         </div>
                         
-                        <p className="text-gray-400 text-xs">{item.reason}</p>
+                        <p className="text-gray-400 text-xs leading-tight">{item.reason}</p>
                       </motion.div>
                     );
                   })}
@@ -381,26 +382,26 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: 0.2 }}
-                    className="bg-gradient-to-r from-blue-900/30 to-indigo-900/30 rounded-lg p-3 border border-blue-500/20"
+                    className="bg-gradient-to-r from-blue-900/30 to-indigo-900/30 rounded-lg p-2 sm:p-3 border border-blue-500/20"
                   >
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-5 h-5 bg-blue-500/20 rounded flex items-center justify-center">
-                        <Brain className="h-3 w-3 text-blue-400" />
+                    <div className="flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3">
+                      <div className="w-4 h-4 sm:w-5 sm:h-5 bg-blue-500/20 rounded flex items-center justify-center">
+                        <Brain className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-blue-400" />
                       </div>
-                      <h4 className="text-blue-300 font-medium text-sm">Keyword Suggestions</h4>
+                      <h4 className="text-blue-300 font-medium text-xs sm:text-sm">Keyword Suggestions</h4>
                     </div>
                     
                     {finalKeywordAnalysis.suggestions.length > 0 ? (
                       <>
-                        <p className="text-gray-400 text-xs mb-3">
+                        <p className="text-gray-400 text-xs mb-2 sm:mb-3">
                           AI-powered keyword suggestions to improve ATS compatibility:
                         </p>
                         
-                        <div className="flex flex-wrap gap-1 mb-3">
+                        <div className="flex flex-wrap gap-1 mb-2 sm:mb-3">
                           {finalKeywordAnalysis.suggestions.map((keyword) => (
                             <span
                               key={keyword}
-                              className="px-2 py-1 bg-blue-500/10 text-blue-300 text-xs rounded border border-blue-500/20 hover:bg-blue-500/20 transition-colors cursor-pointer"
+                              className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-blue-500/10 text-blue-300 text-xs rounded border border-blue-500/20 hover:bg-blue-500/20 transition-colors cursor-pointer"
                             >
                               {keyword}
                             </span>
@@ -449,21 +450,21 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
             {/* Right: Resume Preview */}
             {(pdfUrl || resumeText) && (
               <Card className="bg-gray-800 border-gray-700">
-                <div className="p-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-indigo-500/20 rounded-lg flex items-center justify-center">
-                        <FileText className="h-4 w-4 text-indigo-400" />
+                <div className="p-3 sm:p-4">
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <div className="w-6 h-6 sm:w-8 sm:h-8 bg-indigo-500/20 rounded-lg flex items-center justify-center">
+                        <FileText className="h-3 w-3 sm:h-4 sm:w-4 text-indigo-400" />
                       </div>
-                      <h3 className="text-lg font-semibold text-white">Resume Preview</h3>
+                      <h3 className="text-base sm:text-lg font-semibold text-white">Resume Preview</h3>
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-400">
-                      <Eye className="h-3 w-3" />
-                      <span>{pdfUrl ? 'PDF' : 'Text'}</span>
+                    <div className="flex items-center gap-1 sm:gap-2 text-xs text-gray-400">
+                      <Eye className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                      <span className="hidden sm:inline">{pdfUrl ? 'PDF' : 'Text'}</span>
                     </div>
                   </div>
                   
-                  <div className="bg-gray-900/50 rounded-lg p-2">
+                  <div className="bg-gray-900/50 rounded-lg p-1.5 sm:p-2">
                     {pdfUrl ? (
                       /* Compact PDF Iframe Display */
                       <div className="bg-white rounded-lg shadow-xl border border-gray-300 overflow-hidden">
@@ -481,18 +482,18 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
                         {/* Slightly taller PDF Content in iframe */}
                         <iframe
                           src={`${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0`}
-                          className="w-full h-[400px] border-none"
+                          className="w-full h-[250px] sm:h-[350px] lg:h-[400px] border-none"
                           title="Resume PDF"
                           style={{ border: 'none' }}
                         />
                       </div>
                     ) : (
                       /* Text display */
-                      <div className="bg-white text-black rounded-lg shadow-xl max-h-[350px] overflow-hidden relative border border-gray-300">
-                        <div className="bg-gray-50 px-3 py-2 border-b border-gray-200">
+                      <div className="bg-white text-black rounded-lg shadow-xl max-h-[250px] sm:max-h-[350px] overflow-hidden relative border border-gray-300">
+                        <div className="bg-gray-50 px-2 sm:px-3 py-1.5 sm:py-2 border-b border-gray-200">
                           <span className="text-xs font-medium text-gray-700">Resume.txt</span>
                         </div>
-                        <div className="p-4 h-[360px] overflow-y-auto bg-white">
+                        <div className="p-2 sm:p-4 h-[250px] sm:h-[350px] lg:h-[360px] overflow-y-auto bg-white">
                           <div className="text-xs text-black leading-relaxed">
                             {resumeText?.substring(0, 1400)}...
                           </div>
@@ -502,28 +503,28 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
                     
                     {/* Document info */}
                     {resumeText && (
-                      <div className="mt-2">
-                        <div className="grid grid-cols-3 gap-2 text-xs">
-                          <div className="bg-gray-800 rounded p-2 text-center">
+                      <div className="mt-1.5 sm:mt-2">
+                        <div className="grid grid-cols-3 gap-1.5 sm:gap-2 text-xs">
+                          <div className="bg-gray-800 rounded p-1.5 sm:p-2 text-center">
                             <div className="text-blue-400 font-medium text-xs">{resumeText.split(' ').length}</div>
                             <div className="text-gray-400 text-xs">Words</div>
                           </div>
-                          <div className="bg-gray-800 rounded p-2 text-center">
+                          <div className="bg-gray-800 rounded p-1.5 sm:p-2 text-center">
                             <div className="text-green-400 font-medium text-xs">{lineCount}</div>
                             <div className="text-gray-400 text-xs">Lines</div>
                           </div>
-                          <div className="bg-gray-800 rounded p-2 text-center">
+                          <div className="bg-gray-800 rounded p-1.5 sm:p-2 text-center">
                             <div className="text-purple-400 font-medium text-xs">
                               {pdfUrl ? (averageFontSize ? `${averageFontSize}px` : 'Loading...') : `${(resumeText.length / 1024).toFixed(1)}KB`}
                             </div>
-                            <div className="text-gray-400 text-xs">{pdfUrl ? 'Avg Font Size' : 'Size'}</div>
+                            <div className="text-gray-400 text-xs">{pdfUrl ? 'Font' : 'Size'}</div>
                           </div>
                         </div>
                       </div>
                     )}
                   </div>
-                  <div className="text-gray-400 text-xs mt-2 text-center">
-                          <span className="inline-block align-middle">💡 <b>Tip:</b> For a good ATS resume, font size matters too! Aim for 10–12px for best readability and parsing.</span>
+                  <div className="text-gray-400 text-xs mt-1.5 sm:mt-2 text-center px-1">
+                    <span className="inline-block align-middle">💡 <b>Tip:</b> For a good ATS resume, font size matters too! Aim for 10–12px for best readability and parsing.</span>
                         </div>
                 </div>
               </Card>
@@ -533,22 +534,21 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
           {/* Remaining categories below */}
           {organizedScores.slice(1).map((category, categoryIndex) => (
             <Card key={category.title} className="bg-gray-800 border-gray-700">
-              <div className="p-6">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+              <div className="p-4 sm:p-6">
+                <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                  <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center ${
                     category.color === 'blue' ? 'bg-blue-500/20' : 
                     category.color === 'purple' ? 'bg-purple-500/20' : 'bg-green-500/20'
                   }`}>
-                    <category.icon className={`h-4 w-4 ${
+                    <category.icon className={`h-3 w-3 sm:h-4 sm:w-4 ${
                       category.color === 'blue' ? 'text-blue-400' : 
                       category.color === 'purple' ? 'text-purple-400' : 'text-green-400'
                     }`} />
                   </div>
-                  <h3 className="text-lg font-semibold text-white">{category.title}</h3>
+                  <h3 className="text-base sm:text-lg font-semibold text-white">{category.title}</h3>
                 </div>
 
-                <div className="space-y-4">
-                  {category.items.map((item, index) => {
+                <div className="space-y-3 sm:space-y-4">{category.items.map((item, index) => {
                     const itemScore = getScoreColor(item.score);
                     return (
                       <motion.div
@@ -556,26 +556,26 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3, delay: (categoryIndex * 0.1) + (index * 0.05) }}
-                        className="bg-gray-900/50 rounded-lg p-4"
+                        className="bg-gray-900/50 rounded-lg p-3 sm:p-4"
                       >
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-3">
-                            <div className="w-6 h-6 bg-gray-700 rounded flex items-center justify-center">
-                              <BarChart className="h-3 w-3 text-gray-400" />
+                        <div className="flex items-center justify-between mb-2 sm:mb-3">
+                          <div className="flex items-center gap-2 sm:gap-3">
+                            <div className="w-5 h-5 sm:w-6 sm:h-6 bg-gray-700 rounded flex items-center justify-center">
+                              <BarChart className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-gray-400" />
                             </div>
-                            <h4 className="text-white font-medium">{item.name}</h4>
+                            <h4 className="text-white font-medium text-sm sm:text-base">{item.name}</h4>
                           </div>
                           <div className="text-right">
-                            <div className="text-white font-semibold">{item.score}%</div>
+                            <div className="text-white font-semibold text-sm sm:text-base">{item.score}%</div>
                             <div className={cn("text-xs", itemScore.textColor)}>
                               {itemScore.label}
                             </div>
                           </div>
                         </div>
                         
-                        <div className="w-full bg-gray-700 rounded-full h-2 mb-3">
+                        <div className="w-full bg-gray-700 rounded-full h-1.5 sm:h-2 mb-2 sm:mb-3">
                           <div 
-                            className="h-2 rounded-full transition-all duration-1000"
+                            className="h-1.5 sm:h-2 rounded-full transition-all duration-1000"
                             style={{ 
                               width: `${item.score}%`,
                               backgroundColor: itemScore.color 
@@ -583,7 +583,7 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
                           />
                         </div>
                         
-                        <p className="text-gray-400 text-sm">{item.reason}</p>
+                        <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">{item.reason}</p>
                       </motion.div>
                     );
                   })}
@@ -594,27 +594,27 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
 
           {/* Improvements Section */}
           <Card className="bg-gray-800 border-gray-700">
-            <div className="p-6">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-8 bg-yellow-500/20 rounded-lg flex items-center justify-center">
-                  <Zap className="h-4 w-4 text-yellow-400" />
+            <div className="p-4 sm:p-6">
+              <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-yellow-500/20 rounded-lg flex items-center justify-center">
+                  <Zap className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-400" />
                 </div>
-                <h3 className="text-lg font-semibold text-white">Key Improvements</h3>
+                <h3 className="text-base sm:text-lg font-semibold text-white">Key Improvements</h3>
               </div>
               
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 {scoreData.overallImprovements.map((improvement, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
-                    className="flex items-start gap-3 p-3 bg-gray-900/50 rounded-lg"
+                    className="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 bg-gray-900/50 rounded-lg"
                   >
-                    <div className="w-5 h-5 bg-yellow-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <AlertTriangle className="h-3 w-3 text-yellow-400" />
+                    <div className="w-4 h-4 sm:w-5 sm:h-5 bg-yellow-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <AlertTriangle className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-yellow-400" />
                     </div>
-                    <p className="text-gray-300 text-sm leading-relaxed">{improvement}</p>
+                    <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">{improvement}</p>
                   </motion.div>
                 ))}
               </div>
@@ -624,15 +624,15 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
           {/* Miscellaneous Scores */}
           {scoreData.miscellaneous && Object.keys(scoreData.miscellaneous ?? {}).length > 0 && (
             <Card className="bg-gray-800 border-gray-700">
-              <div className="p-6">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                    <Brain className="h-4 w-4 text-purple-400" />
+              <div className="p-4 sm:p-6">
+                <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                    <Brain className="h-3 w-3 sm:h-4 sm:w-4 text-purple-400" />
                   </div>
-                  <h3 className="text-lg font-semibold text-white">Additional Analysis</h3>
+                  <h3 className="text-base sm:text-lg font-semibold text-white">Additional Analysis</h3>
                 </div>
                 
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   {Object.entries(scoreData.miscellaneous ?? {}).map(([key, data], index) => {
                     const miscScore = getScoreColor(data.score);
                     return (
@@ -641,27 +641,27 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3, delay: index * 0.1 }}
-                        className="bg-gray-900/50 rounded-lg p-4"
+                        className="bg-gray-900/50 rounded-lg p-3 sm:p-4"
                       >
                         <div className="flex items-center justify-between mb-2">
-                          <h4 className="text-white font-medium capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</h4>
+                          <h4 className="text-white font-medium text-sm sm:text-base capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</h4>
                           <div className="text-right">
-                            <div className="text-white font-semibold">{data.score}%</div>
+                            <div className="text-white font-semibold text-sm sm:text-base">{data.score}%</div>
                             <div className={cn("text-xs", miscScore.textColor)}>
                               {miscScore.label}
                             </div>
                           </div>
                         </div>
-                        <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
+                        <div className="w-full bg-gray-700 rounded-full h-1.5 sm:h-2 mb-2">
                           <div 
-                            className="h-2 rounded-full transition-all duration-1000"
+                            className="h-1.5 sm:h-2 rounded-full transition-all duration-1000"
                             style={{ 
                               width: `${data.score}%`,
                               backgroundColor: miscScore.color 
                             }}
                           />
                         </div>
-                        <p className="text-gray-400 text-sm">{data.reason}</p>
+                        <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">{data.reason}</p>
                       </motion.div>
                     );
                   })}

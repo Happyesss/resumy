@@ -617,8 +617,8 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                                       className={cn(
                                         "p-0 group-hover/item:opacity-100",
                                         "h-8 w-8 rounded-lg",
-                                        "bg-purple-50/80 hover:bg-purple-100/80",
-                                        "text-purple-600 hover:text-purple-700",
+                                        " hover:bg-black",
+                                        "text-purple-400 hover:text-purple-600",
                                         "border border-purple-200/60",
                                         "shadow-sm",
                                         "transition-all duration-300",
@@ -639,7 +639,6 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                                     sideOffset={2}
                                     className={cn(
                                       "w-72 p-3.5",
-                                      "bg-purple-50",
                                       "border-2 border-purple-300",
                                       "shadow-lg shadow-purple-100/50",
                                       "rounded-lg"
@@ -716,15 +715,15 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                         [index]: { ...prev[index], customPrompt: value }
                       }))}
                       colorClass={{
-                        button: "text-purple-600",
-                        border: "border-purple-200",
-                        hoverBorder: "hover:border-purple-300",
-                        hoverBg: "hover:bg-purple-50/50",
-                        tooltipBg: "bg-purple-50",
-                        tooltipBorder: "border-2 border-purple-300",
-                        tooltipShadow: "shadow-lg shadow-purple-100/50",
-                        text: "text-purple-600",
-                        hoverText: "hover:text-purple-700"
+                        button: "text-cyan-400 hover:text-cyan-300",
+                        border: "border-gray-700/80",
+                        hoverBorder: "hover:border-cyan-400/60",
+                        hoverBg: "hover:bg-gray-800/90",
+                        tooltipBg: "bg-gray-900/95 backdrop-blur-sm",
+                        tooltipBorder: "border-2 border-gray-700/80",
+                        tooltipShadow: "shadow-lg shadow-black/20",
+                        text: "text-cyan-400",
+                        hoverText: "hover:text-cyan-300"
                       }}
                     />
                   </div>

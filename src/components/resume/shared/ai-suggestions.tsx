@@ -24,27 +24,21 @@ export function AISuggestions({ suggestions, onApprove, onDelete }: AISuggestion
       "relative group/suggestions",
       "p-6 mt-4",
       "rounded-xl",
-      "bg-gradient-to-br from-purple-50/95 via-purple-50/90 to-indigo-50/95",
-      "border border-purple-200/60",
-      "shadow-lg shadow-purple-500/5",
+      "border border-[#222]",
+      "bg-black",
+      "shadow-lg shadow-black/30",
       "transition-all duration-500",
-      "hover:shadow-xl hover:shadow-purple-500/10",
+      "hover:shadow-xl hover:shadow-black/50",
       "overflow-hidden"
     )}>
-      {/* Animated Background Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8882_1px,transparent_1px),linear-gradient(to_bottom,#8882_1px,transparent_1px)] bg-[size:24px_24px] opacity-10" />
-      
-      {/* Floating Gradient Orbs */}
-      <div className="absolute -top-1/2 -right-1/2 w-full h-full rounded-full bg-gradient-to-br from-purple-200/20 to-indigo-200/20 blur-3xl animate-float opacity-70" />
-      <div className="absolute -bottom-1/2 -left-1/2 w-full h-full rounded-full bg-gradient-to-br from-indigo-200/20 to-purple-200/20 blur-3xl animate-float-delayed opacity-70" />
-      
+      {/* Remove animated backgrounds and orbs for pure black theme */}
       {/* Content */}
       <div className="relative">
         <div className="flex items-center gap-2 mb-4">
-          <div className="p-1.5 rounded-lg bg-purple-100/80 text-purple-600">
+          <div className="p-1.5 rounded-lg bg-[#181818] text-purple-400">
             <Sparkles className="h-4 w-4" />
           </div>
-          <span className="font-semibold text-purple-600">AI Suggestions</span>
+          <span className="font-semibold text-purple-400">AI Suggestions</span>
         </div>
         
         <div className="space-y-4">
@@ -65,13 +59,13 @@ export function AISuggestions({ suggestions, onApprove, onDelete }: AISuggestion
                     readOnly={true}
                     className={cn(
                       "min-h-[80px] text-sm",
-                      "bg-white/60",
-                      "border-purple-200/60",
-                      "text-purple-900",
-                      "focus:border-purple-300/60 focus:ring-2 focus:ring-purple-500/10",
-                      "placeholder:text-purple-400",
+                      "bg-[#181818]",
+                      "border border-[#333]",
+                      "text-gray-200",
+                      "focus:border-[#444] focus:ring-2 focus:ring-[#222]",
+                      "placeholder:text-gray-500",
                       "transition-all duration-300",
-                      "hover:bg-white/80"
+                      "hover:bg-[#232323] hover:border-[#444]"
                     )}
                   />
                 </div>
@@ -82,16 +76,16 @@ export function AISuggestions({ suggestions, onApprove, onDelete }: AISuggestion
                     onClick={() => onApprove(suggestion)}
                     className={cn(
                       "h-9 w-9",
-                      "bg-green-100/80 hover:bg-green-200/80",
-                      "text-green-600 hover:text-green-700",
-                      "border border-green-200/60",
+                      "bg-[#232323] hover:bg-[#333]",
+                      "text-gray-300 hover:text-white",
+                      "border border-[#333]",
                       "shadow-sm",
                       "transition-all duration-300",
                       "hover:scale-105 hover:shadow-md",
                       "hover:-translate-y-0.5"
                     )}
                   >
-                    <Check className="h-4 w-4" />
+                    <Check className="h-4 w-4 text-purple-400" />
                   </Button>
                   <Button
                     variant="ghost"
@@ -99,16 +93,16 @@ export function AISuggestions({ suggestions, onApprove, onDelete }: AISuggestion
                     onClick={() => onDelete(suggestion.id)}
                     className={cn(
                       "h-9 w-9",
-                      "bg-rose-100/80 hover:bg-rose-200/80",
-                      "text-rose-600 hover:text-rose-700",
-                      "border border-rose-200/60",
+                      "bg-[#232323] hover:bg-[#333]",
+                      "text-gray-400 hover:text-red-500",
+                      "border border-[#333]",
                       "shadow-sm",
                       "transition-all duration-300",
                       "hover:scale-105 hover:shadow-md",
                       "hover:-translate-y-0.5"
                     )}
                   >
-                    <X className="h-4 w-4" />
+                    <X className="h-4 w-4 text-red-500" />
                   </Button>
                 </div>
               </div>
@@ -118,4 +112,4 @@ export function AISuggestions({ suggestions, onApprove, onDelete }: AISuggestion
       </div>
     </div>
   );
-} 
+}
