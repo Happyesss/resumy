@@ -57,6 +57,18 @@ interface AnalysisConfig {
 interface FullAnalysisResult {
   score: ResumeScoreMetrics;
   structuredResume: Resume;
+  keywordAnalysis: {
+    existingKeywords: string[];
+    missingKeywords: string[];
+    categoryAnalysis: {
+      programming: string[];
+      frameworks: string[];
+      tools: string[];
+      cloud: string[];
+      databases: string[];
+    };
+    suggestions: string[];
+  };
   atsDiagnostics?: AtsDiagnostics;
   processingTime: number;
   analysisMetadata: {
@@ -245,7 +257,19 @@ function analyzeFormatting(resume: Resume): { score: number; issues: string[]; r
  */
 const combinedAnalysisSchema = z.object({
   structuredResume: simplifiedResumeSchema,
-  scoreMetrics: resumeScoreSchema
+  scoreMetrics: resumeScoreSchema,
+  keywordAnalysis: z.object({
+    existingKeywords: z.array(z.string()).describe("Technical keywords found in the resume"),
+    missingKeywords: z.array(z.string()).describe("Relevant keywords missing from the resume that would improve ATS compatibility"),
+    categoryAnalysis: z.object({
+      programming: z.array(z.string()),
+      frameworks: z.array(z.string()),
+      tools: z.array(z.string()),
+      cloud: z.array(z.string()),
+      databases: z.array(z.string())
+    }).describe("Categorized keywords found in resume"),
+    suggestions: z.array(z.string()).describe("Top 6-8 keyword suggestions based on existing skills and career trajectory")
+  })
 });
 
 /**
@@ -257,7 +281,7 @@ async function analyzeResumeWithSingleAIRequest(
   targetRole: string,
   model: string,
   apiKeys: ApiKey[]
-): Promise<{ structuredResume: Resume; score: ResumeScoreMetrics }> {
+): Promise<{ structuredResume: Resume; score: ResumeScoreMetrics; keywordAnalysis: any }> {
   try {
     const aiClient = initializeAIClient({ model, apiKeys });
     
@@ -270,6 +294,7 @@ async function analyzeResumeWithSingleAIRequest(
 You are a professional resume analysis AI. Analyze the following resume text and provide:
 1. A structured JSON representation of the resume
 2. A comprehensive scoring breakdown
+3. Intelligent keyword analysis and suggestions
 
 Resume Text:
 ${resumeText}
@@ -301,7 +326,22 @@ Instructions:
      * formatting: Structure and organization
      * lengthAppropriate: Appropriate length for experience level
 
-3. Provide 3-5 specific improvement suggestions
+3. THIRD, perform intelligent keyword analysis:
+   - Identify ALL technical keywords currently in the resume (programming languages, frameworks, tools, platforms, methodologies)
+   - Categorize them into: programming, frameworks, tools, cloud, databases
+   - Based on existing skills and experience, suggest 6-8 complementary keywords that would:
+     * Be DIRECTLY RELATED to their current tech stack (e.g., if they have React, suggest Next.js/TypeScript, NOT unrelated technologies)
+     * Enhance their existing skill set rather than suggesting completely different domains
+     * Match their experience level (don't suggest advanced cloud platforms if they're a frontend developer)
+     * Be logical progression from their current skills
+   - AVOID suggesting keywords from completely different domains (e.g., don't suggest AWS to someone who only has frontend skills, don't suggest Python to someone who only works with Java)
+   - Focus on missing keywords that complement their existing ecosystem
+   - If they have Java/Spring Boot, suggest related Java ecosystem tools
+   - If they have JavaScript/React, suggest related frontend/Node.js ecosystem tools
+   - If they have Python, suggest Python ecosystem tools
+   - Only suggest cloud platforms if they already have backend/DevOps experience
+
+4. Provide 3-5 specific improvement suggestions
 
 Return the response in this exact structure:
 {
@@ -340,10 +380,22 @@ Return the response in this exact structure:
       "lengthAppropriate": {"score": number, "reason": "explanation"}
     },
     "overallSuggestions": ["suggestion 1", "suggestion 2", "suggestion 3"]
+  },
+  "keywordAnalysis": {
+    "existingKeywords": ["list of all technical keywords found in resume"],
+    "missingKeywords": ["list of relevant missing keywords"],
+    "categoryAnalysis": {
+      "programming": ["programming languages found"],
+      "frameworks": ["frameworks/libraries found"], 
+      "tools": ["development tools found"],
+      "cloud": ["cloud platforms found"],
+      "databases": ["databases found"]
+    },
+    "suggestions": ["6-8 contextually relevant keyword suggestions based on existing skills"]
   }
 }
 
-Be thorough, accurate, and provide constructive feedback.
+Be thorough, accurate, and provide constructive feedback. Focus on intelligent keyword analysis that considers their current tech stack and career trajectory.
       `
     });
 
@@ -407,7 +459,8 @@ Be thorough, accurate, and provide constructive feedback.
 
     return {
       structuredResume: fullResume,
-      score: object.scoreMetrics as ResumeScoreMetrics
+      score: object.scoreMetrics as ResumeScoreMetrics,
+      keywordAnalysis: object.keywordAnalysis
     };
 
   } catch (error) {
@@ -450,7 +503,7 @@ export async function analyzeResumeFull(
   try {
     // Step 1: Single AI request for both parsing and scoring 🚀
     // ...existing code...
-    const { structuredResume, score } = await analyzeResumeWithSingleAIRequest(
+    const { structuredResume, score, keywordAnalysis } = await analyzeResumeWithSingleAIRequest(
       resumeText,
       targetRole,
       model,
@@ -471,6 +524,7 @@ export async function analyzeResumeFull(
     return {
       score,
       structuredResume,
+      keywordAnalysis,
       atsDiagnostics,
       processingTime,
       analysisMetadata: {
@@ -506,7 +560,7 @@ export async function analyzeResumeQuick(
   try {
     // Single AI request for both parsing and scoring (no ATS diagnostics)
     // ...existing code...
-    const { structuredResume, score } = await analyzeResumeWithSingleAIRequest(
+    const { structuredResume, score, keywordAnalysis } = await analyzeResumeWithSingleAIRequest(
       resumeText,
       targetRole,
       model,
@@ -520,6 +574,7 @@ export async function analyzeResumeQuick(
     return {
       score,
       structuredResume,
+      keywordAnalysis,
       processingTime,
       analysisMetadata: {
         modelUsed: model,

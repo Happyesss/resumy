@@ -9,17 +9,33 @@ import { UploadForm } from "@/components/analyze-resume/upload-form";
 import { DetailedResults } from "@/components/analyze-resume/detailed-results";
 import ResumePreviewCard from "@/components/analyze-resume/resume-preview-card";
 
+interface KeywordAnalysis {
+  existingKeywords: string[];
+  missingKeywords: string[];
+  categoryAnalysis: {
+    programming: string[];
+    frameworks: string[];
+    tools: string[];
+    cloud: string[];
+    databases: string[];
+  };
+  suggestions: string[];
+}
+
 
 export default function AnalyzeResumePage() {
   const [resumeText, setResumeText] = useState("");
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [scoreData, setScoreData] = useState<ResumeScoreMetrics | null>(null);
+  const [keywordAnalysis, setKeywordAnalysis] = useState<KeywordAnalysis | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [delayCountdown, setDelayCountdown] = useState<number | null>(null);
 
   /**
    * Enhanced analyze function using the redesigned analyzeResumeFull action
    * Provides comprehensive analysis with ATS diagnostics and detailed scoring
+   * Includes 4-second delay to avoid rate limiting and improve user experience
    */
   const handleAnalyze = async () => {
     if (!resumeText.trim()) {
@@ -28,14 +44,35 @@ export default function AnalyzeResumePage() {
     }
 
     // Prevent double submissions
-    if (isAnalyzing) {
+    if (isAnalyzing || delayCountdown !== null) {
       return;
     }
 
     setIsAnalyzing(true);
     setError(null);
 
+    // Debug: Check resumeText before analysis
+    console.log('Before analysis - resumeText length:', resumeText.length);
+    console.log('Before analysis - resumeText preview:', resumeText.substring(0, 100));
+
     try {
+      // 4-second delay with countdown to avoid rate limiting
+      setDelayCountdown(4);
+      
+      const countdownInterval = setInterval(() => {
+        setDelayCountdown((prev) => {
+          if (prev && prev > 1) {
+            return prev - 1;
+          } else {
+            clearInterval(countdownInterval);
+            return null;
+          }
+        });
+      }, 1000);
+
+      // Wait for 4 seconds before making the request
+      await new Promise(resolve => setTimeout(resolve, 4000));
+
       // � Single comprehensive analysis request with enhanced features
       const analysisResult = await analyzeResumeFull(resumeText, {
         model: "gemini-2.5-flash-lite-preview-06-17",
@@ -45,8 +82,13 @@ export default function AnalyzeResumePage() {
         apiKeys: [], // API keys handled by server-side configuration
       });
 
-      // Extract score from the comprehensive result
+      // Extract score and keyword analysis from the comprehensive result
       setScoreData(analysisResult.score);
+      setKeywordAnalysis(analysisResult.keywordAnalysis);
+      
+      // Debug: Check if resumeText is still available after analysis
+      console.log('After analysis - resumeText length:', resumeText.length);
+      console.log('After analysis - resumeText preview:', resumeText.substring(0, 100));
 
     } catch (err) {
       setError(
@@ -56,11 +98,13 @@ export default function AnalyzeResumePage() {
       );
     } finally {
       setIsAnalyzing(false);
+      setDelayCountdown(null);
     }
   };
 
   const handleAnalyzeAnother = () => {
     setScoreData(null);
+    setKeywordAnalysis(null);
     setResumeText("");
     setResumeFile(null);
     setError(null);
@@ -108,6 +152,8 @@ export default function AnalyzeResumePage() {
             onAnalyzeAnother={handleAnalyzeAnother}
             resumeText={resumeText}
             resumeFile={resumeFile}
+            keywordAnalysis={keywordAnalysis || undefined}
+            isProcessing={isAnalyzing || delayCountdown !== null}
           />
         )}
       </div>

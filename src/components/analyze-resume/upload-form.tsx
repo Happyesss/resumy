@@ -18,6 +18,7 @@ interface UploadFormProps {
   onAnalyze: () => void;
   hasResults: boolean;
   setResumeFile?: (file: File | null) => void; // Add optional PDF file setter
+  delayCountdown?: number | null; // Add countdown prop
 }
 
 export function UploadForm({
@@ -29,6 +30,7 @@ export function UploadForm({
   onAnalyze,
   hasResults = false,
   setResumeFile,
+  delayCountdown,
 }: UploadFormProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);

@@ -2,19 +2,34 @@
 
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, AlertTriangle, Target, TrendingUp, Award, Users, Zap, FileText, Brain, Eye, Shield, User, BarChart } from 'lucide-react';
+import { CheckCircle, XCircle, AlertTriangle, Target, TrendingUp, Award, Users, Zap, FileText, Brain, Eye, Shield, User, BarChart, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { cn } from '@/lib/utils';
 import { ResumeScoreMetrics } from '@/components/resume/editor/panels/resume-score-panel';
+import { ATSTimeline } from './ats-timeline';
 import { useState, useEffect } from 'react';
+import { AuthDialog } from '@/components/auth/auth-dialog';
 
 interface DetailedResultsProps {
   scoreData: ResumeScoreMetrics;
   onAnalyzeAnother?: () => void;
   resumeText?: string; // Add resume text for preview
   resumeFile?: File | null; // Add resume file for PDF display
+  keywordAnalysis?: {
+    existingKeywords: string[];
+    missingKeywords: string[];
+    categoryAnalysis: {
+      programming: string[];
+      frameworks: string[];
+      tools: string[];
+      cloud: string[];
+      databases: string[];
+    };
+    suggestions: string[];
+  };
+  isProcessing?: boolean; // Add processing state
 }
 
 // Simple font size estimation helper function
@@ -28,11 +43,83 @@ const estimateFontSizeFromFile = (file: File): number => {
   else return 10.0;                        // Large file, likely smaller font
 };
 
-export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resumeFile }: DetailedResultsProps) {
+// Function to analyze resume and suggest missing keywords (fallback only)
+const analyzeKeywords = (resumeText?: string) => {
+  // Return empty results - we only want to use Gemini AI suggestions
+  return { existingKeywords: [], missingKeywords: [], suggestions: [] };
+};
+
+export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resumeFile, keywordAnalysis, isProcessing = false }: DetailedResultsProps) {
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [averageFontSize, setAverageFontSize] = useState<number | null>(null);
+  const [lineCount, setLineCount] = useState<number>(0);
+  const [showLogin, setShowLogin] = useState(false);
+
+  // Scroll to top when the results page mounts
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  // Debug log to see what data we're receiving
+  console.log('DetailedResults received props:', {
+    hasScoreData: !!scoreData,
+    resumeTextLength: resumeText?.length || 0,
+    resumeTextPreview: resumeText?.substring(0, 100) || 'No text',
+    hasResumeFile: !!resumeFile,
+    hasKeywordAnalysis: !!keywordAnalysis
+  });
+
+  // Only use backend keyword analysis - no client-side fallback for suggestions
+  const finalKeywordAnalysis = keywordAnalysis || { existingKeywords: [], missingKeywords: [], suggestions: [] };
 
   useEffect(() => {
+    // Calculate line count from resumeText with better logic
+    if (resumeText && resumeText.trim().length > 0) {
+      // Split by line breaks and count meaningful lines
+      const allLines = resumeText.split(/\r?\n/);
+      const nonEmptyLines = allLines.filter(line => line.trim().length > 0);
+      
+      // For better accuracy, also count lines with significant content
+      const meaningfulLines = allLines.filter(line => {
+        const trimmed = line.trim();
+        return trimmed.length > 2 && !trimmed.match(/^\s*[\•\-\*]\s*$/);
+      });
+      
+      // Use the higher count for better representation
+      const calculatedLineCount = Math.max(nonEmptyLines.length, meaningfulLines.length);
+      
+      // Fallback: If we get very few lines but lots of content, estimate based on content
+      let finalLineCount = calculatedLineCount;
+      if (calculatedLineCount < 5 && resumeText.length > 500) {
+        // Estimate lines based on content patterns (sentences, bullet points, etc.)
+        const sentences = resumeText.split(/[.!?]+/).filter(s => s.trim().length > 10);
+        const bulletPoints = (resumeText.match(/[•\-\*]\s+/g) || []).length;
+        const paragraphs = resumeText.split(/\n\s*\n/).filter(p => p.trim().length > 20);
+        
+        finalLineCount = Math.max(
+          calculatedLineCount,
+          Math.floor(sentences.length * 0.7),
+          bulletPoints + paragraphs.length,
+          Math.floor(resumeText.length / 80) // Rough estimate: ~80 chars per line
+        );
+      }
+      
+      console.log('Line count analysis:', {
+        totalText: resumeText.length,
+        allLines: allLines.length,
+        nonEmptyLines: nonEmptyLines.length,
+        meaningfulLines: meaningfulLines.length,
+        originalCount: calculatedLineCount,
+        finalCount: finalLineCount,
+        sampleLines: allLines.slice(0, 5)
+      });
+      
+      setLineCount(finalLineCount);
+    } else {
+      console.log('No resume text available for line count');
+      setLineCount(0);
+    }
+
     // Try to get PDF from resumeFile first, then from localStorage
     if (resumeFile && resumeFile.type === 'application/pdf') {
       const url = URL.createObjectURL(resumeFile);
@@ -53,7 +140,7 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
         setAverageFontSize(null); // Reset font size for non-PDF files
       }
     }
-  }, [resumeFile]);
+  }, [resumeFile, resumeText]);
 
   const getScoreColor = (score: number) => {
     if (score >= 90) return { color: '#22c55e', label: 'Excellent', bgColor: 'bg-green-500', textColor: 'text-green-400' };
@@ -112,7 +199,33 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
   ];
 
   return (
+
     <div className="min-h-screen text-white">
+      {/* Compact Professional Header Section */}
+      <div className="px-4 pb-8 -mt-8">
+        <div className="max-w-2xl mx-auto text-center relative">
+          {/* Icon and Title Row */}
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-blue-500/10">
+              <Sparkles className="h-5 w-5 text-blue-400" />
+            </span>
+            <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-tight">Your Resume Analysis Results</h1>
+          </div>
+          <div className="text-gray-300 text-base md:text-lg mb-4">
+            Discover how your resume performs against industry standards and get <span className="text-blue-400 font-semibold">AI-powered insights</span> to land your dream job
+          </div>
+          {/* Score indicator row */}
+          <div className="flex items-center justify-center gap-2 px-4 py-2 bg-gray-800/70 rounded-full border border-gray-700 w-fit mx-auto text-sm">
+            <span className={cn("w-2.5 h-2.5 rounded-full mr-1", scoreInfo.bgColor)} />
+            <span className="text-white font-medium">Overall Score:</span>
+            <span className={cn(scoreInfo.textColor, "font-semibold ml-1")}>{scoreData.overallScore.score}/100</span>
+            <Badge variant="outline" className={cn("text-xs border ml-2 px-2 py-0.5", scoreInfo.textColor)}>
+              {scoreInfo.label}
+            </Badge>
+          </div>
+        </div>
+      </div>
+
       <div className="px-6 grid grid-cols-1 xl:grid-cols-3 gap-8">
 
         {/* Left Column - Main Score */}
@@ -149,9 +262,15 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
                 <p className="text-gray-300 text-sm mt-4">{scoreData.overallScore.reason}</p>
               </div>
             </div>
-            <button className="w-full bg-gray-900 hover:bg-gray-700 text-white py-3 rounded-lg transition-colors">
-              Update your resume score
-            </button>
+            <AuthDialog defaultTab="login">
+              <button
+                type="button"
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-semibold text-white  bg-purple-500 duration-200 text-base"
+              >
+                <Sparkles className="w-5 h-5 text-white drop-shadow" />
+                Enhance your resume score
+              </button>
+            </AuthDialog>
           </Card>
 
           {/* Quick Stats */}
@@ -192,6 +311,14 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
               </Card>
             </motion.div>
           )}
+
+          {/* ATS Timeline Component */}
+          <ATSTimeline 
+            scoreData={scoreData}
+            resumeFile={resumeFile}
+            keywordAnalysis={keywordAnalysis}
+            isProcessing={isProcessing}
+          />
         </div>
 
         {/* Right Column - Categories */}
@@ -248,6 +375,73 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
                       </motion.div>
                     );
                   })}
+
+                  {/* Keyword Suggestions Section */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.2 }}
+                    className="bg-gradient-to-r from-blue-900/30 to-indigo-900/30 rounded-lg p-3 border border-blue-500/20"
+                  >
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-5 h-5 bg-blue-500/20 rounded flex items-center justify-center">
+                        <Brain className="h-3 w-3 text-blue-400" />
+                      </div>
+                      <h4 className="text-blue-300 font-medium text-sm">Keyword Suggestions</h4>
+                    </div>
+                    
+                    {finalKeywordAnalysis.suggestions.length > 0 ? (
+                      <>
+                        <p className="text-gray-400 text-xs mb-3">
+                          AI-powered keyword suggestions to improve ATS compatibility:
+                        </p>
+                        
+                        <div className="flex flex-wrap gap-1 mb-3">
+                          {finalKeywordAnalysis.suggestions.map((keyword) => (
+                            <span
+                              key={keyword}
+                              className="px-2 py-1 bg-blue-500/10 text-blue-300 text-xs rounded border border-blue-500/20 hover:bg-blue-500/20 transition-colors cursor-pointer"
+                            >
+                              {keyword}
+                            </span>
+                          ))}
+                        </div>
+
+                        {finalKeywordAnalysis.existingKeywords.length > 0 && (
+                          <div className="mb-2">
+                            <p className="text-green-400 text-xs mb-1">✓ Keywords already present:</p>
+                            <div className="flex flex-wrap gap-1">
+                              {finalKeywordAnalysis.existingKeywords.slice(0, 6).map((keyword) => (
+                                <span
+                                  key={keyword}
+                                  className="px-2 py-1 bg-green-500/10 text-green-300 text-xs rounded border border-green-500/20"
+                                >
+                                  {keyword}
+                                </span>
+                              ))}
+                              {finalKeywordAnalysis.existingKeywords.length > 6 && (
+                                <span className="text-green-400 text-xs py-1">
+                                  +{finalKeywordAnalysis.existingKeywords.length - 6} more
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    ) : keywordAnalysis ? (
+                      <p className="text-green-400 text-xs mb-3">
+                        ✓ Great! Your resume already contains excellent keyword coverage.
+                      </p>
+                    ) : (
+                      <p className="text-gray-400 text-xs mb-3">
+                        🤖 AI keyword analysis will appear here after processing your resume.
+                      </p>
+                    )}
+                    
+                    <p className="text-gray-500 text-xs mt-2">
+                      💡 Tip: Include 2-3 of these keywords naturally in your experience descriptions
+                    </p>
+                  </motion.div>
                 </div>
               </div>
             </Card>
@@ -273,7 +467,7 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
                     {pdfUrl ? (
                       /* Compact PDF Iframe Display */
                       <div className="bg-white rounded-lg shadow-xl border border-gray-300 overflow-hidden">
-                        {/* Compact PDF Viewer Header */}
+                        {/* PDF Viewer Header */}
                         <div className="bg-gray-50 px-3 py-2 border-b border-gray-200 flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <div className="w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
@@ -284,49 +478,53 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
                             </span>
                           </div>
                         </div>
-                        
-                        {/* Compact PDF Content in iframe */}
+                        {/* Slightly taller PDF Content in iframe */}
                         <iframe
                           src={`${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0`}
-                          className="w-full h-[300px] border-none"
+                          className="w-full h-[400px] border-none"
                           title="Resume PDF"
                           style={{ border: 'none' }}
                         />
                       </div>
                     ) : (
-                      /* Compact text display */
-                      <div className="bg-white text-black rounded-lg shadow-xl max-h-[300px] overflow-hidden relative border border-gray-300">
+                      /* Text display */
+                      <div className="bg-white text-black rounded-lg shadow-xl max-h-[350px] overflow-hidden relative border border-gray-300">
                         <div className="bg-gray-50 px-3 py-2 border-b border-gray-200">
                           <span className="text-xs font-medium text-gray-700">Resume.txt</span>
                         </div>
-                        <div className="p-4 h-[260px] overflow-y-auto bg-white">
+                        <div className="p-4 h-[360px] overflow-y-auto bg-white">
                           <div className="text-xs text-black leading-relaxed">
-                            {resumeText?.substring(0, 500)}...
+                            {resumeText?.substring(0, 1400)}...
                           </div>
                         </div>
                       </div>
                     )}
                     
-                    {/* Compact Document info */}
+                    {/* Document info */}
                     {resumeText && (
-                      <div className="mt-2 grid grid-cols-3 gap-2 text-xs">
-                        <div className="bg-gray-800 rounded p-2 text-center">
-                          <div className="text-blue-400 font-medium text-xs">{resumeText.split(' ').length}</div>
-                          <div className="text-gray-400 text-xs">Words</div>
-                        </div>
-                        <div className="bg-gray-800 rounded p-2 text-center">
-                          <div className="text-green-400 font-medium text-xs">{resumeText.split('\n').filter(line => line.trim()).length}</div>
-                          <div className="text-gray-400 text-xs">Lines</div>
-                        </div>
-                        <div className="bg-gray-800 rounded p-2 text-center">
-                          <div className="text-purple-400 font-medium text-xs">
-                            {pdfUrl ? (averageFontSize ? `${averageFontSize}px` : 'Loading...') : `${(resumeText.length / 1024).toFixed(1)}KB`}
+                      <div className="mt-2">
+                        <div className="grid grid-cols-3 gap-2 text-xs">
+                          <div className="bg-gray-800 rounded p-2 text-center">
+                            <div className="text-blue-400 font-medium text-xs">{resumeText.split(' ').length}</div>
+                            <div className="text-gray-400 text-xs">Words</div>
                           </div>
-                          <div className="text-gray-400 text-xs">{pdfUrl ? 'Avg Font Size' : 'Size'}</div>
+                          <div className="bg-gray-800 rounded p-2 text-center">
+                            <div className="text-green-400 font-medium text-xs">{lineCount}</div>
+                            <div className="text-gray-400 text-xs">Lines</div>
+                          </div>
+                          <div className="bg-gray-800 rounded p-2 text-center">
+                            <div className="text-purple-400 font-medium text-xs">
+                              {pdfUrl ? (averageFontSize ? `${averageFontSize}px` : 'Loading...') : `${(resumeText.length / 1024).toFixed(1)}KB`}
+                            </div>
+                            <div className="text-gray-400 text-xs">{pdfUrl ? 'Avg Font Size' : 'Size'}</div>
+                          </div>
                         </div>
                       </div>
                     )}
                   </div>
+                  <div className="text-gray-400 text-xs mt-2 text-center">
+                          <span className="inline-block align-middle">💡 <b>Tip:</b> For a good ATS resume, font size matters too! Aim for 10–12px for best readability and parsing.</span>
+                        </div>
                 </div>
               </Card>
             )}
