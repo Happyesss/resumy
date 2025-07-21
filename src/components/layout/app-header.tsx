@@ -3,7 +3,7 @@
 import { Logo } from "@/components/ui/logo";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { Menu, User } from "lucide-react";
+import { Menu, User, Sparkles } from "lucide-react";
 import { PageTitle } from "./page-title";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -55,6 +55,17 @@ export function AppHeader({ children }: AppHeaderProps) {
               <nav className="hidden md:flex items-center gap-1 lg:gap-2">
                 <div className="flex items-center px-2 lg:px-3 py-1">
                   <Link
+                    href="/analyze-resume"
+                    className={cn(
+                      "flex items-center gap-1.5 px-2 lg:px-3 py-1 text-teal-400 hover:text-teal-300",
+                      "text-sm font-medium transition-colors duration-200"
+                    )}
+                  >
+                    <Sparkles className="h-4 w-4" />
+                    <span className="hidden lg:inline">Analyze Resume</span>
+                  </Link>
+                  <div className="mx-1 lg:mx-2 h-4 w-px bg-gray-200/50" />
+                  <Link
                     href="/profile"
                     className={cn(
                       "flex items-center gap-1.5 px-2 lg:px-3 py-1 text-purple-400 hover:text-purple-300",
@@ -83,6 +94,17 @@ export function AppHeader({ children }: AppHeaderProps) {
                     <SheetTitle>Menu</SheetTitle>
                   </SheetHeader>
                   <div className="flex flex-col gap-4 pt-6">
+                    <Link
+                      href="/analyze-resume"
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        "flex items-center gap-2 px-4 py-2 rounded-md text-teal-400 hover:text-teal-300",
+                        "text-sm font-medium transition-colors duration-200"
+                      )}
+                    >
+                      <Sparkles className="h-4 w-4" />
+                      Analyze Resume
+                    </Link>
                     <Link
                       href="/profile"
                       onClick={() => setIsOpen(false)}

@@ -11,6 +11,8 @@ import { ResumeScoreMetrics } from '@/components/resume/editor/panels/resume-sco
 import { ATSTimeline } from './ats-timeline';
 import { useState, useEffect } from 'react';
 import { AuthDialog } from '@/components/auth/auth-dialog';
+import { createClient } from '@/utils/supabase/client';
+import Link from 'next/link';
 
 interface DetailedResultsProps {
   scoreData: ResumeScoreMetrics;
@@ -54,6 +56,18 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
   const [averageFontSize, setAverageFontSize] = useState<number | null>(null);
   const [lineCount, setLineCount] = useState<number>(0);
   const [showLogin, setShowLogin] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  // Check authentication status
+  useEffect(() => {
+    const checkAuth = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      setIsAuthenticated(!!user);
+    };
+    
+    checkAuth();
+  }, []);
 
   // Scroll to top when the results page mounts
   useEffect(() => {
@@ -262,16 +276,29 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
                 <p className="text-gray-300 text-xs sm:text-sm mt-4">{scoreData.overallScore.reason}</p>
               </div>
             </div>
-            <AuthDialog defaultTab="login">
-              <button
-                type="button"
-                className="w-full flex items-center justify-center gap-2 py-2.5 sm:py-3 px-3 sm:px-4 rounded-lg font-semibold text-white bg-purple-500 hover:bg-purple-600 transition-all duration-200 text-sm sm:text-base"
-              >
-                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-white drop-shadow" />
-                <span className="hidden sm:inline">Enhance your resume score</span>
-                <span className="sm:hidden">Enhance Score</span>
-              </button>
-            </AuthDialog>
+            {isAuthenticated ? (
+              <Link href="/home">
+                <button
+                  type="button"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 sm:py-3 px-3 sm:px-4 rounded-lg font-semibold text-white bg-purple-500 hover:bg-purple-600 transition-all duration-200 text-sm sm:text-base"
+                >
+                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-white drop-shadow" />
+                  <span className="hidden sm:inline">Enhance your resume score</span>
+                  <span className="sm:hidden">Enhance Score</span>
+                </button>
+              </Link>
+            ) : (
+              <AuthDialog defaultTab="login">
+                <button
+                  type="button"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 sm:py-3 px-3 sm:px-4 rounded-lg font-semibold text-white bg-purple-500 hover:bg-purple-600 transition-all duration-200 text-sm sm:text-base"
+                >
+                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-white drop-shadow" />
+                  <span className="hidden sm:inline">Enhance your resume score</span>
+                  <span className="sm:hidden">Enhance Score</span>
+                </button>
+              </AuthDialog>
+            )}
           </Card>
 
           {/* Quick Stats */}

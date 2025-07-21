@@ -1,13 +1,14 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { analyzeResumeFull } from "./actions/analyzeResumeFull"; // 🆕 local action
 import { ResumeScoreMetrics } from "@/components/resume/editor/panels/resume-score-panel";
 import { AnalyzeNavbar } from "@/components/analyze-resume/navbar";
 import { UploadForm } from "@/components/analyze-resume/upload-form";
 import { DetailedResults } from "@/components/analyze-resume/detailed-results";
 import ResumePreviewCard from "@/components/analyze-resume/resume-preview-card";
+import { createClient } from "@/utils/supabase/client";
 
 interface KeywordAnalysis {
   existingKeywords: string[];
@@ -31,6 +32,18 @@ export default function AnalyzeResumePage() {
   const [keywordAnalysis, setKeywordAnalysis] = useState<KeywordAnalysis | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [delayCountdown, setDelayCountdown] = useState<number | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  // Check authentication status
+  useEffect(() => {
+    const checkAuth = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      setIsAuthenticated(!!user);
+    };
+    
+    checkAuth();
+  }, []);
 
   /**
    * Enhanced analyze function using the redesigned analyzeResumeFull action
@@ -115,8 +128,9 @@ export default function AnalyzeResumePage() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Navigation Bar */}
-      <AnalyzeNavbar />
+      {/* Navigation Bar - Only show AnalyzeNavbar for non-authenticated users */}
+      {/* For authenticated users, AppHeader is already shown by layout.tsx */}
+      {isAuthenticated === false && <AnalyzeNavbar />}
 
       {/* Main Content with top padding for fixed navbar */}
       <div className="pt-16">
