@@ -20,10 +20,13 @@ interface ProfileSkillsFormProps {
 
 export function ProfileSkillsForm({ skills, onChange }: ProfileSkillsFormProps) {
   const addSkill = () => {
-    onChange([...skills, {
-      category: "",
-      items: []
-    }]);
+    onChange([
+      ...skills,
+      {
+        category: "",
+        items: []
+      }
+    ]);
   };
 
   const updateSkill = (index: number, field: keyof Skill, value: Skill[typeof field]) => {
@@ -36,15 +39,19 @@ export function ProfileSkillsForm({ skills, onChange }: ProfileSkillsFormProps) 
     onChange(skills.filter((_, i) => i !== index));
   };
 
+  // Local input state for comma-separated items
   const [skillInputs, setSkillInputs] = React.useState<{ [key: number]: string }>(
     Object.fromEntries(skills.map((s, i) => [i, s.items?.join(', ') || '']))
   );
 
+  // Reset local inputs only when category count changes
   React.useEffect(() => {
-    setSkillInputs(Object.fromEntries(
-      skills.map((s, i) => [i, s.items?.join(', ') || ''])
-    ));
-  }, [skills]);
+    setSkillInputs(
+      Object.fromEntries(
+        skills.map((s, i) => [i, s.items?.join(', ') || ''])
+      )
+    );
+  }, [skills.length]);
 
   return (
     <div className="space-y-3">
@@ -101,7 +108,7 @@ export function ProfileSkillsForm({ skills, onChange }: ProfileSkillsFormProps) 
                   </Button>
                 </div>
 
-                {/* Skills */}
+                {/* Skills Input */}
                 <div className="space-y-1.5">
                   <div className="flex justify-between items-baseline">
                     <Label className="text-xs font-medium text-purple-400 rounded-full">Skills</Label>
@@ -112,30 +119,20 @@ export function ProfileSkillsForm({ skills, onChange }: ProfileSkillsFormProps) 
                     onChange={(e) => {
                       const newValue = e.target.value;
                       setSkillInputs(prev => ({ ...prev, [index]: newValue }));
-                      
-                      if (newValue.endsWith(',')) {
-                        const items = newValue
-                          .split(',')
-                          .map(t => t.trim())
-                          .filter(Boolean);
-                        updateSkill(index, 'items', items);
-                      } else {
-                        const items = newValue
-                          .split(',')
-                          .map(t => t.trim())
-                          .filter(Boolean);
-                        updateSkill(index, 'items', items);
-                      }
+                      const items = newValue
+                        .split(',')
+                        .map(t => t.trim())
+                        .filter(Boolean);
+                      updateSkill(index, 'items', items);
                     }}
                     onBlur={(e) => {
                       const items = e.target.value
                         .split(',')
                         .map(t => t.trim())
                         .filter(Boolean);
-                      updateSkill(index, 'items', items);
-                      setSkillInputs(prev => ({ 
-                        ...prev, 
-                        [index]: items.join(', ') 
+                      setSkillInputs(prev => ({
+                        ...prev,
+                        [index]: items.join(', ')
                       }));
                     }}
                     placeholder="e.g., TypeScript, React, Node.js, AWS"
