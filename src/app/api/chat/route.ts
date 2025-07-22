@@ -88,7 +88,7 @@ export async function POST(req: Request) {
     const result = streamText({
       model: aiClient as LanguageModelV1,
       system: `
-      You are ResumeLM, an expert technical resume consultant 
+      You are Resumy, an expert technical resume consultant 
       specializing in computer science and software 
       engineering careers. Your expertise spans resume 
       optimization, technical writing, and industry best 

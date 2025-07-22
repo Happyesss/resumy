@@ -1,5 +1,5 @@
--- ResumeLM Database Schema
--- This file contains all the SQL statements needed to set up the ResumeLM database schema
+-- Resumy Database Schema
+-- This file contains all the SQL statements needed to set up the Resumy database schema
 -- Run this against your PostgreSQL database to create all required tables
 
 -- First, ensure the UUID extension is available

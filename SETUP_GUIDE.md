@@ -1,6 +1,6 @@
-# ResumeLM Setup Guide
+# Resumy Setup Guide
 
-This guide will help you set up and run the ResumeLM application locally. ResumeLM is a free and open-source AI-powered resume builder that uses Gemini API for AI features.
+This guide will help you set up and run the Resumy application locally. Resumy is a free and open-source AI-powered resume builder that uses Gemini API for AI features.
 
 ## Prerequisites
 
@@ -34,7 +34,7 @@ Create a `.env.local` file in the root directory with the following variables:
 
 ```env
 # Database (Required)
-DATABASE_URL=postgresql://user:password@localhost:5432/resumelm
+DATABASE_URL=postgresql://user:password@localhost:5432/resumy
 
 # Authentication (Required)
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
@@ -50,8 +50,8 @@ GEMINI_API_KEY=your_gemini_api_key
 Run the SQL scripts to create the necessary tables:
 
 ```bash
-psql -U your_username -d resumelm -f schema.sql
-psql -U your_username -d resumelm -f schema-free-version.sql
+psql -U your_username -d resumy -f schema.sql
+psql -U your_username -d resumy -f schema-free-version.sql
 ```
 
 5. **Run the development server**
@@ -94,4 +94,4 @@ For support, bug reports, or feature requests, please open an issue on the GitHu
 
 ---
 
-Enjoy using ResumeLM! Thank you for supporting open source software.
+Enjoy using Resumy! Thank you for supporting open source software.

@@ -1,7 +1,4 @@
--- Simplified ResumeLM Database Schema
--- This file modifies the schema to remove all subscription and payment related tables and fields
--- Run this against your PostgreSQL database to update it for the free-only version
-
+ -- Simplified Resumy Database Schema
 -- Create or update the subscriptions table
 -- Makes sure all users get 'pro' access by default
 CREATE TABLE IF NOT EXISTS public.subscriptions (
