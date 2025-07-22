@@ -93,7 +93,7 @@ export default function AnalyzeResumePage() {
 
       // Single comprehensive analysis request with enhanced features
       const analysisResult = await analyzeResumeFull(resumeText, {
-        model: "gemini-2.5-flash-lite-preview-06-17",
+        model: "gemini-2.5-flash-lite",
         atsEnhanced: true, // Enable advanced ATS diagnostics
         targetRole: "General", // Could be made dynamic based on user input
         includeDetailedFeedback: true,

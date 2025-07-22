@@ -495,11 +495,10 @@ export async function analyzeResumeFull(
   config: AnalysisConfig = {}
 ): Promise<FullAnalysisResult> {
   const startTime = Date.now();
-  
   // Note: The specialized GEMINI_ANALYZE_API_KEY will be used if available
   // This is configured in the analyzeResumeWithSingleAIRequest function
   const {
-    model = "gemini-2.5-flash-lite-preview-06-17",
+    model = "gemini-2.5-flash-lite",
     atsEnhanced = true,
     apiKeys = [],
     targetRole = "General",
@@ -557,11 +556,10 @@ export async function analyzeResumeQuick(
   config: Omit<AnalysisConfig, 'atsEnhanced'> = {}
 ): Promise<Omit<FullAnalysisResult, 'atsDiagnostics'>> {
   const startTime = Date.now();
-  
   // Note: The specialized GEMINI_ANALYZE_API_KEY will be used if available
   // This is configured in the analyzeResumeWithSingleAIRequest function
   const {
-    model = "gemini-2.5-flash-lite-preview-06-17",
+    model = "gemini-2.5-flash-lite",
     apiKeys = [],
     targetRole = "General",
     includeDetailedFeedback = true
