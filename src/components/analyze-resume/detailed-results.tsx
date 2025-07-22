@@ -74,15 +74,6 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  // Debug log to see what data we're receiving
-  console.log('DetailedResults received props:', {
-    hasScoreData: !!scoreData,
-    resumeTextLength: resumeText?.length || 0,
-    resumeTextPreview: resumeText?.substring(0, 100) || 'No text',
-    hasResumeFile: !!resumeFile,
-    hasKeywordAnalysis: !!keywordAnalysis
-  });
-
   // Only use backend keyword analysis - no client-side fallback for suggestions
   const finalKeywordAnalysis = keywordAnalysis || { existingKeywords: [], missingKeywords: [], suggestions: [] };
 
@@ -118,19 +109,8 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
         );
       }
       
-      console.log('Line count analysis:', {
-        totalText: resumeText.length,
-        allLines: allLines.length,
-        nonEmptyLines: nonEmptyLines.length,
-        meaningfulLines: meaningfulLines.length,
-        originalCount: calculatedLineCount,
-        finalCount: finalLineCount,
-        sampleLines: allLines.slice(0, 5)
-      });
-      
       setLineCount(finalLineCount);
     } else {
-      console.log('No resume text available for line count');
       setLineCount(0);
     }
 

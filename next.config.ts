@@ -47,6 +47,16 @@ const nextConfig: NextConfig = {
     ]
   },
   
+  // Ensure favicon is properly served
+  async rewrites() {
+    return [
+      {
+        source: '/favicon.ico',
+        destination: '/favicon.ico',
+      },
+    ]
+  },
+  
   // Optimize images
   images: {
     formats: ['image/avif', 'image/webp'],

@@ -4,6 +4,8 @@ import { Resume } from "@/lib/types";
 import { ResumeScoreMetrics } from "@/components/resume/editor/panels/resume-score-panel";
 import { ApiKey, initializeAIClient } from "@/utils/ai-tools";
 import { generateObject } from "ai";
+import { LanguageModelV1 } from "ai";
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { z } from "zod";
 import { resumeScoreSchema } from "@/lib/zod-schemas";
 import { simplifiedResumeSchema } from "@/lib/zod-schemas";
@@ -283,7 +285,13 @@ async function analyzeResumeWithSingleAIRequest(
   apiKeys: ApiKey[]
 ): Promise<{ structuredResume: Resume; score: ResumeScoreMetrics; keywordAnalysis: any }> {
   try {
-    const aiClient = initializeAIClient({ model, apiKeys });
+    // Use specific GEMINI_ANALYZE_API_KEY for resume analysis if available
+    const analyzeApiKey = process.env.GEMINI_ANALYZE_API_KEY;
+    
+    // Initialize AI client with appropriate key
+    const aiClient = analyzeApiKey 
+      ? createGoogleGenerativeAI({ apiKey: analyzeApiKey })(model) as LanguageModelV1
+      : initializeAIClient({ model, apiKeys });
     
     // ...existing code...
     
@@ -487,8 +495,9 @@ export async function analyzeResumeFull(
   config: AnalysisConfig = {}
 ): Promise<FullAnalysisResult> {
   const startTime = Date.now();
-  const requestId = `req-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   
+  // Note: The specialized GEMINI_ANALYZE_API_KEY will be used if available
+  // This is configured in the analyzeResumeWithSingleAIRequest function
   const {
     model = "gemini-2.5-flash-lite-preview-06-17",
     atsEnhanced = true,
@@ -501,8 +510,7 @@ export async function analyzeResumeFull(
   // ...existing code...
 
   try {
-    // Step 1: Single AI request for both parsing and scoring 🚀
-    // ...existing code...
+    // Step 1: Single AI request for both parsing and scoring
     const { structuredResume, score, keywordAnalysis } = await analyzeResumeWithSingleAIRequest(
       resumeText,
       targetRole,
@@ -550,6 +558,8 @@ export async function analyzeResumeQuick(
 ): Promise<Omit<FullAnalysisResult, 'atsDiagnostics'>> {
   const startTime = Date.now();
   
+  // Note: The specialized GEMINI_ANALYZE_API_KEY will be used if available
+  // This is configured in the analyzeResumeWithSingleAIRequest function
   const {
     model = "gemini-2.5-flash-lite-preview-06-17",
     apiKeys = [],
@@ -559,7 +569,6 @@ export async function analyzeResumeQuick(
 
   try {
     // Single AI request for both parsing and scoring (no ATS diagnostics)
-    // ...existing code...
     const { structuredResume, score, keywordAnalysis } = await analyzeResumeWithSingleAIRequest(
       resumeText,
       targetRole,

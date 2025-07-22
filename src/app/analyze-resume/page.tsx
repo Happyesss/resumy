@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -37,6 +36,7 @@ export default function AnalyzeResumePage() {
   const [error, setError] = useState<string | null>(null);
   const [delayCountdown, setDelayCountdown] = useState<number | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [apiKeyTestResult, setApiKeyTestResult] = useState<any>(null);
 
   // Check authentication status
   useEffect(() => {
@@ -48,6 +48,9 @@ export default function AnalyzeResumePage() {
     
     checkAuth();
   }, []);
+  
+  // Test API Keys function
+
 
   /**
    * Enhanced analyze function using the redesigned analyzeResumeFull action
@@ -68,11 +71,9 @@ export default function AnalyzeResumePage() {
     setIsAnalyzing(true);
     setError(null);
 
-    // Debug: Check resumeText before analysis
-    console.log('Before analysis - resumeText length:', resumeText.length);
-    console.log('Before analysis - resumeText preview:', resumeText.substring(0, 100));
-
     try {
+
+      
       // 4-second delay with countdown to avoid rate limiting
       setDelayCountdown(4);
       
@@ -90,7 +91,7 @@ export default function AnalyzeResumePage() {
       // Wait for 4 seconds before making the request
       await new Promise(resolve => setTimeout(resolve, 4000));
 
-      // � Single comprehensive analysis request with enhanced features
+      // Single comprehensive analysis request with enhanced features
       const analysisResult = await analyzeResumeFull(resumeText, {
         model: "gemini-2.5-flash-lite-preview-06-17",
         atsEnhanced: true, // Enable advanced ATS diagnostics
@@ -102,10 +103,6 @@ export default function AnalyzeResumePage() {
       // Extract score and keyword analysis from the comprehensive result
       setScoreData(analysisResult.score);
       setKeywordAnalysis(analysisResult.keywordAnalysis);
-      
-      // Debug: Check if resumeText is still available after analysis
-      console.log('After analysis - resumeText length:', resumeText.length);
-      console.log('After analysis - resumeText preview:', resumeText.substring(0, 100));
 
     } catch (err) {
       setError(
@@ -138,6 +135,8 @@ export default function AnalyzeResumePage() {
 
       {/* Main Content with top padding for fixed navbar */}
       <div className="pt-16">
+
+        
         {!scoreData ? (
           /* Upload Form - Split layout with preview */
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
