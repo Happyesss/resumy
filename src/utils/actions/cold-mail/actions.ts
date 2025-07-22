@@ -13,7 +13,7 @@ export async function generate(input: string, config?: AIConfig) {
     // Initialize AI client with Gemini Mail API configuration
     const mailConfig = {
       ...config,
-      model: 'gemini-2.5-flash-lite-preview-06-17',
+      model: 'gemini-2.5-flash-lite',
       apiKeys: [
         {
           service: 'google',

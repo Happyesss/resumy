@@ -92,7 +92,7 @@ export function TextImportDialog({
     try {
       // Provide a default AIConfig to use the environment variable for Gemini
       const aiConfig = {
-        model: 'gemini-2.5-flash-lite-preview-06-17',
+        model: 'gemini-2.5-flash-lite',
         apiKeys: [],
       };
       // Use convertTextToResume for better extraction

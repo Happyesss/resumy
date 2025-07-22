@@ -146,7 +146,7 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
         section_configs: undefined,
         section_order: undefined
       }, {
-        model: selectedModel || 'gemini-2.5-flash-lite-preview-06-17',
+        model: selectedModel || 'gemini-2.5-flash-lite',
         apiKeys: apiKeys
       });
 

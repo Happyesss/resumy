@@ -83,7 +83,7 @@ export function ColdMailPanel({
       };
 
       const stream = await generate(JSON.stringify(promptData), {
-        model: selectedModel || 'gemini-2.5-flash-lite-preview-06-17',
+        model: selectedModel || 'gemini-2.5-flash-lite',
         apiKeys: apiKeys
       });
 
