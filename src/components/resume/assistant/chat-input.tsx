@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Send, X } from "lucide-react";
+import { CornerRightUp, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import React, { useState, useCallback, useRef, useEffect } from "react";
 
@@ -109,7 +109,7 @@ export default function ChatInput({
           {isLoading ? (
             <X className="h-4 w-4" />
           ) : (
-            <Send className="h-4 w-4" />
+            <CornerRightUp className="h-4 w-4" />
           )}
         </Button>
       </form>

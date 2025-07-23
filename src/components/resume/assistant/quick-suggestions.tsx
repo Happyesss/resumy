@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Bot, Star, Briefcase, FileSearch } from "lucide-react";
+import { Bot, SpellCheck, Briefcase, FileSearch } from "lucide-react";
 
 interface QuickSuggestionsProps {
   onSuggestionClick: (suggestion: string) => void;
@@ -8,8 +8,8 @@ interface QuickSuggestionsProps {
 
 const suggestions = [
   {
-    text: "Rate my Resume out of 10",
-    icon: Star,
+    text: "Check for any grammar mistakes?",
+    icon: SpellCheck,
   },
   {
     text: "Improve the work experience section",

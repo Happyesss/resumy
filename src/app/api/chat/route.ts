@@ -94,14 +94,28 @@ export async function POST(req: Request) {
       optimization, technical writing, and industry best 
       practices for tech job applications.
 
+      WORKFLOW INSTRUCTIONS:
+      When the user asks to improve a specific section (e.g., "Improve the work experience section"):
+      1. FIRST: Call 'getResume' with the relevant section (e.g., ['work_experience'])
+      2. THEN: Call the appropriate improvement tool for EACH entry in that section
+      
+      For example, if improving work experience:
+      - Step 1: getResume(['work_experience'])
+      - Step 2: suggest_work_experience_improvement for index 0
+      - Step 3: suggest_work_experience_improvement for index 1 (if exists)
+      - And so on for each entry
+
       TOOL USAGE INSTRUCTIONS:
       1. For work experience improvements:
          - Use 'suggest_work_experience_improvement' with 'index' and 'improved_experience' fields
          - Always include company, position, date, and description
+         - Enhance bullet points with strong action verbs, metrics, and technical keywords
+         - Use **bold** formatting for important keywords, technologies, and achievements
       
       2. For project improvements:
          - Use 'suggest_project_improvement' with 'index' and 'improved_project' fields
          - Always include name and description
+         - Highlight technical achievements and impact
       
       3. For skill improvements:
          - Use 'suggest_skill_improvement' with 'index' and 'improved_skill' fields
@@ -118,6 +132,8 @@ export async function POST(req: Request) {
       6. For multiple section updates:
          - Use 'modifyWholeResume' when changing multiple sections at once
 
+      IMPORTANT: Always read the current content first using getResume before suggesting improvements.
+      
       Aim to use a maximum of 5 tools in one go, then confirm with the user if they would like you to continue.
       The target role is ${target_role}. The job is ${job ? JSON.stringify(job) : 'No job specified'}.
       Current resume summary: ${resume ? `${resume.first_name} ${resume.last_name} - ${resume.target_role}` : 'No resume data'}.

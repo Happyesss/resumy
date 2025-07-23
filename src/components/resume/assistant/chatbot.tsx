@@ -262,13 +262,14 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
     setEditContent(content);
   };
 
-  // Add save handler
+  // Add save handler - updated to not trigger regeneration
   const handleSaveEdit = (id: string) => {
-    setMessages(messages.map(message =>
+    const updatedMessages = messages.map(message =>
       message.id === id
         ? { ...message, content: editContent }
         : message
-    ));
+    );
+    setMessages(updatedMessages);
     setEditingMessageId(null);
     setEditContent("");
   };
@@ -457,33 +458,6 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
                                     <MemoizedMarkdown id={m.id} content={m.content} />
                                   )}
 
-                                  {/* Message Actions */}
-                                  <div className="absolute -bottom-8 left-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <button
-                                      onClick={() => handleDelete(m.id)}
-                                      className={cn(
-                                        "transition-colors duration-200",
-                                        m.role === 'user'
-                                          ? "text-purple-300/70 hover:text-purple-200"
-                                          : "text-gray-400/70 hover:text-gray-300",
-                                      )}
-                                      aria-label="Delete message"
-                                    >
-                                      <Trash2 className="h-3 w-3" />
-                                    </button>
-                                    <button
-                                      onClick={() => handleEdit(m.id, m.content)}
-                                      className={cn(
-                                        "transition-colors duration-200",
-                                        m.role === 'user'
-                                          ? "text-purple-300/70 hover:text-purple-200"
-                                          : "text-gray-400/70 hover:text-gray-300",
-                                      )}
-                                      aria-label="Edit message"
-                                    >
-                                      <Pencil className="h-3 w-3" />
-                                    </button>
-                                  </div>
                                 </div>
                               </div>
                             </div>
