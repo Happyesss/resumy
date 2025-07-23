@@ -125,32 +125,27 @@ export function TextImportDialog({
       <DialogTrigger asChild>
         {trigger}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] bg-white/95 backdrop-blur-xl border-white/40 shadow-2xl">
-        <DialogHeader>
-          <DialogTitle className="text-2xl bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">
+      <DialogContent className="sm:max-w-[500px] bg-gray-900/95 backdrop-blur-xl border-gray-800/60 shadow-2xl">
+        <DialogHeader className="pb-4">
+          <DialogTitle className="text-xl bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent">
             Import Resume Content
           </DialogTitle>
-          <DialogDescription asChild>
-            <div className="space-y-2 text-base text-muted-foreground/80">
-              <p className="font-medium text-foreground">Choose one of these options:</p>
-              <ol className="list-decimal list-inside space-y-1 ml-1">
-                <li>Upload your PDF resume by dropping it below or clicking to browse</li>
-                <li>Paste your resume text directly into the text area</li>
-              </ol>
-            </div>
+          <DialogDescription className="text-sm text-gray-400">
+            Upload a PDF or paste your resume text below
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        <div className="space-y-4">
           <label
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
             onDragOver={handleDrag}
             onDrop={handleDrop}
             className={cn(
-              "border-2 border-dashed rounded-lg p-8 flex flex-col items-center justify-center gap-3 transition-colors duration-200 cursor-pointer group",
+              "border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center gap-3 transition-all duration-300 cursor-pointer group",
+              "bg-gray-800/30 backdrop-blur-sm",
               isDragging
-                ? "border-violet-500 bg-violet-50/50"
-                : "border-violet-500/80 hover:border-violet-500 hover:bg-violet-50/10"
+                ? "border-violet-400 bg-violet-500/10"
+                : "border-gray-700/60 hover:border-violet-400/60 hover:bg-violet-500/5"
             )}
           >
             <input
@@ -159,61 +154,60 @@ export function TextImportDialog({
               accept="application/pdf"
               onChange={handleFileInput}
             />
-            <Upload className="w-10 h-10 text-violet-500 group-hover:scale-110 transition-transform duration-200" />
+            <div className="p-2 rounded-full bg-violet-500/20 group-hover:bg-violet-500/30 transition-colors">
+              <Upload className="w-6 h-6 text-violet-400" />
+            </div>
             <div className="text-center">
-              <p className="text-sm font-medium text-foreground">
-                Drop your PDF resume here
-              </p>
-              <p className="text-sm text-muted-foreground">
-                or click to browse files
+              <p className="text-sm font-medium text-white">
+                Drop PDF here or click to browse
               </p>
             </div>
           </label>
+          
           <div className="relative">
-            <div className="absolute -top-3 left-3 bg-white px-2 text-sm text-muted-foreground">
-              Or paste your resume text here
+            <div className="absolute -top-2.5 left-3 bg-gray-900 px-2 text-xs text-violet-400 font-medium">
+              Or paste text here
             </div>
             <Textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Start pasting your resume content here..."
-              className="min-h-[100px] bg-white/50 border-black/40 focus:border-violet-500/40 focus:ring-violet-500/20 transition-all duration-300 pt-4"
+              placeholder="Paste your resume content here..."
+              className={cn(
+                "min-h-[100px] bg-gray-800/50 border-gray-700/60 rounded-lg pt-4",
+                "focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/20 focus:bg-gray-800/70",
+                "hover:border-gray-600/80 hover:bg-gray-800/60",
+                "text-white placeholder:text-gray-500 text-sm",
+                "transition-all duration-300 resize-none"
+              )}
             />
           </div>
         </div>
         {apiKeyError && (
-          <div className="px-4 py-3 bg-red-50/50 border border-red-200/50 rounded-lg flex items-start gap-3 text-red-600 text-sm">
-            <div className="p-1.5 rounded-full bg-red-100">
-              <AlertTriangle className="w-4 h-4 text-red-500" />
-            </div>
+          <div className="px-3 py-2 bg-red-900/20 border border-red-800/40 rounded-lg flex items-start gap-2 text-red-400 text-xs">
+            <AlertTriangle className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
             <div className="flex-1">
-              <p className="font-medium">API Key Required</p>
-              <p className="text-red-500/90">{apiKeyError}</p>
-              <div className="mt-2 flex flex-col gap-2 justify-start">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="text-red-600 border-red-200 hover:bg-red-50/50 w-auto mx-auto"
-                  onClick={() => toast.info("API key management is currently unavailable")}
-                >
-                  Configure API Keys
-                </Button>
-              </div>
+              <p className="font-medium text-red-300">API Key Required</p>
+              <p className="text-red-400/90">{apiKeyError}</p>
             </div>
           </div>
         )}
-        <DialogFooter>
+        <DialogFooter className="gap-2 pt-4">
           <Button
             variant="outline"
             onClick={() => setOpen(false)}
-            className="border-gray-200"
+            className="border-gray-700/60 bg-gray-800/30 text-gray-300 hover:bg-gray-800/50 hover:border-gray-600/80 hover:text-gray-200"
           >
             Cancel
           </Button>
           <Button
             onClick={handleImport}
             disabled={isProcessing || !content.trim()}
-            className="bg-gradient-to-r from-violet-600 to-indigo-600 text-white hover:from-violet-700 hover:to-indigo-700"
+            className={cn(
+              "bg-gradient-to-r from-violet-600 to-indigo-600 text-white",
+              "hover:from-violet-700 hover:to-indigo-700",
+              "disabled:from-gray-700 disabled:to-gray-800 disabled:text-gray-400",
+              "transition-all duration-300"
+            )}
           >
             {isProcessing ? (
               <>
