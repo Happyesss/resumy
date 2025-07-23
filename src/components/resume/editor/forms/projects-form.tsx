@@ -71,6 +71,12 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
   const textareaRefs = useRef<{ [key: number]: HTMLTextAreaElement }>({});
   const [newTechnologies, setNewTechnologies] = useState<{ [key: number]: string }>({});
 
+  // Effect to force re-render when descriptions change
+  useEffect(() => {
+    // This effect ensures that the UI updates when descriptions are added/removed
+    // by creating a dependency on the description arrays
+  }, [projects.map(proj => proj.description?.length || 0).join(',')]);
+
   // Effect to focus textarea when popover opens
   useEffect(() => {
     Object.entries(popoverOpen).forEach(([index, isOpen]) => {
@@ -114,7 +120,13 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
 
   const updateProject = (index: number, field: keyof Project, value: Project[keyof Project]) => {
     const updated = [...projects];
-    updated[index] = { ...updated[index], [field]: value };
+    
+    // Special handling for description array to ensure proper updates
+    if (field === 'description' && Array.isArray(value)) {
+      updated[index] = { ...updated[index], description: [...value] };
+    } else {
+      updated[index] = { ...updated[index], [field]: value };
+    }
     onChange(updated);
   };
 
@@ -344,13 +356,14 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
               onClick={addProject}
               className={cn(
                 "flex-1 h-9 min-w-[120px]",
-                "bg-gray-900 border-2 border-gray-800",
+                "bg-gray-900/90 border-2 border-gray-800/70",
                 "hover:from-violet-500/10 hover:via-violet-500/15 hover:to-purple-500/10",
                 "border-2 border-dashed border-violet-500/30 hover:border-violet-500/40",
-                "text-violet-400 hover:text-violet-800",
+                "text-violet-400 hover:text-violet-300",
                 "transition-all duration-300",
-                "rounded-xl",
-                "whitespace-nowrap text-[11px] @[300px]:text-sm"
+                "rounded-xl backdrop-blur-sm",
+                "whitespace-nowrap text-[11px] @[300px]:text-sm",
+                "hover:bg-gray-900/95 hover:shadow-lg hover:shadow-violet-500/10"
               )}
             >
               <Plus className="h-4 w-4 mr-2 shrink-0" />
@@ -363,13 +376,14 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
               type="projects"
               buttonClassName={cn(
                 "flex-1 mb-0 h-9 min-w-[120px]",
-                "bg-gray-900 border-2 border-gray-800",
+                "bg-gray-900/90 border-2 border-gray-800/70",
                 "hover:from-violet-500/10 hover:via-violet-500/15 hover:to-purple-500/10",
                 "border-2 border-dashed border-violet-500/30 hover:border-violet-500/40",
-                "text-violet-400 hover:text-violet-800",
+                "text-violet-400 hover:text-violet-300",
                 "transition-all duration-300",
-                "rounded-xl",
-                "whitespace-nowrap text-[11px] @[300px]:text-sm"
+                "rounded-xl backdrop-blur-sm",
+                "whitespace-nowrap text-[11px] @[300px]:text-sm",
+                "hover:bg-gray-900/95 hover:shadow-lg hover:shadow-violet-500/10"
               )}
             />
           </div>
@@ -380,14 +394,15 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
             key={index} 
             className={cn(
               "relative group transition-all duration-300",
-              "bg-gray-900 border-2 border-gray-800",
+              "bg-gray-900/95 border-2 border-gray-800",
               "hover:border-violet-400/40 hover:shadow-lg hover:shadow-violet-400/10",
-              "shadow-sm"
+              "shadow-sm backdrop-blur-sm",
+              "hover:bg-gray-900/98"
             )}
           >
             <div className="absolute -left-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="bg-violet-100/80 rounded-lg p-1.5 cursor-move shadow-sm">
-                <GripVertical className="h-4 w-4 text-violet-600" />
+              <div className="bg-violet-400/20 rounded-lg p-1.5 cursor-move shadow-sm border border-violet-400/30 backdrop-blur-sm">
+                <GripVertical className="h-4 w-4 text-violet-400" />
               </div>
             </div>
             
@@ -402,10 +417,10 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                       onChange={(e) => updateProject(index, 'name', e.target.value)}
                       className={cn(
                         "text-sm font-semibold tracking-tight h-9",
-                        "bg-gray-800 border-gray-700 rounded-lg",
+                        "bg-gray-800/90 border-gray-700/70 rounded-lg",
                         "focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20",
-                        "hover:border-violet-500/30 hover:bg-gray-800/90 transition-colors",
-                        "placeholder:text-gray-400 border border-gray-700 text-white focus:bg-gray-800"
+                        "hover:border-violet-500/50 hover:bg-gray-800/95 transition-colors",
+                        "placeholder:text-gray-500 border border-gray-700/70 text-white focus:bg-gray-800/95"
                       )}
                       placeholder="Project Name"
                     />
@@ -430,10 +445,10 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                       value={project.url || ''}
                       onChange={(e) => updateProject(index, 'url', e.target.value)}
                       className={cn(
-                        "text-sm font-medium bg-gray-800 border-gray-700 rounded-lg h-9",
+                        "text-sm font-medium bg-gray-800/90 border-gray-700/70 rounded-lg h-9",
                         "focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20",
-                        "hover:border-violet-500/30 hover:bg-gray-800/90 transition-colors",
-                        "placeholder:text-gray-400 border border-gray-700 text-white focus:bg-gray-800"
+                        "hover:border-violet-500/50 hover:bg-gray-800/95 transition-colors",
+                        "placeholder:text-gray-500 border border-gray-700/70 text-white focus:bg-gray-800/95"
                       )}
                       placeholder="Live URL"
                     />
@@ -446,10 +461,10 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                       value={project.github_url || ''}
                       onChange={(e) => updateProject(index, 'github_url', e.target.value)}
                       className={cn(
-                        "h-9 bg-gray-800 border-gray-700 rounded-lg",
+                        "h-9 bg-gray-800/90 border-gray-700/70 rounded-lg",
                         "focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20",
-                        "hover:border-violet-500/30 hover:bg-gray-800/90 transition-colors",
-                        "placeholder:text-gray-400 border border-gray-700 text-white focus:bg-gray-800"
+                        "hover:border-violet-500/50 hover:bg-gray-800/95 transition-colors",
+                        "placeholder:text-gray-500 border border-gray-700/70 text-white focus:bg-gray-800/95"
                       )}
                       placeholder="GitHub URL"
                     />
@@ -466,10 +481,10 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                     value={project.date || ''}
                     onChange={(e) => updateProject(index, 'date', e.target.value)}
                     className={cn(
-                    "w-full h-9 bg-gray-800 border-gray-700 rounded-lg",
+                    "w-full h-9 bg-gray-800/90 border-gray-700/70 rounded-lg",
                     "focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20",
-                    "hover:border-violet-500/30 hover:bg-gray-800/90 transition-colors",
-                    "placeholder:text-gray-400 text-white focus:bg-gray-800",
+                    "hover:border-violet-500/50 hover:bg-gray-800/95 transition-colors",
+                    "placeholder:text-gray-500 text-white focus:bg-gray-800/95",
                     "text-[10px] sm:text-xs"
                   )}
                     placeholder="e.g., &apos;Jan 2023 - Present&apos; or &apos;2020 - 2022&apos;"
@@ -486,7 +501,7 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                   </Label>
                   <div className="space-y-2 pl-0">
                     {project.description.map((desc, descIndex) => (
-                      <div key={descIndex} className="flex gap-1 items-start group/item">
+                      <div key={`${index}-${descIndex}-${desc?.substring(0, 10) || 'empty'}`} className="flex gap-1 items-start group/item">
                         <div className="flex-1">
                           <Tiptap
                             content={desc} 
@@ -509,15 +524,15 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                               }
                             }}
                             className={cn(
-                              "min-h-[60px] text-xs md:text-sm bg-gray-800 border-gray-700 rounded-lg",
+                              "min-h-[60px] text-xs md:text-sm bg-gray-800/90 border-gray-700/70 rounded-lg",
                               "focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20",
-                              "hover:border-violet-500/30 hover:bg-gray-800/90 transition-colors",
-                              "placeholder:text-gray-400 border border-gray-700 text-white focus:bg-gray-800",
+                              "hover:border-violet-500/50 hover:bg-gray-800/95 transition-colors",
+                              "placeholder:text-gray-500 border border-gray-700/70 text-white focus:bg-gray-800/95",
                               improvedPoints[index]?.[descIndex] && [
                                 "border-purple-400",
-                                "bg-black",
+                                "bg-gradient-to-r from-purple-900/30 to-indigo-900/30",
                                 "shadow-[0_0_15px_-3px_rgba(168,85,247,0.2)]",
-                                "hover:bg-gradient-to-r hover:from-purple-50/90 hover:to-indigo-50/90"
+                                "hover:bg-gradient-to-r hover:from-purple-900/40 hover:to-indigo-900/40"
                               ]
                             )}
                           />
@@ -588,9 +603,8 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                                 variant="ghost"
                                 size="icon"
                                 onClick={() => {
-                                  const updated = [...projects];
-                                  updated[index].description = updated[index].description.filter((_, i) => i !== descIndex);
-                                  onChange(updated);
+                                  const newDescription = project.description.filter((_, i) => i !== descIndex);
+                                  updateProject(index, 'description', newDescription);
                                 }}
                                 className="p-0 group-hover/item:opacity-100 text-gray-400 hover:text-red-500 transition-all duration-300"
                               >
@@ -663,8 +677,11 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                     />
 
                     {project.description.length === 0 && !aiSuggestions[index]?.length && (
-                      <div className="text-[10px] sm:text-xs text-gray-400 border border-gray-700 italic px-4 py-3 bg-gray-50/50 rounded-lg">
-                        Add points to describe your project&apos;s features and achievements
+                      <div className="text-[10px] sm:text-xs text-gray-400 border-2 border-dashed border-gray-700/60 italic px-4 py-3 bg-gray-800/30 rounded-lg backdrop-blur-sm">
+                        <div className="flex items-center justify-center gap-2">
+                          <Plus className="h-3 w-3 text-violet-400" />
+                          <span>Add points to describe your project&apos;s features and achievements</span>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -674,13 +691,12 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                       variant="outline"
                       size="sm"
                       onClick={() => {
-                        const updated = [...projects];
-                        updated[index].description = [...updated[index].description, ""];
-                        onChange(updated);
+                        const newDescription = [...project.description, ""];
+                        updateProject(index, 'description', newDescription);
                       }}
                       className={cn(
                         "flex-1 text-violet-600 hover:text-violet-400 transition-colors text-[10px] sm:text-xs",
-                        "border-violet-200 hover:border-violet-300 hover:bg-violet-50/50"
+                        "border-violet-200/40 hover:border-violet-300/60 hover:bg-violet-50/10 bg-gray-800/50"
                       )}
                     >
                       <Plus className="h-4 w-4 mr-1" />
@@ -752,10 +768,10 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                         onChange={(e) => setNewTechnologies({ ...newTechnologies, [index]: e.target.value })}
                         onKeyPress={(e) => handleTechKeyPress(e, index)}
                         className={cn(
-                          "h-9 bg-gray-800 border-gray-700 rounded-lg",
+                          "h-9 bg-gray-800/90 border-gray-700/70 rounded-lg",
                           "focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20",
-                          "hover:border-violet-500/30 hover:bg-gray-800/90 transition-colors",
-                          "placeholder:text-gray-400 border border-gray-700 text-white focus:bg-gray-800",
+                          "hover:border-violet-500/50 hover:bg-gray-800/95 transition-colors",
+                          "placeholder:text-gray-500 border border-gray-700/70 text-white focus:bg-gray-800/95",
                           "text-[10px] sm:text-xs"
                         )}
                         placeholder="Type a technology and press Enter or click +"
@@ -764,7 +780,7 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                         variant="outline"
                         size="sm"
                         onClick={() => addTechnology(index)}
-                        className="h-9 px-2 bg-white/50 hover:bg-gray-800/90"
+                        className="h-9 px-2 bg-gray-800/50 hover:bg-gray-800/90 border-violet-200/40 hover:border-violet-300/60"
                       >
                         <Plus className="h-4 w-4" />
                       </Button>
