@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { AppHeader } from "@/components/layout/app-header";
+import { Footer } from "@/components/layout/footer";
 import { createClient } from "@/utils/supabase/server";
 import { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react"
@@ -134,13 +135,15 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ClientAppWrapper>
-          <div className="relative min-h-screen h-screen flex flex-col">
+          <div className="relative min-h-screen flex flex-col">
             {user && <AppHeader />}
-            {/* Padding for header and footer */}
-            <main className="pt-16 h-full bg-black">
+            {/* Main content */}
+            <main className={`flex-1 bg-black ${user ? 'pt-16' : ''}`}>
               {children}
               <Analytics />
             </main>
+            {/* Footer for authenticated users */}
+            {user && <Footer />}
           </div>
         </ClientAppWrapper>
       </body>

@@ -86,6 +86,12 @@ function DesktopNavLinks() {
         href="#pricing" 
         className="text-white hover:text-purple-400 hover:bg-gray-800/50 px-3 py-2 rounded-lg transition-all duration-200"
       >
+        Pricing
+      </NavLink>
+      <NavLink 
+        href="#about" 
+        className="text-white hover:text-purple-400 hover:bg-gray-800/50 px-3 py-2 rounded-lg transition-all duration-200"
+      >
         About
       </NavLink>
       <NavLink 
@@ -145,6 +151,13 @@ function MobileNavMenu() {
             </NavLink>
             <NavLink 
               href="#pricing" 
+              className="block text-white hover:text-purple-400 hover:bg-gray-800/50 px-3 py-2 rounded-lg transition-all duration-200"
+              onClick={() => setIsOpen(false)}
+            >
+              Pricing
+            </NavLink>
+            <NavLink 
+              href="#about" 
               className="block text-white hover:text-purple-400 hover:bg-gray-800/50 px-3 py-2 rounded-lg transition-all duration-200"
               onClick={() => setIsOpen(false)}
             >

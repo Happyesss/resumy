@@ -1,8 +1,11 @@
-import FeatureHighlights from "@/components/landing/FeatureHighlights";
 import { Hero } from "@/components/landing/Hero";
 import { VideoShowcase } from "@/components/landing/VideoShowcase";
 import { FreeAnnouncement } from "@/components/landing/FreeAnnouncement";
-import { FAQ } from "@/components/landing/FAQ";
+import { HowItWorks } from "@/components/landing/HowItWorks";
+import FeatureHighlights from "@/components/landing/FeatureHighlights";
+import { Testimonials } from "@/components/landing/Testimonials";
+import { Pricing } from "@/components/landing/Pricing";
+import { Footer } from "@/components/layout/footer";
 import { NavLinks, MobileNavLinks } from "@/components/layout/nav-links";
 import { Logo } from "@/components/ui/logo";
 import { AuthDialog } from "@/components/auth/auth-dialog";
@@ -256,20 +259,30 @@ export default async function Page() {
         <section id="product-demo">
           <VideoShowcase />
         </section>
-        
+
+        {/* How It Works Section */}
+        <HowItWorks />
+
         {/* Feature Highlights Section */}
         <section id="features" aria-labelledby="features-heading">
           <FeatureHighlights />
         </section>
-
         
+        {/* Testimonials Section */}
+        <Testimonials />
+
+        {/* Pricing Section */}
+        <section id="pricing" aria-labelledby="pricing-heading">
+          <Pricing />
+        </section>
+
         {/* About the Project Section */}
-        <section id="pricing" aria-labelledby="about-project-heading">
+        <section id="about" aria-labelledby="about-project-heading">
           <FreeAnnouncement />
         </section>
         
-        {/* FAQ Section */}
-        <FAQ />
+        {/* Footer */}
+        <Footer />
       </main>
     </>
   );

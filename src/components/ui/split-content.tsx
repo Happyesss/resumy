@@ -33,8 +33,6 @@ export function SplitContent({
    
     <div className={cn(
       "relative w-full  overflow-hidden",
-      "before:absolute before:inset-0 before:bg-gradient-to-br before:from-violet-50/80 before:via-blue-50/80 before:to-indigo-50/80 before:opacity-75",
-      "after:absolute after:inset-0 after:bg-[linear-gradient(to_right,#8882_1px,transparent_1px),linear-gradient(to_bottom,#8882_1px,transparent_1px)] after:bg-[size:14px_24px] after:opacity-20 ",
       className
     )}>
       <div className="relative w-full px-4 sm:px-6 lg:px-8">
@@ -51,7 +49,7 @@ export function SplitContent({
             )}>
               {/* Badge if provided */}
               {badgeText && (
-                <div className={`inline-block self-end px-4 py-1 rounded-full bg-gradient-to-r ${badgeGradient} border-purple-200/40 text-purple-700 text-sm font-medium mb-1`}>
+                <div className={`inline-block self-end px-4 py-1 rounded-full bg-gradient-to-r ${badgeGradient} border-purple-400/40 text-purple-300 text-sm font-medium mb-1`}>
                   <div className="flex items-center">
                     <span className="mr-2">{badgeText}</span>
                     <Star className="w-3.5 h-3.5 fill-current" />
@@ -62,7 +60,7 @@ export function SplitContent({
               {/* Enhanced heading with gradient underline */}
               <div className="space-y-2 inline-flex flex-col items-end w-full">
                 <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">
-                  <span className="inline-block bg-gradient-to-r from-violet-600 via-blue-600 to-violet-600 bg-clip-text text-transparent animate-gradient-x pb-2">
+                  <span className="inline-block bg-gradient-to-r from-violet-400 via-blue-400 to-violet-400 bg-clip-text text-transparent animate-gradient-x pb-2">
                     {heading}
                   </span>
                 </h2>
@@ -70,7 +68,7 @@ export function SplitContent({
               </div>
               
               {/* Enhanced description */}
-              <p className="text-xl text-muted-foreground/90 leading-relaxed font-medium">
+              <p className="text-xl text-gray-300 leading-relaxed font-medium">
                 {description}
               </p>
 
@@ -79,8 +77,8 @@ export function SplitContent({
                 <div className="space-y-2 flex flex-col items-end">
                   {bulletPoints.map((point, idx) => (
                     <div key={idx} className="flex items-start gap-2 flex-row-reverse">
-                      <CheckCircle2 className="w-5 h-5 text-purple-700 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm md:text-base text-right">{point}</span>
+                      <CheckCircle2 className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm md:text-base text-right text-gray-300">{point}</span>
                     </div>
                   ))}
                 </div>
@@ -141,7 +139,7 @@ export function SplitContent({
             )}>
               {/* Badge if provided */}
               {badgeText && (
-                <div className={`inline-block px-4 py-1 rounded-full bg-gradient-to-r ${badgeGradient} border-purple-200/40 text-purple-700 text-sm font-medium mb-1`}>
+                <div className={`inline-block px-4 py-1 rounded-full bg-gradient-to-r ${badgeGradient} border-purple-400/40 text-purple-300 text-sm font-medium mb-1`}>
                   <div className="flex items-center">
                     <span className="mr-2">{badgeText}</span>
                     <Star className="w-3.5 h-3.5 fill-current" />
@@ -152,7 +150,7 @@ export function SplitContent({
               {/* Enhanced heading with gradient underline */}
               <div className="space-y-2">
                 <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">
-                  <span className="inline-block bg-gradient-to-r from-violet-600 via-blue-600 to-violet-600 bg-clip-text text-transparent animate-gradient-x pb-2">
+                  <span className="inline-block bg-gradient-to-r from-violet-400 via-blue-400 to-violet-400 bg-clip-text text-transparent animate-gradient-x pb-2">
                     {heading}
                   </span>
                 </h2>
@@ -160,7 +158,7 @@ export function SplitContent({
               </div>
               
               {/* Enhanced description */}
-              <p className="text-xl text-muted-foreground/90 leading-relaxed font-medium">
+              <p className="text-xl text-gray-300 leading-relaxed font-medium">
                 {description}
               </p>
 
@@ -169,8 +167,8 @@ export function SplitContent({
                 <div className="space-y-2">
                   {bulletPoints.map((point, idx) => (
                     <div key={idx} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-purple-700 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm md:text-base">{point}</span>
+                      <CheckCircle2 className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm md:text-base text-gray-300">{point}</span>
                     </div>
                   ))}
                 </div>
