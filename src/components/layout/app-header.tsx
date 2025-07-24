@@ -3,7 +3,7 @@
 import { Logo } from "@/components/ui/logo";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { Menu, User, Sparkles } from "lucide-react";
+import { Menu, User, Sparkles, Layout } from "lucide-react";
 import { PageTitle } from "./page-title";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -66,6 +66,17 @@ export function AppHeader({ children }: AppHeaderProps) {
                   </Link>
                   <div className="mx-1 lg:mx-2 h-4 w-px bg-gray-200/50" />
                   <Link
+                    href="/templates"
+                    className={cn(
+                      "flex items-center gap-1.5 px-2 lg:px-3 py-1 text-indigo-400 hover:text-indigo-300",
+                      "text-sm font-medium transition-colors duration-200"
+                    )}
+                  >
+                    <Layout className="h-4 w-4" />
+                    <span className="hidden lg:inline">Templates</span>
+                  </Link>
+                  <div className="mx-1 lg:mx-2 h-4 w-px bg-gray-200/50" />
+                  <Link
                     href="/profile"
                     className={cn(
                       "flex items-center gap-1.5 px-2 lg:px-3 py-1 text-purple-400 hover:text-purple-300",
@@ -104,6 +115,17 @@ export function AppHeader({ children }: AppHeaderProps) {
                     >
                       <Sparkles className="h-4 w-4" />
                       Analyze Resume
+                    </Link>
+                    <Link
+                      href="/templates"
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        "flex items-center gap-2 px-4 py-2 rounded-md text-indigo-400 hover:text-indigo-300",
+                        "text-sm font-medium transition-colors duration-200"
+                      )}
+                    >
+                      <Layout className="h-4 w-4" />
+                      Templates
                     </Link>
                     <Link
                       href="/profile"

@@ -4,6 +4,7 @@ import { User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { WelcomeDialog } from "@/components/dashboard/welcome-dialog";
+import { TemplateHandler } from "@/components/dashboard/template-handler";
 import { type SortOption, type SortDirection } from "@/components/resume/management/resume-sort-controls";
 import type { Resume } from "@/lib/types";
 import { ResumesSection } from "@/components/dashboard/resumes-section";
@@ -41,6 +42,8 @@ export default async function Home({
 
   const params = await searchParams;
   const isNewSignup = params?.type === 'signup' && params?.token_hash;
+  const shouldCreateBase = params?.createBase === 'true';
+  const templateId = params?.template;
 
   // Fetch dashboard data and handle authentication
   let data;
@@ -126,6 +129,9 @@ export default async function Home({
 
       {/* Welcome Dialog for New Signups */}
       <WelcomeDialog isOpen={!!isNewSignup} />
+      
+      {/* Template Handler for Template-based Resume Creation */}
+      <TemplateHandler profile={profile} />
       <div className="relative z-10">
         <div className="pl-2 sm:pl-0 sm:container sm:max-none  max-w-7xl mx-auto  lg:px-8 md:px-8 sm:px-6 pt-4 ">
           <div className="mb-6 space-y-4">
