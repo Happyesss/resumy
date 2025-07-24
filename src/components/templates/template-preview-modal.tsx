@@ -16,7 +16,7 @@ interface Template {
   category: 'modern' | 'classic' | 'creative' | 'minimal';
   image: string;
   features: string[];
-  premium: boolean;
+
   rating: number;
   downloads: number;
   preview: string;
@@ -65,12 +65,7 @@ export function TemplatePreviewModal({ template, isOpen, onClose }: TemplatePrev
                 <Badge className={cn("text-sm", categoryColors[template.category])}>
                   {template.category}
                 </Badge>
-                {template.premium && (
-                  <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white border-none">
-                    <Sparkles className="h-4 w-4 mr-1" />
-                    Premium
-                  </Badge>
-                )}
+
               </div>
               <p className="text-gray-400 text-sm max-w-2xl">
                 {template.description}

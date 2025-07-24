@@ -28,17 +28,12 @@ export function AppHeader({ children }: AppHeaderProps) {
       <div className="max-w-[2000px] mx-auto h-full px-3 flex items-center justify-between relative">
         {/* Left Section - Logo and Title */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-shrink">
-          {/* Hide logo on mobile except landing page */}
-          <span
-            className={cn(
-              "text-xl flex-shrink-0",
-              !isLanding ? "hidden sm:inline-flex" : ""
-            )}
-          >
+          {/* Always show logo */}
+          <span className="text-xl flex-shrink-0">
             <Logo />
           </span>
           <div className="h-5 w-px bg-gray-200/50 hidden sm:block flex-shrink-0" />
-          <div className="flex items-center min-w-0 max-w-[140px] sm:max-w-[300px] lg:max-w-[600px]">
+          <div className="hidden sm:flex items-center min-w-0 max-w-[140px] sm:max-w-[300px] lg:max-w-[600px]">
             <div className="truncate max-w-[80ch] overflow-hidden text-ellipsis">
               <PageTitle />
             </div>

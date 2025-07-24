@@ -18,7 +18,7 @@ interface Template {
   category: 'modern' | 'classic' | 'creative' | 'minimal';
   image: string;
   features: string[];
-  premium: boolean;
+
   rating: number;
   downloads: number;
   preview: string;
@@ -33,8 +33,8 @@ const templates: Template[] = [
     category: 'minimal',
     image: '/templates/default-preview.png',
     features: ['ATS Optimized', 'Simple Layout', 'Standard Format'],
-    premium: false,
-    rating: 4.5,
+
+    rating: 5.0,
     downloads: 15420,
     preview: '/templates/default-full.png'
   },
@@ -45,7 +45,7 @@ const templates: Template[] = [
     category: 'modern',
     image: '/templates/modern-1-preview.png',
     features: ['Modern Design', 'Color Accents', 'Professional Layout'],
-    premium: false,
+
     rating: 4.8,
     downloads: 12890,
     preview: '/templates/modern-1-full.png'
@@ -57,8 +57,8 @@ const templates: Template[] = [
     category: 'classic',
     image: '/templates/classic-1-preview.png',
     features: ['Traditional Style', 'Executive Format', 'Formal Layout'],
-    premium: false,
-    rating: 4.6,
+
+    rating: 4.95,
     downloads: 9540,
     preview: '/templates/classic-1-full.png'
   },
@@ -69,8 +69,8 @@ const templates: Template[] = [
     category: 'creative',
     image: '/templates/creative-modern-preview.png',
     features: ['Creative Design', 'Bold Colors', 'Unique Layout'],
-    premium: true,
-    rating: 4.9,
+
+    rating: 4.5,
     downloads: 8320,
     preview: '/templates/creative-modern-full.png'
   },
@@ -81,7 +81,7 @@ const templates: Template[] = [
     category: 'minimal',
     image: '/templates/minimal-1-preview.png',
     features: ['Minimal Design', 'Clean Layout', 'White Space'],
-    premium: false,
+
     rating: 4.7,
     downloads: 11200,
     preview: '/templates/minimal-1-full.png'
@@ -93,7 +93,7 @@ const templates: Template[] = [
     category: 'modern',
     image: '/templates/modern-2-preview.png',
     features: ['Tech Style', 'Modern Layout', 'Professional'],
-    premium: true,
+
     rating: 4.8,
     downloads: 7650,
     preview: '/templates/modern-2-full.png'
@@ -105,7 +105,7 @@ const templates: Template[] = [
     category: 'creative',
     image: '/templates/creative-minimal-preview.png',
     features: ['Creative Elements', 'Minimal Style', 'Balanced Design'],
-    premium: false,
+
     rating: 4.6,
     downloads: 6890,
     preview: '/templates/creative-minimal-full.png'
@@ -132,34 +132,46 @@ export function TemplatesGallery() {
 
   return (
     <div className="space-y-6">
-      {/* Header Section */}
-      <div className="text-center space-y-4 py-4 sm:py-8 px-4">
-        <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4">
-          <div className="p-2 sm:p-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl">
-            <Sparkles className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
-          </div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
-            Resume Templates
-          </h1>
-        </div>
-        <p className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-3xl mx-auto">
-          Browse our collection of professionally designed resume templates. 
-          Each template is ATS-optimized and ready to help you land your dream job.
-        </p>
-        
-        {/* Stats */}
-        <div className="flex flex-row items-center justify-center gap-3 sm:gap-8 text-xs sm:text-sm text-gray-500 mt-6 flex-wrap">
-          <div className="flex items-center gap-1 sm:gap-2">
-            <Star className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-400" />
-            <span className="whitespace-nowrap">4.7 rating</span>
-          </div>
-          <div className="flex items-center gap-1 sm:gap-2">
-            <Download className="h-3 w-3 sm:h-4 sm:w-4 text-green-400" />
-            <span className="whitespace-nowrap">50K+ downloads</span>
-          </div>
-          <div className="flex items-center gap-1 sm:gap-2">
-            <Eye className="h-3 w-3 sm:h-4 sm:w-4 text-blue-400" />
-            <span className="whitespace-nowrap">Free previews</span>
+      {/* Header Section - Liquid Glassy Design */}
+      <div className="flex justify-center py-6">
+  <div className="relative backdrop-blur-lg bg-black/40 rounded-2xl p-4 sm:p-5 lg:p-6 shadow-xl w-full max-w-2xl mx-auto overflow-hidden">
+          {/* Liquid morphing background elements (smaller) */}
+          <div className="absolute top-0 left-0 w-16 h-16 bg-gradient-to-br from-purple-800/30 to-pink-800/20 rounded-full blur-xl animate-pulse" />
+          <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-900/20 to-purple-900/20 rounded-full blur-xl animate-pulse delay-1000" />
+          <div className="absolute top-1/2 left-1/4 w-12 h-12 bg-gradient-to-br from-pink-900/15 to-blue-900/15 rounded-full blur-lg animate-pulse delay-500" />
+          <div className="relative text-center space-y-3">
+            <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-800 to-pink-800 rounded-xl blur-md opacity-60 animate-pulse" />
+                <div className="relative p-2 sm:p-2.5 bg-gradient-to-r from-purple-800 to-pink-800 rounded-xl backdrop-blur-sm">
+                  <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-white drop-shadow" />
+                </div>
+              </div>
+              <h1 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent drop-shadow">
+                Resume Templates
+              </h1>
+            </div>
+            <div className="relative">
+              <p className="text-gray-200 text-xs sm:text-sm lg:text-base max-w-2xl mx-auto leading-normal drop-shadow">
+                Browse our collection of professionally designed resume templates. 
+                Each template is ATS-optimized and ready to help you land your dream job.
+              </p>
+            </div>
+            {/* Stats with glassy cards (smaller) */}
+            <div className="flex flex-row items-center justify-center gap-2 sm:gap-4 mt-4 flex-wrap">
+              <div className="backdrop-blur-sm bg-black/30 border border-white/10 rounded-xl px-2.5 py-1.5 flex items-center gap-1.5 hover:bg-black/40 transition-all duration-300">
+                <Star className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-400 drop-shadow" />
+                <span className="text-white/80 text-xs sm:text-sm font-medium whitespace-nowrap">4.7 rating</span>
+              </div>
+              <div className="backdrop-blur-sm bg-black/30 border border-white/10 rounded-xl px-2.5 py-1.5 flex items-center gap-1.5 hover:bg-black/40 transition-all duration-300">
+                <Download className="h-3 w-3 sm:h-4 sm:w-4 text-green-400 drop-shadow" />
+                <span className="text-white/80 text-xs sm:text-sm font-medium whitespace-nowrap">50K+ downloads</span>
+              </div>
+              <div className="backdrop-blur-sm bg-black/30 border border-white/10 rounded-xl px-2.5 py-1.5 flex items-center gap-1.5 hover:bg-black/40 transition-all duration-300">
+                <Eye className="h-3 w-3 sm:h-4 sm:w-4 text-blue-400 drop-shadow" />
+                <span className="text-white/80 text-xs sm:text-sm font-medium whitespace-nowrap">Free previews</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

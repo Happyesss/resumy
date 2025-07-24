@@ -15,7 +15,7 @@ interface Template {
   category: 'modern' | 'classic' | 'creative' | 'minimal';
   image: string;
   features: string[];
-  premium: boolean;
+
   rating: number;
   downloads: number;
   preview: string;
@@ -62,16 +62,7 @@ export function TemplateCard({ template, onPreview }: TemplateCardProps) {
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
             />
           </div>
-          
-          {/* Premium Badge */}
-          {template.premium && (
-            <div className="absolute top-2 sm:top-3 left-2 sm:left-3">
-              <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white border-none text-xs">
-                <Sparkles className="h-3 w-3 mr-1" />
-                Premium
-              </Badge>
-            </div>
-          )}
+          {/* ...removed premium badge... */}
 
           {/* Rating */}
           <div className="absolute top-2 sm:top-3 right-2 sm:right-3">
