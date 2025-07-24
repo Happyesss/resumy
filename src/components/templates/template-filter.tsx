@@ -88,42 +88,45 @@ export function TemplateFilter({ categories, selectedCategory, onCategoryChange 
         })}
       </div>
 
-      {/* Mobile - Vertical */}
-      <div className="md:hidden space-y-2">
-        {categories.map((category) => {
-          const Icon = categoryIcons[category.id as keyof typeof categoryIcons];
-          const isSelected = selectedCategory === category.id;
-          
-          return (
-            <Button
-              key={category.id}
-              onClick={() => onCategoryChange(category.id)}
-              variant="outline"
-              className={cn(
-                "w-full justify-start transition-all duration-200 border border-gray-600 bg-gray-800/50",
-                isSelected 
-                  ? selectedColors[category.id as keyof typeof selectedColors]
-                  : cn(
-                      "text-gray-300 hover:bg-gray-700",
-                      categoryColors[category.id as keyof typeof categoryColors]
-                    )
-              )}
-            >
-              <Icon className="h-4 w-4 mr-2" />
-              {category.name}
-              <Badge 
+      {/* Mobile - Compact Horizontal */}
+      <div className="md:hidden">
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
+          {categories.map((category) => {
+            const Icon = categoryIcons[category.id as keyof typeof categoryIcons];
+            const isSelected = selectedCategory === category.id;
+            
+            return (
+              <Button
+                key={category.id}
+                onClick={() => onCategoryChange(category.id)}
+                variant="outline"
+                size="sm"
                 className={cn(
-                  "ml-auto text-xs",
+                  "flex-shrink-0 transition-all duration-200 border border-gray-600 bg-gray-800/50 text-xs px-2 py-1 h-8",
                   isSelected 
-                    ? "bg-white/20 text-current" 
-                    : "bg-gray-700 text-gray-400"
+                    ? selectedColors[category.id as keyof typeof selectedColors]
+                    : cn(
+                        "text-gray-300 hover:bg-gray-700",
+                        categoryColors[category.id as keyof typeof categoryColors]
+                      )
                 )}
               >
-                {category.count}
-              </Badge>
-            </Button>
-          );
-        })}
+                <Icon className="h-3 w-3 mr-1" />
+                <span className="whitespace-nowrap">{category.name}</span>
+                <Badge 
+                  className={cn(
+                    "ml-1 text-xs px-1 py-0 h-4 min-w-[16px] flex items-center justify-center",
+                    isSelected 
+                      ? "bg-white/20 text-current" 
+                      : "bg-gray-700 text-gray-400"
+                  )}
+                >
+                  {category.count}
+                </Badge>
+              </Button>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

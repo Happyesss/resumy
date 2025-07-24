@@ -98,26 +98,26 @@ export function TemplateCard({ template, onPreview }: TemplateCardProps) {
         </div>
 
         {/* Content */}
-        <div className="p-3 sm:p-4">
-          <div className="flex items-start justify-between mb-2">
-            <h3 className="font-semibold text-white group-hover:text-purple-300 transition-colors line-clamp-1 text-sm sm:text-base">
+        <div className="p-2 sm:p-4">
+          <div className="flex items-start justify-between gap-2 mb-2">
+            <h3 className="font-semibold text-white group-hover:text-purple-300 transition-colors line-clamp-1 text-sm sm:text-base min-w-0 flex-1">
               {template.name}
             </h3>
-            <Badge className={cn("text-xs ml-2 flex-shrink-0", categoryColors[template.category])}>
+            <Badge className={cn("text-xs flex-shrink-0", categoryColors[template.category])}>
               {template.category}
             </Badge>
           </div>
           
-          <p className="text-gray-400 text-xs sm:text-sm mb-3 line-clamp-2">
+          <p className="text-gray-400 text-xs sm:text-sm mb-2 sm:mb-3 line-clamp-2">
             {template.description}
           </p>
 
           {/* Features */}
-          <div className="flex flex-wrap gap-1 mb-3">
+          <div className="flex flex-wrap gap-1 mb-2 sm:mb-3">
             {template.features.slice(0, 2).map((feature, index) => (
               <span
                 key={index}
-                className="px-2 py-1 bg-gray-800 text-gray-300 text-xs rounded border border-gray-700"
+                className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-gray-800 text-gray-300 text-xs rounded border border-gray-700"
               >
                 {feature}
               </span>
@@ -125,16 +125,18 @@ export function TemplateCard({ template, onPreview }: TemplateCardProps) {
           </div>
 
           {/* Stats & Actions */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1 text-xs text-gray-500">
-              <Users className="h-3 w-3" />
-              <span className="hidden sm:inline">{formatNumber(template.downloads)} downloads</span>
-              <span className="sm:hidden">{formatNumber(template.downloads)}</span>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1 text-xs text-gray-500 min-w-0">
+              <Users className="h-3 w-3 flex-shrink-0" />
+              <span className="truncate">
+                <span className="hidden sm:inline">{formatNumber(template.downloads)} downloads</span>
+                <span className="sm:hidden">{formatNumber(template.downloads)}</span>
+              </span>
             </div>
             <Button 
               onClick={onUseTemplate}
               size="sm"
-              className="bg-purple-600 hover:bg-purple-700 text-white text-xs h-7 px-2 sm:px-3"
+              className="bg-purple-600 hover:bg-purple-700 text-white text-xs h-7 px-2 sm:px-3 flex-shrink-0"
             >
               <span className="hidden sm:inline">Use Template</span>
               <span className="sm:hidden">Use</span>

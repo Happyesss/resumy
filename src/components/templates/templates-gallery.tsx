@@ -148,18 +148,18 @@ export function TemplatesGallery() {
         </p>
         
         {/* Stats */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-xs sm:text-sm text-gray-500 mt-6">
-          <div className="flex items-center gap-2">
-            <Star className="h-4 w-4 text-yellow-400" />
-            <span>4.7 average rating</span>
+        <div className="flex flex-row items-center justify-center gap-3 sm:gap-8 text-xs sm:text-sm text-gray-500 mt-6 flex-wrap">
+          <div className="flex items-center gap-1 sm:gap-2">
+            <Star className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-400" />
+            <span className="whitespace-nowrap">4.7 rating</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Download className="h-4 w-4 text-green-400" />
-            <span>50K+ downloads</span>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <Download className="h-3 w-3 sm:h-4 sm:w-4 text-green-400" />
+            <span className="whitespace-nowrap">50K+ downloads</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Eye className="h-4 w-4 text-blue-400" />
-            <span>Free previews</span>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <Eye className="h-3 w-3 sm:h-4 sm:w-4 text-blue-400" />
+            <span className="whitespace-nowrap">Free previews</span>
           </div>
         </div>
       </div>
