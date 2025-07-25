@@ -142,8 +142,6 @@ export default async function RootLayout({
               {children}
               <Analytics />
             </main>
-            {/* Footer for authenticated users */}
-            {user && <Footer />}
           </div>
         </ClientAppWrapper>
       </body>

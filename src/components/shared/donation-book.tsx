@@ -160,34 +160,34 @@ export function DonationBook({ className }: DonationBookProps) {
               </button>
 
               {/* Book Content */}
-              <div className="p-6 sm:p-8 md:p-10">
+              <div className="p-3 sm:p-4 md:p-6">
                 {/* Header */}
-                <div className="text-center mb-6 sm:mb-8">
-                  <div className="inline-flex items-center gap-3 mb-4">
-                    <div className="p-3 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full">
+                <div className="text-center mb-4 sm:mb-6">
+                  <div className="inline-flex items-center gap-2 mb-2">
+                    <div className="p-2 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full">
                       <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                     </div>
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800">
                       Support Resumy
                     </h2>
                   </div>
-                  <div className="w-24 sm:w-32 h-1 bg-gradient-to-r from-amber-500 to-orange-500 mx-auto rounded-full"></div>
+                  <div className="w-16 sm:w-24 h-0.5 bg-gradient-to-r from-amber-500 to-orange-500 mx-auto rounded-full"></div>
                 </div>
 
                 {/* Main Content */}
-                <div className="space-y-6 text-gray-700">
+                <div className="space-y-4 text-gray-700">
                   <div className="text-center">
-                    <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-800 leading-relaxed">
+                    <h3 className="text-base sm:text-lg font-semibold mb-2 text-gray-800 leading-relaxed">
                       Help Us Keep Resumy Free Forever
                     </h3>
-                    <p className="text-sm sm:text-base leading-relaxed text-gray-600 max-w-lg mx-auto">
+                    <p className="text-xs sm:text-sm leading-relaxed text-gray-600 max-w-xs mx-auto">
                       Resumy is a passion project built to help job seekers worldwide create 
                       professional resumes without barriers. Your support helps us:
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div className="flex items-start gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="flex items-start gap-2">
                       <div className="p-2 bg-amber-100 rounded-lg shrink-0 mt-1">
                         <Star className="h-4 w-4 text-amber-600" />
                       </div>
@@ -199,7 +199,7 @@ export function DonationBook({ className }: DonationBookProps) {
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-3">
+                    <div className="flex items-start gap-2">
                       <div className="p-2 bg-orange-100 rounded-lg shrink-0 mt-1">
                         <Coffee className="h-4 w-4 text-orange-600" />
                       </div>
@@ -211,7 +211,7 @@ export function DonationBook({ className }: DonationBookProps) {
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-3">
+                    <div className="flex items-start gap-2">
                       <div className="p-2 bg-yellow-100 rounded-lg shrink-0 mt-1">
                         <Gift className="h-4 w-4 text-yellow-600" />
                       </div>
@@ -223,7 +223,7 @@ export function DonationBook({ className }: DonationBookProps) {
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-3">
+                    <div className="flex items-start gap-2">
                       <div className="p-2 bg-red-100 rounded-lg shrink-0 mt-1">
                         <Heart className="h-4 w-4 text-red-600" />
                       </div>
@@ -236,13 +236,13 @@ export function DonationBook({ className }: DonationBookProps) {
                     </div>
                   </div>
 
-                  <div className="text-center pt-4">
-                    <p className="text-xs sm:text-sm text-gray-600 mb-6 leading-relaxed max-w-md mx-auto">
+                  <div className="text-center pt-2">
+                    <p className="text-xs sm:text-xs text-gray-600 mb-4 leading-relaxed max-w-xs mx-auto">
                       Every contribution, no matter how small, makes a huge difference. 
                       Thank you for believing in our mission! ❤️
                     </p>
 
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-sm mx-auto">
+                    <div className="flex flex-col sm:flex-row gap-2 justify-center max-w-xs mx-auto">
                       <Link 
                         href="https://coff.ee/resumy" 
                         target="_blank" 
@@ -250,27 +250,11 @@ export function DonationBook({ className }: DonationBookProps) {
                         className="order-2 sm:order-1"
                       >
                         <Button 
-                          size="lg"
-                          className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200 px-8 py-3"
+                          size="sm"
+                          className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200 px-6 py-2"
                         >
-                          <Coffee className="h-5 w-5 mr-2" />
-                          <span className="font-semibold">Buy me a coffee</span>
-                        </Button>
-                      </Link>
-
-                      <Link 
-                        href="https://coff.ee/resumy" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="order-1 sm:order-2"
-                      >
-                        <Button 
-                          variant="outline"
-                          size="lg"
-                          className="w-full border-amber-300 text-amber-700 hover:bg-amber-50 transition-all duration-200 px-8 py-3"
-                        >
-                          <Gift className="h-5 w-5 mr-2" />
-                          <span className="font-semibold">Donate</span>
+                          <Coffee className="h-4 w-4 mr-2" />
+                          <span className="font-semibold text-sm">Buy me a coffee</span>
                         </Button>
                       </Link>
                     </div>
