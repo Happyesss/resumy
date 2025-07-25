@@ -28,7 +28,7 @@ const steps = [
     icon: <Upload className="h-8 w-8" />,
     title: "Upload Your Info",
     description: "Start with your existing resume or enter your details manually. Our AI will analyze and optimize your content.",
-    features: ["Smart content parsing", "Auto-fill from LinkedIn", "Multiple input formats"],
+    features: ["Smart content parsing", "Auto-fill from Resume"],
     color: "from-blue-600 to-cyan-600",
     iconBg: "bg-blue-500/20",
     number: "01"
@@ -37,7 +37,7 @@ const steps = [
     icon: <Bot className="h-8 w-8" />,
     title: "AI Optimization",
     description: "Our advanced AI reviews your content, suggests improvements, and optimizes for ATS systems.",
-    features: ["Keyword optimization", "Industry-specific tips", "ATS compatibility check"],
+    features: ["Keyword optimization", "ATS compatibility check"],
     color: "from-purple-600 to-pink-600",
     iconBg: "bg-purple-500/20",
     number: "02"
@@ -46,7 +46,7 @@ const steps = [
     icon: <FileText className="h-8 w-8" />,
     title: "Choose Template",
     description: "Select from our collection of professional templates designed by industry experts.",
-    features: ["20+ modern designs", "Industry-specific layouts", "Mobile-responsive"],
+    features: ["Modern designs", "Industry-specific layouts", "Mobile-responsive"],
     color: "from-green-600 to-emerald-600",
     iconBg: "bg-green-500/20",
     number: "03"

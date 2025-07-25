@@ -106,7 +106,7 @@ export function VideoShowcase() {
               {/* Controls overlay - bottom */}
               <div className="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 bg-gradient-to-t from-black/80 to-transparent">
                 <div className="text-sm bg-purple-900/80 text-purple-100 px-3 py-1 rounded-full border border-purple-700/50 backdrop-blur-sm">
-                  ResumeLM Demo
+                  Resumy Demo
                 </div>
                 <button
                   onClick={(e) => {
