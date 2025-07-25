@@ -55,16 +55,39 @@ export function Hero() {
           <div className="space-y-6 mt-10">
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
               <AuthDialog>
-                <button className="hidden sm:flex group relative px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-blue-500/25 transition-all duration-200 items-center">
+                <button className="flex group relative px-4 py-2 sm:px-6 sm:py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-blue-500/25 transition-all duration-200 items-center text-sm sm:text-base">
                   <Brain className="mr-2 w-4 h-4" />
                   Start Creating Now
                   <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </button>
               </AuthDialog>
 
-              <button className="px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-semibold rounded-lg border border-white/20 backdrop-blur-sm transition-all duration-200 flex items-center">
+              {/* Desktop/tablet Explore Features button */}
+              <button
+                className="hidden sm:flex px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-semibold rounded-lg border border-white/20 backdrop-blur-sm transition-all duration-200 items-center"
+                onClick={() => {
+                  const el = document.getElementById("features");
+                  if (el) {
+                    el.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+              >
                 <Sparkles className="mr-2 w-4 h-4 text-gray-400" />
-                Explore Templates
+                Explore Features
+              </button>
+
+              {/* Mobile Explore Features button */}
+              <button
+                className="flex sm:hidden px-4 py-2 bg-white/5 hover:bg-white/10 text-white font-semibold rounded-lg border border-white/20 backdrop-blur-sm transition-all duration-200 items-center text-sm"
+                onClick={() => {
+                  const el = document.getElementById("features");
+                  if (el) {
+                    el.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+              >
+                <Sparkles className="mr-2 w-4 h-4 text-gray-400" />
+                Explore Features
               </button>
             </div>
 

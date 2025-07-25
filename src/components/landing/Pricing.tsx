@@ -42,16 +42,16 @@ const plans = [
     period: "forever",
     description: "Everything you need, completely free",
     features: [
-      { name: "20+ Professional templates", included: true },
-      { name: "PDF & Word export", included: true },
+      { name: "Professional templates", included: true },
+      { name: "PDF export support", included: true },
       { name: "Advanced AI optimization", included: true },
       { name: "ATS compatibility check", included: true },
       { name: "Smart content suggestions", included: true },
-      { name: "Unlimited resume creation", included: true },
+      { name: "10 resume creation", included: true },
       { name: "All template designs", included: true },
       { name: "Cover letter generator", included: true },
-      { name: "Real-time preview", included: true },
-      { name: "Community support", included: true }
+      { name: "Cold Mail generator", included: true },
+      { name: "Real-time preview", included: true }
     ],
     popular: true,
     cta: "Get Started Free",

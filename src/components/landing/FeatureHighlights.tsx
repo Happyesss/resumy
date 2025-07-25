@@ -31,11 +31,9 @@ const FeatureHighlights = () => {
   };
 
   return (
-    <section className=" pb-24 md:pb-32 px-4 sm:px-6 relative overflow-hidden bg-black">
-    
-      
+    <section className="pb-12 md:pb-16 px-4 sm:px-6 relative overflow-hidden bg-black">
       {/* Enhanced Features Section with improved card styling */}
-      <div className="flex flex-col gap-24 py-24 relative" id="features">
+      <div className="flex flex-col gap-20 py-16 relative" id="features">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/30 to-transparent"></div>
             
             <SplitContent
