@@ -26,7 +26,6 @@ interface KeywordAnalysis {
   suggestions: string[];
 }
 
-
 export default function AnalyzeResumePage() {
   const [resumeText, setResumeText] = useState("");
   const [resumeFile, setResumeFile] = useState<File | null>(null);
@@ -48,15 +47,7 @@ export default function AnalyzeResumePage() {
     
     checkAuth();
   }, []);
-  
-  // Test API Keys function
 
-
-  /**
-   * Enhanced analyze function using the redesigned analyzeResumeFull action
-   * Provides comprehensive analysis with ATS diagnostics and detailed scoring
-   * Includes 4-second delay to avoid rate limiting and improve user experience
-   */
   const handleAnalyze = async () => {
     if (!resumeText.trim()) {
       setError("Please enter your resume content");
@@ -88,19 +79,17 @@ export default function AnalyzeResumePage() {
         });
       }, 1000);
 
-      // Wait for 4 seconds before making the request
       await new Promise(resolve => setTimeout(resolve, 4000));
 
       // Single comprehensive analysis request with enhanced features
       const analysisResult = await analyzeResumeFull(resumeText, {
         model: "gemini-2.5-flash-lite",
-        atsEnhanced: true, // Enable advanced ATS diagnostics
-        targetRole: "General", // Could be made dynamic based on user input
+        atsEnhanced: true,
+        targetRole: "General",
         includeDetailedFeedback: true,
-        apiKeys: [], // API keys handled by server-side configuration
+        apiKeys: [],
       });
 
-      // Extract score and keyword analysis from the comprehensive result
       setScoreData(analysisResult.score);
       setKeywordAnalysis(analysisResult.keywordAnalysis);
 
@@ -133,14 +122,13 @@ export default function AnalyzeResumePage() {
       {/* For authenticated users, AppHeader is already shown by layout.tsx */}
       {isAuthenticated === false && <AnalyzeNavbar />}
 
-      {/* Main Content with top padding for fixed navbar */}
-      <div className="pt-16">
+      <div className="pt-28">
 
         
         {!scoreData ? (
           /* Upload Form - Split layout with preview */
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
               {/* Left Side - Compact Upload Form */}
               <div className="space-y-6">
                 <UploadForm
@@ -156,7 +144,7 @@ export default function AnalyzeResumePage() {
               </div>
 
               {/* Right Side - Resume Preview Component */}
-              <div className="space-y-6">
+              <div className="space-y-6 mt-8 lg:mt-0">
                 {/* Pass current text so preview updates live */}
                 <ResumePreviewCard resumeText={resumeText} />
               </div>

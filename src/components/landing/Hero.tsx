@@ -27,7 +27,7 @@ export function Hero() {
         cy={1.5}
         cr={1.5}
       />
-      <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 py-16">
+      <div className="relative mt-20 z-10 max-w-6xl mx-auto px-6 lg:px-8 py-16">
         {/* Hero Content */}
         <div className="text-center space-y-10">
           {/* Main Headline */}
