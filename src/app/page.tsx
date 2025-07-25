@@ -3,6 +3,7 @@ import { VideoShowcase } from "@/components/landing/VideoShowcase";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import FeatureHighlights from "@/components/landing/FeatureHighlights";
 import { Testimonials } from "@/components/landing/Testimonials";
+import { About } from "@/components/landing/About";
 import { Pricing } from "@/components/landing/Pricing";
 import { Footer } from "@/components/layout/footer";
 import { NavLinks, MobileNavLinks } from "@/components/layout/nav-links";
@@ -269,6 +270,9 @@ export default async function Page() {
         
         {/* Testimonials Section */}
         <Testimonials />
+
+        {/* About Section */}
+        <About />
 
         {/* Pricing Section */}
         <section id="pricing" aria-labelledby="pricing-heading">

@@ -8,15 +8,6 @@ import { SplitContent } from '../ui/split-content';
 import { AuthDialog } from "@/components/auth/auth-dialog";
 
 const FeatureHighlights = () => {
-  // Enhanced features with metrics, testimonials, and benefit-focused language
-
-  console.log("FeatureHighlights component is rendering");
-
-
-
-
-
-  // Animation variants for scroll reveal
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {

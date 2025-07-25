@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { BuyMeCoffee } from "@/components/shared/buy-me-coffee";
+import { DonationBook } from "@/components/shared/donation-book";
 import { 
   Github, 
   Twitter, 
@@ -66,15 +68,6 @@ export function Footer() {
         { name: "FAQ", href: "#faq", icon: <HelpCircle className="h-4 w-4" /> },
         { name: "Career Tips", href: "/blog", icon: <Star className="h-4 w-4" /> },
         { name: "Resume Examples", href: "/examples", icon: <Layout className="h-4 w-4" /> },
-      ]
-    },
-    {
-      title: "Account",
-      links: [
-        { name: "Sign Up", href: "/auth/signup", icon: <User className="h-4 w-4" /> },
-        { name: "Login", href: "/auth/login", icon: <User className="h-4 w-4" /> },
-        { name: "Profile", href: "/profile", icon: <User className="h-4 w-4" /> },
-        { name: "My Resumes", href: "/resumes", icon: <FileText className="h-4 w-4" /> },
       ]
     }
   ];
@@ -170,7 +163,7 @@ export function Footer() {
 
         {/* Main Footer Content */}
         <div className="py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-6 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-7 gap-8">
             {/* Brand Section */}
             <div className="lg:col-span-2">
               <Link href="/" className="flex items-center gap-2 mb-6">
@@ -199,37 +192,45 @@ export function Footer() {
             </div>
 
             {/* Navigation Sections */}
-            {footerSections.map((section) => (
-              <div key={section.title} className="lg:col-span-1">
-                <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
-                  {section.title}
-                </h4>
-                <ul className="space-y-3">
-                  {section.links.map((link) => (
-                    <li key={link.name}>
-                      <Link
-                        href={link.href}
-                        className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors duration-200 text-sm group"
-                      >
-                        <span className="text-gray-600 group-hover:text-purple-400 transition-colors">
-                          {link.icon}
-                        </span>
-                        {link.name}
-                        {link.href.startsWith('http') && (
-                          <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        )}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            <div className="lg:col-span-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+              {footerSections.map((section) => (
+                <div key={section.title}>
+                  <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
+                    {section.title}
+                  </h4>
+                  <ul className="space-y-3">
+                    {section.links.map((link) => (
+                      <li key={link.name}>
+                        <Link
+                          href={link.href}
+                          className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors duration-200 text-sm group"
+                        >
+                          <span className="text-gray-600 group-hover:text-purple-400 transition-colors">
+                            {link.icon}
+                          </span>
+                          {link.name}
+                          {link.href.startsWith('http') && (
+                            <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          )}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+
+            {/* Donation Book Section */}
+            <div className="lg:col-span-1 flex justify-center lg:justify-end">
+              <DonationBook />
+            </div>
           </div>
         </div>
 
         {/* Bottom Section */}
         <div className="py-6 border-t border-gray-800">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+            {/* Left Side - Copyright and Links */}
             <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-gray-400">
               <p>© {new Date().getFullYear()} Resumy. All rights reserved.</p>
               <div className="flex items-center gap-4">
@@ -245,6 +246,7 @@ export function Footer() {
               </div>
             </div>
             
+            {/* Center - Made with Love */}
             <div className="flex items-center gap-2 text-sm text-gray-400">
               <span>Made with</span>
               <Heart className="h-4 w-4 text-red-500 fill-current" />
