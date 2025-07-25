@@ -1,6 +1,5 @@
 import { Hero } from "@/components/landing/Hero";
 import { VideoShowcase } from "@/components/landing/VideoShowcase";
-import { FreeAnnouncement } from "@/components/landing/FreeAnnouncement";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import FeatureHighlights from "@/components/landing/FeatureHighlights";
 import { Testimonials } from "@/components/landing/Testimonials";
@@ -274,11 +273,6 @@ export default async function Page() {
         {/* Pricing Section */}
         <section id="pricing" aria-labelledby="pricing-heading">
           <Pricing />
-        </section>
-
-        {/* About the Project Section */}
-        <section id="about" aria-labelledby="about-project-heading">
-          <FreeAnnouncement />
         </section>
         
         {/* Footer */}
