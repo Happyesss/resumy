@@ -183,10 +183,14 @@ export function ProfileEducationForm({ education, onChange }: ProfileEducationFo
                     <span className="text-[9px] text-gray-500">One achievement per line</span>
                   </div>
                   <Textarea
-                    value={edu.achievements?.join('\n')}
-                    onChange={(e) => updateEducation(index, 'achievements', 
-                      e.target.value.split('\n').filter(Boolean)
-                    )}
+                    value={edu.achievements?.join('\n') || ''}
+                    onChange={(e) => {
+                      // Split on newlines but preserve empty lines for proper formatting
+                      const lines = e.target.value.split('\n');
+                      // Only filter out completely empty achievements at the end
+                      const achievements = lines.length === 1 && lines[0] === '' ? [] : lines;
+                      updateEducation(index, 'achievements', achievements);
+                    }}
                     placeholder="• Dean's List 2020-2021&#10;• President of Computer Science Club&#10;• First Place in Hackathon 2022"
                     className="min-h-[100px] bg-gray-800 border-gray-700 rounded-md
                       focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800

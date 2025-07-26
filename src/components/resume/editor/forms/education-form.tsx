@@ -264,13 +264,13 @@ export const EducationForm = memo(function EducationFormComponent({
                   <span className="text-[8px] sm:text-[10px] text-gray-400">One achievement per line</span>
                 </div>
                 <Tiptap
-                  content={(edu.achievements || []).map(achievement => achievement.trim()).join('\n\n') || ''}
+                  content={(edu.achievements || []).join('\n\n') || ''}
                   onChange={(newContent) => {
-                    // Process the content to extract each paragraph as a separate achievement
+                    // Process the content into achievements array
                     const achievements = newContent
-                      .split(/\n+/)
-                      .map(line => line.trim())
-                      .filter(line => line.trim() !== ''); // Remove empty lines
+                      .split(/\n\s*\n/) // Split on double newlines
+                      .map(line => line.replace(/\n/g, ' ').trim()) // Replace single newlines with spaces
+                      .filter(line => line.length > 0); // Remove empty lines
                     
                     updateEducation(index, 'achievements', achievements);
                   }}
