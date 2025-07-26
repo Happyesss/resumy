@@ -28,7 +28,7 @@ const parseMarkdownText = (text: string) => {
 const creativeMinimalStyles = StyleSheet.create({
   page: {
     fontFamily: 'Helvetica',
-    fontSize: 8, // further reduced base font
+    fontSize: 10, // increased base font for ATS
     paddingTop: 20,
     paddingBottom: 20,
     paddingHorizontal: 20,
@@ -53,7 +53,7 @@ const creativeMinimalStyles = StyleSheet.create({
     alignItems: 'center',
   },
   name: {
-    fontSize: 22, // smaller name
+    fontSize: 22, // header name remains
     color: '#111827',
     marginBottom: 20, // increased space below name
     textAlign: 'center',
@@ -84,7 +84,7 @@ const creativeMinimalStyles = StyleSheet.create({
     marginRight: 5,
   },
   contactText: {
-    fontSize: 8,
+    fontSize: 10,
     color: '#6b7280', // Gray-500
   },
   // Layout styles
@@ -107,7 +107,7 @@ const creativeMinimalStyles = StyleSheet.create({
     marginBottom: 10,
   },
   sectionTitle: {
-    fontSize: 11,
+    fontSize: 12,
     fontFamily: 'Helvetica',
     fontWeight: 300,
     color: '#111827',
@@ -127,7 +127,7 @@ const creativeMinimalStyles = StyleSheet.create({
     marginBottom: 10,
   },
   skillCategoryTitle: {
-    fontSize: 8,
+    fontSize: 9,
     fontFamily: 'Helvetica-Bold',
     color: '#374151', // Gray-800
     textTransform: 'uppercase',
@@ -182,7 +182,7 @@ const creativeMinimalStyles = StyleSheet.create({
     paddingTop: 2,
     paddingBottom: 2,
     borderRadius: 15,
-    fontSize: 7,
+    fontSize: 9,
     fontFamily: 'Helvetica-Bold',
     textAlign: 'center',
     marginBottom: 4,
@@ -197,28 +197,28 @@ const creativeMinimalStyles = StyleSheet.create({
     marginBottom: 10,
   },
   educationSchool: {
-    fontSize: 9,
+    fontSize: 10,
     fontFamily: 'Helvetica-Bold',
     color: '#111827',
     marginBottom: 1,
   },
   educationDegree: {
-    fontSize: 8,
+    fontSize: 10,
     color: '#10b981', // Teal-600
     fontFamily: 'Helvetica-Bold',
     marginBottom: 1,
   },
   educationDate: {
-    fontSize: 7,
+    fontSize: 9,
     color: '#6b7280', // Gray-500
     marginBottom: 1,
   },
   educationLocation: {
-    fontSize: 7,
+    fontSize: 9,
     color: '#6b7280', // Gray-500
   },
   educationGpa: {
-    fontSize: 7,
+    fontSize: 9,
     color: '#6b7280', // Gray-500
   },
   // Experience styles
@@ -243,20 +243,20 @@ const creativeMinimalStyles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   experiencePosition: {
-    fontSize: 10,
+    fontSize: 11,
     fontFamily: 'Helvetica',
     fontWeight: 300,
     color: '#111827',
     marginBottom: 1,
   },
   experienceCompany: {
-    fontSize: 9,
+    fontSize: 10,
     fontFamily: 'Helvetica-Bold',
     color: '#10b981', // Emerald-600
     marginBottom: 2,
   },
   experienceLocation: {
-    fontSize: 7,
+    fontSize: 9,
     color: '#6b7280', // Gray-600
   },
   experienceDateTag: {
@@ -265,7 +265,7 @@ const creativeMinimalStyles = StyleSheet.create({
     paddingHorizontal: 7,
     paddingVertical: 2,
     borderRadius: 10,
-    fontSize: 7,
+    fontSize: 9,
     fontFamily: 'Helvetica-Bold',
   },
   bulletList: {
@@ -285,7 +285,7 @@ const creativeMinimalStyles = StyleSheet.create({
   },
   bulletText: {
     flex: 1,
-    fontSize: 8,
+    fontSize: 10,
     color: '#374151', // Gray-700
     lineHeight: 1.3,
   },
@@ -308,7 +308,7 @@ const creativeMinimalStyles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#e5e7eb', // Gray-200
-    fontSize: 6,
+    fontSize: 9,
     fontFamily: 'Helvetica-Bold',
     marginBottom: 2,
     textAlign: 'center',
@@ -324,13 +324,13 @@ const creativeMinimalStyles = StyleSheet.create({
     marginBottom: 8,
   },
   projectName: {
-    fontSize: 9,
+    fontSize: 10,
     fontFamily: 'Helvetica-Bold',
     color: '#111827',
     marginBottom: 2,
   },
   projectLink: {
-    fontSize: 7,
+    fontSize: 9,
     color: '#0d9488', // Teal-600
     textDecoration: 'underline',
     marginBottom: 4,
@@ -341,7 +341,7 @@ const creativeMinimalStyles = StyleSheet.create({
     paddingHorizontal: 7,
     paddingVertical: 2,
     borderRadius: 10,
-    fontSize: 7,
+    fontSize: 9,
     fontFamily: 'Helvetica-Bold',
   },
 });
