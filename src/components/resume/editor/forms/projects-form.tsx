@@ -782,7 +782,7 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                         onClick={() => addTechnology(index)}
                         className="h-9 px-2 bg-gray-800/50 hover:bg-gray-800/90 border-violet-200/40 hover:border-violet-300/60"
                       >
-                        <Plus className="h-4 w-4" />
+                        <Plus className="h-4 w-4 text-white" />
                       </Button>
                       <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-violet-400">
                         ADD TECHNOLOGY

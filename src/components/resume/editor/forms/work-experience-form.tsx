@@ -712,7 +712,7 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                         "border-cyan-200/40 hover:border-cyan-300/60 hover:bg-cyan-50/10 bg-gray-800/50"
                       )}
                     >
-                      <Plus className="h-4 w-4 mr-1" />
+                      <Plus className="h-4 w-4 mr-1 text-white" />
                       Add Point
                     </Button>
 

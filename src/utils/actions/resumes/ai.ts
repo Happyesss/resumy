@@ -3,12 +3,59 @@
 // import { RESUME_IMPORTER_SYSTEM_MESSAGE, } from "@/lib/prompts";
 import { Resume } from "@/lib/types";
 import { textImportSchema, workExperienceBulletPointsSchema } from "@/lib/zod-schemas";
-import { generateObject } from "ai";
+import { generateObject, generateText } from "ai";
 import { z } from "zod";
 import { initializeAIClient, type AIConfig } from '@/utils/ai-tools';
 import { PROJECT_GENERATOR_MESSAGE, PROJECT_IMPROVER_MESSAGE, TEXT_ANALYZER_SYSTEM_MESSAGE, WORK_EXPERIENCE_GENERATOR_MESSAGE, WORK_EXPERIENCE_IMPROVER_MESSAGE } from "@/lib/prompts";
 import { projectAnalysisSchema, workExperienceItemsSchema } from "@/lib/zod-schemas";
 import { WorkExperience } from "@/lib/types";
+
+// Helper function to clean JSON responses that might be wrapped in markdown
+function cleanJsonResponse(text: string): string {
+  // Remove markdown code blocks if present
+  const codeBlockRegex = /```(?:json)?\s*([\s\S]*?)\s*```/;
+  const match = text.match(codeBlockRegex);
+  if (match) {
+    return match[1].trim();
+  }
+  return text.trim();
+}
+
+// Wrapper function for generateObject with fallback to generateText
+async function safeGenerateObject(params: any) {
+  try {
+    return await generateObject(params);
+  } catch (error) {
+    // Check if it's a JSON parsing error or AI generation error
+    if (error instanceof Error && (
+      error.message.includes('JSON parsing failed') || 
+      error.message.includes('not valid JSON') ||
+      error.message.includes('No object generated') ||
+      error.name === 'AI_NoObjectGeneratedError' ||
+      error.name === 'AI_JSONParseError'
+    )) {
+      console.warn('generateObject failed due to JSON parsing/generation error, falling back to generateText:', error.message);
+      
+      // Fallback to generateText
+      const { text } = await generateText({
+        model: params.model,
+        prompt: params.prompt + "\n\nIMPORTANT: Return your response as valid JSON only, without markdown code blocks.",
+        system: params.system,
+      });
+      
+      try {
+        const cleanedText = cleanJsonResponse(text);
+        const parsedObject = JSON.parse(cleanedText);
+        return { object: parsedObject };
+      } catch (parseError) {
+        console.error('JSON parsing failed in fallback:', parseError);
+        throw new Error(`Failed to parse AI response as JSON: ${text}`);
+      }
+    }
+    // Re-throw if it's not a JSON parsing error
+    throw error;
+  }
+}
 
 
 
@@ -23,7 +70,7 @@ export async function convertTextToResume(prompt: string, existingResume: Resume
   const aiClient = initializeAIClient(hardcodedConfig);
 
   
-  const { object } = await generateObject({
+  const { object } = await safeGenerateObject({
     model: aiClient,
     schema: z.object({
       content: textImportSchema
@@ -55,7 +102,9 @@ export async function convertTextToResume(prompt: string, existingResume: Resume
     prompt: `INPUT:
     Extract and transform the resume information from the following text:
     ${prompt}
-    Now, format this information into the JSON object according to the schema, ensuring it is optimized for the target role: ${targetRole}.`,
+    Now, format this information into the JSON object according to the schema, ensuring it is optimized for the target role: ${targetRole}.
+
+    IMPORTANT: Return your response as valid JSON only, without markdown code blocks.`,
     
   });
   
@@ -94,7 +143,7 @@ export async function convertTextToResume(prompt: string, existingResume: Resume
     ) { 
       const aiClient = initializeAIClient(config);
   
-      const { object } = await generateObject({
+      const { object } = await safeGenerateObject({
         model: aiClient,
         schema: z.object({
           content: workExperienceBulletPointsSchema
@@ -103,7 +152,7 @@ export async function convertTextToResume(prompt: string, existingResume: Resume
       Company: ${company}
       Technologies: ${technologies.join(', ')}
       Target Role: ${targetRole}
-      Number of Points: ${numPoints}${customPrompt ? `\nCustom Focus: ${customPrompt}` : ''}`,
+      Number of Points: ${numPoints}${customPrompt ? `\nCustom Focus: ${customPrompt}` : ''}\n\nIMPORTANT: Return your response as valid JSON only, without markdown code blocks.`,
         system: WORK_EXPERIENCE_GENERATOR_MESSAGE.content as string,
       });
 
@@ -114,17 +163,16 @@ export async function convertTextToResume(prompt: string, existingResume: Resume
       export async function improveWorkExperience(point: string, customPrompt?: string, config?: AIConfig) {
           const aiClient = initializeAIClient(config);
           
-          const { object } = await generateObject({
+          const { object } = await safeGenerateObject({
           model: aiClient,
           
           schema: z.object({
               content: z.string().describe("The improved work experience bullet point")
           }),
-          prompt: `Please improve this work experience bullet point while maintaining its core message and truthfulness${customPrompt ? `. Additional requirements: ${customPrompt}` : ''}:\n\n"${point}"`,
+          prompt: `Please improve this work experience bullet point while maintaining its core message and truthfulness${customPrompt ? `. Additional requirements: ${customPrompt}` : ''}:\n\n"${point}"\n\nIMPORTANT: Return your response as valid JSON only, without markdown code blocks.`,
           system: WORK_EXPERIENCE_IMPROVER_MESSAGE.content as string,
           });
       
-
           return object.content;
       }
     
@@ -134,12 +182,12 @@ export async function convertTextToResume(prompt: string, existingResume: Resume
           const aiClient = initializeAIClient(config);
 
   
-          const { object } = await generateObject({
+          const { object } = await safeGenerateObject({
           model: aiClient,
           schema: z.object({
               content: z.string().describe("The improved project bullet point")
           }),
-          prompt: `Please improve this project bullet point while maintaining its core message and truthfulness${customPrompt ? `. Additional requirements: ${customPrompt}` : ''}:\n\n"${point}"`,
+          prompt: `Please improve this project bullet point while maintaining its core message and truthfulness${customPrompt ? `. Additional requirements: ${customPrompt}` : ''}:\n\n"${point}"\n\nIMPORTANT: Return your response as valid JSON only, without markdown code blocks.`,
           system: PROJECT_IMPROVER_MESSAGE.content as string,
           });
       
@@ -157,7 +205,7 @@ export async function convertTextToResume(prompt: string, existingResume: Resume
       ) {
           const aiClient = initializeAIClient(config);
           
-          const { object } = await generateObject({
+          const { object } = await safeGenerateObject({
           model: aiClient,
           schema: z.object({
               content: projectAnalysisSchema
@@ -165,7 +213,7 @@ export async function convertTextToResume(prompt: string, existingResume: Resume
           prompt: `Project Name: ${projectName}
       Technologies: ${technologies.join(', ')}
       Target Role: ${targetRole}
-      Number of Points: ${numPoints}${customPrompt ? `\nCustom Focus: ${customPrompt}` : ''}`,
+      Number of Points: ${numPoints}${customPrompt ? `\nCustom Focus: ${customPrompt}` : ''}\n\nIMPORTANT: Return your response as valid JSON only, without markdown code blocks.`,
           system: PROJECT_GENERATOR_MESSAGE.content as string,
           });
       
@@ -176,12 +224,12 @@ export async function convertTextToResume(prompt: string, existingResume: Resume
       export async function processTextImport(text: string, config?: AIConfig) {
           const aiClient = initializeAIClient(config);
           
-          const { object } = await generateObject({
+          const { object } = await safeGenerateObject({
           model: aiClient,
           schema: z.object({
               content: textImportSchema
           }),
-          prompt: text,
+          prompt: `${text}\n\nIMPORTANT: Return your response as valid JSON only, without markdown code blocks.`,
           system: TEXT_ANALYZER_SYSTEM_MESSAGE.content as string,
           });
       
@@ -196,12 +244,12 @@ export async function convertTextToResume(prompt: string, existingResume: Resume
       ) {
           const aiClient = initializeAIClient(config);
           
-          const { object } = await generateObject({
+          const { object } = await safeGenerateObject({
           model: aiClient,
           schema: z.object({
               content: workExperienceItemsSchema
           }),
-          prompt: `Please modify this work experience entry according to these instructions: ${prompt}\n\nCurrent work experience:\n${JSON.stringify(experience, null, 2)}`,
+          prompt: `Please modify this work experience entry according to these instructions: ${prompt}\n\nCurrent work experience:\n${JSON.stringify(experience, null, 2)}\n\nIMPORTANT: Return your response as valid JSON only, without markdown code blocks.`,
           system: `You are a professional resume writer. Modify the given work experience based on the user's instructions. 
           Maintain professionalism and accuracy while implementing the requested changes. 
           Keep the same company and dates, but modify other fields as requested.
@@ -216,12 +264,12 @@ export async function convertTextToResume(prompt: string, existingResume: Resume
           const aiClient = initializeAIClient(config);
   
           
-          const { object } = await generateObject({
+          const { object } = await safeGenerateObject({
           model: aiClient,
           schema: z.object({
               content: textImportSchema
           }),
-          prompt: `Extract relevant resume information from the following text, including basic information (name, contact details, etc) and professional experience. Format them according to the schema:\n\n${prompt}`,
+          prompt: `Extract relevant resume information from the following text, including basic information (name, contact details, etc) and professional experience. Format them according to the schema:\n\n${prompt}\n\nIMPORTANT: Return your response as valid JSON only, without markdown code blocks.`,
           system: TEXT_ANALYZER_SYSTEM_MESSAGE.content as string,
           });
           

@@ -30,21 +30,29 @@ export function ApiErrorDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <AlertCircle className="h-5 w-5 text-yellow-500" />
+          <div className="mx-auto rounded-full w-12 h-12 bg-red-100 flex items-center justify-center mb-4">
+            <AlertCircle className="h-6 w-6 text-red-600" />
+          </div>
+          <DialogTitle className="text-center text-xl font-semibold text-red-600">
             {title}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-center text-gray-600 mt-2">
             {description}
           </DialogDescription>
         </DialogHeader>
-        <div className="flex justify-end gap-2 mt-4">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+        <div className="flex justify-center gap-3 mt-6">
+          <Button 
+            variant="outline" 
+            onClick={() => onOpenChange(false)}
+            className="min-w-[100px] border-gray-300 bg-white hover:bg-gray-50"
+          >
             Cancel
-          </Button>          <Button asChild>
-            <Link href={actionHref}>
-              {actionLabel}
-            </Link>
+          </Button>
+          <Button 
+            onClick={() => onOpenChange(false)}
+            className="min-w-[100px] bg-red-600 hover:bg-red-700 text-white"
+          >
+            {actionLabel}
           </Button>
         </div>
       </DialogContent>

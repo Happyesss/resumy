@@ -206,7 +206,7 @@ export function SkillsForm({
                     onClick={() => addSkill(index)}
                     className="h-9 px-2 bg-gray-800 hover:bg-gray-700 border-gray-600"
                   >
-                    <Plus className="h-4 w-4" />
+                    <Plus className="h-4 w-4 text-white" />
                   </Button>
                   <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-rose-400 border border-gray-700">
                     ADD SKILL
