@@ -8,7 +8,7 @@ import { WorkExperience, Project, Skill, Education } from "@/lib/types";
 import { useState } from 'react';
 import Tiptap from "@/components/ui/tiptap";
 
-const DIFF_HIGHLIGHT_CLASSES = "bg-green-300 px-1  rounded-sm";
+const DIFF_HIGHLIGHT_CLASSES = "bg-yellow-200 text-gray-900 px-1 rounded-sm font-medium";
 
 type SuggestionContent = WorkExperience | Project | Skill | Education;
 
@@ -73,7 +73,7 @@ function WorkExperienceSuggestion({ content: work, currentContent: currentWork }
                       word.isStart && "rounded-l-sm pl-1",
                       word.isEnd && "rounded-r-sm pr-1",
                       wordIndex < comparedWords.length - 1 && "mr-1",
-                      word.isNew && "bg-green-300 px-1 mx-0",
+                      word.isNew && "bg-yellow-200 text-gray-900 px-1 mx-0 rounded-sm font-medium",
                     )}
                   >
                     {word.isBold ? (
@@ -132,11 +132,10 @@ function ProjectSuggestion({ content: project, currentContent: currentProject }:
                     key={wordIndex}
                     className={cn(
                       "inline-flex items-center",
-                      word.isNew && "bg-green-300",
                       word.isStart && "rounded-l-sm pl-1",
                       word.isEnd && "rounded-r-sm pr-1",
                       wordIndex < comparedWords.length - 1 && "mr-1",
-                      word.isNew && "bg-green-300 px-1 mx-0",
+                      word.isNew && "bg-yellow-200 text-gray-900 px-1 mx-0 rounded-sm font-medium",
                     )}
                   >
                     {word.isBold ? (
@@ -323,11 +322,10 @@ function EducationSuggestion({ content: education, currentContent: currentEducat
                       key={wordIndex}
                       className={cn(
                         "inline-flex items-center",
-                        word.isNew && "bg-green-300",
                         word.isStart && "rounded-l-sm pl-1",
                         word.isEnd && "rounded-r-sm pr-1",
                         wordIndex < comparedWords.length - 1 && "mr-1",
-                        word.isNew && "bg-green-300 px-1 mx-0",
+                        word.isNew && "bg-yellow-200 text-gray-900 px-1 mx-0 rounded-sm font-medium",
                       )}
                     >
                       {word.isBold ? (

@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { WorkExperience } from "@/lib/types";
 import { useState } from 'react';
 
-const DIFF_HIGHLIGHT_CLASSES = "bg-green-300 px-1 rounded-sm";
+const DIFF_HIGHLIGHT_CLASSES = "bg-yellow-200 text-gray-900 px-1 rounded-sm font-medium";
 
 interface WorkExperienceSuggestionProps {
   currentWork: WorkExperience;
