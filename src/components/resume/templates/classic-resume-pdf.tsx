@@ -36,7 +36,8 @@ const classicStyles = StyleSheet.create({
   },
   header: {
     textAlign: 'center',
-    paddingBottom: 4,
+    paddingBottom: 1,
+    marginBottom: 0,
   },
   name: {
     fontSize: 16,
@@ -47,7 +48,7 @@ const classicStyles = StyleSheet.create({
     textAlign: 'center',
   },
   contactInfo: {
-    fontSize: 9,
+    fontSize: 10,
     flexDirection: 'row',
     justifyContent: 'center',
     flexWrap: 'wrap',
@@ -58,7 +59,7 @@ const classicStyles = StyleSheet.create({
     marginHorizontal: 3,
   },
   location: {
-    fontSize: 9,
+    fontSize: 10,
     fontStyle: 'italic',
     marginTop: 2,
     textAlign: 'center',
@@ -69,7 +70,7 @@ const classicStyles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#000000',
     paddingBottom: 1,
-    marginTop: 10,
+    marginTop: 5,
     marginBottom: 6,
   },
   entryContainer: {
@@ -121,16 +122,16 @@ const classicStyles = StyleSheet.create({
   bulletItem: {
     flexDirection: 'row',
     marginBottom: 1,
-    fontSize: 9,
+    fontSize: 10,
   },
   bullet: {
     width: 8,
-    fontSize: 9,
+    fontSize: 10,
     paddingRight: 2,
   },
   bulletText: {
     flex: 1,
-    fontSize: 9,
+    fontSize: 10,
     lineHeight: 1.3,
   },
   skillsGrid: {
@@ -146,10 +147,10 @@ const classicStyles = StyleSheet.create({
   },
   skillCategoryName: {
     fontFamily: 'Times-Bold',
-    fontSize: 9,
+    fontSize: 11,
   },
   skillItems: {
-    fontSize: 9,
+    fontSize: 10,
     marginLeft: 0,
   },
   technicalSkill: {
@@ -349,6 +350,46 @@ export const ClassicResumePDF = memo(function ClassicResumePDF({ resume, variant
     );
   };
 
+  const renderAchievementsActivities = () => {
+    // Check if any education entry has achievements
+    const hasEducationAchievements = resume.education && resume.education.some(edu => 
+      edu.achievements && edu.achievements.length > 0
+    );
+
+    if (!hasEducationAchievements) return null;
+
+    return (
+      <View>
+        <Text style={classicStyles.sectionTitle}>Leadership / Extracurricular</Text>
+        {resume.education.map((edu, index) => (
+          edu.achievements && edu.achievements.length > 0 ? (
+            <View key={index} style={classicStyles.entryContainer}>
+              <View style={classicStyles.entryHeader}>
+                <View style={classicStyles.entryLeft}>
+                  <Text style={classicStyles.company}>Activities at {edu.school}</Text>
+                  <Text style={classicStyles.position}>Student Leadership</Text>
+                </View>
+                <View style={classicStyles.entryRight}>
+                  <Text>{edu.date}</Text>
+                </View>
+              </View>
+              <View style={classicStyles.bulletList}>
+                {edu.achievements.map((achievement, achIndex) => (
+                  <View key={achIndex} style={classicStyles.bulletItem}>
+                    <Text style={classicStyles.bullet}>• </Text>
+                    <Text style={classicStyles.bulletText}>
+                      {parseMarkdownText(achievement.replace(/^[-•*]\s*/, ''))}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          ) : null
+        ))}
+      </View>
+    );
+  };
+
   return (
     <PDFDocument>
       <PDFPage size="LETTER" style={classicStyles.page}>
@@ -374,6 +415,9 @@ export const ClassicResumePDF = memo(function ClassicResumePDF({ resume, variant
 
         {/* Technical Skills */}
         {renderTechnicalSkills()}
+
+        {/* Achievements & Activities */}
+        {renderAchievementsActivities()}
 
         {/* Leadership / Extracurricular section removed */}
       </PDFPage>

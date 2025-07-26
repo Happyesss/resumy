@@ -10,7 +10,7 @@ interface ClassicResumeTemplateProps {
 
 export function ClassicResumeTemplate({ resume, className }: ClassicResumeTemplateProps) {
   return (
-    <div className={cn("w-full max-w-[8.5in] mx-auto bg-white text-black p-8 font-serif", className)}>
+    <div className={cn("w-full max-w-[8.5in] mx-auto bg-white text-black p-8 font-serif text-base", className)}>
       {/* Header */}
       <div className="text-center border-b-2 border-black pb-4 mb-6">
         <h1 className="text-3xl font-bold uppercase tracking-wider">
@@ -82,7 +82,7 @@ export function ClassicResumeTemplate({ resume, className }: ClassicResumeTempla
               {exp.description && exp.description.length > 0 && (
                 <ul className="mt-2 space-y-1 ml-4">
                   {exp.description.map((desc, descIndex) => (
-                    <li key={descIndex} className="text-sm relative">
+                    <li key={descIndex} className="text-base relative">
                       <span className="absolute -left-4">•</span>
                       {desc.replace(/^[-•*]\s*/, '')}
                     </li>
@@ -90,7 +90,7 @@ export function ClassicResumeTemplate({ resume, className }: ClassicResumeTempla
                 </ul>
               )}
               {exp.technologies && exp.technologies.length > 0 && (
-                <div className="text-sm mt-2">
+                <div className="text-base mt-2">
                   <span className="font-semibold">Technologies:</span> {exp.technologies.join(', ')}
                 </div>
               )}
@@ -130,7 +130,7 @@ export function ClassicResumeTemplate({ resume, className }: ClassicResumeTempla
               {project.description && project.description.length > 0 && (
                 <ul className="mt-2 space-y-1 ml-4">
                   {project.description.map((desc, descIndex) => (
-                    <li key={descIndex} className="text-sm relative">
+                    <li key={descIndex} className="text-base relative">
                       <span className="absolute -left-4">•</span>
                       {desc.replace(/^[-•*]\s*/, '')}
                     </li>
@@ -175,7 +175,7 @@ export function ClassicResumeTemplate({ resume, className }: ClassicResumeTempla
                 </div>
                 <ul className="mt-2 space-y-1 ml-4">
                   {edu.achievements.map((achievement, achIndex) => (
-                    <li key={achIndex} className="text-sm relative">
+                    <li key={achIndex} className="text-base relative">
                       <span className="absolute -left-4">•</span>
                       {achievement.replace(/^[-•*]\s*/, '')}
                     </li>
