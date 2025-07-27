@@ -432,18 +432,7 @@ export const ModernProfessionalPDF = memo(function ModernProfessionalPDF({ resum
                 ))}
               </View>
             )}
-            
-            {exp.technologies && exp.technologies.length > 0 && (
-              <View style={modernProfessionalStyles.technologiesContainer}>
-                <Text style={modernProfessionalStyles.technologiesLabel}>Technologies:</Text>
-                {exp.technologies.map((tech, techIndex) => (
-                  <Text key={techIndex} style={modernProfessionalStyles.technologyTag}>
-                    {tech}
-                  </Text>
-                ))}
-              </View>
-            )}
-          </View>
+            </View>
         ))}
       </View>
     );

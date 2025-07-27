@@ -177,20 +177,7 @@ export function CreativeModernTemplate({ resume, className }: CreativeModernTemp
                           ))}
                         </ul>
                       )}
-                      
-                      {exp.technologies && exp.technologies.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5">
-                          {exp.technologies.map((tech, techIndex) => (
-                            <span
-                              key={techIndex}
-                              className="inline-flex items-center justify-center px-2 py-0.5 bg-gray-100 text-gray-700 text-xs rounded-md font-medium"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                      </div>
                   </div>
                 ))}
               </div>

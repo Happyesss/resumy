@@ -70,8 +70,8 @@ const classicStyles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#000000',
     paddingBottom: 1,
-    marginTop: 5,
-    marginBottom: 6,
+    marginTop: 4,
+    marginBottom: 4,
   },
   entryContainer: {
     marginBottom: 8,
@@ -263,15 +263,6 @@ export const ClassicResumePDF = memo(function ClassicResumePDF({ resume, variant
                     </Text>
                   </View>
                 ))}
-              </View>
-            )}
-            {exp.technologies && exp.technologies.length > 0 && (
-              <View style={classicStyles.bulletItem}>
-                <Text style={classicStyles.bullet}></Text>
-                <Text style={classicStyles.bulletText}>
-                  <Text style={classicStyles.skillCategoryName}>Technologies: </Text>
-                  {exp.technologies.join(', ')}
-                </Text>
               </View>
             )}
           </View>

@@ -49,18 +49,27 @@ const creativeModernStyles = StyleSheet.create({
     flex: 1,
   },
   avatar: {
-    width: 48, // smaller avatar
+    width: 48,
     height: 48,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     borderRadius: 24,
+    display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 12,
   },
   avatarText: {
-    fontSize: 16,
+    fontSize: 20,
     fontFamily: 'Helvetica-Bold',
     color: '#ffffff',
+    lineHeight: 1,
+    textAlign: 'center',
+    marginTop: 0,
+    marginBottom: 0,
+    height: 24,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   name: {
     fontSize: 16, // smaller name
@@ -571,17 +580,7 @@ export const CreativeModernPDF = memo(function CreativeModernPDF({ resume, varia
                   ))}
                 </View>
               )}
-              
-              {exp.technologies && exp.technologies.length > 0 && (
-                <View style={creativeModernStyles.techTags}>
-                  {exp.technologies.map((tech, techIndex) => (
-                    <Text key={techIndex} style={creativeModernStyles.techTag}>
-                      {tech}
-                    </Text>
-                  ))}
-                </View>
-              )}
-            </View>
+              </View>
           </View>
         ))}
       </View>

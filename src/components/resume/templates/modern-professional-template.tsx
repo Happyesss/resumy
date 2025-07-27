@@ -100,18 +100,7 @@ export function ModernProfessionalTemplate({ resume, className }: ModernProfessi
                     ))}
                   </ul>
                 )}
-                
-                {exp.technologies && exp.technologies.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    <span className="text-sm font-medium text-gray-900">Technologies:</span>
-                    {exp.technologies.map((tech, techIndex) => (
-                      <span key={techIndex} className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-md font-medium">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
+               </div>
             ))}
           </div>
         </div>

@@ -89,11 +89,6 @@ export function ClassicResumeTemplate({ resume, className }: ClassicResumeTempla
                   ))}
                 </ul>
               )}
-              {exp.technologies && exp.technologies.length > 0 && (
-                <div className="text-base mt-2">
-                  <span className="font-semibold">Technologies:</span> {exp.technologies.join(', ')}
-                </div>
-              )}
             </div>
           ))}
         </div>
