@@ -1,338 +1,233 @@
 'use client';
 
+import { Resume } from "@/lib/types";
+import { Document as PDFDocument, Page as PDFPage, Text, View, StyleSheet, Link } from '@react-pdf/renderer';
 import { memo } from 'react';
-import { Document as PDFDocument, Page as PDFPage, Text, View, StyleSheet } from '@react-pdf/renderer';
-import { Resume } from '@/lib/types';
 
-// Helper function to parse markdown-style text and return plain text for PDF
+// Utility function to parse markdown and render mixed text with bold formatting
 const parseMarkdownText = (text: string) => {
-  return text.replace(/\*\*(.*?)\*\*/g, '$1').replace(/\*(.*?)\*/g, '$1');
+  if (!text) return null;
+  
+  // Split by **bold** patterns while preserving the delimiters
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  
+  return parts.map((part, index) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      // Remove the ** and make it bold
+      const boldText = part.slice(2, -2);
+      return (
+        <Text key={index} style={{ fontFamily: 'Helvetica-Bold' }}>
+          {boldText}
+        </Text>
+      );
+    }
+    return <Text key={index}>{part}</Text>;
+  });
 };
 
 const modernProfessionalStyles = StyleSheet.create({
   page: {
     fontFamily: 'Helvetica',
     fontSize: 10,
-    paddingTop: 25,
-    paddingBottom: 25,
-    paddingHorizontal: 25,
-    lineHeight: 1.4,
-    color: '#111827'
+    paddingTop: 16,
+    paddingBottom: 16,
+    paddingHorizontal: 18,
+    lineHeight: 1.3,
+    color: '#1f2937',
   },
-  
-  // Header styles
   header: {
-    marginBottom: 16,
-    borderLeft: '3pt solid #2563EB',
-    paddingLeft: 15,
+    borderBottomWidth: 2,
+    borderBottomColor: '#2563eb',
+    paddingBottom: 10,
+    marginBottom: 12,
   },
-  
   name: {
-    fontSize: 20,
+    fontSize: 22,
     fontFamily: 'Helvetica-Bold',
-    marginBottom: 10,
-    color: '#111827',
+    color: '#1f2937',
+    marginBottom: 4,
     letterSpacing: 0.5,
   },
-  
-  targetRole: {
-    fontSize: 12,
-    color: '#2563EB',
-    marginBottom: 10,
-    fontFamily: 'Helvetica-Bold',
-    textTransform: 'uppercase',
-    letterSpacing: 1,
+  nameAccent: {
+    color: '#2563eb',
   },
-  
+  targetRole: {
+    fontSize: 11,
+    color: '#4b5563',
+    fontFamily: 'Helvetica-Bold',
+    marginBottom: 8,
+  },
   contactGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    fontSize: 9,
-    color: '#4B5563',
+    gap: 8,
+    marginTop: 8,
   },
-  
   contactItem: {
-    flexDirection: 'row',
-    marginRight: 15,
-    marginBottom: 3,
+    width: '23%',
+    minWidth: 80,
+    marginBottom: 2,
   },
-  
   contactLabel: {
-    fontFamily: 'Helvetica-Bold',
-    marginRight: 4,
-  },
-  
-  contactValue: {
-    color: '#2563EB',
-  },
-  
-  // Section styles
-  section: {
-    marginBottom: 8, 
-  },
-  
-  sectionTitle: {
-    fontSize: 13,
-    fontFamily: 'Helvetica-Bold',
-    color: '#111827',
-    marginBottom: 6, 
+    fontSize: 7,
+    color: '#6b7280',
     textTransform: 'uppercase',
-    letterSpacing: 1,
-    borderBottom: '2pt solid #2563EB',
-    paddingBottom: 3,
+    letterSpacing: 0.5,
+    fontFamily: 'Helvetica-Bold',
+    marginBottom: 2,
   },
-  
-  // Experience styles
-  experienceItem: {
-    marginBottom: 4, 
-    paddingLeft: 8,
-    borderLeft: '1pt solid #E5E7EB',
-    position: 'relative',
+  contactValue: {
+    fontSize: 9,
+    color: '#1f2937',
+    fontFamily: 'Helvetica-Bold',
   },
-  
-  experienceDot: {
-    width: 8,
-    height: 8,
-    backgroundColor: '#2563EB',
-    borderRadius: 4,
-    position: 'absolute',
-    left: -4,
-    top: 0,
+  linkValue: {
+    fontSize: 9,
+    color: '#2563eb',
   },
-  
-  experienceHeader: {
+  sectionTitle: {
+    fontSize: 12,
+    fontFamily: 'Helvetica-Bold',
+    color: '#2563eb',
+    marginTop: 15,
+    marginBottom: 8,
+  },
+  sectionLine: {
+    height: 1,
+    backgroundColor: '#2563eb',
+    marginBottom: 12,
+  },
+  entryContainer: {
+    marginBottom: 12,
+  },
+  entryHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 5,
+    marginBottom: 4,
   },
-  
-  experienceLeft: {
+  entryLeft: {
     flex: 1,
     paddingRight: 10,
   },
-  
-  position: {
+  entryRight: {
+    alignItems: 'flex-end',
+  },
+  entryTitle: {
     fontSize: 11,
     fontFamily: 'Helvetica-Bold',
-    color: '#111827',
+    color: '#1f2937',
     marginBottom: 2,
   },
-  
-  company: {
+  entrySubtitle: {
     fontSize: 10,
+    color: '#2563eb',
     fontFamily: 'Helvetica-Bold',
-    color: '#2563EB',
-    marginBottom: 2,
+    marginBottom: 1,
   },
-  
-  location: {
-    fontSize: 9,
-    color: '#4B5563',
+  entryLocation: {
+    fontSize: 8,
+    color: '#6b7280',
   },
-  
-  dateContainer: {
-    backgroundColor: '#F9FAFB',
-    padding: 3,
-    borderRadius: 3,
-  },
-  
-  date: {
-    fontSize: 9,
+  dateTag: {
+    backgroundColor: '#f3f4f6',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    paddingBottom: -5,
+    borderRadius: 10,
+    fontSize: 8,
     color: '#374151',
     fontFamily: 'Helvetica-Bold',
-    textAlign: 'right',
+    textAlign: 'center',
   },
-  
-  // Bullet points
+  gpaText: {
+    fontSize: 8,
+    color: '#4b5563',
+    marginTop: 2,
+  },
   bulletList: {
-    marginTop: 3, // reduced from 5
-    marginBottom: 5, // reduced from 8
+    marginTop: 6,
   },
-  
   bulletItem: {
     flexDirection: 'row',
+    marginBottom: 3,
     alignItems: 'flex-start',
-    marginBottom: 2, // reduced from 3
   },
-  
-  bulletDot: {
-    width: 3,
-    height: 3,
-    backgroundColor: '#2563EB',
-    borderRadius: 1.5,
-    marginTop: 3,
-    marginRight: 6,
-    flexShrink: 0,
+  bulletPoint: {
+    width: 4,
+    height: 4,
+    backgroundColor: '#2563eb',
+    borderRadius: 2,
+    marginRight: 8,
+    marginTop: 4,
   },
-  
   bulletText: {
-    fontSize: 9,
-    color: '#374151',
-    lineHeight: 1.4,
     flex: 1,
+    fontSize: 9,
+    lineHeight: 1.4,
+    color: '#374151',
   },
-  
-  // Technologies
-  technologiesContainer: {
+  skillsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    alignItems: 'center',
-    marginTop: 5,
+    gap: 6,
   },
-  
-  technologiesLabel: {
-    fontSize: 9,
-    fontFamily: 'Helvetica-Bold',
-    color: '#111827',
-    marginRight: 5,
+  skillCategory: {
+    backgroundColor: '#f9fafb',
+    padding: 6,
+    borderRadius: 6,
+    width: '48%',
+    marginBottom: 4,
   },
-  
-  technologyTag: {
-    backgroundColor: '#DBEAFE',
-    color: '#1E40AF',
-    fontSize: 8,
+  skillCategoryTitle: {
+    fontSize: 10,
     fontFamily: 'Helvetica-Bold',
-    paddingHorizontal: 4,
-    paddingTop: 1,
-    paddingBottom: 1,
-    marginRight: 3,
+    color: '#1f2937',
     marginBottom: 2,
-    borderRadius: 2,
+  },
+  skillTagsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 2,
+  },
+  skillTag: {
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 12,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    fontSize: 7,
+    color: '#374151',
     textAlign: 'center',
-    lineHeight: 1.2,
   },
-  
-  // Projects styles
-  projectItem: {
-    marginBottom: 6, // reduced from 10
-    backgroundColor: '#F9FAFB',
-    padding: 8,
-    borderRadius: 4,
-    borderLeft: '3pt solid #2563EB',
-  },
-  
   projectHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 2, // reduced from 4
-  },
-  
-  projectLeft: {
-    flex: 1,
-    paddingRight: 10,
-  },
-  
-  projectName: {
-    fontSize: 11,
-    fontFamily: 'Helvetica-Bold',
-    color: '#111827',
     marginBottom: 2,
   },
-  
-  projectUrl: {
-    fontSize: 9,
-    color: '#2563EB',
-    textDecoration: 'underline',
-    fontFamily: 'Helvetica-Bold',
-  },
-  
-  projectDate: {
-    backgroundColor: '#FFFFFF',
-    padding: 2,
-    borderRadius: 2,
-    fontSize: 9,
-    color: '#4B5563',
-    fontFamily: 'Helvetica-Bold',
-  },
-  
-  // Education styles
-  educationItem: {
-    marginBottom: 5, // reduced from 8
-    backgroundColor: '#F9FAFB',
-    padding: 8,
-    borderRadius: 4,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  
-  educationLeft: {
-    flex: 1,
-    paddingRight: 10,
-  },
-  
-  school: {
-    fontSize: 11,
-    fontFamily: 'Helvetica-Bold',
-    color: '#111827',
-    marginBottom: 2,
-  },
-  
-  degree: {
-    fontSize: 10,
-    fontFamily: 'Helvetica-Bold',
-    color: '#2563EB',
-    marginBottom: 2,
-  },
-  
-  gpa: {
-    fontSize: 9,
-    color: '#4B5563',
-    fontFamily: 'Helvetica-Bold',
-  },
-  
-  educationDate: {
-    backgroundColor: '#FFFFFF',
-    padding: 3,
-    borderRadius: 3,
-    fontSize: 9,
-    color: '#374151',
-    fontFamily: 'Helvetica-Bold',
-    textAlign: 'right',
-  },
-  
-  // Skills styles
-  skillsGrid: {
+  projectTags: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    gap: 2,
+    marginTop: 2,
   },
-  
-  skillCategory: {
-    width: '48%',
-    backgroundColor: '#F9FAFB',
-    padding: 8,
-    marginBottom: 5, // reduced from 8
-    borderRadius: 4,
-  },
-  
-  skillCategoryTitle: {
-    fontSize: 10,
-    fontFamily: 'Helvetica-Bold',
-    color: '#2563EB',
-    marginBottom: 3, // reduced from 6
-  },
-  
-  skillsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  
-  skillItem: {
-    backgroundColor: '#FFFFFF',
-    color: '#374151',
-    fontSize: 8,
-    fontFamily: 'Helvetica-Bold',
+  techTag: {
+    backgroundColor: '#dbeafe',
+    color: '#1e40af',
+    fontSize: 7,
     paddingHorizontal: 6,
-    paddingTop: 1,
-    paddingBottom: 1,
-    marginRight: 3,
-    marginBottom: 2, // reduced from 3
-    borderRadius: 2,
-    border: '0.5pt solid #E5E7EB',
+    paddingVertical: 2,
+    borderRadius: 8,
+    fontFamily: 'Helvetica-Bold',
     textAlign: 'center',
-    lineHeight: 1.2,
+    paddingBottom: -5,
+  },
+  projectUrl: {
+    fontSize: 8,
+    color: '#2563eb',
+    marginTop: 2,
   },
 });
 
@@ -343,144 +238,70 @@ interface ModernProfessionalPDFProps {
 
 export const ModernProfessionalPDF = memo(function ModernProfessionalPDF({ resume, variant = 'base' }: ModernProfessionalPDFProps) {
   
-  const renderHeader = () => (
-    <View style={modernProfessionalStyles.header}>
-      <Text style={modernProfessionalStyles.name}>
-        {resume.first_name} {resume.last_name}
-      </Text>
-      
-      <View style={modernProfessionalStyles.contactGrid}>
-        {resume.email && (
-          <View style={modernProfessionalStyles.contactItem}>
-            <Text style={modernProfessionalStyles.contactLabel}>Email:</Text>
-            <Text style={modernProfessionalStyles.contactValue}>{resume.email}</Text>
-          </View>
-        )}
-        {resume.phone_number && (
-          <View style={modernProfessionalStyles.contactItem}>
-            <Text style={modernProfessionalStyles.contactLabel}>Phone:</Text>
-            <Text>{resume.phone_number}</Text>
-          </View>
-        )}
-        {resume.location && (
-          <View style={modernProfessionalStyles.contactItem}>
-            <Text style={modernProfessionalStyles.contactLabel}>Location:</Text>
-            <Text>{resume.location}</Text>
-          </View>
-        )}
-        {resume.linkedin_url && (
-          <View style={modernProfessionalStyles.contactItem}>
-            <Text style={modernProfessionalStyles.contactLabel}>LinkedIn:</Text>
-            <Text style={modernProfessionalStyles.contactValue}>
-              {resume.linkedin_url.replace('https://', '').replace('http://', '')}
-            </Text>
-          </View>
-        )}
-        {resume.github_url && (
-          <View style={modernProfessionalStyles.contactItem}>
-            <Text style={modernProfessionalStyles.contactLabel}>GitHub:</Text>
-            <Text style={modernProfessionalStyles.contactValue}>
-              {resume.github_url.replace('https://', '').replace('http://', '')}
-            </Text>
-          </View>
-        )}
-        {resume.website && (
-          <View style={modernProfessionalStyles.contactItem}>
-            <Text style={modernProfessionalStyles.contactLabel}>Website:</Text>
-            <Text style={modernProfessionalStyles.contactValue}>
-              {resume.website.replace('https://', '').replace('http://', '')}
-            </Text>
-          </View>
-        )}
-      </View>
-    </View>
-  );
+  const renderContactInfo = () => {
+    const contactItems = [
+      { label: 'Email', value: resume.email },
+      { label: 'Phone', value: resume.phone_number },
+      { label: 'Location', value: resume.location },
+    ].filter(item => item.value);
 
-  const renderExperience = () => {
-    if (!resume.work_experience || resume.work_experience.length === 0) return null;
+    const links = [
+      resume.linkedin_url?.replace('https://', '').replace('http://', ''),
+      resume.github_url?.replace('https://', '').replace('http://', ''),
+    ].filter(Boolean);
+
+    if (links.length > 0) {
+      contactItems.push({ label: 'Links', value: links.join(' • ') });
+    }
 
     return (
-      <View style={modernProfessionalStyles.section}>
-        <Text style={modernProfessionalStyles.sectionTitle}>Professional Experience</Text>
-        
-        {resume.work_experience.map((exp, index) => (
-          <View key={index} style={modernProfessionalStyles.experienceItem}>
-            <View style={modernProfessionalStyles.experienceDot} />
-            
-            <View style={modernProfessionalStyles.experienceHeader}>
-              <View style={modernProfessionalStyles.experienceLeft}>
-                <Text style={modernProfessionalStyles.position}>{exp.position}</Text>
-                <Text style={modernProfessionalStyles.company}>{exp.company}</Text>
-                {exp.location && (
-                  <Text style={modernProfessionalStyles.location}>{exp.location}</Text>
-                )}
-              </View>
-              <View style={modernProfessionalStyles.dateContainer}>
-                <Text style={modernProfessionalStyles.date}>{exp.date}</Text>
-              </View>
-            </View>
-            
-            {exp.description && exp.description.length > 0 && (
-              <View style={modernProfessionalStyles.bulletList}>
-                {exp.description.map((desc, descIndex) => (
-                  <View key={descIndex} style={modernProfessionalStyles.bulletItem}>
-                    <View style={modernProfessionalStyles.bulletDot} />
-                    <Text style={modernProfessionalStyles.bulletText}>
-                      {parseMarkdownText(desc.replace(/^[-•*]\s*/, ''))}
-                    </Text>
-                  </View>
-                ))}
-              </View>
-            )}
-            </View>
+      <View style={modernProfessionalStyles.contactGrid}>
+        {contactItems.map((item, index) => (
+          <View key={index} style={modernProfessionalStyles.contactItem}>
+            <Text style={modernProfessionalStyles.contactLabel}>
+              {item.label}
+            </Text>
+            <Text style={item.label === 'Links' ? modernProfessionalStyles.linkValue : modernProfessionalStyles.contactValue}>
+              {item.value}
+            </Text>
+          </View>
         ))}
       </View>
     );
   };
 
-  const renderProjects = () => {
-    if (!resume.projects || resume.projects.length === 0) return null;
+  const renderExperience = () => {
+    if (!resume.work_experience || resume.work_experience.length === 0) return null;
 
     return (
-      <View style={modernProfessionalStyles.section}>
-        <Text style={modernProfessionalStyles.sectionTitle}>Key Projects</Text>
-        
-        {resume.projects.map((project, index) => (
-          <View key={index} style={modernProfessionalStyles.projectItem}>
-            <View style={modernProfessionalStyles.projectHeader}>
-              <View style={modernProfessionalStyles.projectLeft}>
-                <Text style={modernProfessionalStyles.projectName}>{project.name}</Text>
-                {project.url && (
-                  <Text style={modernProfessionalStyles.projectUrl}>
-                    {project.url.replace('https://', '').replace('http://', '')}
-                  </Text>
+      <View>
+        <View>
+          <Text style={modernProfessionalStyles.sectionTitle}>Professional Experience</Text>
+          <View style={modernProfessionalStyles.sectionLine} />
+        </View>
+        {resume.work_experience.map((exp, index) => (
+          <View key={index} style={modernProfessionalStyles.entryContainer}>
+            <View style={modernProfessionalStyles.entryHeader}>
+              <View style={modernProfessionalStyles.entryLeft}>
+                <Text style={modernProfessionalStyles.entryTitle}>{exp.position}</Text>
+                <Text style={modernProfessionalStyles.entrySubtitle}>{exp.company}</Text>
+                {exp.location && (
+                  <Text style={modernProfessionalStyles.entryLocation}>{exp.location}</Text>
                 )}
               </View>
-              {project.date && (
-                <Text style={modernProfessionalStyles.projectDate}>{project.date}</Text>
-              )}
+              <View style={modernProfessionalStyles.entryRight}>
+                <Text style={modernProfessionalStyles.dateTag}>{exp.date}</Text>
+              </View>
             </View>
-            
-            {project.description && project.description.length > 0 && (
+            {exp.description && exp.description.length > 0 && (
               <View style={modernProfessionalStyles.bulletList}>
-                {project.description.map((desc, descIndex) => (
+                {exp.description.map((desc, descIndex) => (
                   <View key={descIndex} style={modernProfessionalStyles.bulletItem}>
-                    <View style={modernProfessionalStyles.bulletDot} />
+                    <View style={modernProfessionalStyles.bulletPoint} />
                     <Text style={modernProfessionalStyles.bulletText}>
-                      {parseMarkdownText(desc.replace(/^[-•*]\s*/, ''))}
+                      {parseMarkdownText(desc)}
                     </Text>
                   </View>
-                ))}
-              </View>
-            )}
-            
-            {project.technologies && project.technologies.length > 0 && (
-              <View style={modernProfessionalStyles.technologiesContainer}>
-                <Text style={modernProfessionalStyles.technologiesLabel}>Technologies:</Text>
-                {project.technologies.map((tech, techIndex) => (
-                  <Text key={techIndex} style={modernProfessionalStyles.technologyTag}>
-                    {tech}
-                  </Text>
                 ))}
               </View>
             )}
@@ -494,48 +315,119 @@ export const ModernProfessionalPDF = memo(function ModernProfessionalPDF({ resum
     if (!resume.education || resume.education.length === 0) return null;
 
     return (
-      <View style={modernProfessionalStyles.section}>
-        <Text style={modernProfessionalStyles.sectionTitle}>Education</Text>
-        
+      <View>
+        <View>
+          <Text style={modernProfessionalStyles.sectionTitle}>Education</Text>
+          <View style={modernProfessionalStyles.sectionLine} />
+        </View>
         {resume.education.map((edu, index) => (
-          <View key={index} style={modernProfessionalStyles.educationItem}>
-            <View style={modernProfessionalStyles.educationLeft}>
-              <Text style={modernProfessionalStyles.school}>{edu.school}</Text>
-              <Text style={modernProfessionalStyles.degree}>
-                {edu.degree} {edu.field && `in ${edu.field}`}
-              </Text>
-              {edu.location && (
-                <Text style={modernProfessionalStyles.location}>{edu.location}</Text>
-              )}
-              {edu.gpa && (
-                <Text style={modernProfessionalStyles.gpa}>GPA: {edu.gpa}</Text>
-              )}
+          <View key={index} style={modernProfessionalStyles.entryContainer}>
+            <View style={modernProfessionalStyles.entryHeader}>
+              <View style={modernProfessionalStyles.entryLeft}>
+                <Text style={modernProfessionalStyles.entryTitle}>{edu.school}</Text>
+                <Text style={modernProfessionalStyles.entrySubtitle}>
+                  {edu.degree}{edu.field && ` in ${edu.field}`}
+                </Text>
+                {edu.location && (
+                  <Text style={modernProfessionalStyles.entryLocation}>{edu.location}</Text>
+                )}
+              </View>
+              <View style={modernProfessionalStyles.entryRight}>
+                <Text style={modernProfessionalStyles.dateTag}>{edu.date}</Text>
+                {edu.gpa && (
+                  <Text style={modernProfessionalStyles.gpaText}>GPA: {edu.gpa}</Text>
+                )}
+              </View>
             </View>
-            <View style={modernProfessionalStyles.dateContainer}>
-              <Text style={modernProfessionalStyles.educationDate}>{edu.date}</Text>
-            </View>
+            {edu.achievements && edu.achievements.length > 0 && (
+              <View style={modernProfessionalStyles.bulletList}>
+                {edu.achievements.map((achievement, achIndex) => (
+                  <View key={achIndex} style={modernProfessionalStyles.bulletItem}>
+                    <View style={modernProfessionalStyles.bulletPoint} />
+                    <Text style={modernProfessionalStyles.bulletText}>
+                      {parseMarkdownText(achievement.replace(/^[-•*]\s*/, ''))}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            )}
           </View>
         ))}
       </View>
     );
   };
 
-  const renderSkills = () => {
+  const renderProjects = () => {
+    if (!resume.projects || resume.projects.length === 0) return null;
+
+    return (
+      <View>
+        <View>
+          <Text style={modernProfessionalStyles.sectionTitle}>Key Projects</Text>
+          <View style={modernProfessionalStyles.sectionLine} />
+        </View>
+        {resume.projects.map((project, index) => (
+          <View key={index} style={modernProfessionalStyles.entryContainer}>
+            <View style={modernProfessionalStyles.projectHeader}>
+              <View style={modernProfessionalStyles.entryLeft}>
+                <Text style={modernProfessionalStyles.entryTitle}>{project.name}</Text>
+                {project.technologies && project.technologies.length > 0 && (
+                  <View style={modernProfessionalStyles.projectTags}>
+                    {project.technologies.map((tech, techIndex) => (
+                      <Text key={techIndex} style={modernProfessionalStyles.techTag}>
+                        {tech}
+                      </Text>
+                    ))}
+                  </View>
+                )}
+                {project.url && (
+                  <Text style={modernProfessionalStyles.projectUrl}>
+                    {project.url.replace('https://', '').replace('http://', '')}
+                  </Text>
+                )}
+              </View>
+              <View style={modernProfessionalStyles.entryRight}>
+                {project.date && (
+                  <Text style={modernProfessionalStyles.dateTag}>{project.date}</Text>
+                )}
+              </View>
+            </View>
+            {project.description && project.description.length > 0 && (
+              <View style={modernProfessionalStyles.bulletList}>
+                {project.description.map((desc, descIndex) => (
+                  <View key={descIndex} style={modernProfessionalStyles.bulletItem}>
+                    <View style={modernProfessionalStyles.bulletPoint} />
+                    <Text style={modernProfessionalStyles.bulletText}>
+                      {parseMarkdownText(desc)}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            )}
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderTechnicalSkills = () => {
     if (!resume.skills || resume.skills.length === 0) return null;
 
     return (
-      <View style={modernProfessionalStyles.section}>
-        <Text style={modernProfessionalStyles.sectionTitle}>Technical Skills</Text>
-        
+      <View>
+        <View>
+          <Text style={modernProfessionalStyles.sectionTitle}>Technical Skills</Text>
+          <View style={modernProfessionalStyles.sectionLine} />
+        </View>
         <View style={modernProfessionalStyles.skillsGrid}>
           {resume.skills.map((skillCategory, index) => (
             <View key={index} style={modernProfessionalStyles.skillCategory}>
               <Text style={modernProfessionalStyles.skillCategoryTitle}>
                 {skillCategory.category}
               </Text>
-              <View style={modernProfessionalStyles.skillsContainer}>
+              <View style={modernProfessionalStyles.skillTagsContainer}>
                 {skillCategory.items.map((skill, skillIndex) => (
-                  <Text key={skillIndex} style={modernProfessionalStyles.skillItem}>
+                  <Text key={skillIndex} style={modernProfessionalStyles.skillTag}>
                     {skill}
                   </Text>
                 ))}
@@ -547,14 +439,74 @@ export const ModernProfessionalPDF = memo(function ModernProfessionalPDF({ resum
     );
   };
 
+  const renderLeadershipActivities = () => {
+    // Check if any education entry has achievements
+    const hasEducationAchievements = resume.education && resume.education.some(edu => 
+      edu.achievements && edu.achievements.length > 0
+    );
+
+    if (!hasEducationAchievements) return null;
+
+    return (
+      <View>
+        <View>
+          <Text style={modernProfessionalStyles.sectionTitle}>Leadership & Activities</Text>
+          <View style={modernProfessionalStyles.sectionLine} />
+        </View>
+        {resume.education.map((edu, index) => (
+          edu.achievements && edu.achievements.length > 0 ? (
+            <View key={index} style={modernProfessionalStyles.entryContainer}>
+              <View style={modernProfessionalStyles.entryHeader}>
+                <View style={modernProfessionalStyles.entryLeft}>
+                  <Text style={modernProfessionalStyles.entryTitle}>Leadership Activities</Text>
+                  <Text style={modernProfessionalStyles.entrySubtitle}>{edu.school}</Text>
+                </View>
+                <View style={modernProfessionalStyles.entryRight}>
+                  <Text style={modernProfessionalStyles.dateTag}>{edu.date}</Text>
+                </View>
+              </View>
+              <View style={modernProfessionalStyles.bulletList}>
+                {edu.achievements.map((achievement, achIndex) => (
+                  <View key={achIndex} style={modernProfessionalStyles.bulletItem}>
+                    <View style={modernProfessionalStyles.bulletPoint} />
+                    <Text style={modernProfessionalStyles.bulletText}>
+                      {parseMarkdownText(achievement.replace(/^[-•*]\s*/, ''))}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          ) : null
+        ))}
+      </View>
+    );
+  };
+
   return (
     <PDFDocument>
       <PDFPage size="LETTER" style={modernProfessionalStyles.page}>
-        {renderHeader()}
+        {/* Header */}
+        <View style={modernProfessionalStyles.header}>
+          <Text style={modernProfessionalStyles.name}>
+            {resume.first_name} <Text style={modernProfessionalStyles.nameAccent}>{resume.last_name}</Text>
+          </Text>
+          {renderContactInfo()}
+        </View>
+
+        {/* Experience */}
         {renderExperience()}
-        {renderProjects()}
+
+        {/* Education */}
         {renderEducation()}
-        {renderSkills()}
+
+        {/* Projects */}
+        {renderProjects()}
+
+        {/* Technical Skills */}
+        {renderTechnicalSkills()}
+
+        {/* Leadership & Activities */}
+        {renderLeadershipActivities()}
       </PDFPage>
     </PDFDocument>
   );

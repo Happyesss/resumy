@@ -1,431 +1,228 @@
 'use client';
 
+import { Resume } from "@/lib/types";
+import { Document as PDFDocument, Page as PDFPage, Text, View, StyleSheet, Link } from '@react-pdf/renderer';
 import { memo } from 'react';
-import { Document as PDFDocument, Page as PDFPage, Text, View, StyleSheet } from '@react-pdf/renderer';
-import { Resume } from '@/lib/types';
 
-// Helper function to parse markdown-style text and return plain text for PDF
+// Utility function to parse markdown and render mixed text with bold formatting
 const parseMarkdownText = (text: string) => {
-  return text.replace(/\*\*(.*?)\*\*/g, '$1').replace(/\*(.*?)\*/g, '$1');
+  if (!text) return null;
+  
+  // Split by **bold** patterns while preserving the delimiters
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  
+  return parts.map((part, index) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      // Remove the ** and make it bold
+      const boldText = part.slice(2, -2);
+      return (
+        <Text key={index} style={{ fontFamily: 'Helvetica-Bold' }}>
+          {boldText}
+        </Text>
+      );
+    }
+    return <Text key={index}>{part}</Text>;
+  });
 };
 
 const techProfessionalStyles = StyleSheet.create({
   page: {
-    fontFamily: 'Courier',
-    fontSize: 9,
+    fontFamily: 'Helvetica',
+    fontSize: 10,
     paddingTop: 20,
     paddingBottom: 20,
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
     lineHeight: 1.4,
-    color: '#111827',
-    backgroundColor: '#FFFFFF'
+    color: '#1a1a1a',
   },
-  
-  // Header styles with dark tech theme
   header: {
-    backgroundColor: '#111827',
-    color: '#FFFFFF',
-    padding: 15,
-    marginBottom: 15,
-    borderLeft: '3pt solid #10B981',
-    paddingLeft: 18,
+    backgroundColor: '#0f172a',
+    color: '#ffffff',
+    padding: 20,
+    marginHorizontal: -24,
+    marginTop: -20,
+    marginBottom: 16,
   },
-  
   name: {
-    fontSize: 18,
-    fontFamily: 'Courier-Bold',
-    marginBottom: 10,
-    color: '#FFFFFF',
-    letterSpacing: 0.5,
+    fontSize: 26,
+    fontFamily: 'Helvetica-Bold',
+    color: '#ffffff',
+    marginBottom: 6,
+    letterSpacing: 1,
   },
-  
-  targetRole: {
-    fontSize: 11,
-    color: '#10B981',
-    marginBottom: 10,
-    fontFamily: 'Courier-Bold',
+  title: {
+    fontSize: 14,
+    color: '#64748b',
+    marginBottom: 12,
+    fontFamily: 'Helvetica-Bold',
   },
-  
   contactGrid: {
-    flexDirection: 'column',
-    fontSize: 8,
-  },
-  
-  contactRow: {
-    flexDirection: 'row',
-    marginBottom: 2,
-    alignItems: 'center',
-  },
-  
-  promptSymbol: {
-    color: '#10B981',
-    marginRight: 4,
-    fontFamily: 'Courier-Bold',
-  },
-  
-  contactLabel: {
-    color: '#D1D5DB',
-    marginRight: 4,
-  },
-  
-  contactValue: {
-    color: '#FFFFFF',
-  },
-  
-  contactLink: {
-    color: '#93C5FD',
-  },
-  
-  // Section styles
-  section: {
-    marginBottom: 12,
-    paddingHorizontal: 15,
-  },
-  
-  sectionTitle: {
-    fontSize: 12,
-    fontFamily: 'Courier-Bold',
-    color: '#111827',
-    marginBottom: 8,
-    borderBottom: '2pt solid #10B981',
-    paddingBottom: 3,
-  },
-  
-  commentPrefix: {
-    color: '#10B981',
-  },
-  
-  // Skills section - prominent for tech roles
-  skillsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    gap: 16,
   },
-  
-  skillCategory: {
-    width: '48%',
-    backgroundColor: '#F9FAFB',
-    borderLeft: '3pt solid #10B981',
-    padding: 8,
-    marginBottom: 8,
-    paddingLeft: 11,
-  },
-  
-  skillCategoryTitle: {
-    fontSize: 9,
-    fontFamily: 'Courier-Bold',
-    color: '#10B981',
-    marginBottom: 6,
-    textTransform: 'uppercase',
-  },
-  
-  skillsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  
-  skillItem: {
-    backgroundColor: '#111827',
-    color: '#10B981',
-    fontSize: 7,
-    fontFamily: 'Courier-Bold',
-    paddingHorizontal: 4,
-    paddingTop: 1,
-    paddingBottom: 1,
-    marginRight: 3,
-    marginBottom: 2,
-    borderRadius: 1,
-    textAlign: 'center',
-    lineHeight: 1.2,
-  },
-  
-  // Experience styles with terminal theme
-  experienceItem: {
-    marginBottom: 12,
-    backgroundColor: '#111827',
-    padding: 8,
-    borderRadius: 3,
-  },
-  
-  terminalHeader: {
-    backgroundColor: '#1F2937',
-    padding: 4,
-    marginBottom: 6,
-    borderRadius: 2,
+  contactItem: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginRight: 20,
   },
-  
-  terminalDots: {
-    flexDirection: 'row',
-    marginRight: 8,
-  },
-  
-  terminalDot: {
+  contactIcon: {
     width: 4,
     height: 4,
+    backgroundColor: '#64748b',
     borderRadius: 2,
-    marginRight: 2,
+    marginRight: 6,
   },
-  
-  redDot: {
-    backgroundColor: '#EF4444',
+  contactText: {
+    fontSize: 9,
+    color: '#e2e8f0',
   },
-  
-  yellowDot: {
-    backgroundColor: '#F59E0B',
+  linkText: {
+    fontSize: 9,
+    color: '#38bdf8',
   },
-  
-  greenDot: {
-    backgroundColor: '#10B981',
+  sectionTitle: {
+    fontSize: 13,
+    fontFamily: 'Helvetica-Bold',
+    color: '#0f172a',
+    marginTop: 14,
+    marginBottom: 6,
+    paddingLeft: 12,
+    borderLeftWidth: 4,
+    borderLeftColor: '#0ea5e9',
   },
-  
-  terminalTitle: {
-    fontSize: 8,
-    color: '#D1D5DB',
-    fontFamily: 'Courier',
+  entryContainer: {
+    marginBottom: 10,
+    paddingLeft: 4,
   },
-  
-  terminalContent: {
-    color: '#10B981',
-  },
-  
-  experienceHeader: {
+  entryHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 6,
-  },
-  
-  experienceLeft: {
-    flex: 1,
-    paddingRight: 10,
-  },
-  
-  terminalField: {
-    flexDirection: 'row',
-    marginBottom: 2,
-  },
-  
-  fieldLabel: {
-    color: '#FFFFFF',
-    marginRight: 4,
-  },
-  
-  position: {
-    color: '#93C5FD',
-    fontFamily: 'Courier-Bold',
-  },
-  
-  company: {
-    color: '#FDE047',
-    fontFamily: 'Courier-Bold',
-  },
-  
-  location: {
-    color: '#D1D5DB',
-  },
-  
-  dateContainer: {
-    backgroundColor: '#1F2937',
-    padding: 3,
-    borderRadius: 2,
-  },
-  
-  date: {
-    fontSize: 8,
-    color: '#D1D5DB',
-    fontFamily: 'Courier',
-    textAlign: 'right',
-  },
-  
-  achievementsLabel: {
-    color: '#FFFFFF',
-    marginBottom: 4,
-    marginTop: 6,
-  },
-  
-  // Bullet points
-  bulletList: {
-    marginTop: 4,
-  },
-  
-  bulletItem: {
-    flexDirection: 'row',
     alignItems: 'flex-start',
     marginBottom: 3,
   },
-  
-  bulletArrow: {
-    color: '#10B981',
-    marginRight: 6,
-    marginTop: 1,
-    fontFamily: 'Courier-Bold',
-  },
-  
-  bulletText: {
-    fontSize: 8,
-    color: '#D1D5DB',
-    lineHeight: 1.3,
+  entryLeft: {
     flex: 1,
+    paddingRight: 12,
   },
-  
-  // Technologies
-  techStackLabel: {
-    color: '#FFFFFF',
-    marginBottom: 4,
-    marginTop: 6,
+  entryRight: {
+    alignItems: 'flex-end',
   },
-  
-  technologiesContainer: {
+  entryTitle: {
+    fontSize: 11,
+    fontFamily: 'Helvetica-Bold',
+    color: '#0f172a',
+    marginBottom: 1,
+  },
+  entrySubtitle: {
+    fontSize: 10,
+    color: '#0ea5e9',
+    fontFamily: 'Helvetica-Bold',
+    marginBottom: 1,
+  },
+  entryLocation: {
+    fontSize: 8,
+    color: '#64748b',
+  },
+  dateChip: {
+    backgroundColor: '#e0f2fe',
+    color: '#0369a1',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 4,
+    fontSize: 8,
+    fontFamily: 'Helvetica-Bold',
+    textAlign: 'center',
+  },
+  gpaText: {
+    fontSize: 8,
+    color: '#64748b',
+    marginTop: 2,
+  },
+  bulletList: {
+    marginTop: 4,
+  },
+  bulletItem: {
+    flexDirection: 'row',
+    marginBottom: 2,
+    alignItems: 'flex-start',
+  },
+  bulletPoint: {
+    width: 3,
+    height: 3,
+    backgroundColor: '#0ea5e9',
+    borderRadius: 1.5,
+    marginRight: 8,
+    marginTop: 5,
+  },
+  bulletText: {
+    flex: 1,
+    fontSize: 9,
+    lineHeight: 1.4,
+    color: '#374151',
+  },
+  skillsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    gap: 8,
   },
-  
-  technologyTag: {
-    backgroundColor: '#10B981',
-    color: '#111827',
-    fontSize: 7,
-    fontFamily: 'Courier-Bold',
-    paddingHorizontal: 3,
-    paddingTop: 1,
-    paddingBottom: 1,
-    marginRight: 3,
-    marginBottom: 2,
-    borderRadius: 1,
-    textAlign: 'center',
-    lineHeight: 1.2,
-  },
-  
-  // Projects styles
-  projectItem: {
-    marginBottom: 8,
-    backgroundColor: '#F9FAFB',
-    border: '0.5pt solid #E5E7EB',
+  skillCategory: {
+    backgroundColor: '#f8fafc',
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
+    borderRadius: 8,
     padding: 8,
-    borderRadius: 3,
+    width: '48%',
+    marginBottom: 6,
   },
-  
+  skillCategoryTitle: {
+    fontSize: 10,
+    fontFamily: 'Helvetica-Bold',
+    color: '#0f172a',
+    marginBottom: 4,
+  },
+  skillTagsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 3,
+  },
+  skillTag: {
+    backgroundColor: '#0ea5e9',
+    color: '#ffffff',
+    fontSize: 7,
+    paddingHorizontal: 4,
+    paddingVertical: 1,
+    borderRadius: 6,
+    fontFamily: 'Helvetica-Bold',
+    textAlign: 'center',
+  },
   projectHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 4,
+    marginBottom: 3,
   },
-  
-  projectLeft: {
-    flex: 1,
-    paddingRight: 10,
-  },
-  
-  projectName: {
-    fontSize: 10,
-    fontFamily: 'Courier-Bold',
-    color: '#111827',
-    marginBottom: 2,
-  },
-  
-  projectUrl: {
-    fontSize: 8,
-    color: '#2563EB',
-    textDecoration: 'underline',
-    fontFamily: 'Courier',
-  },
-  
-  projectDate: {
-    backgroundColor: '#1F2937',
-    color: '#10B981',
-    padding: 2,
-    borderRadius: 2,
-    fontSize: 8,
-    fontFamily: 'Courier',
-  },
-  
-  projectBulletArrow: {
-    color: '#10B981',
-    marginRight: 6,
-    marginTop: 1,
-    fontFamily: 'Courier-Bold',
-  },
-  
-  projectBulletText: {
-    fontSize: 8,
-    color: '#374151',
-    lineHeight: 1.3,
-    flex: 1,
-  },
-  
-  projectTechContainer: {
+  projectTags: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 4,
+    gap: 3,
+    marginTop: 2,
   },
-  
-  projectTechTag: {
-    backgroundColor: '#111827',
-    color: '#10B981',
+  techChip: {
+    backgroundColor: '#f1f5f9',
+    borderWidth: 1,
+    borderColor: '#cbd5e1',
+    color: '#0f172a',
     fontSize: 7,
-    fontFamily: 'Courier',
-    paddingHorizontal: 3,
-    paddingTop: 1,
-    paddingBottom: 1,
-    marginRight: 2,
-    marginBottom: 2,
-    borderRadius: 1,
+    paddingHorizontal: 4,
+    paddingVertical: 1,
+    borderRadius: 4,
     textAlign: 'center',
-    lineHeight: 1.2,
   },
-  
-  // Education styles
-  educationItem: {
-    marginBottom: 8,
-    backgroundColor: '#F9FAFB',
-    borderLeft: '3pt solid #10B981',
-    padding: 8,
-    paddingLeft: 11,
-    borderRadius: 1,
-  },
-  
-  educationHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 4,
-  },
-  
-  educationLeft: {
-    flex: 1,
-    paddingRight: 10,
-  },
-  
-  school: {
-    fontSize: 10,
-    fontFamily: 'Courier-Bold',
-    color: '#111827',
-    marginBottom: 2,
-  },
-  
-  degree: {
-    fontSize: 9,
-    fontFamily: 'Courier-Bold',
-    color: '#10B981',
-    marginBottom: 2,
-  },
-  
-  gpa: {
+  projectUrl: {
     fontSize: 8,
-    color: '#4B5563',
-    fontFamily: 'Courier',
-  },
-  
-  educationDate: {
-    backgroundColor: '#111827',
-    color: '#10B981',
-    padding: 3,
-    borderRadius: 2,
-    fontSize: 8,
-    fontFamily: 'Courier',
-    textAlign: 'center',
+    color: '#0ea5e9',
+    marginTop: 2,
   },
 });
 
@@ -436,83 +233,51 @@ interface TechProfessionalPDFProps {
 
 export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, variant = 'base' }: TechProfessionalPDFProps) {
   
-  const renderHeader = () => (
-    <View style={techProfessionalStyles.header}>
-      <Text style={techProfessionalStyles.name}>
-        {resume.first_name} {resume.last_name}
-      </Text>
-      
-      <View style={techProfessionalStyles.contactGrid}>
-        {resume.email && (
-          <View style={techProfessionalStyles.contactRow}>
-            <Text style={techProfessionalStyles.promptSymbol}>$</Text>
-            <Text style={techProfessionalStyles.contactLabel}>email:</Text>
-            <Text style={techProfessionalStyles.contactValue}>{resume.email}</Text>
-          </View>
-        )}
-        {resume.phone_number && (
-          <View style={techProfessionalStyles.contactRow}>
-            <Text style={techProfessionalStyles.promptSymbol}>$</Text>
-            <Text style={techProfessionalStyles.contactLabel}>phone:</Text>
-            <Text style={techProfessionalStyles.contactValue}>{resume.phone_number}</Text>
-          </View>
-        )}
-        {resume.location && (
-          <View style={techProfessionalStyles.contactRow}>
-            <Text style={techProfessionalStyles.promptSymbol}>$</Text>
-            <Text style={techProfessionalStyles.contactLabel}>location:</Text>
-            <Text style={techProfessionalStyles.contactValue}>{resume.location}</Text>
-          </View>
-        )}
-        {resume.linkedin_url && (
-          <View style={techProfessionalStyles.contactRow}>
-            <Text style={techProfessionalStyles.promptSymbol}>$</Text>
-            <Text style={techProfessionalStyles.contactLabel}>linkedin:</Text>
-            <Text style={techProfessionalStyles.contactLink}>
-              {resume.linkedin_url.replace('https://', '').replace('http://', '')}
-            </Text>
-          </View>
-        )}
-        {resume.github_url && (
-          <View style={techProfessionalStyles.contactRow}>
-            <Text style={techProfessionalStyles.promptSymbol}>$</Text>
-            <Text style={techProfessionalStyles.contactLabel}>github:</Text>
-            <Text style={techProfessionalStyles.contactLink}>
-              {resume.github_url.replace('https://', '').replace('http://', '')}
-            </Text>
-          </View>
-        )}
-        {resume.website && (
-          <View style={techProfessionalStyles.contactRow}>
-            <Text style={techProfessionalStyles.promptSymbol}>$</Text>
-            <Text style={techProfessionalStyles.contactLabel}>website:</Text>
-            <Text style={techProfessionalStyles.contactLink}>
-              {resume.website.replace('https://', '').replace('http://', '')}
-            </Text>
-          </View>
-        )}
-      </View>
-    </View>
-  );
+  const renderContactInfo = () => {
+    const contactItems = [
+      { label: 'Email', value: resume.email },
+      { label: 'Phone', value: resume.phone_number },
+      { label: 'Location', value: resume.location },
+    ].filter(item => item.value);
 
-  const renderSkills = () => {
+    const links = [
+      resume.linkedin_url?.replace('https://', '').replace('http://', ''),
+      resume.github_url?.replace('https://', '').replace('http://', ''),
+    ].filter(Boolean);
+
+    if (links.length > 0) {
+      contactItems.push({ label: 'Links', value: links.join(' • ') });
+    }
+
+    return (
+      <View style={techProfessionalStyles.contactGrid}>
+        {contactItems.map((item, index) => (
+          <View key={index} style={techProfessionalStyles.contactItem}>
+            <View style={techProfessionalStyles.contactIcon} />
+            <Text style={item.label === 'Links' ? techProfessionalStyles.linkText : techProfessionalStyles.contactText}>
+              {item.value}
+            </Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderTechnicalSkills = () => {
     if (!resume.skills || resume.skills.length === 0) return null;
 
     return (
-      <View style={techProfessionalStyles.section}>
-        <Text style={techProfessionalStyles.sectionTitle}>
-          <Text style={techProfessionalStyles.commentPrefix}>// </Text>Technical Stack
-        </Text>
-        
-        <View style={techProfessionalStyles.skillsGrid}>
+      <View>
+        <Text style={techProfessionalStyles.sectionTitle}>Technical Skills</Text>
+        <View style={techProfessionalStyles.skillsContainer}>
           {resume.skills.map((skillCategory, index) => (
             <View key={index} style={techProfessionalStyles.skillCategory}>
               <Text style={techProfessionalStyles.skillCategoryTitle}>
-                {skillCategory.category.toUpperCase()}
+                {skillCategory.category}
               </Text>
-              <View style={techProfessionalStyles.skillsContainer}>
+              <View style={techProfessionalStyles.skillTagsContainer}>
                 {skillCategory.items.map((skill, skillIndex) => (
-                  <Text key={skillIndex} style={techProfessionalStyles.skillItem}>
+                  <Text key={skillIndex} style={techProfessionalStyles.skillTag}>
                     {skill}
                   </Text>
                 ))}
@@ -528,76 +293,34 @@ export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, v
     if (!resume.work_experience || resume.work_experience.length === 0) return null;
 
     return (
-      <View style={techProfessionalStyles.section}>
-        <Text style={techProfessionalStyles.sectionTitle}>
-          <Text style={techProfessionalStyles.commentPrefix}>// </Text>Experience
-        </Text>
-        
+      <View>
+        <Text style={techProfessionalStyles.sectionTitle}>Professional Experience</Text>
         {resume.work_experience.map((exp, index) => (
-          <View key={index} style={techProfessionalStyles.experienceItem}>
-            <View style={techProfessionalStyles.terminalHeader}>
-              <View style={techProfessionalStyles.terminalDots}>
-                <View style={[techProfessionalStyles.terminalDot, techProfessionalStyles.redDot]} />
-                <View style={[techProfessionalStyles.terminalDot, techProfessionalStyles.yellowDot]} />
-                <View style={[techProfessionalStyles.terminalDot, techProfessionalStyles.greenDot]} />
+          <View key={index} style={techProfessionalStyles.entryContainer}>
+            <View style={techProfessionalStyles.entryHeader}>
+              <View style={techProfessionalStyles.entryLeft}>
+                <Text style={techProfessionalStyles.entryTitle}>{exp.position}</Text>
+                <Text style={techProfessionalStyles.entrySubtitle}>{exp.company}</Text>
+                {exp.location && (
+                  <Text style={techProfessionalStyles.entryLocation}>{exp.location}</Text>
+                )}
               </View>
-              <Text style={techProfessionalStyles.terminalTitle}>
-                {exp.company.toLowerCase().replace(/\s+/g, '-')}.terminal
-              </Text>
-            </View>
-            
-            <View style={techProfessionalStyles.terminalContent}>
-              <View style={techProfessionalStyles.experienceHeader}>
-                <View style={techProfessionalStyles.experienceLeft}>
-                  <View style={techProfessionalStyles.terminalField}>
-                    <Text style={techProfessionalStyles.fieldLabel}>position:</Text>
-                    <Text style={techProfessionalStyles.position}>{exp.position}</Text>
-                  </View>
-                  <View style={techProfessionalStyles.terminalField}>
-                    <Text style={techProfessionalStyles.fieldLabel}>company:</Text>
-                    <Text style={techProfessionalStyles.company}>{exp.company}</Text>
-                  </View>
-                  {exp.location && (
-                    <View style={techProfessionalStyles.terminalField}>
-                      <Text style={techProfessionalStyles.fieldLabel}>location:</Text>
-                      <Text style={techProfessionalStyles.location}>{exp.location}</Text>
-                    </View>
-                  )}
-                </View>
-                <View style={techProfessionalStyles.dateContainer}>
-                  <Text style={techProfessionalStyles.date}>{exp.date}</Text>
-                </View>
+              <View style={techProfessionalStyles.entryRight}>
+                <Text style={techProfessionalStyles.dateChip}>{exp.date}</Text>
               </View>
-              
-              {exp.description && exp.description.length > 0 && (
-                <View>
-                  <Text style={techProfessionalStyles.achievementsLabel}>achievements:</Text>
-                  <View style={techProfessionalStyles.bulletList}>
-                    {exp.description.map((desc, descIndex) => (
-                      <View key={descIndex} style={techProfessionalStyles.bulletItem}>
-                        <Text style={techProfessionalStyles.bulletArrow}>→</Text>
-                        <Text style={techProfessionalStyles.bulletText}>
-                          {parseMarkdownText(desc.replace(/^[-•*]\s*/, ''))}
-                        </Text>
-                      </View>
-                    ))}
-                  </View>
-                </View>
-              )}
-              
-              {exp.technologies && exp.technologies.length > 0 && (
-                <View>
-                  <Text style={techProfessionalStyles.techStackLabel}>tech_stack:</Text>
-                  <View style={techProfessionalStyles.technologiesContainer}>
-                    {exp.technologies.map((tech, techIndex) => (
-                      <Text key={techIndex} style={techProfessionalStyles.technologyTag}>
-                        {tech}
-                      </Text>
-                    ))}
-                  </View>
-                </View>
-              )}
             </View>
+            {exp.description && exp.description.length > 0 && (
+              <View style={techProfessionalStyles.bulletList}>
+                {exp.description.map((desc, descIndex) => (
+                  <View key={descIndex} style={techProfessionalStyles.bulletItem}>
+                    <View style={techProfessionalStyles.bulletPoint} />
+                    <Text style={techProfessionalStyles.bulletText}>
+                      {parseMarkdownText(desc)}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            )}
           </View>
         ))}
       </View>
@@ -608,46 +331,43 @@ export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, v
     if (!resume.projects || resume.projects.length === 0) return null;
 
     return (
-      <View style={techProfessionalStyles.section}>
-        <Text style={techProfessionalStyles.sectionTitle}>
-          <Text style={techProfessionalStyles.commentPrefix}>// </Text>Projects
-        </Text>
-        
+      <View>
+        <Text style={techProfessionalStyles.sectionTitle}>Key Projects</Text>
         {resume.projects.map((project, index) => (
-          <View key={index} style={techProfessionalStyles.projectItem}>
+          <View key={index} style={techProfessionalStyles.entryContainer}>
             <View style={techProfessionalStyles.projectHeader}>
-              <View style={techProfessionalStyles.projectLeft}>
-                <Text style={techProfessionalStyles.projectName}>{project.name}</Text>
+              <View style={techProfessionalStyles.entryLeft}>
+                <Text style={techProfessionalStyles.entryTitle}>{project.name}</Text>
+                {project.technologies && project.technologies.length > 0 && (
+                  <View style={techProfessionalStyles.projectTags}>
+                    {project.technologies.map((tech, techIndex) => (
+                      <Text key={techIndex} style={techProfessionalStyles.techChip}>
+                        {tech}
+                      </Text>
+                    ))}
+                  </View>
+                )}
                 {project.url && (
                   <Text style={techProfessionalStyles.projectUrl}>
                     {project.url.replace('https://', '').replace('http://', '')}
                   </Text>
                 )}
               </View>
-              {project.date && (
-                <Text style={techProfessionalStyles.projectDate}>{project.date}</Text>
-              )}
+              <View style={techProfessionalStyles.entryRight}>
+                {project.date && (
+                  <Text style={techProfessionalStyles.dateChip}>{project.date}</Text>
+                )}
+              </View>
             </View>
-            
             {project.description && project.description.length > 0 && (
               <View style={techProfessionalStyles.bulletList}>
                 {project.description.map((desc, descIndex) => (
                   <View key={descIndex} style={techProfessionalStyles.bulletItem}>
-                    <Text style={techProfessionalStyles.projectBulletArrow}>{'>'}</Text>
-                    <Text style={techProfessionalStyles.projectBulletText}>
-                      {parseMarkdownText(desc.replace(/^[-•*]\s*/, ''))}
+                    <View style={techProfessionalStyles.bulletPoint} />
+                    <Text style={techProfessionalStyles.bulletText}>
+                      {parseMarkdownText(desc)}
                     </Text>
                   </View>
-                ))}
-              </View>
-            )}
-            
-            {project.technologies && project.technologies.length > 0 && (
-              <View style={techProfessionalStyles.projectTechContainer}>
-                {project.technologies.map((tech, techIndex) => (
-                  <Text key={techIndex} style={techProfessionalStyles.projectTechTag}>
-                    {tech}
-                  </Text>
                 ))}
               </View>
             )}
@@ -661,35 +381,33 @@ export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, v
     if (!resume.education || resume.education.length === 0) return null;
 
     return (
-      <View style={techProfessionalStyles.section}>
-        <Text style={techProfessionalStyles.sectionTitle}>
-          <Text style={techProfessionalStyles.commentPrefix}>// </Text>Education
-        </Text>
-        
+      <View>
+        <Text style={techProfessionalStyles.sectionTitle}>Education</Text>
         {resume.education.map((edu, index) => (
-          <View key={index} style={techProfessionalStyles.educationItem}>
-            <View style={techProfessionalStyles.educationHeader}>
-              <View style={techProfessionalStyles.educationLeft}>
-                <Text style={techProfessionalStyles.school}>{edu.school}</Text>
-                <Text style={techProfessionalStyles.degree}>
-                  {edu.degree} {edu.field && `in ${edu.field}`}
+          <View key={index} style={techProfessionalStyles.entryContainer}>
+            <View style={techProfessionalStyles.entryHeader}>
+              <View style={techProfessionalStyles.entryLeft}>
+                <Text style={techProfessionalStyles.entryTitle}>{edu.school}</Text>
+                <Text style={techProfessionalStyles.entrySubtitle}>
+                  {edu.degree}{edu.field && ` in ${edu.field}`}
                 </Text>
                 {edu.location && (
-                  <Text style={techProfessionalStyles.location}>{edu.location}</Text>
-                )}
-                {edu.gpa && (
-                  <Text style={techProfessionalStyles.gpa}>GPA: {edu.gpa}</Text>
+                  <Text style={techProfessionalStyles.entryLocation}>{edu.location}</Text>
                 )}
               </View>
-              <Text style={techProfessionalStyles.educationDate}>{edu.date}</Text>
+              <View style={techProfessionalStyles.entryRight}>
+                <Text style={techProfessionalStyles.dateChip}>{edu.date}</Text>
+                {edu.gpa && (
+                  <Text style={techProfessionalStyles.gpaText}>GPA: {edu.gpa}</Text>
+                )}
+              </View>
             </View>
-            
             {edu.achievements && edu.achievements.length > 0 && (
               <View style={techProfessionalStyles.bulletList}>
                 {edu.achievements.map((achievement, achIndex) => (
                   <View key={achIndex} style={techProfessionalStyles.bulletItem}>
-                    <Text style={techProfessionalStyles.projectBulletArrow}>{'>'}</Text>
-                    <Text style={techProfessionalStyles.projectBulletText}>
+                    <View style={techProfessionalStyles.bulletPoint} />
+                    <Text style={techProfessionalStyles.bulletText}>
                       {parseMarkdownText(achievement.replace(/^[-•*]\s*/, ''))}
                     </Text>
                   </View>
@@ -705,10 +423,27 @@ export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, v
   return (
     <PDFDocument>
       <PDFPage size="LETTER" style={techProfessionalStyles.page}>
-        {renderHeader()}
-        {renderSkills()}
+        {/* Header */}
+        <View style={techProfessionalStyles.header}>
+          <Text style={techProfessionalStyles.name}>
+            {resume.first_name} {resume.last_name}
+          </Text>
+          {resume.target_role && (
+            <Text style={techProfessionalStyles.title}>{resume.target_role}</Text>
+          )}
+          {renderContactInfo()}
+        </View>
+
+        {/* Technical Skills */}
+        {renderTechnicalSkills()}
+
+        {/* Experience */}
         {renderExperience()}
+
+        {/* Projects */}
         {renderProjects()}
+
+        {/* Education */}
         {renderEducation()}
       </PDFPage>
     </PDFDocument>

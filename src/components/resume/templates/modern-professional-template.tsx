@@ -10,210 +10,212 @@ interface ModernProfessionalTemplateProps {
 
 export function ModernProfessionalTemplate({ resume, className }: ModernProfessionalTemplateProps) {
   return (
-    <div className={cn("w-full max-w-[8.5in] mx-auto bg-white text-gray-900 p-8 font-sans", className)}>
+    <div className={cn(
+      "w-full max-w-[8.5in] mx-auto bg-white text-gray-900 p-8 font-sans text-sm leading-relaxed",
+      className
+    )}>
       {/* Header Section */}
-      <div className="mb-6">
-        <div className="text-left border-l-4 border-blue-600 pl-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4 tracking-tight">
-            {resume.first_name} {resume.last_name}
-          </h1>
-          
-          {/* Contact Info in Modern Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-2 text-sm text-gray-600">
-            {resume.email && (
-              <div className="flex items-center">
-                <span className="font-medium">Email:</span>
-                <span className="ml-2">{resume.email}</span>
-              </div>
-            )}
-            {resume.phone_number && (
-              <div className="flex items-center">
-                <span className="font-medium">Phone:</span>
-                <span className="ml-2">{resume.phone_number}</span>
-              </div>
-            )}
-            {resume.location && (
-              <div className="flex items-center">
-                <span className="font-medium">Location:</span>
-                <span className="ml-2">{resume.location}</span>
-              </div>
-            )}
-            {resume.linkedin_url && (
-              <div className="flex items-center">
-                <span className="font-medium">LinkedIn:</span>
-                <span className="ml-2 text-blue-600">{resume.linkedin_url.replace('https://', '').replace('http://', '')}</span>
-              </div>
-            )}
-            {resume.github_url && (
-              <div className="flex items-center">
-                <span className="font-medium">GitHub:</span>
-                <span className="ml-2 text-blue-600">{resume.github_url.replace('https://', '').replace('http://', '')}</span>
-              </div>
-            )}
-            {resume.website && (
-              <div className="flex items-center">
-                <span className="font-medium">Website:</span>
-                <span className="ml-2 text-blue-600">{resume.website.replace('https://', '').replace('http://', '')}</span>
-              </div>
+      <div className="border-b-2 border-blue-600 pb-6 mb-8">
+        <div className="flex justify-between items-start">
+          <div className="flex-1">
+            <h1 className="text-4xl font-light text-gray-900 mb-2 tracking-wide">
+              {resume.first_name} <span className="font-semibold text-blue-600">{resume.last_name}</span>
+            </h1>
+            {resume.target_role && (
+              <p className="text-lg text-gray-600 font-medium mb-4">
+                {resume.target_role}
+              </p>
             )}
           </div>
+        </div>
+        
+        {/* Contact Information */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 text-sm">
+          {resume.email && (
+            <div className="flex flex-col">
+              <span className="text-gray-500 text-xs uppercase tracking-wide font-medium">Email</span>
+              <span className="text-gray-900 font-medium">{resume.email}</span>
+            </div>
+          )}
+          {resume.phone_number && (
+            <div className="flex flex-col">
+              <span className="text-gray-500 text-xs uppercase tracking-wide font-medium">Phone</span>
+              <span className="text-gray-900 font-medium">{resume.phone_number}</span>
+            </div>
+          )}
+          {resume.location && (
+            <div className="flex flex-col">
+              <span className="text-gray-500 text-xs uppercase tracking-wide font-medium">Location</span>
+              <span className="text-gray-900 font-medium">{resume.location}</span>
+            </div>
+          )}
+          {(resume.linkedin_url || resume.github_url) && (
+            <div className="flex flex-col">
+              <span className="text-gray-500 text-xs uppercase tracking-wide font-medium">Links</span>
+              <div className="space-y-1">
+                {resume.linkedin_url && (
+                  <div className="text-blue-600 text-sm">
+                    {resume.linkedin_url.replace('https://', '').replace('http://', '')}
+                  </div>
+                )}
+                {resume.github_url && (
+                  <div className="text-blue-600 text-sm">
+                    {resume.github_url.replace('https://', '').replace('http://', '')}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Experience Section */}
       {resume.work_experience && resume.work_experience.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase tracking-wide border-b-2 border-blue-600 pb-2">
+          <h2 className="text-xl font-semibold text-blue-600 mb-6 flex items-center">
+            <div className="w-1 h-6 bg-blue-600 mr-3"></div>
             Professional Experience
           </h2>
-          <div className="space-y-6">
-            {resume.work_experience.map((exp, index) => (
-              <div key={index} className="relative pl-4 border-l-2 border-gray-200">
-                <div className="absolute -left-2 top-0 w-4 h-4 bg-blue-600 rounded-full"></div>
-                
-                <div className="flex justify-between items-start mb-3">
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                      {exp.position}
-                    </h3>
-                    <p className="text-base font-medium text-blue-600 mb-1">
-                      {exp.company}
-                    </p>
-                    {exp.location && (
-                      <p className="text-sm text-gray-600">{exp.location}</p>
-                    )}
-                  </div>
-                  <div className="text-right flex-shrink-0 bg-gray-50 px-3 py-1 rounded-md">
-                    <span className="text-sm text-gray-700 font-medium">
-                      {exp.date}
-                    </span>
-                  </div>
-                </div>
-                
-                {exp.description && exp.description.length > 0 && (
-                  <ul className="space-y-2 mb-4">
-                    {exp.description.map((desc, descIndex) => (
-                      <li key={descIndex} className="flex items-start text-sm text-gray-700 leading-relaxed">
-                        <span className="inline-block w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        <span>{desc.replace(/^[-•*]\s*/, '')}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-               </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Projects Section */}
-      {resume.projects && resume.projects.length > 0 && (
-        <div className="mb-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase tracking-wide border-b-2 border-blue-600 pb-2">
-            Key Projects
-          </h2>
-          <div className="space-y-5">
-            {resume.projects.map((project, index) => (
-              <div key={index} className="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-600">
-                <div className="flex justify-between items-start mb-3">
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                      {project.name}
-                    </h3>
-                    {project.url && (
-                      <a
-                        href={project.url}
-                        className="text-sm text-blue-600 hover:text-blue-800 underline font-medium"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {project.url.replace('https://', '').replace('http://', '')}
-                      </a>
-                    )}
-                  </div>
-                  {project.date && (
-                    <span className="text-sm text-gray-600 font-medium bg-white px-2 py-1 rounded flex-shrink-0">
-                      {project.date}
-                    </span>
+          {resume.work_experience.map((exp, index) => (
+            <div key={index} className="mb-6 last:mb-0">
+              <div className="flex justify-between items-start mb-2">
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-gray-900">{exp.position}</h3>
+                  <div className="text-blue-600 font-medium text-base">{exp.company}</div>
+                  {exp.location && (
+                    <div className="text-gray-500 text-sm">{exp.location}</div>
                   )}
                 </div>
-                
-                {project.description && project.description.length > 0 && (
-                  <ul className="space-y-2 mb-4">
-                    {project.description.map((desc, descIndex) => (
-                      <li key={descIndex} className="flex items-start text-sm text-gray-700 leading-relaxed">
-                        <span className="inline-block w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        <span>{desc.replace(/^[-•*]\s*/, '')}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                
-                {project.technologies && project.technologies.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    <span className="text-sm font-medium text-gray-900">Technologies:</span>
-                    {project.technologies.map((tech, techIndex) => (
-                      <span key={techIndex} className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-md font-medium">
-                        {tech}
-                      </span>
-                    ))}
+                <div className="text-right">
+                  <div className="bg-gray-100 px-3 py-1 rounded-full text-sm font-medium text-gray-700">
+                    {exp.date}
                   </div>
-                )}
+                </div>
               </div>
-            ))}
-          </div>
+              {exp.description && exp.description.length > 0 && (
+                <ul className="mt-3 space-y-2">
+                  {exp.description.map((desc, descIndex) => (
+                    <li key={descIndex} className="flex items-start">
+                      <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      <span className="text-gray-700 leading-relaxed">
+                        {desc.replace(/^[-•*]\s*/, '')}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))}
         </div>
       )}
 
       {/* Education Section */}
       {resume.education && resume.education.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase tracking-wide border-b-2 border-blue-600 pb-2">
+          <h2 className="text-xl font-semibold text-blue-600 mb-6 flex items-center">
+            <div className="w-1 h-6 bg-blue-600 mr-3"></div>
             Education
           </h2>
-          <div className="space-y-4">
-            {resume.education.map((edu, index) => (
-              <div key={index} className="flex justify-between items-start bg-gray-50 p-4 rounded-lg">
+          {resume.education.map((edu, index) => (
+            <div key={index} className="mb-6 last:mb-0">
+              <div className="flex justify-between items-start mb-2">
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                    {edu.school}
-                  </h3>
-                  <p className="text-base font-medium text-blue-600 mb-1">
-                    {edu.degree} {edu.field && `in ${edu.field}`}
-                  </p>
+                  <h3 className="text-lg font-semibold text-gray-900">{edu.school}</h3>
+                  <div className="text-blue-600 font-medium">
+                    {edu.degree}{edu.field && ` in ${edu.field}`}
+                  </div>
                   {edu.location && (
-                    <p className="text-sm text-gray-600 mb-1">{edu.location}</p>
-                  )}
-                  {edu.gpa && (
-                    <p className="text-sm text-gray-600 font-medium">GPA: {edu.gpa}</p>
+                    <div className="text-gray-500 text-sm">{edu.location}</div>
                   )}
                 </div>
-                <div className="text-right flex-shrink-0 bg-white px-3 py-1 rounded-md">
-                  <span className="text-sm text-gray-700 font-medium">
+                <div className="text-right">
+                  <div className="bg-gray-100 px-3 py-1 rounded-full text-sm font-medium text-gray-700">
                     {edu.date}
-                  </span>
+                  </div>
+                  {edu.gpa && (
+                    <div className="text-gray-600 text-sm mt-1">GPA: {edu.gpa}</div>
+                  )}
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       )}
 
-      {/* Skills Section */}
+      {/* Projects Section */}
+      {resume.projects && resume.projects.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold text-blue-600 mb-6 flex items-center">
+            <div className="w-1 h-6 bg-blue-600 mr-3"></div>
+            Key Projects
+          </h2>
+          {resume.projects.map((project, index) => (
+            <div key={index} className="mb-6 last:mb-0">
+              <div className="flex justify-between items-start mb-2">
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-gray-900">{project.name}</h3>
+                  {project.technologies && project.technologies.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {project.technologies.map((tech, techIndex) => (
+                        <span 
+                          key={techIndex} 
+                          className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-medium"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  {project.url && (
+                    <div className="text-blue-600 text-sm mt-1">
+                      <a href={project.url} className="hover:underline">
+                        {project.url.replace('https://', '').replace('http://', '')}
+                      </a>
+                    </div>
+                  )}
+                </div>
+                <div className="text-right">
+                  {project.date && (
+                    <div className="bg-gray-100 px-3 py-1 rounded-full text-sm font-medium text-gray-700">
+                      {project.date}
+                    </div>
+                  )}
+                </div>
+              </div>
+              {project.description && project.description.length > 0 && (
+                <ul className="mt-3 space-y-2">
+                  {project.description.map((desc, descIndex) => (
+                    <li key={descIndex} className="flex items-start">
+                      <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      <span className="text-gray-700 leading-relaxed">
+                        {desc.replace(/^[-•*]\s*/, '')}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Technical Skills Section */}
       {resume.skills && resume.skills.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-4 uppercase tracking-wide border-b-2 border-blue-600 pb-2">
+          <h2 className="text-xl font-semibold text-blue-600 mb-6 flex items-center">
+            <div className="w-1 h-6 bg-blue-600 mr-3"></div>
             Technical Skills
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {resume.skills.map((skillCategory, index) => (
               <div key={index} className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="text-base font-semibold text-blue-600 mb-3">
-                  {skillCategory.category}
-                </h3>
+                <h3 className="font-semibold text-gray-900 mb-3">{skillCategory.category}</h3>
                 <div className="flex flex-wrap gap-2">
                   {skillCategory.items.map((skill, skillIndex) => (
-                    <span key={skillIndex} className="text-sm bg-white text-gray-700 px-3 py-1 rounded-md border border-gray-200 font-medium">
+                    <span 
+                      key={skillIndex}
+                      className="bg-white border border-gray-300 text-gray-700 text-sm px-3 py-1 rounded-full"
+                    >
                       {skill}
                     </span>
                   ))}
@@ -221,6 +223,43 @@ export function ModernProfessionalTemplate({ resume, className }: ModernProfessi
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Leadership / Extracurricular Section */}
+      {resume.education && resume.education.some(edu => edu.achievements && edu.achievements.length > 0) && (
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold text-blue-600 mb-6 flex items-center">
+            <div className="w-1 h-6 bg-blue-600 mr-3"></div>
+            Leadership & Activities
+          </h2>
+          {resume.education.map((edu, index) => (
+            edu.achievements && edu.achievements.length > 0 && (
+              <div key={index} className="mb-6 last:mb-0">
+                <div className="flex justify-between items-start mb-2">
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-gray-900">Leadership Activities</h3>
+                    <div className="text-blue-600 font-medium">{edu.school}</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="bg-gray-100 px-3 py-1 rounded-full text-sm font-medium text-gray-700">
+                      {edu.date}
+                    </div>
+                  </div>
+                </div>
+                <ul className="mt-3 space-y-2">
+                  {edu.achievements.map((achievement, achIndex) => (
+                    <li key={achIndex} className="flex items-start">
+                      <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      <span className="text-gray-700 leading-relaxed">
+                        {achievement.replace(/^[-•*]\s*/, '')}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )
+          ))}
         </div>
       )}
     </div>

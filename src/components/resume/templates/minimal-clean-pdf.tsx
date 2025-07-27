@@ -1,12 +1,28 @@
 'use client';
 
+import { Resume } from "@/lib/types";
+import { Document as PDFDocument, Page as PDFPage, Text, View, StyleSheet, Link } from '@react-pdf/renderer';
 import { memo } from 'react';
-import { Document as PDFDocument, Page as PDFPage, Text, View, StyleSheet } from '@react-pdf/renderer';
-import { Resume } from '@/lib/types';
 
-// Helper function to parse markdown-style text and return plain text for PDF
+// Utility function to parse markdown and render mixed text with bold formatting
 const parseMarkdownText = (text: string) => {
-  return text.replace(/\*\*(.*?)\*\*/g, '$1').replace(/\*(.*?)\*/g, '$1');
+  if (!text) return null;
+  
+  // Split by **bold** patterns while preserving the delimiters
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  
+  return parts.map((part, index) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      // Remove the ** and make it bold
+      const boldText = part.slice(2, -2);
+      return (
+        <Text key={index} style={{ fontFamily: 'Helvetica-Bold' }}>
+          {boldText}
+        </Text>
+      );
+    }
+    return <Text key={index}>{part}</Text>;
+  });
 };
 
 const minimalCleanStyles = StyleSheet.create({
@@ -16,235 +32,161 @@ const minimalCleanStyles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 30,
     paddingHorizontal: 30,
-    lineHeight: 1.3,
-    color: '#111827'
+    lineHeight: 1.5,
+    color: '#000000',
   },
-  
-  // Header styles
   header: {
-    marginBottom: 0,
-    textAlign: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+    paddingBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#000000',
   },
-  
   name: {
-    fontSize: 18,
+    fontSize: 28,
     fontFamily: 'Helvetica-Bold',
-    marginBottom: 8,
-    color: '#111827',
-    letterSpacing: 0.5,
+    color: '#000000',
+    marginBottom: 6,
+    letterSpacing: 2,
   },
-  
-  targetRole: {
-    fontSize: 11,
-    color: '#4B5563',
-    marginBottom: 12,
-    fontFamily: 'Helvetica',
-  },
-  
   contactInfo: {
     flexDirection: 'row',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    fontSize: 9,
-    color: '#4B5563',
-    marginBottom: 15,
+    gap: 12,
+    marginTop: 8,
   },
-  
   contactItem: {
-    marginHorizontal: 4,
+    fontSize: 9,
+    color: '#000000',
   },
-  
   contactSeparator: {
-    marginHorizontal: 4,
+    fontSize: 9,
+    color: '#000000',
+    marginHorizontal: 6,
   },
-  
-  // headerSeparator removed
-  
-  // Section styles
-  section: {
-    marginBottom: 10,
+  linkText: {
+    fontSize: 9,
+    color: '#000000',
+    textDecoration: 'underline',
   },
-  
   sectionTitle: {
     fontSize: 12,
     fontFamily: 'Helvetica-Bold',
-    color: '#111827',
+    color: '#000000',
+    marginTop: 18,
     marginBottom: 8,
-    borderBottom: '0.5pt solid #D1D5DB',
-    paddingBottom: 2,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
   },
-  
-  // Experience styles
-  experienceItem: {
-    marginBottom: 8,
+  entryContainer: {
+    marginBottom: 12,
   },
-  
-  experienceHeader: {
+  entryHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 4,
+    marginBottom: 3,
   },
-  
-  experienceLeft: {
+  entryLeft: {
     flex: 1,
-    paddingRight: 10,
+    paddingRight: 12,
   },
-  
-  position: {
-    fontSize: 11,
-    fontFamily: 'Helvetica',
-    color: '#111827',
-    marginBottom: 2,
+  entryRight: {
+    alignItems: 'flex-end',
+    minWidth: 80,
   },
-  
-  company: {
+  entryTitle: {
     fontSize: 11,
-    fontFamily: 'Helvetica',
-    color: '#111827',
+    fontFamily: 'Helvetica-Bold',
+    color: '#000000',
     marginBottom: 1,
   },
-  
-  location: {
-    fontSize: 9,
-    color: '#4B5563',
+  entrySubtitle: {
+    fontSize: 10,
+    color: '#000000',
+    marginBottom: 1,
+    fontStyle: 'italic',
   },
-  
-  date: {
+  entryLocation: {
     fontSize: 9,
-    color: '#4B5563',
-    fontFamily: 'Helvetica',
+    color: '#666666',
+  },
+  dateText: {
+    fontSize: 9,
+    color: '#000000',
     textAlign: 'right',
-  },
-  
-  // Bullet points
-  bulletList: {
-    marginTop: 4,
-    marginBottom: 6,
-  },
-  
-  bulletItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 2,
-  },
-  
-  bulletDot: {
-    width: 2,
-    height: 2,
-    backgroundColor: '#9CA3AF',
-    borderRadius: 1,
-    marginTop: 4,
-    marginRight: 8,
-    flexShrink: 0,
-  },
-  
-  bulletText: {
-    fontSize: 9,
-    color: '#374151',
-    lineHeight: 1.3,
-    flex: 1,
-  },
-  
-  // Technologies
-  technologies: {
-    fontSize: 9,
-    color: '#4B5563',
-    marginTop: 4,
-  },
-  
-  technologiesLabel: {
     fontFamily: 'Helvetica-Bold',
   },
-  
-  // Projects styles
-  projectItem: {
-    marginBottom: 6,
+  gpaText: {
+    fontSize: 9,
+    color: '#666666',
+    marginTop: 2,
   },
-  
+  bulletList: {
+    marginTop: 6,
+  },
+  bulletItem: {
+    flexDirection: 'row',
+    marginBottom: 3,
+    alignItems: 'flex-start',
+  },
+  bulletMarker: {
+    fontSize: 8,
+    color: '#000000',
+    marginRight: 8,
+    marginTop: 1,
+    width: 8,
+  },
+  bulletText: {
+    flex: 1,
+    fontSize: 9,
+    lineHeight: 1.4,
+    color: '#000000',
+  },
+  skillsGrid: {
+    flexDirection: 'column',
+    gap: 4,
+  },
+  skillRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  skillCategory: {
+    fontSize: 10,
+    fontFamily: 'Helvetica-Bold',
+    color: '#000000',
+    width: 80,
+    marginRight: 12,
+  },
+  skillItems: {
+    flex: 1,
+    fontSize: 9,
+    color: '#000000',
+    lineHeight: 1.3,
+  },
   projectHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     marginBottom: 3,
   },
-  
-  projectLeft: {
-    flex: 1,
-    paddingRight: 10,
+  projectTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 2,
   },
-  
-  projectName: {
-    fontSize: 11,
-    fontFamily: 'Helvetica',
-    color: '#111827',
-    marginBottom: 1,
-  },
-  
   projectUrl: {
-    fontSize: 9,
-    color: '#2563EB',
+    fontSize: 8,
+    color: '#000000',
     textDecoration: 'underline',
+    marginLeft: 8,
   },
-  
-  // Education styles
-  educationItem: {
-    marginBottom: 5,
-  },
-  
-  educationHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 3,
-  },
-  
-  educationLeft: {
-    flex: 1,
-    paddingRight: 10,
-  },
-  
-  school: {
-    fontSize: 11,
-    fontFamily: 'Helvetica',
-    color: '#111827',
-    marginBottom: 1,
-  },
-  
-  degree: {
-    fontSize: 11,
-    color: '#111827',
-    marginBottom: 1,
-  },
-  
-  gpa: {
-    fontSize: 9,
-    color: '#4B5563',
-  },
-  
-  // Skills styles
-  skillsContainer: {
-    flexDirection: 'column',
-  },
-  
-  skillCategory: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'baseline',
-    marginBottom: 3,
-  },
-  
-  skillCategoryTitle: {
-    fontSize: 9,
-    fontFamily: 'Helvetica-Bold',
-    color: '#111827',
-    marginRight: 4,
-  },
-  
-  skillItems: {
-    fontSize: 9,
-    color: '#374151',
-    flex: 1,
+  projectTech: {
+    fontSize: 8,
+    color: '#666666',
+    fontStyle: 'italic',
+    marginBottom: 2,
   },
 });
 
@@ -255,97 +197,60 @@ interface MinimalCleanPDFProps {
 
 export const MinimalCleanPDF = memo(function MinimalCleanPDF({ resume, variant = 'base' }: MinimalCleanPDFProps) {
   
-  const renderHeader = () => (
-    <View style={minimalCleanStyles.header}>
-      <Text style={minimalCleanStyles.name}>
-        {resume.first_name} {resume.last_name}
-      </Text>
-      {resume.target_role && (
-        <Text style={minimalCleanStyles.targetRole}>
-          {resume.target_role}
-        </Text>
-      )}
+  const renderContactInfo = () => {
+    const contactItems = [
+      resume.email,
+      resume.phone_number,
+      resume.location,
+      resume.linkedin_url?.replace('https://', '').replace('http://', ''),
+      resume.github_url?.replace('https://', '').replace('http://', ''),
+    ].filter(Boolean);
+
+    return (
       <View style={minimalCleanStyles.contactInfo}>
-        {resume.email && (
-          <Text style={minimalCleanStyles.contactItem}>{resume.email}</Text>
-        )}
-        {resume.phone_number && (
-          <>
-            {resume.email && <Text style={minimalCleanStyles.contactSeparator}>•</Text>}
-            <Text style={minimalCleanStyles.contactItem}>{resume.phone_number}</Text>
-          </>
-        )}
-        {resume.location && (
-          <>
-            {(resume.email || resume.phone_number) && <Text style={minimalCleanStyles.contactSeparator}>•</Text>}
-            <Text style={minimalCleanStyles.contactItem}>{resume.location}</Text>
-          </>
-        )}
-        {resume.linkedin_url && (
-          <>
-            {(resume.email || resume.phone_number || resume.location) && <Text style={minimalCleanStyles.contactSeparator}>•</Text>}
-            <Text style={minimalCleanStyles.contactItem}>
-              {resume.linkedin_url.replace('https://', '').replace('http://', '')}
-            </Text>
-          </>
-        )}
-        {resume.github_url && (
-          <>
-            {(resume.email || resume.phone_number || resume.location || resume.linkedin_url) && <Text style={minimalCleanStyles.contactSeparator}>•</Text>}
-            <Text style={minimalCleanStyles.contactItem}>
-              {resume.github_url.replace('https://', '').replace('http://', '')}
-            </Text>
-          </>
-        )}
-        {resume.website && (
-          <>
-            {(resume.email || resume.phone_number || resume.location || resume.linkedin_url || resume.github_url) && <Text style={minimalCleanStyles.contactSeparator}>•</Text>}
-            <Text style={minimalCleanStyles.contactItem}>
-              {resume.website.replace('https://', '').replace('http://', '')}
-            </Text>
-          </>
-        )}
+        {contactItems.map((item, index) => (
+          <View key={index} style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={minimalCleanStyles.contactItem}>{item}</Text>
+            {index < contactItems.length - 1 && (
+              <Text style={minimalCleanStyles.contactSeparator}>•</Text>
+            )}
+          </View>
+        ))}
       </View>
-    </View>
-  );
+    );
+  };
 
   const renderExperience = () => {
     if (!resume.work_experience || resume.work_experience.length === 0) return null;
 
     return (
-      <View style={minimalCleanStyles.section}>
-        <Text style={minimalCleanStyles.sectionTitle}>Professional Experience</Text>
-        
+      <View>
+        <Text style={minimalCleanStyles.sectionTitle}>Experience</Text>
         {resume.work_experience.map((exp, index) => (
-          <View key={index} style={minimalCleanStyles.experienceItem}>
-            <View style={minimalCleanStyles.experienceHeader}>
-              <View style={minimalCleanStyles.experienceLeft}>
-                <Text style={minimalCleanStyles.position}>{exp.position}</Text>
-                <Text style={minimalCleanStyles.company}>{exp.company}</Text>
+          <View key={index} style={minimalCleanStyles.entryContainer}>
+            <View style={minimalCleanStyles.entryHeader}>
+              <View style={minimalCleanStyles.entryLeft}>
+                <Text style={minimalCleanStyles.entryTitle}>{exp.position}</Text>
+                <Text style={minimalCleanStyles.entrySubtitle}>{exp.company}</Text>
                 {exp.location && (
-                  <Text style={minimalCleanStyles.location}>{exp.location}</Text>
+                  <Text style={minimalCleanStyles.entryLocation}>{exp.location}</Text>
                 )}
               </View>
-              <Text style={minimalCleanStyles.date}>{exp.date}</Text>
+              <View style={minimalCleanStyles.entryRight}>
+                <Text style={minimalCleanStyles.dateText}>{exp.date}</Text>
+              </View>
             </View>
-            
             {exp.description && exp.description.length > 0 && (
               <View style={minimalCleanStyles.bulletList}>
                 {exp.description.map((desc, descIndex) => (
                   <View key={descIndex} style={minimalCleanStyles.bulletItem}>
-                    <View style={minimalCleanStyles.bulletDot} />
+                    <Text style={minimalCleanStyles.bulletMarker}>•</Text>
                     <Text style={minimalCleanStyles.bulletText}>
-                      {parseMarkdownText(desc.replace(/^[-•*]\s*/, ''))}
+                      {parseMarkdownText(desc)}
                     </Text>
                   </View>
                 ))}
               </View>
-            )}
-            
-            {exp.technologies && exp.technologies.length > 0 && (
-              <Text style={minimalCleanStyles.technologies}>
-                <Text style={minimalCleanStyles.technologiesLabel}>Technologies:</Text> {exp.technologies.join(', ')}
-              </Text>
             )}
           </View>
         ))}
@@ -357,42 +262,43 @@ export const MinimalCleanPDF = memo(function MinimalCleanPDF({ resume, variant =
     if (!resume.projects || resume.projects.length === 0) return null;
 
     return (
-      <View style={minimalCleanStyles.section}>
+      <View>
         <Text style={minimalCleanStyles.sectionTitle}>Projects</Text>
-        
         {resume.projects.map((project, index) => (
-          <View key={index} style={minimalCleanStyles.projectItem}>
-            <View style={minimalCleanStyles.projectHeader}>
-              <View style={minimalCleanStyles.projectLeft}>
-                <Text style={minimalCleanStyles.projectName}>{project.name}</Text>
-                {project.url && (
-                  <Text style={minimalCleanStyles.projectUrl}>
-                    {project.url.replace('https://', '').replace('http://', '')}
+          <View key={index} style={minimalCleanStyles.entryContainer}>
+            <View style={minimalCleanStyles.entryHeader}>
+              <View style={minimalCleanStyles.entryLeft}>
+                <View style={minimalCleanStyles.projectTitleRow}>
+                  <Text style={minimalCleanStyles.entryTitle}>{project.name}</Text>
+                  {project.url && (
+                    <Text style={minimalCleanStyles.projectUrl}>
+                      {project.url.replace('https://', '').replace('http://', '')}
+                    </Text>
+                  )}
+                </View>
+                {project.technologies && project.technologies.length > 0 && (
+                  <Text style={minimalCleanStyles.projectTech}>
+                    {project.technologies.join(' • ')}
                   </Text>
                 )}
               </View>
-              {project.date && (
-                <Text style={minimalCleanStyles.date}>{project.date}</Text>
-              )}
+              <View style={minimalCleanStyles.entryRight}>
+                {project.date && (
+                  <Text style={minimalCleanStyles.dateText}>{project.date}</Text>
+                )}
+              </View>
             </View>
-            
             {project.description && project.description.length > 0 && (
               <View style={minimalCleanStyles.bulletList}>
                 {project.description.map((desc, descIndex) => (
                   <View key={descIndex} style={minimalCleanStyles.bulletItem}>
-                    <View style={minimalCleanStyles.bulletDot} />
+                    <Text style={minimalCleanStyles.bulletMarker}>•</Text>
                     <Text style={minimalCleanStyles.bulletText}>
-                      {parseMarkdownText(desc.replace(/^[-•*]\s*/, ''))}
+                      {parseMarkdownText(desc)}
                     </Text>
                   </View>
                 ))}
               </View>
-            )}
-            
-            {project.technologies && project.technologies.length > 0 && (
-              <Text style={minimalCleanStyles.technologies}>
-                <Text style={minimalCleanStyles.technologiesLabel}>Technologies:</Text> {project.technologies.join(', ')}
-              </Text>
             )}
           </View>
         ))}
@@ -404,32 +310,32 @@ export const MinimalCleanPDF = memo(function MinimalCleanPDF({ resume, variant =
     if (!resume.education || resume.education.length === 0) return null;
 
     return (
-      <View style={minimalCleanStyles.section}>
+      <View>
         <Text style={minimalCleanStyles.sectionTitle}>Education</Text>
-        
         {resume.education.map((edu, index) => (
-          <View key={index} style={minimalCleanStyles.educationItem}>
-            <View style={minimalCleanStyles.educationHeader}>
-              <View style={minimalCleanStyles.educationLeft}>
-                <Text style={minimalCleanStyles.school}>{edu.school}</Text>
-                <Text style={minimalCleanStyles.degree}>
-                  {edu.degree} {edu.field && `in ${edu.field}`}
+          <View key={index} style={minimalCleanStyles.entryContainer}>
+            <View style={minimalCleanStyles.entryHeader}>
+              <View style={minimalCleanStyles.entryLeft}>
+                <Text style={minimalCleanStyles.entryTitle}>{edu.school}</Text>
+                <Text style={minimalCleanStyles.entrySubtitle}>
+                  {edu.degree}{edu.field && ` in ${edu.field}`}
                 </Text>
                 {edu.location && (
-                  <Text style={minimalCleanStyles.location}>{edu.location}</Text>
+                  <Text style={minimalCleanStyles.entryLocation}>{edu.location}</Text>
                 )}
                 {edu.gpa && (
-                  <Text style={minimalCleanStyles.gpa}>GPA: {edu.gpa}</Text>
+                  <Text style={minimalCleanStyles.gpaText}>GPA: {edu.gpa}</Text>
                 )}
               </View>
-              <Text style={minimalCleanStyles.date}>{edu.date}</Text>
+              <View style={minimalCleanStyles.entryRight}>
+                <Text style={minimalCleanStyles.dateText}>{edu.date}</Text>
+              </View>
             </View>
-            
             {edu.achievements && edu.achievements.length > 0 && (
               <View style={minimalCleanStyles.bulletList}>
                 {edu.achievements.map((achievement, achIndex) => (
                   <View key={achIndex} style={minimalCleanStyles.bulletItem}>
-                    <View style={minimalCleanStyles.bulletDot} />
+                    <Text style={minimalCleanStyles.bulletMarker}>•</Text>
                     <Text style={minimalCleanStyles.bulletText}>
                       {parseMarkdownText(achievement.replace(/^[-•*]\s*/, ''))}
                     </Text>
@@ -447,13 +353,12 @@ export const MinimalCleanPDF = memo(function MinimalCleanPDF({ resume, variant =
     if (!resume.skills || resume.skills.length === 0) return null;
 
     return (
-      <View style={minimalCleanStyles.section}>
+      <View>
         <Text style={minimalCleanStyles.sectionTitle}>Skills</Text>
-        
-        <View style={minimalCleanStyles.skillsContainer}>
+        <View style={minimalCleanStyles.skillsGrid}>
           {resume.skills.map((skillCategory, index) => (
-            <View key={index} style={minimalCleanStyles.skillCategory}>
-              <Text style={minimalCleanStyles.skillCategoryTitle}>
+            <View key={index} style={minimalCleanStyles.skillRow}>
+              <Text style={minimalCleanStyles.skillCategory}>
                 {skillCategory.category}:
               </Text>
               <Text style={minimalCleanStyles.skillItems}>
@@ -469,10 +374,24 @@ export const MinimalCleanPDF = memo(function MinimalCleanPDF({ resume, variant =
   return (
     <PDFDocument>
       <PDFPage size="LETTER" style={minimalCleanStyles.page}>
-        {renderHeader()}
+        {/* Header */}
+        <View style={minimalCleanStyles.header}>
+          <Text style={minimalCleanStyles.name}>
+            {resume.first_name} {resume.last_name}
+          </Text>
+          {renderContactInfo()}
+        </View>
+
+        {/* Experience */}
         {renderExperience()}
+
+        {/* Projects */}
         {renderProjects()}
+
+        {/* Education */}
         {renderEducation()}
+
+        {/* Skills */}
         {renderSkills()}
       </PDFPage>
     </PDFDocument>
