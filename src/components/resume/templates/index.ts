@@ -1,11 +1,3 @@
-// HTML Templates
-export { ClassicResumeTemplate } from './classic-resume-template';
-export { CreativeModernTemplate } from './creative-modern-template';
-export { CreativeMinimalTemplate } from './creative-minimal-template';
-export { MinimalCleanTemplate } from './minimal-clean-template';
-export { ModernProfessionalTemplate } from './modern-professional-template';
-export { TechProfessionalTemplate } from './tech-professional-template';
-
 // PDF Templates
 export { ClassicResumePDF } from './classic-resume-pdf';
 export { CreativeModernPDF } from './creative-modern-pdf';
