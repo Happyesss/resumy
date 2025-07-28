@@ -39,14 +39,14 @@ const creativeModernStyles = StyleSheet.create({
   sidebar: {
     backgroundColor: '#4a5568',
     color: '#ffffff',
-    width: '35%',
+    width: '30%',
     paddingTop: 25,
     paddingBottom: 25,
     paddingHorizontal: 20,
     minHeight: '100%',
   },
   mainContent: {
-    width: '65%',
+    width: '70%',
     paddingTop: 25,
     paddingBottom: 25,
     paddingHorizontal: 20,
@@ -80,32 +80,32 @@ const creativeModernStyles = StyleSheet.create({
     marginBottom: 6,
   },
   contactLabel: {
-    fontSize: 8,
+    fontSize: 10,
     color: '#a0aec0',
     marginBottom: 1,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
   contactValue: {
-    fontSize: 9,
+    fontSize: 10,
     color: '#ffffff',
     fontFamily: 'Helvetica-Bold',
   },
   linkValue: {
-    fontSize: 9,
+    fontSize: 10,
     color: '#90cdf4',
   },
   skillCategory: {
     marginBottom: 10,
   },
   skillCategoryTitle: {
-    fontSize: 9,
+    fontSize: 10,
     fontFamily: 'Helvetica-Bold',
     color: '#e2e8f0',
     marginBottom: 4,
   },
   skillItem: {
-    fontSize: 8,
+    fontSize: 10,
     color: '#cbd5e1',
     marginBottom: 2,
     paddingLeft: 8,
@@ -156,7 +156,7 @@ const creativeModernStyles = StyleSheet.create({
     backgroundColor: '#fed7d7',
     color: '#c53030',
     paddingHorizontal: 8,
-    paddingVertical: 3,
+    paddingVertical: 1,
     borderRadius: 12,
     fontSize: 8,
     fontFamily: 'Helvetica-Bold',
@@ -411,16 +411,9 @@ export const CreativeModernPDF = memo(function CreativeModernPDF({ resume, varia
       <PDFPage size="LETTER" style={creativeModernStyles.page}>
         {/* Sidebar */}
         <View style={creativeModernStyles.sidebar}>
-          <Text style={creativeModernStyles.sidebarName}>
-            {resume.first_name}
+          <Text style={{ ...creativeModernStyles.sidebarName, marginBottom: 22 }}>
+            {`${resume.first_name} ${resume.last_name}`}
           </Text>
-          <Text style={creativeModernStyles.sidebarName}>
-            {resume.last_name}
-          </Text>
-          {resume.target_role && (
-            <Text style={creativeModernStyles.sidebarTitle}>{resume.target_role}</Text>
-          )}
-          
           {renderContactInfo()}
           {renderSkillsSection()}
         </View>
