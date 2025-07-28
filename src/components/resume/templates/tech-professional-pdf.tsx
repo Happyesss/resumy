@@ -38,33 +38,45 @@ const techProfessionalStyles = StyleSheet.create({
   header: {
     backgroundColor: '#0f172a',
     color: '#ffffff',
-    padding: 20,
+    paddingTop: 24,
+    paddingBottom: 18,
+    paddingLeft: 24,
+    paddingRight: 24,
     marginHorizontal: -24,
     marginTop: -20,
-    marginBottom: 16,
+    marginBottom: 10,
   },
   name: {
-    fontSize: 26,
+    fontSize: 28,
     fontFamily: 'Helvetica-Bold',
     color: '#ffffff',
-    marginBottom: 6,
-    letterSpacing: 1,
+    marginBottom: 28,
+    letterSpacing: 1.5,
+    position: 'relative',
+    zIndex: 1,
   },
   title: {
-    fontSize: 14,
-    color: '#64748b',
-    marginBottom: 12,
+    fontSize: 12,
+    color: '#38bdf8',
+    marginBottom: 16,
     fontFamily: 'Helvetica-Bold',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    position: 'relative',
+    zIndex: 1,
   },
   contactGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 16,
+    gap: 12,
+    marginTop: 0,
+    marginBottom: 2,
   },
   contactItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: 20,
+    marginRight: 18,
+    marginBottom: 0,
   },
   contactIcon: {
     width: 4,
@@ -72,6 +84,7 @@ const techProfessionalStyles = StyleSheet.create({
     backgroundColor: '#64748b',
     borderRadius: 2,
     marginRight: 6,
+    marginTop: 2,
   },
   contactText: {
     fontSize: 9,
@@ -82,18 +95,43 @@ const techProfessionalStyles = StyleSheet.create({
     color: '#38bdf8',
   },
   sectionTitle: {
-    fontSize: 13,
+    fontSize: 14,
     fontFamily: 'Helvetica-Bold',
     color: '#0f172a',
-    marginTop: 14,
-    marginBottom: 6,
-    paddingLeft: 12,
+    marginTop: 8,
+    marginBottom: 2,
+    paddingLeft: 16,
+    paddingTop: 4,
+    paddingBottom: 4,
     borderLeftWidth: 4,
     borderLeftColor: '#0ea5e9',
+    backgroundColor: '#f8fafc',
+    borderRadius: 4,
+    position: 'relative',
+  },
+  sectionAccent: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width: 3,
+    backgroundColor: '#38bdf8',
+    borderTopRightRadius: 4,
+    borderBottomRightRadius: 4,
   },
   entryContainer: {
-    marginBottom: 10,
-    paddingLeft: 4,
+    marginBottom: 6,
+    paddingLeft: 8,
+    paddingTop: 8,
+    paddingBottom: 8,
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#f1f5f9',
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
   },
   entryHeader: {
     flexDirection: 'row',
@@ -127,12 +165,18 @@ const techProfessionalStyles = StyleSheet.create({
   dateChip: {
     backgroundColor: '#e0f2fe',
     color: '#0369a1',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 4,
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+    borderRadius: 5,
     fontSize: 8,
     fontFamily: 'Helvetica-Bold',
     textAlign: 'center',
+    borderWidth: 1,
+    borderColor: '#7dd3fc',
+    minWidth: 0,
+    alignSelf: 'flex-end',
+    marginBottom: 2,
+    lineHeight: 1.1,
   },
   gpaText: {
     fontSize: 8,
@@ -170,10 +214,25 @@ const techProfessionalStyles = StyleSheet.create({
     backgroundColor: '#f8fafc',
     borderWidth: 1,
     borderColor: '#e2e8f0',
-    borderRadius: 8,
-    padding: 8,
+    borderRadius: 12,
+    padding: 10,
     width: '48%',
-    marginBottom: 6,
+    marginBottom: 8,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    position: 'relative',
+  },
+  skillCategoryAccent: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 3,
+    backgroundColor: '#0ea5e9',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
   },
   skillCategoryTitle: {
     fontSize: 10,
@@ -184,17 +243,20 @@ const techProfessionalStyles = StyleSheet.create({
   skillTagsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 3,
+    gap: 4,
   },
   skillTag: {
     backgroundColor: '#0ea5e9',
     color: '#ffffff',
-    fontSize: 7,
-    paddingHorizontal: 4,
-    paddingVertical: 1,
-    borderRadius: 6,
+    fontSize: 8,
+    paddingHorizontal: 6,
+    paddingTop: 2,
+    paddingBottom: 2,
+    borderRadius: 12,
     fontFamily: 'Helvetica-Bold',
     textAlign: 'center',
+    marginBottom: 2,
+    lineHeight: 1.2,
   },
   projectHeader: {
     flexDirection: 'row',
@@ -205,19 +267,22 @@ const techProfessionalStyles = StyleSheet.create({
   projectTags: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 3,
-    marginTop: 2,
+    gap: 4,
+    marginTop: 3,
   },
   techChip: {
     backgroundColor: '#f1f5f9',
     borderWidth: 1,
     borderColor: '#cbd5e1',
     color: '#0f172a',
-    fontSize: 7,
-    paddingHorizontal: 4,
-    paddingVertical: 1,
-    borderRadius: 4,
+    fontSize: 8,
+    paddingHorizontal: 6,
+    paddingTop: 2,
+    paddingBottom: 2,
+    borderRadius: 10,
     textAlign: 'center',
+    marginBottom: 2,
+    lineHeight: 1.2,
   },
   projectUrl: {
     fontSize: 8,
@@ -250,16 +315,26 @@ export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, v
     }
 
     return (
-      <View style={techProfessionalStyles.contactGrid}>
-        {contactItems.map((item, index) => (
-          <View key={index} style={techProfessionalStyles.contactItem}>
-            <View style={techProfessionalStyles.contactIcon} />
-            <Text style={item.label === 'Links' ? techProfessionalStyles.linkText : techProfessionalStyles.contactText}>
-              {item.value}
+      <>
+        <View style={techProfessionalStyles.contactGrid}>
+          {contactItems.filter(item => item.label !== 'Links').map((item, index) => (
+            <View key={index} style={techProfessionalStyles.contactItem}>
+              <View style={techProfessionalStyles.contactIcon} />
+              <Text style={techProfessionalStyles.contactText}>
+                {item.value}
+              </Text>
+            </View>
+          ))}
+        </View>
+        {contactItems.some(item => item.label === 'Links') && (
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 2, marginBottom: 0 }}>
+            <View style={{ ...techProfessionalStyles.contactIcon, marginTop: 2 }} />
+            <Text style={techProfessionalStyles.linkText}>
+              {contactItems.find(item => item.label === 'Links')?.value}
             </Text>
           </View>
-        ))}
-      </View>
+        )}
+      </>
     );
   };
 
@@ -268,10 +343,14 @@ export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, v
 
     return (
       <View>
-        <Text style={techProfessionalStyles.sectionTitle}>Technical Skills</Text>
+        <View style={techProfessionalStyles.sectionTitle}>
+          <Text>Technical Skills</Text>
+          <View style={techProfessionalStyles.sectionAccent} />
+        </View>
         <View style={techProfessionalStyles.skillsContainer}>
           {resume.skills.map((skillCategory, index) => (
             <View key={index} style={techProfessionalStyles.skillCategory}>
+              <View style={techProfessionalStyles.skillCategoryAccent} />
               <Text style={techProfessionalStyles.skillCategoryTitle}>
                 {skillCategory.category}
               </Text>
@@ -294,7 +373,10 @@ export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, v
 
     return (
       <View>
-        <Text style={techProfessionalStyles.sectionTitle}>Professional Experience</Text>
+        <View style={techProfessionalStyles.sectionTitle}>
+          <Text>Professional Experience</Text>
+          <View style={techProfessionalStyles.sectionAccent} />
+        </View>
         {resume.work_experience.map((exp, index) => (
           <View key={index} style={techProfessionalStyles.entryContainer}>
             <View style={techProfessionalStyles.entryHeader}>
@@ -332,7 +414,10 @@ export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, v
 
     return (
       <View>
-        <Text style={techProfessionalStyles.sectionTitle}>Key Projects</Text>
+        <View style={techProfessionalStyles.sectionTitle}>
+          <Text>Key Projects</Text>
+          <View style={techProfessionalStyles.sectionAccent} />
+        </View>
         {resume.projects.map((project, index) => (
           <View key={index} style={techProfessionalStyles.entryContainer}>
             <View style={techProfessionalStyles.projectHeader}>
@@ -382,7 +467,10 @@ export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, v
 
     return (
       <View>
-        <Text style={techProfessionalStyles.sectionTitle}>Education</Text>
+        <View style={techProfessionalStyles.sectionTitle}>
+          <Text>Education</Text>
+          <View style={techProfessionalStyles.sectionAccent} />
+        </View>
         {resume.education.map((edu, index) => (
           <View key={index} style={techProfessionalStyles.entryContainer}>
             <View style={techProfessionalStyles.entryHeader}>
@@ -402,18 +490,6 @@ export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, v
                 )}
               </View>
             </View>
-            {edu.achievements && edu.achievements.length > 0 && (
-              <View style={techProfessionalStyles.bulletList}>
-                {edu.achievements.map((achievement, achIndex) => (
-                  <View key={achIndex} style={techProfessionalStyles.bulletItem}>
-                    <View style={techProfessionalStyles.bulletPoint} />
-                    <Text style={techProfessionalStyles.bulletText}>
-                      {parseMarkdownText(achievement.replace(/^[-•*]\s*/, ''))}
-                    </Text>
-                  </View>
-                ))}
-              </View>
-            )}
           </View>
         ))}
       </View>
@@ -428,9 +504,6 @@ export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, v
           <Text style={techProfessionalStyles.name}>
             {resume.first_name} {resume.last_name}
           </Text>
-          {resume.target_role && (
-            <Text style={techProfessionalStyles.title}>{resume.target_role}</Text>
-          )}
           {renderContactInfo()}
         </View>
 

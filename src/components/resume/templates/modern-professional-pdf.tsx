@@ -89,13 +89,13 @@ const modernProfessionalStyles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Helvetica-Bold',
     color: '#2563eb',
-    marginTop: 15,
-    marginBottom: 8,
+    marginTop: 8,
+    marginBottom: 4,
   },
   sectionLine: {
     height: 1,
     backgroundColor: '#2563eb',
-    marginBottom: 12,
+    marginBottom: 6,
   },
   entryContainer: {
     marginBottom: 12,
@@ -188,7 +188,7 @@ const modernProfessionalStyles = StyleSheet.create({
   skillTagsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 2,
+    gap: 3,
   },
   skillTag: {
     backgroundColor: '#ffffff',
@@ -196,10 +196,13 @@ const modernProfessionalStyles = StyleSheet.create({
     borderColor: '#d1d5db',
     borderRadius: 12,
     paddingHorizontal: 6,
-    paddingVertical: 2,
-    fontSize: 7,
+    paddingTop: 1,
+    paddingBottom: 1,
+    fontSize: 8,
     color: '#374151',
     textAlign: 'center',
+    marginBottom: 2,
+    lineHeight: 1.2,
   },
   projectHeader: {
     flexDirection: 'row',
@@ -210,19 +213,21 @@ const modernProfessionalStyles = StyleSheet.create({
   projectTags: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 2,
+    gap: 3,
     marginTop: 2,
   },
   techTag: {
     backgroundColor: '#dbeafe',
     color: '#1e40af',
-    fontSize: 7,
+    fontSize: 8,
     paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 8,
+    paddingTop: 1,
+    paddingBottom: 1,
+    borderRadius: 10,
     fontFamily: 'Helvetica-Bold',
     textAlign: 'center',
-    paddingBottom: -5,
+    marginBottom: 2,
+    lineHeight: 1.2,
   },
   projectUrl: {
     fontSize: 8,
@@ -439,48 +444,7 @@ export const ModernProfessionalPDF = memo(function ModernProfessionalPDF({ resum
     );
   };
 
-  const renderLeadershipActivities = () => {
-    // Check if any education entry has achievements
-    const hasEducationAchievements = resume.education && resume.education.some(edu => 
-      edu.achievements && edu.achievements.length > 0
-    );
 
-    if (!hasEducationAchievements) return null;
-
-    return (
-      <View>
-        <View>
-          <Text style={modernProfessionalStyles.sectionTitle}>Leadership & Activities</Text>
-          <View style={modernProfessionalStyles.sectionLine} />
-        </View>
-        {resume.education.map((edu, index) => (
-          edu.achievements && edu.achievements.length > 0 ? (
-            <View key={index} style={modernProfessionalStyles.entryContainer}>
-              <View style={modernProfessionalStyles.entryHeader}>
-                <View style={modernProfessionalStyles.entryLeft}>
-                  <Text style={modernProfessionalStyles.entryTitle}>Leadership Activities</Text>
-                  <Text style={modernProfessionalStyles.entrySubtitle}>{edu.school}</Text>
-                </View>
-                <View style={modernProfessionalStyles.entryRight}>
-                  <Text style={modernProfessionalStyles.dateTag}>{edu.date}</Text>
-                </View>
-              </View>
-              <View style={modernProfessionalStyles.bulletList}>
-                {edu.achievements.map((achievement, achIndex) => (
-                  <View key={achIndex} style={modernProfessionalStyles.bulletItem}>
-                    <View style={modernProfessionalStyles.bulletPoint} />
-                    <Text style={modernProfessionalStyles.bulletText}>
-                      {parseMarkdownText(achievement.replace(/^[-•*]\s*/, ''))}
-                    </Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-          ) : null
-        ))}
-      </View>
-    );
-  };
 
   return (
     <PDFDocument>
@@ -504,9 +468,6 @@ export const ModernProfessionalPDF = memo(function ModernProfessionalPDF({ resum
 
         {/* Technical Skills */}
         {renderTechnicalSkills()}
-
-        {/* Leadership & Activities */}
-        {renderLeadershipActivities()}
       </PDFPage>
     </PDFDocument>
   );
