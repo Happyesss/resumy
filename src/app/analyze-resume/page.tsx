@@ -122,7 +122,7 @@ export default function AnalyzeResumePage() {
       {/* For authenticated users, AppHeader is already shown by layout.tsx */}
       {isAuthenticated === false && <AnalyzeNavbar />}
 
-      <div className="pt-28">
+      <div className="pt-8">
 
         
         {!scoreData ? (
