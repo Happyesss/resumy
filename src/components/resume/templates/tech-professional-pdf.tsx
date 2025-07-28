@@ -39,7 +39,7 @@ const techProfessionalStyles = StyleSheet.create({
     backgroundColor: '#0f172a',
     color: '#ffffff',
     paddingTop: 24,
-    paddingBottom: 18,
+    paddingBottom: 12,
     paddingLeft: 24,
     paddingRight: 24,
     marginHorizontal: -24,
@@ -47,21 +47,11 @@ const techProfessionalStyles = StyleSheet.create({
     marginBottom: 10,
   },
   name: {
-    fontSize: 28,
+    fontSize: 24,
     fontFamily: 'Helvetica-Bold',
     color: '#ffffff',
-    marginBottom: 28,
-    letterSpacing: 1.5,
-    position: 'relative',
-    zIndex: 1,
-  },
-  title: {
-    fontSize: 12,
-    color: '#38bdf8',
-    marginBottom: 16,
-    fontFamily: 'Helvetica-Bold',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    marginBottom: 18,
+    letterSpacing: 1.2,
     position: 'relative',
     zIndex: 1,
   },
@@ -84,7 +74,7 @@ const techProfessionalStyles = StyleSheet.create({
     backgroundColor: '#64748b',
     borderRadius: 2,
     marginRight: 6,
-    marginTop: 2,
+    marginTop: -3,
   },
   contactText: {
     fontSize: 9,
@@ -95,14 +85,14 @@ const techProfessionalStyles = StyleSheet.create({
     color: '#38bdf8',
   },
   sectionTitle: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: 'Helvetica-Bold',
     color: '#0f172a',
     marginTop: 8,
     marginBottom: 2,
-    paddingLeft: 16,
-    paddingTop: 4,
-    paddingBottom: 4,
+    paddingLeft: 8,
+    paddingTop: 2,
+    paddingBottom: 2,
     borderLeftWidth: 4,
     borderLeftColor: '#0ea5e9',
     backgroundColor: '#f8fafc',
@@ -161,6 +151,7 @@ const techProfessionalStyles = StyleSheet.create({
   entryLocation: {
     fontSize: 8,
     color: '#64748b',
+    marginBottom: -8,
   },
   dateChip: {
     backgroundColor: '#e0f2fe',
@@ -197,7 +188,7 @@ const techProfessionalStyles = StyleSheet.create({
     backgroundColor: '#0ea5e9',
     borderRadius: 1.5,
     marginRight: 8,
-    marginTop: 5,
+    marginTop: 3,
   },
   bulletText: {
     flex: 1,
@@ -288,6 +279,7 @@ const techProfessionalStyles = StyleSheet.create({
     fontSize: 8,
     color: '#0ea5e9',
     marginTop: 2,
+    marginBottom: -8,
   },
 });
 
@@ -305,19 +297,19 @@ export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, v
       { label: 'Location', value: resume.location },
     ].filter(item => item.value);
 
-    const links = [
-      resume.linkedin_url?.replace('https://', '').replace('http://', ''),
-      resume.github_url?.replace('https://', '').replace('http://', ''),
-    ].filter(Boolean);
-
-    if (links.length > 0) {
-      contactItems.push({ label: 'Links', value: links.join(' • ') });
+    // Prepare links as objects with both url and display text
+    const links: { url: string; text: string }[] = [];
+    if (resume.linkedin_url) {
+      links.push({ url: resume.linkedin_url, text: resume.linkedin_url.replace('https://', '').replace('http://', '') });
+    }
+    if (resume.github_url) {
+      links.push({ url: resume.github_url, text: resume.github_url.replace('https://', '').replace('http://', '') });
     }
 
     return (
       <>
         <View style={techProfessionalStyles.contactGrid}>
-          {contactItems.filter(item => item.label !== 'Links').map((item, index) => (
+          {contactItems.map((item, index) => (
             <View key={index} style={techProfessionalStyles.contactItem}>
               <View style={techProfessionalStyles.contactIcon} />
               <Text style={techProfessionalStyles.contactText}>
@@ -325,15 +317,15 @@ export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, v
               </Text>
             </View>
           ))}
+          {links.length > 0 && links.map((link, idx) => (
+            <View key={link.url} style={techProfessionalStyles.contactItem}>
+              <View style={techProfessionalStyles.contactIcon} />
+              <Link src={link.url} style={techProfessionalStyles.linkText}>
+                {link.text}
+              </Link>
+            </View>
+          ))}
         </View>
-        {contactItems.some(item => item.label === 'Links') && (
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 2, marginBottom: 0 }}>
-            <View style={{ ...techProfessionalStyles.contactIcon, marginTop: 2 }} />
-            <Text style={techProfessionalStyles.linkText}>
-              {contactItems.find(item => item.label === 'Links')?.value}
-            </Text>
-          </View>
-        )}
       </>
     );
   };
@@ -490,6 +482,18 @@ export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, v
                 )}
               </View>
             </View>
+            {edu.achievements && edu.achievements.length > 0 && (
+              <View style={techProfessionalStyles.bulletList}>
+                {edu.achievements.map((achievement, achievementIndex) => (
+                  <View key={achievementIndex} style={techProfessionalStyles.bulletItem}>
+                    <View style={techProfessionalStyles.bulletPoint} />
+                    <Text style={techProfessionalStyles.bulletText}>
+                      {parseMarkdownText(achievement)}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            )}
           </View>
         ))}
       </View>
