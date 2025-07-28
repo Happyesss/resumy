@@ -128,6 +128,7 @@ const modernProfessionalStyles = StyleSheet.create({
   entryLocation: {
     fontSize: 8,
     color: '#6b7280',
+    marginBottom: -8, // reduce margin below location in experience
   },
   dateTag: {
     backgroundColor: '#f3f4f6',
@@ -226,13 +227,14 @@ const modernProfessionalStyles = StyleSheet.create({
     borderRadius: 10,
     fontFamily: 'Helvetica-Bold',
     textAlign: 'center',
-    marginBottom: 2,
+    marginBottom: 1,
     lineHeight: 1.2,
   },
   projectUrl: {
     fontSize: 8,
     color: '#2563eb',
     marginTop: 2,
+    marginBottom: -6
   },
 });
 

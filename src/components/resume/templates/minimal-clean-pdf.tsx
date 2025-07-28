@@ -46,7 +46,7 @@ const minimalCleanStyles = StyleSheet.create({
     fontSize: 28,
     fontFamily: 'Helvetica-Bold',
     color: '#000000',
-    marginBottom: 6,
+    marginBottom: 14,
     letterSpacing: 2,
   },
   contactInfo: {
@@ -74,13 +74,16 @@ const minimalCleanStyles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Helvetica-Bold',
     color: '#000000',
-    marginTop: 18,
-    marginBottom: 8,
+    marginTop: 6,
+    marginBottom: 6,
     textTransform: 'uppercase',
     letterSpacing: 1,
   },
   entryContainer: {
-    marginBottom: 12,
+    marginBottom: 12, 
+  },
+  projectEntryContainer: {
+    marginBottom: 5,
   },
   entryHeader: {
     flexDirection: 'row',
@@ -111,6 +114,7 @@ const minimalCleanStyles = StyleSheet.create({
   entryLocation: {
     fontSize: 9,
     color: '#666666',
+    marginBottom: -5,
   },
   dateText: {
     fontSize: 9,
@@ -186,7 +190,7 @@ const minimalCleanStyles = StyleSheet.create({
     fontSize: 8,
     color: '#666666',
     fontStyle: 'italic',
-    marginBottom: 2,
+    marginBottom: -5,
   },
 });
 
@@ -265,7 +269,7 @@ export const MinimalCleanPDF = memo(function MinimalCleanPDF({ resume, variant =
       <View>
         <Text style={minimalCleanStyles.sectionTitle}>Projects</Text>
         {resume.projects.map((project, index) => (
-          <View key={index} style={minimalCleanStyles.entryContainer}>
+          <View key={index} style={minimalCleanStyles.projectEntryContainer}>
             <View style={minimalCleanStyles.entryHeader}>
               <View style={minimalCleanStyles.entryLeft}>
                 <View style={minimalCleanStyles.projectTitleRow}>
