@@ -88,9 +88,9 @@ export function TemplatePreviewModal({ template, isOpen, onClose }: TemplatePrev
               onClick={onClose}
               variant="ghost"
               size="sm"
-              className="text-gray-400 hover:text-white"
+              className="text-gray-400 hover:text-white hover:bg-gray-800 rounded-full p-2 transition-colors duration-200"
             >
-              <X className="h-4 w-4" />
+              <X className="h-5 w-5" />
             </Button>
           </div>
         </DialogHeader>
@@ -101,7 +101,7 @@ export function TemplatePreviewModal({ template, isOpen, onClose }: TemplatePrev
             <div className="p-8 flex items-center justify-center min-h-full">
               {/* Template Preview */}
               <Card className="w-full max-w-2xl bg-white shadow-2xl">
-                <CardContent className="p-0">
+                <CardContent className="p-4">
                   <div className="aspect-[8.5/11] bg-white rounded-lg overflow-hidden relative">
                     <Image
                       src={template.preview}

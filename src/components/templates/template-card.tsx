@@ -53,14 +53,16 @@ export function TemplateCard({ template, onPreview }: TemplateCardProps) {
         {/* Template Preview */}
         <div className="relative aspect-[3/4] bg-gray-800 rounded-t-lg overflow-hidden">
           {/* Template Image */}
-          <div className="w-full h-full bg-white relative">
-            <Image
-              src={template.image}
-              alt={template.name}
-              fill
-              className="object-cover"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-            />
+          <div className="w-full h-full bg-white relative p-2">
+            <div className="w-full h-full relative rounded overflow-hidden">
+              <Image
+                src={template.image}
+                alt={template.name}
+                fill
+                className="object-cover"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+              />
+            </div>
           </div>
           {/* ...removed premium badge... */}
 

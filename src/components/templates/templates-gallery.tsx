@@ -31,84 +31,84 @@ const templates: Template[] = [
     name: 'Default Professional',
     description: 'Clean and simple default resume format perfect for any industry',
     category: 'minimal',
-    image: '/templates/default-preview.png',
+    image: '/templates/defaultTemplate.png',
     features: ['ATS Optimized', 'Simple Layout', 'Standard Format'],
 
     rating: 5.0,
     downloads: 15420,
-    preview: '/templates/default-full.png'
+    preview: '/templates/defaultTemplate.png'
   },
   {
     id: 'modern-1',
     name: 'Modern Professional',
     description: 'Contemporary design with blue accents and clean typography',
     category: 'modern',
-    image: '/templates/modern-1-preview.png',
+    image: '/templates/modernProfessional.png',
     features: ['Modern Design', 'Color Accents', 'Professional Layout'],
 
     rating: 4.8,
     downloads: 12890,
-    preview: '/templates/modern-1-full.png'
+    preview: '/templates/modernProfessional.png'
   },
   {
     id: 'classic-1',
     name: 'Classic Executive',
     description: 'Traditional executive style with elegant typography',
     category: 'classic',
-    image: '/templates/classic-1-preview.png',
+    image: '/templates/classic.png',
     features: ['Traditional Style', 'Executive Format', 'Formal Layout'],
 
     rating: 4.95,
     downloads: 9540,
-    preview: '/templates/classic-1-full.png'
+    preview: '/templates/classic.png'
   },
   {
     id: 'creative-modern',
     name: 'Creative Modern',
     description: 'Bold and creative design perfect for creative industries',
     category: 'creative',
-    image: '/templates/creative-modern-preview.png',
+    image: '/templates/creativeModern.png',
     features: ['Creative Design', 'Bold Colors', 'Unique Layout'],
 
     rating: 4.5,
     downloads: 8320,
-    preview: '/templates/creative-modern-full.png'
+    preview: '/templates/creativeModern.png'
   },
   {
     id: 'minimal-1',
     name: 'Minimal Clean',
     description: 'Ultra-clean minimal design with perfect white space',
     category: 'minimal',
-    image: '/templates/minimal-1-preview.png',
+    image: '/templates/minimalClean.png',
     features: ['Minimal Design', 'Clean Layout', 'White Space'],
 
     rating: 4.7,
     downloads: 11200,
-    preview: '/templates/minimal-1-full.png'
+    preview: '/templates/minimalClean.png'
   },
   {
     id: 'modern-2',
     name: 'Tech Professional',
     description: 'Modern tech-focused design with technical styling',
     category: 'modern',
-    image: '/templates/modern-2-preview.png',
+    image: '/templates/techProfessional.png',
     features: ['Tech Style', 'Modern Layout', 'Professional'],
 
     rating: 4.8,
     downloads: 7650,
-    preview: '/templates/modern-2-full.png'
+    preview: '/templates/techProfessional.png'
   },
   {
     id: 'creative-minimal',
     name: 'Creative Minimal',
     description: 'Perfect balance of creativity and minimalism',
     category: 'creative',
-    image: '/templates/creative-minimal-preview.png',
+    image: '/templates/creativeMinimal.png',
     features: ['Creative Elements', 'Minimal Style', 'Balanced Design'],
 
     rating: 4.6,
     downloads: 6890,
-    preview: '/templates/creative-minimal-full.png'
+    preview: '/templates/creativeMinimal.png'
   }
 ];
 
