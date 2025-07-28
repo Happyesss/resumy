@@ -102,7 +102,7 @@ export function HowItWorks() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
         >
-          <h3 className="text-xl text-gray-400 mb-8">Trusted by professionals from companies like</h3>
+          <h3 className="text-xl text-gray-400 mb-8">Used by professionals who have worked at</h3>
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 max-w-4xl mx-auto opacity-80">
             {companies.map((company, index) => (
               <div key={index} className="w-24 h-12 relative transition-all duration-300">
@@ -110,7 +110,7 @@ export function HowItWorks() {
                   src={company.logo} 
                   alt={company.name} 
                   fill
-                  className="object-contain" 
+                  className="object-contain filter grayscale brightness-0 invert opacity-60 hover:opacity-80 transition-opacity duration-300" 
                   sizes="100px"
                 />
               </div>
