@@ -198,7 +198,7 @@ const modernProfessionalStyles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 6,
     paddingTop: 1,
-    paddingBottom: 1,
+    paddingBottom: 0,
     fontSize: 8,
     color: '#374151',
     textAlign: 'center',
