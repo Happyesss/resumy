@@ -250,17 +250,17 @@ export function TailoredJobCard({
 
   if (!jobId) {
     return (
-      <Card className="relative group">
-      <div className="relative p-8 flex flex-col items-center justify-center space-y-6 text-center">
-        <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-400/20 group-hover:scale-110 transition-transform duration-500">
-          <Plus className="w-8 h-8 text-blue-400" />
+      <Card className="relative group bg-transparent border-transparent">
+      <div className="relative p-4 flex flex-col items-center justify-center space-y-4 text-center">
+        <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-400/20 group-hover:scale-110 transition-transform duration-500">
+          <Plus className="w-6 h-6 text-blue-400" />
         </div>
         
-        <div className="space-y-2">
-          <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+        <div className="space-y-1">
+          <h3 className="text-lg font-semibold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
             No Job Currently Linked
           </h3>
-          <p className="text-sm text-gray-400 max-w-sm">
+          <p className="text-xs text-gray-400 max-w-xs">
             Create a new job listing to track the position you&apos;re applying for and tailor your resume accordingly.
           </p>
         </div>          <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
@@ -333,6 +333,7 @@ export function TailoredJobCard({
                     variant="outline"
                     onClick={() => setCreateDialogOpen(false)}
                     className={cn(
+                      "text-white",
                       "border-gray-600",
                       "hover:bg-gray-700",
                       "transition-colors duration-300"
