@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { CheckCircle2, Star } from "lucide-react";
+import { ImageGallery } from "./image-gallery";
 
 
 
@@ -15,6 +16,13 @@ interface SplitContentProps {
   bulletPoints?: string[];
   badgeText?: string;
   badgeGradient?: string;
+  galleryImages?: {
+    src: string;
+    alt: string;
+    title: string;
+  }[];
+  onImageSelect?: (imageSrc: string) => void;
+  selectedImage?: string;
 }
 
 export function SplitContent({
@@ -28,14 +36,50 @@ export function SplitContent({
   bulletPoints,
   badgeText,
   badgeGradient = "from-purple-600/10 to-indigo-600/10",
+  galleryImages,
+  onImageSelect,
+  selectedImage,
 }: SplitContentProps) {
+  
+  // Function to get unique styling for each heading (no icon)
+  const getHeadingStyle = (heading: string) => {
+    switch (heading) {
+      case "AI-Powered Resume Assistant":
+        return {
+          textClass: "text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent",
+          underlineClass: "h-0.5 w-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
+        };
+      case "Analyze Your Resume":
+        return {
+          textClass: "text-2xl sm:text-3xl font-bold bg-gradient-to-r from-teal-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent",
+          underlineClass: "h-0.5 w-16 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full"
+        };
+      case "Professional Resume Templates":
+        return {
+          textClass: "text-2xl sm:text-3xl font-bold bg-gradient-to-r from-rose-400 via-pink-400 to-rose-400 bg-clip-text text-transparent",
+          underlineClass: "h-0.5 w-16 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full"
+        };
+      case "AI Cover Letter Generator":
+        return {
+          textClass: "text-2xl sm:text-3xl font-bold bg-gradient-to-r from-emerald-400 via-green-400 to-emerald-400 bg-clip-text text-transparent",
+          underlineClass: "h-0.5 w-16 bg-gradient-to-r from-emerald-500 to-green-500 rounded-full"
+        };
+      default:
+        return {
+          textClass: "text-2xl sm:text-3xl font-bold bg-gradient-to-r from-violet-400 via-blue-400 to-violet-400 bg-clip-text text-transparent",
+          underlineClass: "h-0.5 w-16 bg-gradient-to-r from-violet-500 to-blue-500 rounded-full"
+        };
+    }
+  };
+
+  const headingStyle = getHeadingStyle(heading);
   return (
    
     <div className={cn(
-      "relative w-full  overflow-hidden",
+      "relative w-full overflow-hidden",
       className
     )}>
-      <div className="relative w-full px-4 sm:px-6 lg:px-8">
+      <div className="relative w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className={cn(
           "grid gap-12 lg:gap-8 items-center",
           "lg:grid-cols-5"
@@ -58,13 +102,13 @@ export function SplitContent({
               )}
               
               {/* Enhanced heading with gradient underline */}
-              <div className="space-y-2 inline-flex flex-col items-end w-full">
-                <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">
-                  <span className="inline-block bg-gradient-to-r from-violet-400 via-blue-400 to-violet-400 bg-clip-text text-transparent animate-gradient-x pb-2">
+              <div className="space-y-3 inline-flex flex-col items-end w-full">
+                <div>
+                  <h2 className={headingStyle.textClass}>
                     {heading}
-                  </span>
-                </h2>
-                <div className="h-1 w-24 bg-gradient-to-r from-violet-500/80 to-blue-500/80 rounded-full" />
+                  </h2>
+                </div>
+                <div className={headingStyle.underlineClass} />
               </div>
               
               {/* Enhanced description */}
@@ -97,12 +141,12 @@ export function SplitContent({
           {/* Image Section - Enhanced for Screenshots */}
           <div className={cn(
             "relative group lg:col-span-3",
-            imageOverflowRight ? "w-[140%]" : "w-[140%] -ml-[40%]",
+            (!imageOverflowRight ? "w-full" : "w-[140%]"),
             "aspect-[16/10]",
             "order-last lg:order-none"
           )}>
             {/* Enhanced image container with deeper glass effect */}
-            <div className="relative h-full w-full overflow-hidden rounded-2xl shadow-2xl ">
+            <div className="relative h-full w-full overflow-hidden rounded-2xl shadow-2xl transition-all duration-500 group-hover:shadow-[0_25px_50px_-12px_rgba(139,92,246,0.25)]">
               {/* Main image */}
             
               <div className="relative h-full w-full p-2">
@@ -111,22 +155,38 @@ export function SplitContent({
                   src={imageSrc}
                   alt={heading}
                   fill
-                  className="object-cover rounded-xl transition-all duration-700 group-hover:scale-[1.02]"
+                  className={cn(
+                    "rounded-xl transition-all duration-700 group-hover:scale-[1.02] group-hover:brightness-110",
+                    imageOverflowRight ? "object-cover" : "object-contain"
+                  )}
                   sizes="(min-width: 1440px) 50vw, (min-width: 1024px) 60vw, (min-width: 768px) 80vw, 100vw"
                   quality={100}
                   priority
                   loading="eager"
                   style={{
-                    objectFit: 'cover',
+                    objectFit: imageOverflowRight ? 'cover' : 'contain',
                     transform: 'translate3d(0, 0, 0)',
                   }}
                 />
                 
-                {/* Subtle shine effect */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/30 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-xl" />
+                {/* Subtle border glow effect */}
+                <div className="absolute inset-2 rounded-xl border border-violet-400/0 group-hover:border-violet-400/30 transition-all duration-700" />
               </div>
 
             </div>
+
+            {/* Image Gallery if provided - positioned below the image */}
+            {galleryImages && galleryImages.length > 0 && onImageSelect && (
+              <div className="mt-4 space-y-2">
+                <p className="text-sm text-gray-400 font-medium text-center">Click to preview:</p>
+                <ImageGallery
+                  images={galleryImages}
+                  onImageSelect={onImageSelect}
+                  selectedImage={selectedImage}
+                  className="justify-center"
+                />
+              </div>
+            )}
 
           </div>
 
@@ -148,13 +208,13 @@ export function SplitContent({
               )}
               
               {/* Enhanced heading with gradient underline */}
-              <div className="space-y-2">
-                <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">
-                  <span className="inline-block bg-gradient-to-r from-violet-400 via-blue-400 to-violet-400 bg-clip-text text-transparent animate-gradient-x pb-2">
+              <div className="space-y-3">
+                <div>
+                  <h2 className={headingStyle.textClass}>
                     {heading}
-                  </span>
-                </h2>
-                <div className="h-1 w-24 bg-gradient-to-r from-violet-500/80 to-blue-500/80 rounded-full" />
+                  </h2>
+                </div>
+                <div className={headingStyle.underlineClass} />
               </div>
               
               {/* Enhanced description */}

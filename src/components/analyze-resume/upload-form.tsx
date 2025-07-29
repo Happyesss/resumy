@@ -142,7 +142,7 @@ export function UploadForm({
 
   return (
     <div className="max-w-2xl mx-auto w-full">
-      <div className="mb-2 text-center -mt-10">
+      <div className="mb-2 text-center -mt-2 lg:mt-0">
         <div className="inline-block w-full max-w-xl mx-auto rounded-xl p-6 bg-gradient-to-br from-purple-900/60 via-black/80 to-purple-700/40 border border-purple-700 shadow-lg">
           <span className="text-xs font-semibold text-purple-300 tracking-wide uppercase block mb-2">Resume Analyzer</span>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-3">

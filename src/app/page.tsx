@@ -1,5 +1,6 @@
 import { Hero } from "@/components/landing/Hero";
 import { VideoShowcase } from "@/components/landing/VideoShowcase";
+import { CompanyLogos } from "@/components/landing/CompanyLogos";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import FeatureHighlights from "@/components/landing/FeatureHighlights";
 import { KeepEverythingInPlace } from "@/components/landing/KeepEverythingInPlace";
@@ -261,8 +262,8 @@ export default async function Page() {
           <VideoShowcase />
         </section>
 
-        {/* How It Works Section */}
-        <HowItWorks />
+        {/* Company Logos Section */}
+        <CompanyLogos />
 
         {/* Feature Highlights Section */}
         <section id="features" aria-labelledby="features-heading">
@@ -271,6 +272,9 @@ export default async function Page() {
 
         {/* Keep Everything In Place Section */}
         <KeepEverythingInPlace />
+
+        {/* How It Works Section */}
+        <HowItWorks />
         
         {/* Testimonials Section */}
         <Testimonials />

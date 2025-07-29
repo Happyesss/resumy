@@ -2,45 +2,27 @@
 
 import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { BuyMeCoffee } from "@/components/shared/buy-me-coffee";
 import { DonationBook } from "@/components/shared/donation-book";
 import { 
   Github, 
   Twitter, 
   Linkedin, 
   Mail, 
-  MessageCircle, 
   Heart,
-  ArrowRight,
   ExternalLink,
   Shield,
   Zap,
-  Users,
   Sparkles,
   FileText,
   Layout,
-  User,
   BarChart3,
   BookOpen,
   HelpCircle,
   Star
 } from "lucide-react";
-import { useState } from "react";
 import { motion } from "framer-motion";
 
 export function Footer() {
-  const [email, setEmail] = useState("");
-  const [isSubscribed, setIsSubscribed] = useState(false);
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Add newsletter subscription logic here
-    setIsSubscribed(true);
-    setEmail("");
-    setTimeout(() => setIsSubscribed(false), 3000);
-  };
 
   const footerSections = [
     {
@@ -109,58 +91,6 @@ export function Footer() {
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
       
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Newsletter Section */}
-        <div className="py-12 border-b border-gray-800">
-          <motion.div 
-            className="max-w-4xl mx-auto text-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="p-2 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl">
-                <Sparkles className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="text-2xl md:text-3xl font-bold text-white">
-                Stay Updated
-              </h3>
-            </div>
-            <p className="text-gray-400 mb-6 text-lg">
-              Get career tips, resume advice, and product updates delivered to your inbox.
-            </p>
-            
-            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-              <Input
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="!bg-gray-900 !text-white border-gray-700 placeholder:text-gray-500 focus:border-purple-500 focus:ring-purple-500/20"
-                required
-              />
-              <Button 
-                type="submit" 
-                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white whitespace-nowrap"
-                disabled={isSubscribed}
-              >
-                {isSubscribed ? (
-                  <>
-                    <Heart className="h-4 w-4 mr-2" />
-                    Subscribed!
-                  </>
-                ) : (
-                  <>
-                    Subscribe
-                    <ArrowRight className="h-4 w-4 ml-2" />
-                  </>
-                )}
-              </Button>
-            </form>
-          </motion.div>
-        </div>
-
-
         {/* Main Footer Content */}
         <div className="py-12">
           <div className="grid grid-cols-1 lg:grid-cols-7 gap-8">

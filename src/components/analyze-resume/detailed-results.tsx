@@ -196,7 +196,7 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
 
     <div className="min-h-screen text-white">
       {/* Compact Professional Header Section */}
-      <div className="px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8 -mt-8">
+      <div className="px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8 pt-4 lg:pt-8">
         <div className="max-w-4xl mx-auto text-center relative">
           {/* Icon and Title Row */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-2">

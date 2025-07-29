@@ -94,30 +94,6 @@ export function HowItWorks() {
       <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
       
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Social proof section - Trusted by companies */}
-        <motion.div 
-          className="mb-32 -mt-16 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-        >
-          <h3 className="text-xl text-gray-400 mb-8">Used by professionals who have worked at</h3>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 max-w-4xl mx-auto opacity-80">
-            {companies.map((company, index) => (
-              <div key={index} className="w-24 h-12 relative transition-all duration-300">
-                <Image 
-                  src={company.logo} 
-                  alt={company.name} 
-                  fill
-                  className="object-contain filter grayscale brightness-0 invert opacity-60 hover:opacity-80 transition-opacity duration-300" 
-                  sizes="100px"
-                />
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
         {/* Header */}
         <motion.div
           className="text-center mb-16"

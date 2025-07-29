@@ -20,16 +20,16 @@ const features = [
     iconBg: "bg-blue-500/20"
   },
   {
-    title: "Time Management Tools", 
-    description: "Optimize your time with integrated tools like timers, reminders, and schedules.",
-    image: "/images/ss2.webp",
+    title: "AI Suggestions",
+    description: "Get real-time AI suggestions to improve your resume and make it stand out.",
+    image: "/images/ss1.png",
     icon: <Clock className="h-6 w-6" />,
     color: "from-green-600 to-emerald-600",
     iconBg: "bg-green-500/20"
   },
   {
-    title: "AI Suggestions",
-    description: "Get real-time AI suggestions to improve your resume and make it stand out.",
+    title: "Live Preview Editor",
+    description: "Experience a seamless editing process with side-by-side views.",
     image: "/images/editorimage.png",
     icon: <BarChart3 className="h-6 w-6" />,
     color: "from-purple-600 to-pink-600",
@@ -70,12 +70,8 @@ const itemVariants = {
 
 export function KeepEverythingInPlace() {
   return (
-    <section className="relative py-24 bg-black overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/20 to-transparent" />
-      <div className="absolute top-1/4 left-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
-      
+    <section className="relative pb-16 -mt-10 bg-black overflow-hidden">
+
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -85,15 +81,9 @@ export function KeepEverythingInPlace() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="inline-block px-4 py-2 bg-gray-800/50 rounded-full text-sm text-gray-300 mb-6">
-            Features
+          <div className="inline-block px-4 py-2 bg-purple-500 rounded-full text-sm text-white mb-2">
+            More features
           </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
-            Keep everything in one place
-          </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
-            Forget complex project management tools.
-          </p>
         </motion.div>
 
         {/* Features Grid - Custom layout with different card sizes */}

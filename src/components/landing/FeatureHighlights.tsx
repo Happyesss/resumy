@@ -1,5 +1,5 @@
 "use client"
-import React from 'react';
+import React, { useState } from 'react';
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
@@ -8,6 +8,47 @@ import { SplitContent } from '../ui/split-content';
 import { AuthDialog } from "@/components/auth/auth-dialog";
 
 const FeatureHighlights = () => {
+  const [selectedAnalyzeImage, setSelectedAnalyzeImage] = useState("/images/analyze.png");
+
+  // Define the result images gallery
+  const analyzeResultImages = [
+    {
+      src: "/images/result/ATS Processing Pipeline.png",
+      alt: "ATS Processing Pipeline",
+      title: "ATS Processing Pipeline"
+    },
+    {
+      src: "/images/result/Completeness.png",
+      alt: "Completeness Analysis",
+      title: "Completeness Analysis"
+    },
+    {
+      src: "/images/result/Impact & Voice.png",
+      alt: "Impact & Voice Analysis",
+      title: "Impact & Voice"
+    },
+    {
+      src: "/images/result/Key Improvements.png",
+      alt: "Key Improvements",
+      title: "Key Improvements"
+    },
+    {
+      src: "/images/result/Resume Preview.png",
+      alt: "Resume Preview",
+      title: "Resume Preview"
+    },
+    {
+      src: "/images/result/Role Matching.png",
+      alt: "Role Matching Analysis",
+      title: "Role Matching"
+    },
+    {
+      src: "/images/result/score.png",
+      alt: "Score Analysis",
+      title: "Score Analysis"
+    }
+  ];
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -37,60 +78,57 @@ const FeatureHighlights = () => {
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/30 to-transparent"></div>
             
             <SplitContent
-              imageSrc="/SS Chat.png"
+              imageSrc="/images/SS Chat.png"
               heading="AI-Powered Resume Assistant"
-              description="Get real-time feedback and suggestions from our advanced AI assistant. Optimize your resume content, improve your bullet points, and ensure your skills stand out to recruiters and ATS systems."
+              description="Get instant, smart feedback on your resume. Our AI helps you improve your content, highlight your strengths, and stand out to recruiters."
               imageOnLeft={false}
               imageOverflowRight={true}
-              badgeText="90% more effective bullets"
-              badgeGradient="from-purple-600/10 to-indigo-600/10"
               bulletPoints={[
-                "Smart content suggestions based on your experience",
-                "Real-time feedback on your resume",
-                "Industry-specific optimization"
+                "Intelligent content suggestions tailored to your unique experience",
+                "Real-time optimization feedback with instant improvements",
+                "Industry-specific customization for maximum impact"
               ]}
             />
 
             <SplitContent
-              imageSrc="/Dashboard Image.png"
-              heading="Beautiful Resume Dashboard"
-              description="Manage all your resumes in one place with our intuitive dashboard. Create base resumes, generate tailored versions for specific jobs, and track your application progress with ease."
+              imageSrc={selectedAnalyzeImage}
+              heading="Analyze Your Resume"
+              description="Reveal your resume’s strengths and hidden gaps with advanced AI analysis. Instantly check ATS compatibility, get a visual performance breakdown, and receive expert tips to boost your chances of landing interviews."
               imageOnLeft={true}
-              badgeText="Organize your job search"
-              badgeGradient="from-teal-600/10 to-cyan-600/10"
+              imageOverflowRight={false}
               bulletPoints={[
-                "Centralized resume management",
-                "Version control for all your resumes",
-                "Track application status"
+                "ATS scan and compatibility check",
+                "Instant performance insights",
+                "Clear, expert-backed suggestions"
               ]}
+              galleryImages={analyzeResultImages}
+              onImageSelect={setSelectedAnalyzeImage}
+              selectedImage={selectedAnalyzeImage}
             />
 
             <SplitContent
-              imageSrc="/SS Score.png"
-              heading="Resume Performance Scoring"
-              description="Get detailed insights into your resume's effectiveness with our comprehensive scoring system. Track key metrics, identify areas for improvement, and optimize your resume to stand out to employers and ATS systems."
+              imageSrc="/images/templates.png"
+              heading="Professional Resume Templates"
+              description="Choose from our curated collection of stunning, professionally-designed resume templates. Each template is crafted by design experts and optimized for ATS systems, ensuring your content looks exceptional while maintaining perfect functionality across all recruitment platforms."
               imageOnLeft={false}
               imageOverflowRight={true}
-              badgeText="3x higher response rates"
-              badgeGradient="from-pink-600/10 to-rose-600/10"
               bulletPoints={[
-                "ATS compatibility scoring",
-                "Keyword optimization insights",
-                "Detailed improvement recommendations"
+                "ATS-optimized designs that pass through screening systems",
+                "Industry-specific templates for maximum relevance",
+                "One-click customization with instant preview"
               ]}
             />
 
             <SplitContent
-              imageSrc="/SS Cover Letter.png"
+              imageSrc="/images/coverletter.png"
               heading="AI Cover Letter Generator"
-              description="Create compelling, personalized cover letters in minutes with our AI-powered generator. Tailor your message to specific job opportunities while maintaining a professional and engaging tone that captures attention."
+              description="Create personalized cover letters in minutes with AI. Get tailored content that matches job requirements and highlights your key achievements."
               imageOnLeft={true}
-              badgeText="Save 30+ minutes per application"
-              badgeGradient="from-emerald-600/10 to-green-600/10"
+              imageOverflowRight={false}
               bulletPoints={[
-                "Tailored to match job requirements",
-                "Professional tone and structure",
-                "Highlights your relevant achievements"
+                "Intelligently tailored to match specific job requirements",
+                "Professional tone with personality that stands out",
+                "Strategic highlighting of your most relevant achievements"
               ]}
             />
       </div>
