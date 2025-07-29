@@ -12,12 +12,12 @@ import { resumeScoreSchema } from "@/lib/zod-schemas";
 
 
 //  SUPABASE ACTIONS
-export async function getResumeById(resumeId: string): Promise<{ resume: Resume; profile: Profile }> {
+export async function getResumeById(resumeId: string): Promise<{ resume: Resume; profile: Profile } | null> {
   const supabase = await createClient();
   const { data: { user }, error } = await supabase.auth.getUser();
   
   if (error || !user) {
-    throw new Error('User not authenticated');
+    return null;
   }
 
   try {
@@ -36,11 +36,11 @@ export async function getResumeById(resumeId: string): Promise<{ resume: Resume;
     ]);
 
     if (resumeResult.error || !resumeResult.data) {
-      throw new Error('Resume not found');
+      return null;
     }
 
     if (profileResult.error || !profileResult.data) {
-      throw new Error('Profile not found');
+      return null;
     }
 
     return { 
@@ -48,7 +48,7 @@ export async function getResumeById(resumeId: string): Promise<{ resume: Resume;
       profile: profileResult.data 
     };
   } catch (error) {
-    throw error;
+    return null;
   }
 }
 

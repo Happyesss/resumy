@@ -33,20 +33,20 @@ export async function generateMetadata({
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  try {
-    const { id } = await params;
-    const { resume } = await getResumeById(id);
-    return {
-      title: `${resume.name} | Resumy`,
-      description: `Editing ${resume.name} - ${resume.target_role} resume`,
-    };
-  } catch (error) {
-    void error;
+  const { id } = await params;
+  const result = await getResumeById(id);
+  
+  if (!result) {
     return {
       title: 'Resume Editor | Resumy',
       description: 'AI-powered resume editor',
     };
   }
+  
+  return {
+    title: `${result.resume.name} | Resumy`,
+    description: `Editing ${result.resume.name} - ${result.resume.target_role} resume`,
+  };
 }
 
 export default async function Page({
@@ -54,30 +54,23 @@ export default async function Page({
 }: {
   params: Promise<{ id: string }>;
 }) {
-
+  const { id } = await params;
+  const result = await getResumeById(id);
   
-  try {
-    const { id } = await params;
-    const { resume: rawResume, profile } = await getResumeById(id);
-    const normalizedResume = normalizeResumeData(rawResume);
-    const component = (
-      <div 
-        className="h-full flex flex-col "
-        data-page-title={normalizedResume.name}
-        data-resume-type={normalizedResume.is_base_resume ? "Base Resume" : "Tailored Resume"}
-      >
-        <ResumeEditorClient initialResume={normalizedResume} profile={profile} />
-      </div>
-    );
-  
-    
-    return component;
-  } catch (error) {
-    console.timeEnd('🔍 [Page] Total Load Time');
-    console.error('❌ [Error]:', error);
-    if (error instanceof Error && error.message === 'User not authenticated') {
-      redirect("/");
-    }
+  if (!result) {
     redirect("/");
   }
+  
+  const { resume: rawResume, profile } = result;
+  const normalizedResume = normalizeResumeData(rawResume);
+  
+  return (
+    <div 
+      className="h-full flex flex-col "
+      data-page-title={normalizedResume.name}
+      data-resume-type={normalizedResume.is_base_resume ? "Base Resume" : "Tailored Resume"}
+    >
+      <ResumeEditorClient initialResume={normalizedResume} profile={profile} />
+    </div>
+  );
 } 
