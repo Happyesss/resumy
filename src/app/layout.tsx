@@ -132,7 +132,7 @@ export default async function RootLayout({
   const { data: { user } } = await supabase.auth.getUser();
 
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body className={inter.className}>
         <ClientAppWrapper>
           <div className="relative min-h-screen flex flex-col">

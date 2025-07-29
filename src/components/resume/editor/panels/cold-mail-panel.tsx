@@ -254,25 +254,25 @@ export function ColdMailPanel({
       )}
 
       {/* Email Address Input */}
-      <div className="bg-gray-900/50 rounded-lg p-2 border border-gray-700/30 mb-2">
+      <div className="bg-gray-900/70 rounded-lg p-2 border border-gray-700/50 mb-2">
         <Input
           id="to"
           value={mailData.to}
           onChange={(e) => setMailData(prev => ({ ...prev, to: e.target.value }))}
-          placeholder="To (e.g. hiring@company.com)"
-          className="bg-gray-800/50 border-gray-600/30 text-xs mb-1"
+          placeholder="To (e.g. hiring@google.com)"
+          className="bg-gray-800/90 border-gray-600/50 text-white text-xs mb-1 placeholder:text-gray-400/70 focus:bg-gray-800 focus:border-gray-500"
         />
         <Textarea
           id="customPrompt"
           value={mailData.customPrompt}
           onChange={(e) => setMailData(prev => ({ ...prev, customPrompt: e.target.value }))}
           placeholder="What makes you interested in this company? (optional)"
-          className="bg-gray-800/50 border-gray-600/30 text-white text-xs min-h-[40px]"
+          className="bg-gray-800/90 border-gray-600/50 text-white text-xs min-h-[40px] placeholder:text-gray-400/70 focus:bg-gray-800 focus:border-gray-500"
         />
         <Button
           onClick={generateColdMail}
           disabled={isGenerating || !job}
-          className="w-full mt-2 bg-blue-600 text-white text-xs py-1"
+          className="w-full mt-2 bg-blue-600 text-white text-xs py-1 transition-colors duration-200 hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg"
         >
           {isGenerating ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <Sparkles className="h-4 w-4 mr-1" />}
           {isGenerating ? "Generating..." : "Generate Cold Email"}
@@ -281,17 +281,17 @@ export function ColdMailPanel({
 
       {/* Generated Email Display */}
       {(mailData.subject || mailData.body) && (
-        <div className="bg-gray-900/50 rounded-lg border border-gray-700/30 p-2 mt-2">
+        <div className="bg-gray-900/70 rounded-lg border border-gray-700/50 p-2 mt-2">
           {mailData.subject && (
             <div className="mb-1">
               <span className="text-blue-300 text-xs">Email Subject</span>
-              <div className="bg-gray-800/50 border border-gray-600/30 rounded p-1 text-white text-xs">{mailData.subject}</div>
+              <div className="bg-gray-800/90 border border-gray-600/50 rounded p-1 text-white text-xs">{mailData.subject}</div>
             </div>
           )}
           {mailData.body && (
             <div>
               <span className="text-blue-300 text-xs">Message</span>
-              <div className="bg-gray-800/50 border border-gray-600/30 rounded p-2 text-white whitespace-pre-wrap font-mono text-xs max-h-[250px] overflow-y-auto">{mailData.body}</div>
+              <div className="bg-gray-800/90 border border-gray-600/50 rounded p-2 text-white whitespace-pre-wrap font-mono text-xs max-h-[250px] overflow-y-auto">{mailData.body}</div>
             </div>
           )}
           {/* Action Buttons */}

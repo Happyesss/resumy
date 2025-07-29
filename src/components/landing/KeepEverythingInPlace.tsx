@@ -7,15 +7,15 @@ import {
   Clock, 
   BarChart3, 
   Settings,
-  ArrowRight
+  ArrowRight,
+  Mail
 } from "lucide-react";
 
 const features = [
   {
-    title: "Seamless Collaboration",
-    description: "Work together with your team effortlessly, share tasks, and update progress in real time.",
-    image: "/images/ss1.webp",
-    icon: <Users className="h-6 w-6" />,
+    title: "Cold Email Automation",
+    description: "Effortlessly generate personalized cold emails to engage potential employers.",
+    image: "/images/coldmail.png",
     color: "from-blue-600 to-cyan-600",
     iconBg: "bg-blue-500/20"
   },
@@ -28,17 +28,17 @@ const features = [
     iconBg: "bg-green-500/20"
   },
   {
-    title: "Advanced task tracking",
-    description: "A bird's eye view of your entire behaviour and productivity.",
-    image: "/images/ss3.webp",
+    title: "AI Suggestions",
+    description: "Get real-time AI suggestions to improve your resume and make it stand out.",
+    image: "/images/editorimage.png",
     icon: <BarChart3 className="h-6 w-6" />,
     color: "from-purple-600 to-pink-600",
     iconBg: "bg-purple-500/20"
   },
   {
-    title: "Customizable Workspaces",
-    description: "Personalize your workspace with themes, widgets, and custom layouts to match your workflow.",
-    image: "/images/ss4.webp",
+    title: "Personal Dashboard",
+    description: "Manage all your base and tailored resumes in one place with a personal dashboard.",
+    image: "/images/Dashboard.png",
     icon: <Settings className="h-6 w-6" />,
     color: "from-orange-600 to-red-600",
     iconBg: "bg-orange-500/20"
@@ -109,23 +109,28 @@ export function KeepEverythingInPlace() {
             variants={itemVariants}
             className="group lg:row-span-2"
           >
-            <div className="relative bg-white/5 border border-gray-800 rounded-xl p-4 hover:border-gray-700 transition-all duration-300 group-hover:-translate-y-1 h-full">
-              <div className="mb-4">
+            <div className="relative bg-white/5 border border-gray-800 rounded-xl p-4 hover:border-gray-700 transition-all duration-300 group-hover:-translate-y-1 h-full flex flex-col">
+              <div className="mb-4 flex flex-col items-center">
+                <span className="mb-2 inline-flex items-center justify-center rounded-full bg-blue-500/20 p-3">
+                  <Mail className="h-7 w-7 text-blue-400" />
+                </span>
                 <h3 className="text-sm font-semibold text-white mb-1">
                   {features[0].title}
                 </h3>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-gray-400 text-center">
                   {features[0].description}
                 </p>
               </div>
-              <div className="relative w-full h-96 rounded-lg overflow-hidden bg-gray-800/50">
-                <Image
-                  src={features[0].image}
-                  alt={features[0].title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 33vw"
-                />
+              <div className="flex-1 flex items-center justify-center">
+                <div className="relative w-full max-w-[420px] h-[420px] md:max-w-[500px] md:h-[500px] mx-auto rounded-2xl overflow-hidden bg-gray-800/50 shadow-2xl border border-blue-900/30">
+                  <Image
+                    src={features[0].image}
+                    alt={features[0].title}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 1024px) 100vw, 33vw"
+                  />
+                </div>
               </div>
             </div>
           </motion.div>

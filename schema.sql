@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS public.resumes (
   user_id uuid NOT NULL,
   job_id uuid NULL,
   is_base_resume boolean NULL DEFAULT false,
+  type text NOT NULL DEFAULT 'base' CHECK (type IN ('base', 'tailored')),
   name text NOT NULL,
   first_name text NULL,
   last_name text NULL,
