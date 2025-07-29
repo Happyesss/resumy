@@ -42,7 +42,8 @@ const PROVIDERS: {
 
 const AI_MODELS: AIModel[] = [
   // Use Gemini 2.5 Flash-Lite Preview 06-17
-  { id: 'gemini-2.5-flash-lite', name: 'Gemini 2.5 Flash-Lite', provider: 'google', unstable: false }
+  { id: 'gemini-2.5-flash-lite', name: 'Gemini 2.5 Flash-Lite', provider: 'google', unstable: false },
+  { id: 'gemini-2.0-flash', name: 'Gemini 2.0 Flash', provider: 'google', unstable: false }
 ]
 
 interface ModelSelectorProps {

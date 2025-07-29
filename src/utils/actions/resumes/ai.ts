@@ -62,12 +62,9 @@ async function safeGenerateObject(params: any) {
 // Base Resume Creation 
 // TEXT CONTENT -> RESUME
 export async function convertTextToResume(prompt: string, existingResume: Resume, targetRole: string, config?: AIConfig) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const _unusedConfig = config; // Keep parameter for future use
-  
-  // Hardcode to use gpt-4.1-nano for now
-  const hardcodedConfig = { model: 'gpt-4.1-nano', apiKeys: [] };
-  const aiClient = initializeAIClient(hardcodedConfig);
+  // Use config if provided, otherwise use gemini-2.0-flash for import resume functionality
+  const importConfig = config || { model: 'gemini-2.0-flash', apiKeys: [] };
+  const aiClient = initializeAIClient(importConfig);
 
   
   const { object } = await safeGenerateObject({

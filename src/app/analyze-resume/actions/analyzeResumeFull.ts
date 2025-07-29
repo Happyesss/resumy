@@ -285,13 +285,28 @@ async function analyzeResumeWithSingleAIRequest(
   apiKeys: ApiKey[]
 ): Promise<{ structuredResume: Resume; score: ResumeScoreMetrics; keywordAnalysis: any }> {
   try {
-    // Use specific GEMINI_ANALYZE_API_KEY for resume analysis if available
+    // Use specific GEMINI_ANALYZE_API_KEY for resume analysis if available, fallback to GEMINI_API_KEY
     const analyzeApiKey = process.env.GEMINI_ANALYZE_API_KEY;
+    const fallbackApiKey = process.env.GEMINI_API_KEY;
     
-    // Initialize AI client with appropriate key
-    const aiClient = analyzeApiKey 
-      ? createGoogleGenerativeAI({ apiKey: analyzeApiKey })(model) as LanguageModelV1
-      : initializeAIClient({ model, apiKeys });
+    // Initialize AI client with appropriate key - prefer analyze key, fallback to main key
+    let aiClient: LanguageModelV1;
+    if (analyzeApiKey) {
+      try {
+        aiClient = createGoogleGenerativeAI({ apiKey: analyzeApiKey })(model) as LanguageModelV1;
+      } catch (error) {
+        console.warn('GEMINI_ANALYZE_API_KEY failed, falling back to GEMINI_API_KEY');
+        if (fallbackApiKey) {
+          aiClient = createGoogleGenerativeAI({ apiKey: fallbackApiKey })(model) as LanguageModelV1;
+        } else {
+          aiClient = initializeAIClient({ model, apiKeys });
+        }
+      }
+    } else if (fallbackApiKey) {
+      aiClient = createGoogleGenerativeAI({ apiKey: fallbackApiKey })(model) as LanguageModelV1;
+    } else {
+      aiClient = initializeAIClient({ model, apiKeys });
+    }
     
     // ...existing code...
     

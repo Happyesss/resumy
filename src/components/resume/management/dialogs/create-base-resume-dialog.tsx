@@ -173,7 +173,7 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
 
         try {
           const convertedResume = await convertTextToResume(resumeText, emptyResume, targetRole, {
-            model: selectedModel || '',
+            model: selectedModel || 'gemini-2.0-flash',
             apiKeys
           });
           

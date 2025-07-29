@@ -10,14 +10,14 @@ export async function generate(input: string, config?: AIConfig) {
     const data = JSON.parse(input);
     const { resume, job, recipientName, customPrompt } = data;
     
-    // Initialize AI client with Gemini Mail API configuration
+    // Initialize AI client with Gemini API configuration
     const mailConfig = {
       ...config,
       model: 'gemini-2.5-flash-lite',
       apiKeys: [
         {
           service: 'google',
-          key: process.env.GEMINI_MAIL_API_KEY || '',
+          key: process.env.GEMINI_API_KEY || '',
           addedAt: new Date().toISOString()
         }
       ]

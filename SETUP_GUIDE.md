@@ -43,6 +43,9 @@ SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 
 # Gemini API (Optional - users can provide their own)
 GEMINI_API_KEY=your_gemini_api_key
+
+# Gemini API for Analysis (Optional - primary key for resume analysis)
+GEMINI_ANALYZE_API_KEY=your_gemini_analyze_api_key
 ```
 
 4. **Set up the database**

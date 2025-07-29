@@ -165,7 +165,7 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
       const MODEL_STORAGE_KEY = 'resumy-default-model';
       const LOCAL_STORAGE_KEY = 'resumy-api-keys';
       
-      const selectedModel = 'gemini-2.5-flash';
+      const selectedModel = 'gemini-2.5-flash-lite';
       const storedKeys = localStorage.getItem(LOCAL_STORAGE_KEY);
       let apiKeys = [];
       
