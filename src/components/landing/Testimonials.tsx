@@ -7,12 +7,12 @@ import Link from "next/link";
 
 const testimonials = [
   {
-    name: "Sarah Johnson",
+    name: "Priya Sharma",
     role: "Software Engineer",
-    image: "/testimonials/sarah.jpg", // Add these images to public folder
+    image: "/testimonials/priya.jpg", // Add these images to public folder
     content: "Resumy's AI suggestions helped me highlight my achievements perfectly. I got 3 interview calls within a week of updating my resume!",
     rating: 5,
-    linkedin: "https://linkedin.com/in/sarah-johnson",
+    linkedin: "https://linkedin.com/in/priya-sharma",
     featured: true
   },
   {
@@ -34,9 +34,9 @@ const testimonials = [
     featured: true
   },
   {
-    name: "David Kim",
+    name: "Arjun Patel",
     role: "Data Scientist",
-    image: "/testimonials/david.jpg",
+    image: "/testimonials/arjun.jpg",
     content: "The AI-powered content suggestions were spot-on for my field. Resumy understood exactly what tech recruiters are looking for.",
     rating: 4.5,
     featured: false
@@ -50,11 +50,11 @@ const testimonials = [
     featured: false
   },
   {
-    name: "James Wilson",
-    role: "Sales Manager",
-    image: "/testimonials/james.jpg",
-    content: "From zero to hero! Resumy helped me transform my outdated resume into a modern, compelling document that gets results.",
-    rating: 4.5,
+    name: "Rahul Gupta",
+    role: "Software Engineering Intern",
+    image: "/testimonials/rahul.jpg",
+    content: "As a student, Resumy helped me create my first professional resume. I landed my dream internship at a top tech company!",
+    rating: 5,
     featured: false
   }
 ];

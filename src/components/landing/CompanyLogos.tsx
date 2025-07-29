@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 const companies = [
   { name: "Google", logo: "/logos/google.png" },
-  { name: "Microsoft", logo: "/logos/microsoft.webp" },
+  { name: "Adobe", logo: "/logos/adobe.png" },
   { name: "Amazon", logo: "/logos/amazon.png" },
   { name: "Meta", logo: "/logos/meta.png" },
   { name: "Netflix", logo: "/logos/netflix.png" },

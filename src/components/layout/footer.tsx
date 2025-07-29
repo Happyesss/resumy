@@ -104,7 +104,7 @@ export function Footer() {
                 Free forever, no hidden fees, no limitations.
               </p>
               
-              {/* Social Links */}
+              {/* Social Links
               <div className="flex items-center gap-4">
                 {socialLinks.map((social) => (
                   <Link
@@ -118,7 +118,7 @@ export function Footer() {
                     {social.icon}
                   </Link>
                 ))}
-              </div>
+              </div> */}
             </div>
 
             {/* Navigation Sections */}
@@ -177,11 +177,14 @@ export function Footer() {
             </div>
             
             {/* Center - Made with Love */}
-            <div className="flex items-center gap-2 text-sm text-gray-400">
-              <span>Made with</span>
-              <Heart className="h-4 w-4 text-red-500 fill-current" />
-              <span>for job seekers worldwide</span>
-            </div>
+            <Link
+              href="https://resumy.live"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors cursor-pointer"
+            >
+              <span>resumy.live</span>
+            </Link>
           </div>
         </div>
       </div>

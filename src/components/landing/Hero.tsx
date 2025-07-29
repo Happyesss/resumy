@@ -56,7 +56,6 @@ export function Hero() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
               <AuthDialog>
                 <button className="flex group relative px-4 py-2 sm:px-6 sm:py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-blue-500/25 transition-all duration-200 items-center text-sm sm:text-base">
-                  <Brain className="mr-2 w-4 h-4" />
                   Start Creating Now
                   <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </button>

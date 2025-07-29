@@ -87,12 +87,7 @@ const itemVariants = {
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="relative py-24 pb-12 bg-black overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/20 to-transparent" />
-      <div className="absolute top-1/4 left-0 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
-      
+    <section id="how-it-works" className="relative pb-24 pt-8 bg-black overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -107,7 +102,7 @@ export function HowItWorks() {
               <Sparkles className="h-6 w-6 text-white" />
             </div>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white">
-              How It Works
+              4 Simple Steps
             </h2>
           </div>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
