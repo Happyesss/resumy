@@ -109,7 +109,7 @@ jobs:
           GEMINI_ANALYZE_API_KEY=${{ secrets.GEMINI_ANALYZE_API_KEY }}
           UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }}
           UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
-          NEXT_PUBLIC_SITE_URL=http://${{ secrets.DO_HOST }}:3000
+          NEXT_PUBLIC_SITE_URL=https://resumy.live
           EOF
           
           # Install dependencies
@@ -144,5 +144,38 @@ jobs:
           
           # Setup PM2 to start on boot
           pm2 startup
+          
+          # Configure Nginx for domain
+          cat > /etc/nginx/sites-available/resumy.live << 'NGINX_EOF'
+          server {
+              listen 80;
+              server_name resumy.live www.resumy.live;
+              
+              location / {
+                  proxy_pass http://localhost:3000;
+                  proxy_http_version 1.1;
+                  proxy_set_header Upgrade $http_upgrade;
+                  proxy_set_header Connection 'upgrade';
+                  proxy_set_header Host $host;
+                  proxy_set_header X-Real-IP $remote_addr;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto $scheme;
+                  proxy_cache_bypass $http_upgrade;
+              }
+          }
+          NGINX_EOF
+          
+          # Enable the site
+          ln -sf /etc/nginx/sites-available/resumy.live /etc/nginx/sites-enabled/
+          
+          # Remove default Nginx site
+          rm -f /etc/nginx/sites-enabled/default
+          
+          # Test Nginx configuration
+          nginx -t
+          
+          # Restart Nginx
+          systemctl restart nginx
+          systemctl enable nginx
           
           echo "Deployment completed successfully!"
