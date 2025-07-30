@@ -510,6 +510,21 @@ export async function analyzeResumeFull(
   config: AnalysisConfig = {}
 ): Promise<FullAnalysisResult> {
   const startTime = Date.now();
+  
+  // Input validation
+  if (!resumeText || resumeText.trim().length < 50) {
+    throw new Error("Resume text is too short or empty. Please provide a valid resume.");
+  }
+
+  // Environment validation
+  const hasGeminiAnalyzeKey = Boolean(process.env.GEMINI_ANALYZE_API_KEY);
+  const hasGeminiKey = Boolean(process.env.GEMINI_API_KEY);
+  
+  if (!hasGeminiAnalyzeKey && !hasGeminiKey) {
+    console.error('Missing API keys: Both GEMINI_ANALYZE_API_KEY and GEMINI_API_KEY are undefined');
+    throw new Error("AI service is temporarily unavailable. Please try again later.");
+  }
+
   // Note: The specialized GEMINI_ANALYZE_API_KEY will be used if available
   // This is configured in the analyzeResumeWithSingleAIRequest function
   const {
@@ -558,6 +573,32 @@ export async function analyzeResumeFull(
     };
 
   } catch (error) {
+    console.error('Resume analysis error:', {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      resumeLength: resumeText?.length || 0,
+      model,
+      targetRole,
+      timestamp: new Date().toISOString()
+    });
+    
+    // Provide user-friendly error messages
+    if (error instanceof Error) {
+      if (error.message.includes('API key')) {
+        throw new Error("AI service configuration error. Please try again later.");
+      }
+      if (error.message.includes('quota') || error.message.includes('rate limit')) {
+        throw new Error("Service is temporarily overloaded. Please try again in a few minutes.");
+      }
+      if (error.message.includes('timeout')) {
+        throw new Error("Analysis is taking longer than expected. Please try again.");
+      }
+      // Pass through validation errors as-is
+      if (error.message.includes('too short') || error.message.includes('empty')) {
+        throw error;
+      }
+    }
+    
     throw new Error(`Resume analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }

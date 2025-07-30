@@ -4,7 +4,6 @@ import { AppHeader } from "@/components/layout/app-header";
 import { Footer } from "@/components/layout/footer";
 import { createClient } from "@/utils/supabase/server";
 import { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/react"
 import ClientAppWrapper from "@/components/layout/AppClientWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -132,15 +131,14 @@ export default async function RootLayout({
   const { data: { user } } = await supabase.auth.getUser();
 
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.className} antialiased`} suppressHydrationWarning>
         <ClientAppWrapper>
           <div className="relative min-h-screen flex flex-col">
             {user && <AppHeader />}
             {/* Main content */}
             <main className={`flex-1 bg-black ${user ? 'pt-16' : ''}`}>
               {children}
-              <Analytics />
             </main>
           </div>
         </ClientAppWrapper>

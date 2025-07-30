@@ -25,7 +25,7 @@ jobs:
         # Delete node_modules and package-lock.json to start fresh
         rm -rf node_modules package-lock.json
         # Install dependencies
-        npm install --legacy-peer-deps
+        npm install --legacy-peer-deps --omit=dev
 
     - name: Build application
       run: |
@@ -112,8 +112,11 @@ jobs:
           NEXT_PUBLIC_SITE_URL=https://resumy.live
           EOF
           
+          # Ensure proper permissions
+          chmod 600 .env.local
+          
           # Install dependencies
-          npm install --legacy-peer-deps
+          npm install --legacy-peer-deps --production
           
           # Build the application
           npm run build
