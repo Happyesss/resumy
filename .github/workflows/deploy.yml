@@ -49,6 +49,17 @@ jobs:
         UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
         UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
 
+    - name: Transfer files to server
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.DO_HOST }}
+        username: ${{ secrets.DO_USERNAME }}
+        key: ${{ secrets.DO_SSH_KEY }}
+        port: 22
+        source: "."
+        target: "/var/www/resumy"
+        rm: true
+
     - name: Deploy to DigitalOcean
       uses: appleboy/ssh-action@v1.0.0
       with:
@@ -74,24 +85,19 @@ jobs:
             # Install Nginx
             apt install -y nginx
             
-            # Install Git if not present
-            apt install -y git
-            
-            # Create app directory
-            mkdir -p /var/www
-            
-            # Clone the repository
-            cd /var/www
-            git clone https://github.com/Happyesss/resumyy.git resumy
-            
             echo "Initial setup completed!"
           fi
           
+          # Ensure PM2 is installed globally
+          if ! command -v pm2 &> /dev/null; then
+            npm install -g pm2
+          fi
+          
+          # Create app directory
+          mkdir -p /var/www/resumy
+          
           # Navigate to app directory
           cd /var/www/resumy
-          
-          # Pull latest changes
-          git pull origin main
           
           # Create .env file with production environment variables
           cat > .env.local << EOF
