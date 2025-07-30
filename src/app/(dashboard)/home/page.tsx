@@ -10,6 +10,7 @@ import type { Resume } from "@/lib/types";
 import { ResumesSection } from "@/components/dashboard/resumes-section";
 import { createClient } from "@/utils/supabase/server";
 import { getDashboardData } from "@/utils/actions";
+import { RESUME_LIMIT } from "@/lib/constants";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -89,10 +90,11 @@ export default async function Home({
   // Count resumes for base and tailored sections
   const baseResumesCount = await countResumes('base');
   const tailoredResumesCount = await countResumes('tailored');
+  const totalResumesCount = await countResumes('all');
 
-  // Since the app is now completely free, users can create unlimited resumes
-  const canCreateBase = true;
-  const canCreateTailored = true;
+  // Limit users to 20 total resumes (base + tailored combined)
+  const canCreateBase = totalResumesCount < RESUME_LIMIT;
+  const canCreateTailored = totalResumesCount < RESUME_LIMIT;
 
 
   // Display a friendly message if no profile exists
@@ -166,6 +168,8 @@ export default async function Home({
                 currentSort={baseSort}
                 currentDirection={baseDirection}
                 canCreateMore={canCreateBase}
+                totalResumesCount={totalResumesCount}
+                resumeLimit={RESUME_LIMIT}
               />
 
               {/* Thin Divider */}
@@ -184,6 +188,8 @@ export default async function Home({
                 currentDirection={tailoredDirection}
                 baseResumes={baseResumes}
                 canCreateMore={canCreateTailored}
+                totalResumesCount={totalResumesCount}
+                resumeLimit={RESUME_LIMIT}
               />
             </div>
           </div>

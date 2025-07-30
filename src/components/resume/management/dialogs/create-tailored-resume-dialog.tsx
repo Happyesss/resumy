@@ -20,14 +20,18 @@ import { ImportMethodRadioGroup } from "../import-method-radio-group";
 import { JobDescriptionInput } from "../job-description-input";
 import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
 import { cn } from "@/lib/utils";
+import { RESUME_LIMIT } from '@/lib/constants';
+import { countResumes } from '@/utils/actions/resumes/actions';
+import { hasReachedDailyLimit, getRemainingRequests, incrementDailyUsage, DAILY_REQUEST_LIMIT } from '@/lib/daily-limit';
 
 interface CreateTailoredResumeDialogProps {
   children: React.ReactNode;
   baseResumes?: Resume[];
   profile?: Profile;
+  totalResumesCount?: number;
 }
 
-export function CreateTailoredResumeDialog({ children, baseResumes, profile }: CreateTailoredResumeDialogProps) {
+export function CreateTailoredResumeDialog({ children, baseResumes, profile, totalResumesCount }: CreateTailoredResumeDialogProps) {
   const [open, setOpen] = useState(false);
   const [selectedBaseResume, setSelectedBaseResume] = useState<string>(baseResumes?.[0]?.id || '');
   const [jobDescription, setJobDescription] = useState('');
@@ -60,6 +64,37 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile }: C
   };
 
   const handleCreate = async () => {
+    // Check resume limit first (fetch count if not provided)
+    let currentTotalCount = totalResumesCount;
+    if (currentTotalCount === undefined) {
+      try {
+        currentTotalCount = await countResumes('all');
+      } catch (error) {
+        console.error('Failed to fetch resume count:', error);
+        // Continue without limit check if fetching fails
+        currentTotalCount = 0;
+      }
+    }
+
+    if (currentTotalCount >= RESUME_LIMIT) {
+      toast({
+        title: "Resume Limit Reached",
+        description: `You have reached the maximum limit of ${RESUME_LIMIT} resumes. This app is completely free with this limit.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check daily API request limit
+    if (hasReachedDailyLimit()) {
+      toast({
+        title: "Daily Request Limit Reached",
+        description: `You have reached the daily limit of ${DAILY_REQUEST_LIMIT} AI requests. Please try again tomorrow.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     // Validate required fields
     if (!selectedBaseResume) {
       setIsBaseResumeInvalid(true);
@@ -119,6 +154,8 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile }: C
               model: selectedModel || '',
               apiKeys
             });
+            // Increment usage after successful AI call
+            incrementDailyUsage();
 
             setCurrentStep('formatting');
             const jobEntry = await createJob(formattedJobListing);
@@ -196,6 +233,8 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile }: C
           model: selectedModel || '',
           apiKeys
         });
+        // Increment usage after successful AI call
+        incrementDailyUsage();
       } catch (error: Error | unknown) {
         if (error instanceof Error && (
             error.message.toLowerCase().includes('api key') || 
@@ -238,6 +277,8 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile }: C
           model: selectedModel || '',
           apiKeys
         });
+        // Increment usage after successful AI call
+        incrementDailyUsage();
       } catch (error: Error | unknown) {
         if (error instanceof Error && (
             error.message.toLowerCase().includes('api key') || 

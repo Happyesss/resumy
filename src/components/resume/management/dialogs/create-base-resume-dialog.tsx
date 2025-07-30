@@ -18,14 +18,18 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Textarea } from "@/components/ui/textarea";
 import { convertTextToResume } from "@/utils/actions/resumes/ai";
+import { RESUME_LIMIT } from '@/lib/constants';
+import { countResumes } from '@/utils/actions/resumes/actions';
+import { hasReachedDailyLimit, getRemainingRequests, incrementDailyUsage, DAILY_REQUEST_LIMIT } from '@/lib/daily-limit';
 import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
 
 interface CreateBaseResumeDialogProps {
   children: React.ReactNode;
   profile: Profile;
+  totalResumesCount?: number;
 }
 
-export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDialogProps) {
+export function CreateBaseResumeDialog({ children, profile, totalResumesCount }: CreateBaseResumeDialogProps) {
   const [open, setOpen] = useState(false);
   const [targetRole, setTargetRole] = useState('');
   const [isCreating, setIsCreating] = useState(false);
@@ -120,6 +124,37 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
   };
 
   const handleCreate = async () => {
+    // Check resume limit first (fetch count if not provided)
+    let currentTotalCount = totalResumesCount;
+    if (currentTotalCount === undefined) {
+      try {
+        currentTotalCount = await countResumes('all');
+      } catch (error) {
+        console.error('Failed to fetch resume count:', error);
+        // Continue without limit check if fetching fails
+        currentTotalCount = 0;
+      }
+    }
+
+    if (currentTotalCount >= RESUME_LIMIT) {
+      toast({
+        title: "Resume Limit Reached",
+        description: `You have reached the maximum limit of ${RESUME_LIMIT} resumes. This app is completely free with this limit.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check daily API request limit (only for AI-powered creation)
+    if (importOption === 'import-resume' && hasReachedDailyLimit()) {
+      toast({
+        title: "Daily Request Limit Reached",
+        description: `You have reached the daily limit of ${DAILY_REQUEST_LIMIT} AI requests. Please try again tomorrow.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (!targetRole.trim()) {
       setIsTargetRoleInvalid(true);
       setTimeout(() => setIsTargetRoleInvalid(false), 820);
@@ -176,6 +211,8 @@ export function CreateBaseResumeDialog({ children, profile }: CreateBaseResumeDi
             model: selectedModel || 'gemini-2.0-flash',
             apiKeys
           });
+          // Increment usage after successful AI call
+          incrementDailyUsage();
           
           // Extract content sections and basic info for createBaseResume
           const selectedContent = {

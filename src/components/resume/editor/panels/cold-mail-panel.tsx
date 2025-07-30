@@ -12,6 +12,8 @@ import { CreateTailoredResumeDialog } from "@/components/resume/management/dialo
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { hasReachedDailyLimit, getRemainingRequests, incrementDailyUsage, DAILY_REQUEST_LIMIT } from '@/lib/daily-limit';
+import { toast } from "@/hooks/use-toast";
 
 interface ColdMailPanelProps {
   resume: Resume;
@@ -54,6 +56,16 @@ export function ColdMailPanel({
       setShowErrorDialog(true);
       return;
     }
+
+    // Check daily API request limit
+    if (hasReachedDailyLimit()) {
+      toast({
+        title: "Daily Request Limit Reached",
+        description: `You have reached the daily limit of ${DAILY_REQUEST_LIMIT} AI requests. Please try again tomorrow.`,
+        variant: "destructive",
+      });
+      return;
+    }
     
     setIsGenerating(true);
     
@@ -86,6 +98,8 @@ export function ColdMailPanel({
         model: selectedModel || 'gemini-2.5-flash-lite',
         apiKeys: apiKeys
       });
+      // Increment usage after successful AI call
+      incrementDailyUsage();
 
       let generatedContent = '';
       let extractedSubject = '';

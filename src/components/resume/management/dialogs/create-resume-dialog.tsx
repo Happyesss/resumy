@@ -9,15 +9,16 @@ interface CreateResumeDialogProps {
   type: 'base' | 'tailored';
   baseResumes?: Resume[];
   profile: Profile;
+  totalResumesCount?: number;
 }
 
-export function CreateResumeDialog({ children, type, baseResumes, profile }: CreateResumeDialogProps) {
+export function CreateResumeDialog({ children, type, baseResumes, profile, totalResumesCount }: CreateResumeDialogProps) {
   if (type === 'base') {
-    return <CreateBaseResumeDialog profile={profile}>{children}</CreateBaseResumeDialog>;
+    return <CreateBaseResumeDialog profile={profile} totalResumesCount={totalResumesCount}>{children}</CreateBaseResumeDialog>;
   }
 
   return (
-    <CreateTailoredResumeDialog baseResumes={baseResumes} profile={profile}>
+    <CreateTailoredResumeDialog baseResumes={baseResumes} profile={profile} totalResumesCount={totalResumesCount}>
       {children}
     </CreateTailoredResumeDialog>
   );

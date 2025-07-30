@@ -14,6 +14,7 @@ import { deleteResume, copyResume } from '@/utils/actions/resumes/actions';
 import { Pagination, PaginationContent, PaginationItem } from '@/components/ui/pagination';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { toast } from 'sonner';
+import { RESUME_LIMIT } from '@/lib/constants';
 
 interface OptimisticResume extends Resume {
   isOptimistic?: boolean;
@@ -34,6 +35,8 @@ interface ResumesSectionProps {
   currentDirection: SortDirection;
   baseResumes?: Resume[];
   canCreateMore?: boolean;
+  totalResumesCount?: number;
+  resumeLimit?: number;
 }
 
 interface PaginationState {
@@ -50,7 +53,9 @@ export function ResumesSection({
   currentSort,
   currentDirection,
   baseResumes = [],
-  canCreateMore
+  canCreateMore,
+  totalResumesCount = 0,
+  resumeLimit = RESUME_LIMIT
 }: ResumesSectionProps) {
   const [optimisticResumes, dispatchOptimistic] = React.useOptimistic(
     resumes as OptimisticResume[],
@@ -176,84 +181,156 @@ export function ResumesSection({
     }));
   }
 
-  const CreateResumeCard = () => (
-    <CreateResumeDialog 
-      type={type} 
-      profile={profile}
-      {...(type === 'tailored' && { baseResumes })}
-    >
-      <button className={cn(
-        "aspect-[8.5/11] rounded-xl",
-        "relative overflow-hidden",
-        "border-2 border-dashed transition-all duration-300",
-        "group/new-resume flex flex-col items-center justify-center gap-4",
-        type === 'base'
-          ? "border-gray-400 hover:border-gray-100"
-          : "border-purple-400/40 hover:border-purple-400/70",
-        "bg-gradient-to-br from-gray-900 to-gray-800",
-        "hover:shadow-lg hover:shadow-purple-400/10 hover:-translate-y-1",
-        "w-full sm:w-auto"
-      )}>
-        <div className={cn(
-          "relative z-10 flex flex-col items-center",
-          "transform transition-all duration-300",
-          "group-hover/new-resume:scale-105"
+  const CreateResumeCard = () => {
+    // If limit reached, show alert dialog instead of create dialog
+    if (!canCreateMore) {
+      return (
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <button className={cn(
+              "aspect-[8.5/11] rounded-xl",
+              "relative overflow-hidden",
+              "border-2 border-dashed transition-all duration-300",
+              "group/new-resume flex flex-col items-center justify-center gap-4",
+              "border-red-400/40 hover:border-red-400/70",
+              "bg-gradient-to-br from-gray-900 to-gray-800",
+              "hover:shadow-lg hover:shadow-red-400/10 hover:-translate-y-1",
+              "w-full sm:w-auto"
+            )}>
+              <div className={cn(
+                "relative z-10 flex flex-col items-center",
+                "transform transition-all duration-300",
+                "group-hover/new-resume:scale-105"
+              )}>
+                <div className={cn(
+                  "h-12 w-12 rounded-xl",
+                  "flex items-center justify-center",
+                  "bg-gradient-to-br from-gray-800 to-gray-700",
+                  "border border-red-400/30",
+                  "shadow-sm group-hover/new-resume:shadow-md",
+                  "group-hover/new-resume:scale-110"
+                )}>
+                  <config.icon className={cn(
+                    "h-5 w-5 transition-all duration-300",
+                    "text-red-400",
+                    "group-hover/new-resume:scale-110"
+                  )} />
+                </div>
+                
+                <span className={cn(
+                  "mt-4 text-sm font-medium",
+                  "transition-all duration-300",
+                  "text-red-400",
+                  "group-hover/new-resume:font-semibold"
+                )}>
+                  Limit Reached
+                </span>
+                
+                <span className={cn(
+                  "mt-2 text-xs",
+                  "transition-all duration-300 opacity-70",
+                  "text-red-400/70",
+                  "group-hover/new-resume:opacity-100"
+                )}>
+                  {totalResumesCount}/{resumeLimit} resumes
+                </span>
+              </div>
+            </button>
+          </AlertDialogTrigger>
+          <AlertDialogContent className="bg-gray-900 border-gray-800">
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-white">Resume Limit Reached</AlertDialogTitle>
+              <AlertDialogDescription className="text-gray-400">
+                You have reached the maximum limit of {resumeLimit} resumes ({totalResumesCount}/{resumeLimit} used). 
+                Please delete an existing resume to create a new one.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700">
+                Okay
+              </AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      );
+    }
+
+    // Normal create resume dialog when limit not reached
+    return (
+      <CreateResumeDialog 
+        type={type} 
+        profile={profile}
+        totalResumesCount={totalResumesCount}
+        {...(type === 'tailored' && { baseResumes })}
+      >
+        <button className={cn(
+          "aspect-[8.5/11] rounded-xl",
+          "relative overflow-hidden",
+          "border-2 border-dashed transition-all duration-300",
+          "group/new-resume flex flex-col items-center justify-center gap-4",
+          type === 'base'
+            ? "border-gray-400 hover:border-gray-100"
+            : "border-purple-400/40 hover:border-purple-400/70",
+          "bg-gradient-to-br from-gray-900 to-gray-800",
+          "hover:shadow-lg hover:shadow-purple-400/10 hover:-translate-y-1",
+          "w-full sm:w-auto"
         )}>
           <div className={cn(
-            "h-12 w-12 rounded-xl",
-            "flex items-center justify-center",
-            "bg-gradient-to-br from-gray-800 to-gray-700",
-            type === 'base'
-              ? "border border-white"
-              : "border border-purple-400/30",
-            "shadow-sm group-hover/new-resume:shadow-md",
-            "group-hover/new-resume:scale-110"
+            "relative z-10 flex flex-col items-center",
+            "transform transition-all duration-300",
+            "group-hover/new-resume:scale-105"
           )}>
-            <config.icon className={cn(
-              "h-5 w-5 transition-all duration-300",
+            <div className={cn(
+              "h-12 w-12 rounded-xl",
+              "flex items-center justify-center",
+              "bg-gradient-to-br from-gray-800 to-gray-700",
+              type === 'base'
+                ? "border border-white"
+                : "border border-purple-400/30",
+              "shadow-sm group-hover/new-resume:shadow-md",
+              "group-hover/new-resume:scale-110"
+            )}>
+              <config.icon className={cn(
+                "h-5 w-5 transition-all duration-300",
+                type === 'base'
+                  ? "text-white"
+                  : "text-purple-400",
+                "group-hover/new-resume:scale-110"
+              )} />
+            </div>
+            
+            <span className={cn(
+              "mt-4 text-sm font-medium",
+              "transition-all duration-300",
               type === 'base'
                 ? "text-white"
                 : "text-purple-400",
-              "group-hover/new-resume:scale-110"
-            )} />
+              "group-hover/new-resume:font-semibold"
+            )}>
+              Create {type === 'base' ? 'Base' : 'Tailored'} Resume
+            </span>
+            
+            <span className={cn(
+              "mt-2 text-xs",
+              "transition-all duration-300 opacity-0",
+              type === 'base'
+                ? "text-white/70"
+                : "text-purple-400/70",
+              "group-hover/new-resume:opacity-100"
+            )}>
+              {totalResumesCount}/{resumeLimit} used
+            </span>
           </div>
-          
-          <span className={cn(
-            "mt-4 text-sm font-medium",
-            "transition-all duration-300",
-            type === 'base'
-              ? "text-white"
-              : "text-purple-400",
-            "group-hover/new-resume:font-semibold"
-          )}>
-            Create {type === 'base' ? 'Base' : 'Tailored'} Resume
-          </span>
-          
-          <span className={cn(
-            "mt-2 text-xs",
-            "transition-all duration-300 opacity-0",
-            type === 'base'
-              ? "text-white/70"
-              : "text-purple-400/70",
-            "group-hover/new-resume:opacity-100"
-          )}>
-            Click to start
-          </span>
-        </div>
-      </button>
-    </CreateResumeDialog>
-  );
+        </button>
+      </CreateResumeDialog>
+    );
+  };
 
   const LimitReachedCard = () => (
-    <Link 
-      href="/subscription"
-      className={cn(
-        "group/limit block",
-        "cursor-pointer",
-        "transition-all duration-300",
-        "hover:-translate-y-1",
-      )}
-    >
+    <div className={cn(
+      "group/limit",
+      "transition-all duration-300",
+    )}>
       <div className={cn(
         "aspect-[8.5/11] rounded-xl",
         "relative overflow-hidden",
@@ -261,49 +338,39 @@ export function ResumesSection({
         "flex flex-col items-center justify-center gap-4",
         "border-purple-400/40",
         "bg-gradient-to-br from-gray-900 to-gray-800",
-        "hover:shadow-lg hover:shadow-purple-400/10",
-        "hover:border-purple-400/70"
+        "shadow-lg shadow-purple-400/10",
+        "border-purple-400/70"
       )}>
         <div className={cn(
           "relative z-10 flex flex-col items-center",
-          "transform transition-all duration-300",
-          "group-hover/limit:scale-105"
+          "transform transition-all duration-300"
         )}>
           <div className={cn(
             "h-12 w-12 rounded-xl",
             "flex items-center justify-center",
             "bg-gradient-to-br from-gray-800 to-gray-700",
             "border border-purple-400/30",
-            "shadow-md",
-            "transition-all duration-300",
-            "group-hover/limit:shadow-lg",
-            "group-hover/limit:-translate-y-1"
+            "shadow-md"
           )}>
             <config.icon className={cn(
-              "h-5 w-5 text-purple-400",
-              "transition-all duration-300",
-              "group-hover/limit:scale-110"
+              "h-5 w-5 text-purple-400"
             )} />
           </div>
           <span className={cn(
             "mt-4 text-sm font-medium",
-            "text-purple-400",
-            "transition-all duration-300",
-            "group-hover/limit:text-purple-300"
+            "text-purple-400"
           )}>
             {type === 'base' ? 'Base' : 'Tailored'} Limit Reached
           </span>
           <span className={cn(
-            "mt-2 text-xs",
-            "text-purple-400/70 underline underline-offset-4",
-            "transition-all duration-300",
-            "group-hover/limit:text-purple-300/90"
+            "mt-2 text-xs text-center px-2",
+            "text-purple-400/70"
           )}>
-            Upgrade to create more
+            Delete existing resumes to create more
           </span>
         </div>
       </div>
-    </Link>
+    </div>
   );
 
   const ResumeCard = ({ resume }: { resume: OptimisticResume }) => {
@@ -422,26 +489,34 @@ export function ResumesSection({
                     </AlertDialogTrigger>
                     <AlertDialogContent className="bg-gray-900 border-gray-800">
                       <AlertDialogHeader>
-                        <AlertDialogTitle className="text-white">Unlimited Resumes</AlertDialogTitle>
+                        <AlertDialogTitle className="text-white">
+                          {canCreateMore ? "Create Resume" : "Resume Limit Reached"}
+                        </AlertDialogTitle>
                         <AlertDialogDescription className="text-gray-400">
-                          This app is completely free! You can create unlimited {type} resumes.
+                          {canCreateMore 
+                            ? `You can create more ${type} resumes. Currently using ${totalResumesCount}/${resumeLimit} total resumes.`
+                            : `You have reached the maximum limit of ${resumeLimit} resumes (${totalResumesCount}/${resumeLimit} used). Please delete an existing resume to create a new one.`
+                          }
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel className="bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700">
                           Cancel
                         </AlertDialogCancel>
-                        <AlertDialogAction asChild>
-                          <CreateResumeDialog 
-                            type={type as 'base' | 'tailored'}
-                            profile={profile}
-                            baseResumes={type === 'tailored' ? baseResumes : undefined}
-                          >
-                            <Button className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:from-purple-600 hover:to-indigo-700">
-                              Create Resume
-                            </Button>
-                          </CreateResumeDialog>
-                        </AlertDialogAction>
+                        {canCreateMore && (
+                          <AlertDialogAction asChild>
+                            <CreateResumeDialog 
+                              type={type as 'base' | 'tailored'}
+                              profile={profile}
+                              totalResumesCount={totalResumesCount}
+                              baseResumes={type === 'tailored' ? baseResumes : undefined}
+                            >
+                              <Button className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:from-purple-600 hover:to-indigo-700">
+                                Create Resume
+                              </Button>
+                            </CreateResumeDialog>
+                          </AlertDialogAction>
+                        )}
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>

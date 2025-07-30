@@ -10,6 +10,8 @@ import { generate } from "@/utils/actions/cover-letter/actions";
 import { useResumeContext } from "../resume-editor-context";
 import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
 import { CreateTailoredResumeDialog } from "@/components/resume/management/dialogs/create-tailored-resume-dialog";
+import { hasReachedDailyLimit, getRemainingRequests, incrementDailyUsage, DAILY_REQUEST_LIMIT } from '@/lib/daily-limit';
+import { toast } from "@/hooks/use-toast";
 
 
 interface CoverLetterPanelProps {
@@ -39,6 +41,16 @@ export function CoverLetterPanel({
 
   const generateCoverLetter = async () => {
     if (!job) return;
+
+    // Check daily API request limit
+    if (hasReachedDailyLimit()) {
+      toast({
+        title: "Daily Request Limit Reached",
+        description: `You have reached the daily limit of ${DAILY_REQUEST_LIMIT} AI requests. Please try again tomorrow.`,
+        variant: "destructive",
+      });
+      return;
+    }
     
     setIsGenerating(true);
     
@@ -81,6 +93,8 @@ export function CoverLetterPanel({
         model: selectedModel || '',
         apiKeys
       });
+      // Increment usage after successful AI call
+      incrementDailyUsage();
 
       // Generated Content
       let generatedContent = '';

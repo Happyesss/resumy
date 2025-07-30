@@ -9,6 +9,7 @@ import { AIConfig } from "@/utils/ai-tools";
 import { generateObject } from "ai";
 import { initializeAIClient } from "@/utils/ai-tools";
 import { resumeScoreSchema } from "@/lib/zod-schemas";
+import { RESUME_LIMIT } from "@/lib/constants";
 
 
 //  SUPABASE ACTIONS
@@ -166,6 +167,13 @@ export async function createBaseResume(
     throw new Error('User not authenticated');
   }
 
+  // Check resume limit
+  const totalResumesCount = await countResumes('all');
+  
+  if (totalResumesCount >= RESUME_LIMIT) {
+    throw new Error(`You have reached the maximum limit of ${RESUME_LIMIT} resumes. Please delete an existing resume to create a new one.`);
+  }
+
   let profile = null;
   if (importOption !== 'fresh') {
     const { data, error: profileError } = await supabase
@@ -261,6 +269,13 @@ export async function createTailoredResume(
     throw new Error('User not authenticated');
   }
 
+  // Check resume limit
+  const totalResumesCount = await countResumes('all');
+  
+  if (totalResumesCount >= RESUME_LIMIT) {
+    throw new Error(`You have reached the maximum limit of ${RESUME_LIMIT} resumes. Please delete an existing resume to create a new one.`);
+  }
+
   // Extract the ID from base resume to prevent duplicate ID error
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id: _baseId, ...baseResumeWithoutId } = baseResume;
@@ -346,6 +361,13 @@ export async function copyResume(resumeId: string): Promise<Resume> {
   
   if (error || !user) {
     throw new Error('User not authenticated');
+  }
+
+  // Check resume limit
+  const totalResumesCount = await countResumes('all');
+  
+  if (totalResumesCount >= RESUME_LIMIT) {
+    throw new Error(`You have reached the maximum limit of ${RESUME_LIMIT} resumes. Please delete an existing resume to create a new one.`);
   }
 
   const { data: sourceResume, error: fetchError } = await supabase
@@ -451,7 +473,7 @@ export async function countResumes(type: 'base' | 'tailored' | 'all'): Promise<n
     throw new Error('Failed to count resumes');
   }
 
-  return count || -1;
+  return count || 0;
 }
 
 

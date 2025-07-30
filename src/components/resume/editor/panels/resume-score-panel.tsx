@@ -11,6 +11,8 @@ import { useState, useEffect } from "react";
 import { generateResumeScore } from "@/utils/actions/resumes/actions";
 import { Resume } from "@/lib/types";
 import { ApiKey } from "@/utils/ai-tools";
+import { hasReachedDailyLimit, incrementDailyUsage, DAILY_REQUEST_LIMIT } from "@/lib/daily-limit";
+import { useToast } from "@/hooks/use-toast";
 
 export interface ResumeScoreMetrics {
   overallScore: {
@@ -105,6 +107,7 @@ function updateStoredScores(resumeId: string, score: ResumeScoreMetrics) {
 }
 
 export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
+  const { toast } = useToast();
   const [isCalculating, setIsCalculating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [scoreData, setScoreData] = useState<ResumeScoreMetrics | null>(() => {
@@ -121,6 +124,16 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
   }, [resume.id]);
 
   const handleRecalculate = async () => {
+    // Check daily API request limit
+    if (hasReachedDailyLimit()) {
+      toast({
+        title: "Daily Request Limit Reached",
+        description: `You have reached the daily limit of ${DAILY_REQUEST_LIMIT} AI requests. Please try again tomorrow.`,
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsCalculating(true);
     setError(null);
     try {
@@ -149,6 +162,9 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
         model: selectedModel || 'gemini-2.5-flash-lite',
         apiKeys: apiKeys
       });
+
+      // Increment daily usage after successful API call
+      incrementDailyUsage();
 
       // Update state and storage
       setScoreData(newScore as ResumeScoreMetrics);

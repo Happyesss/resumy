@@ -22,6 +22,8 @@ import { generateWorkExperiencePoints, improveWorkExperience } from "@/utils/act
 import { AIImprovementPrompt } from "../../shared/ai-improvement-prompt";
 import { AIGenerationSettingsTooltip } from "../components/ai-generation-tooltip";
 import { AISuggestions } from "../../shared/ai-suggestions";
+import { hasReachedDailyLimit, incrementDailyUsage, DAILY_REQUEST_LIMIT } from '@/lib/daily-limit';
+import { toast } from "@/hooks/use-toast";
 
 
 interface AISuggestion {
@@ -157,6 +159,16 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
   const generateAIPoints = async (index: number) => {
     const exp = experiences[index];
     if (!exp) return; // Safety check
+
+    // Check daily API request limit
+    if (hasReachedDailyLimit()) {
+      toast({
+        title: "Daily Request Limit Reached",
+        description: `You have reached the daily limit of ${DAILY_REQUEST_LIMIT} AI requests. Please try again tomorrow.`,
+        variant: "destructive",
+      });
+      return;
+    }
     
     const config = aiConfig[index] || { numPoints: 3, customPrompt: '' };
     setLoadingAI(prev => ({ ...prev, [index]: true }));
@@ -189,6 +201,9 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
           apiKeys
         }
       );
+      
+      // Increment daily usage after successful API call
+      incrementDailyUsage();
       
       const suggestions = result.points.map((point: string) => ({
         id: Math.random().toString(36).substr(2, 9),
@@ -260,6 +275,16 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
     const point = exp.description?.[pointIndex] || "";  // Add default value
     const customPrompt = improvementConfig[expIndex]?.[pointIndex] || "";  // Add default value
     
+    // Check daily API request limit
+    if (hasReachedDailyLimit()) {
+      toast({
+        title: "Daily Request Limit Reached",
+        description: `You have reached the daily limit of ${DAILY_REQUEST_LIMIT} AI requests. Please try again tomorrow.`,
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setLoadingPointAI(prev => ({
       ...prev,
       [expIndex]: { ...(prev[expIndex] || {}), [pointIndex]: true }
@@ -284,6 +309,9 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
         model: selectedModel || '',
         apiKeys
       });
+
+      // Increment daily usage after successful API call
+      incrementDailyUsage();
 
       // Store both original and improved versions
       setImprovedPoints(prev => ({

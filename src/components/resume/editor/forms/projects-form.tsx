@@ -23,6 +23,8 @@ import Tiptap from "@/components/ui/tiptap";
 import { AIImprovementPrompt } from "../../shared/ai-improvement-prompt";
 import { AIGenerationSettingsTooltip } from "../components/ai-generation-tooltip";
 import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
+import { hasReachedDailyLimit, incrementDailyUsage, DAILY_REQUEST_LIMIT } from "@/lib/daily-limit";
+import { useToast } from "@/hooks/use-toast";
 
 interface AISuggestion {
   id: string;
@@ -59,6 +61,7 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
   onChange,
   profile
 }: ProjectsFormProps) {
+  const { toast } = useToast();
   const [aiSuggestions, setAiSuggestions] = useState<{ [key: number]: AISuggestion[] }>({});
   const [loadingAI, setLoadingAI] = useState<{ [key: number]: boolean }>({});
   const [loadingPointAI, setLoadingPointAI] = useState<{ [key: number]: { [key: number]: boolean } }>({});
@@ -141,6 +144,17 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
   const generateAIPoints = async (index: number) => {
     const project = projects[index];
     const config = aiConfig[index] || { numPoints: 3, customPrompt: '' };
+    
+    // Check daily API request limit
+    if (hasReachedDailyLimit()) {
+      toast({
+        title: "Daily Request Limit Reached",
+        description: `You have reached the daily limit of ${DAILY_REQUEST_LIMIT} AI requests. Please try again tomorrow.`,
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setLoadingAI(prev => ({ ...prev, [index]: true }));
     setPopoverOpen(prev => ({ ...prev, [index]: false }));
     
@@ -170,6 +184,9 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
           apiKeys
         }
       );
+      
+      // Increment daily usage after successful API call
+      incrementDailyUsage();
       
       const suggestions = result.points.map((point: string) => ({
         id: Math.random().toString(36).substr(2, 9),
@@ -227,6 +244,16 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
     const point = project.description[pointIndex];
     const customPrompt = improvementConfig[projectIndex]?.[pointIndex];
     
+    // Check daily API request limit
+    if (hasReachedDailyLimit()) {
+      toast({
+        title: "Daily Request Limit Reached",
+        description: `You have reached the daily limit of ${DAILY_REQUEST_LIMIT} AI requests. Please try again tomorrow.`,
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setLoadingPointAI(prev => ({
       ...prev,
       [projectIndex]: { ...(prev[projectIndex] || {}), [pointIndex]: true }
@@ -250,6 +277,9 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
         model: selectedModel || '',
         apiKeys
       });
+
+      // Increment daily usage after successful API call
+      incrementDailyUsage();
 
       setImprovedPoints(prev => ({
         ...prev,
