@@ -7,6 +7,7 @@ import { Sparkles, Eye, Download, Star, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useTemplateHandler } from "./use-template-handler";
+import { trackResumeEvent } from "@/lib/analytics";
 
 interface Template {
   id: string;
@@ -44,6 +45,8 @@ export function TemplateCard({ template, onPreview }: TemplateCardProps) {
   };
 
   const onUseTemplate = () => {
+    // Track template selection
+    trackResumeEvent.selectTemplate(template.name);
     handleUseTemplate({ templateId: template.id });
   };
 

@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/footer";
 import { createClient } from "@/utils/supabase/server";
 import { Metadata } from "next";
 import ClientAppWrapper from "@/components/layout/AppClientWrapper";
+import { GoogleAnalytics } from "@/components/shared/GoogleAnalytics";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -133,6 +134,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} antialiased`} suppressHydrationWarning>
+        <GoogleAnalytics />
         <ClientAppWrapper>
           <div className="relative min-h-screen flex flex-col">
             {user && <AppHeader />}

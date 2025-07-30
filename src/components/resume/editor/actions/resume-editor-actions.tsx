@@ -14,6 +14,7 @@ import { updateResume } from "@/utils/actions/resumes/actions";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
+import { trackResumeEvent } from "@/lib/analytics";
 
 import { Dispatch, SetStateAction } from "react";
 
@@ -210,6 +211,9 @@ export function ResumeEditorActions({
                   try {
                     // Download Resume if selected
                     if (downloadOptions.resume) {
+                      // Track resume download event
+                      trackResumeEvent.downloadResume('PDF');
+                      
                       const blob = await pdf(<ResumePDFDocument resume={resume} />).toBlob();
                       const url = URL.createObjectURL(blob);
                       const link = document.createElement('a');
@@ -223,6 +227,9 @@ export function ResumeEditorActions({
 
                     // Download Cover Letter if selected and exists
                     if (downloadOptions.coverLetter && resume.has_cover_letter) {
+                      // Track cover letter download event
+                      trackResumeEvent.createCoverLetter();
+                      
                       // Dynamically import html2pdf only when needed
                       const html2pdf = (await import('html2pdf.js')).default;
                       

@@ -11,6 +11,7 @@ import { Logo } from "@/components/ui/logo";
 import { AuthProvider } from "./auth-context";
 import { signInWithGithub } from "@/app/auth/login/actions";
 import { Separator } from "@/components/ui/separator";
+import { trackResumeEvent } from "@/lib/analytics";
 
 const gradientClasses = {
   base: "bg-gradient-to-r from-violet-600 via-blue-600 to-violet-600",
@@ -118,6 +119,8 @@ export function AuthDialog({ children, defaultTab = "login" }: AuthDialogProps) 
   const handleOpenChange = (newOpen: boolean) => {
     if (newOpen) {
       setActiveTab(defaultTab);
+      // Track dialog open event
+      trackResumeEvent.signUp();
     }
     setOpen(newOpen);
   };

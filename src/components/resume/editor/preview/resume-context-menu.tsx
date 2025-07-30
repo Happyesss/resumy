@@ -11,6 +11,7 @@ import { toast } from "@/hooks/use-toast";
 import { Resume, WorkExperience, Education, Project } from "@/lib/types";
 import { pdf } from '@react-pdf/renderer';
 import { ResumePDFDocument } from "../preview/resume-pdf-document";
+import { trackResumeEvent } from "@/lib/analytics";
 
 interface ResumeContextMenuProps {
   children: React.ReactNode;
@@ -20,6 +21,9 @@ interface ResumeContextMenuProps {
 export function ResumeContextMenu({ children, resume }: ResumeContextMenuProps) {
   const handleDownloadPDF = async () => {
     try {
+      // Track download event
+      trackResumeEvent.downloadResume('PDF');
+      
       const blob = await pdf(<ResumePDFDocument resume={resume} />).toBlob();
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');

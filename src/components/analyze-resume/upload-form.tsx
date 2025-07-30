@@ -8,6 +8,7 @@ import { FileText, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import pdfToText from 'react-pdftotext';
 import mammoth from 'mammoth';
+import { trackResumeEvent } from '@/lib/analytics';
 
 interface UploadFormProps {
   resumeText: string;
@@ -204,7 +205,11 @@ export function UploadForm({
             </div>
           </label>
           <Button
-            onClick={onAnalyze}
+            onClick={() => {
+              // Track analyze resume event
+              trackResumeEvent.analyzeResume();
+              onAnalyze();
+            }}
             disabled={isAnalyzing || !resumeText.trim() || isProcessing}
             className="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold rounded-lg h-12 text-lg shadow mb-3 disabled:opacity-50 disabled:cursor-not-allowed"
             size="lg"
