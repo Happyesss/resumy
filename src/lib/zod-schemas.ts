@@ -275,12 +275,20 @@ export const resumeScoreSchema = z.object({
       reason: z.string()
     })
   }),
-  miscellaneous: z.record(
-    z.object({
+  miscellaneous: z.object({
+    keywordOptimization: z.object({
+      score: z.number().min(0).max(100),
+      reason: z.string()
+    }),
+    formatting: z.object({
+      score: z.number().min(0).max(100),
+      reason: z.string()
+    }),
+    lengthAppropriate: z.object({
       score: z.number().min(0).max(100),
       reason: z.string()
     })
-  ).optional(),
+  }).optional(),
   overallImprovements: z.array(z.string())
 });
 

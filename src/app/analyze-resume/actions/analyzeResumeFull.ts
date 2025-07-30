@@ -308,9 +308,7 @@ async function analyzeResumeWithSingleAIRequest(
       aiClient = initializeAIClient({ model, apiKeys });
     }
     
-    // ...existing code...
-    
-    const { object } = await generateObject({
+    const { object } = (await generateObject({
       model: aiClient,
       schema: combinedAnalysisSchema,
       prompt: `
@@ -420,9 +418,7 @@ Return the response in this exact structure:
 
 Be thorough, accurate, and provide constructive feedback. Focus on intelligent keyword analysis that considers their current tech stack and career trajectory.
       `
-    });
-
-    // ...existing code...
+    })) as any;
 
     // Transform the simplified resume to full Resume object
     const fullResume: Resume = {
@@ -438,7 +434,7 @@ Be thorough, accurate, and provide constructive feedback. Focus on intelligent k
       website: object.structuredResume.website || "",
       linkedin_url: object.structuredResume.linkedin_url || "",
       github_url: object.structuredResume.github_url || "",
-      work_experience: (object.structuredResume.work_experience || []).map(exp => ({
+      work_experience: (object.structuredResume.work_experience || []).map((exp: any) => ({
         company: exp.company || "",
         position: exp.position || "",
         location: exp.location || "",
@@ -446,7 +442,7 @@ Be thorough, accurate, and provide constructive feedback. Focus on intelligent k
         description: exp.description || [],
         technologies: exp.technologies || []
       })),
-      education: (object.structuredResume.education || []).map(edu => ({
+      education: (object.structuredResume.education || []).map((edu: any) => ({
         school: edu.school || "",
         degree: edu.degree || "",
         field: edu.field || "",
@@ -455,11 +451,11 @@ Be thorough, accurate, and provide constructive feedback. Focus on intelligent k
         gpa: edu.gpa || "",
         achievements: edu.achievements || []
       })),
-      skills: (object.structuredResume.skills || []).map(skill => ({
+      skills: (object.structuredResume.skills || []).map((skill: any) => ({
         category: skill.category || "",
         items: skill.items || []
       })),
-      projects: (object.structuredResume.projects || []).map(project => ({
+      projects: (object.structuredResume.projects || []).map((project: any) => ({
         name: project.name || "",
         description: project.description || [],
         technologies: project.technologies || [],
