@@ -30,7 +30,7 @@ const features = [
   {
     title: "Live Preview Editor",
     description: "Experience a seamless editing process with side-by-side views.",
-    image: "/images/editorimage.png",
+    image: "/images/editorImage.png",
     icon: <BarChart3 className="h-6 w-6" />,
     color: "from-purple-600 to-pink-600",
     iconBg: "bg-purple-500/20"
