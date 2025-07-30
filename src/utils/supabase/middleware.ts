@@ -123,7 +123,18 @@ export async function updateSession(request: NextRequest) {
 
   // Check if user is authenticated and redirect if needed
   if (!user) {
-    // If no user is authenticated, redirect to the landing page
+    // Allow access to auth pages and public pages for unauthenticated users
+    const isAuthPage = request.nextUrl.pathname.startsWith('/auth/')
+    const isPublicPage = request.nextUrl.pathname === '/' || 
+                        request.nextUrl.pathname === '/privacy' || 
+                        request.nextUrl.pathname === '/terms'
+    
+    if (isAuthPage || isPublicPage) {
+      console.log('✅ Allowing access to public/auth page:', request.nextUrl.pathname)
+      return supabaseResponse
+    }
+    
+    // If not authenticated and trying to access protected route, redirect to landing page
     console.log('🚫 Redirecting unauthenticated user to landing page')
     const url = request.nextUrl.clone()
     url.pathname = '/'

@@ -4,7 +4,7 @@ Try it out at [resumy.live](https://resumy.live)!
 
 > � **Production Ready & SEO Optimized**
 
-A completely free, open-source AI resume builder that helps create professional, ATS-optimized resumes for any job application. Simply provide your Gemini API key to unlock powerful AI features. Built with Next.js 15, React 19, TypeScript, and Shadcn UI.
+A completely free AI resume builder that helps create professional, ATS-optimized resumes for any job application. Simply provide your Gemini API key to unlock powerful AI features. Built with Next.js 15, React 19, TypeScript, and Shadcn UI.
 
 ![Dashboard Screenshot](public/images/ss1.webp)
 
@@ -36,7 +36,8 @@ Check out the live demo at [resumy.live](https://resumy.live)
 - 🎯 Intelligent job description analysis
 - 💬 Interactive AI assistant for resume writing guidance
 - ✨ Real-time content enhancement suggestions
-- 🔄 Multiple AI model support (OpenAI, Claude, Gemini, DeepSeek, Groq)
+### Cold Mail Generation
+- 📧 AI-powered cold mail generation for outreach and networking
 
 ![AI Assistant](public/images/ss4.webp)
 
@@ -60,7 +61,7 @@ Check out the live demo at [resumy.live](https://resumy.live)
 - 🎨 Custom design system with consistent UI/UX
 - 🔄 Real-time updates and preview
 
-### Free & Open Source
+### Free & Unlimited
 - 🆓 **Completely Free**: No subscriptions, no payments, no limitations
 - 🔑 **Gemini API Powered**: Simply provide your Google Gemini API key for AI features
 - 📱 **Unlimited Usage**: Create unlimited base and tailored resumes
@@ -172,20 +173,6 @@ The complete schema with all required fields is provided in the `schema.sql` fil
 ## 📝 Contributing
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-## 📄 License
-
-[GNU Affero General Public License v3 (AGPL-3.0)](LICENSE)
-
-This project is licensed under the GNU AGPL v3 license. This means:
-- ✅ You can view, use, and modify the code
-- ✅ You can distribute the code
-- ✅ You must keep the source code open source
-- ✅ Any modifications must also be under AGPL-3.0
-- ❌ You cannot use this code in closed-source commercial applications
-- ❌ You cannot use this code to provide a similar service without making your code open source
-
-For more details, see the [full license text](LICENSE).
 
 ---
 
