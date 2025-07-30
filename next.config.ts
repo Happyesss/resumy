@@ -1,11 +1,12 @@
 import type { NextConfig } from 'next'
  
 const nextConfig: NextConfig = {
-  experimental: {
-    turbo: {
-      // ...
-    },
-  },
+  // Disable turbo mode temporarily to fix build issues
+  // experimental: {
+  //   turbo: {
+  //     // ...
+  //   },
+  // },
   // Remove console logs in production for performance
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
