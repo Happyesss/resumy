@@ -21,7 +21,11 @@ jobs:
         cache: 'npm'
 
     - name: Install dependencies
-      run: npm ci
+      run: |
+        # Delete package-lock.json to avoid sync issues
+        rm -f package-lock.json
+        # Install dependencies and generate new lock file
+        npm install --production
 
     - name: Build application
       run: npm run build
@@ -49,7 +53,7 @@ jobs:
           git pull origin main
           
           # Install dependencies
-          npm ci --only=production
+          npm install --production
           
           # Build the application
           npm run build

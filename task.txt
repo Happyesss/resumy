@@ -1,0 +1,549 @@
+Run npm ci
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^18.3.1" from react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^19.0.0" from the root project
+npm warn   43 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: resumy@1.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^19.0.0" from the root project
+npm warn   79 more (@ai-sdk/react, @floating-ui/react-dom, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^16.8.0 || ^17.0.0 || ^18.0.0" from use-stick-to-bottom@1.0.30
+npm warn node_modules/use-stick-to-bottom
+npm warn   use-stick-to-bottom@"^1.0.30" from the root project
+npm error code EUSAGE
+npm error
+npm error `npm ci` can only install packages when your package.json and package-lock.json or npm-shrinkwrap.json are in sync. Please update your lock file with `npm install` before continuing.
+npm error
+npm error Missing: @ai-sdk/anthropic@1.2.12 from lock file
+npm error Missing: @ai-sdk/deepseek@0.0.4 from lock file
+npm error Missing: @ai-sdk/google-vertex@2.2.27 from lock file
+npm error Missing: @ai-sdk/groq@1.2.9 from lock file
+npm error Missing: @ai-sdk/openai@1.3.23 from lock file
+npm error Missing: @openrouter/ai-sdk-provider@0.0.6 from lock file
+npm error Missing: @stripe/react-stripe-js@3.8.1 from lock file
+npm error Missing: @stripe/stripe-js@5.10.0 from lock file
+npm error Invalid: lock file's react@18.3.1 does not satisfy react@19.1.1
+npm error Invalid: lock file's react-dom@18.3.1 does not satisfy react-dom@19.1.1
+npm error Missing: react-scan@0.0.54 from lock file
+npm error Missing: stripe@18.3.0 from lock file
+npm error Missing: @ai-sdk/openai-compatible@0.0.16 from lock file
+npm error Missing: @ai-sdk/provider@1.0.4 from lock file
+npm error Missing: @ai-sdk/provider-utils@2.0.7 from lock file
+npm error Invalid: lock file's @ai-sdk/google@1.2.19 does not satisfy @ai-sdk/google@1.2.22
+npm error Missing: google-auth-library@9.15.1 from lock file
+npm error Missing: @ai-sdk/provider@1.0.4 from lock file
+npm error Missing: @ai-sdk/provider-utils@2.0.7 from lock file
+npm error Missing: @ai-sdk/provider@0.0.26 from lock file
+npm error Missing: @ai-sdk/provider-utils@1.0.22 from lock file
+npm error Invalid: lock file's @floating-ui/react-dom@2.1.4 does not satisfy @floating-ui/react-dom@2.1.5
+npm error Invalid: lock file's @floating-ui/dom@1.7.2 does not satisfy @floating-ui/dom@1.7.3
+npm error Invalid: lock file's @floating-ui/core@1.7.2 does not satisfy @floating-ui/core@1.7.3
+npm error Missing: ecdsa-sig-formatter@1.0.11 from lock file
+npm error Missing: gaxios@6.7.1 from lock file
+npm error Missing: gcp-metadata@6.1.1 from lock file
+npm error Missing: gtoken@7.1.0 from lock file
+npm error Missing: jws@4.0.0 from lock file
+npm error Missing: https-proxy-agent@7.0.6 from lock file
+npm error Missing: is-stream@2.0.1 from lock file
+npm error Missing: node-fetch@2.7.0 from lock file
+npm error Missing: uuid@9.0.1 from lock file
+npm error Missing: google-logging-utils@0.0.2 from lock file
+npm error Missing: json-bigint@1.0.0 from lock file
+npm error Missing: agent-base@7.1.4 from lock file
+npm error Missing: bignumber.js@9.3.1 from lock file
+npm error Missing: jwa@2.0.1 from lock file
+npm error Missing: buffer-equal-constant-time@1.0.1 from lock file
+npm error Invalid: lock file's scheduler@0.23.2 does not satisfy scheduler@0.26.0
+npm error Missing: @babel/core@7.28.0 from lock file
+npm error Missing: @babel/generator@7.28.0 from lock file
+npm error Missing: @babel/types@7.28.2 from lock file
+npm error Missing: @clack/core@0.3.5 from lock file
+npm error Missing: @clack/prompts@0.8.2 from lock file
+npm error Missing: @preact/signals@1.3.2 from lock file
+npm error Missing: preact@10.27.0 from lock file
+npm error Missing: @rollup/pluginutils@5.2.0 from lock file
+npm error Missing: bippy@0.0.25 from lock file
+npm error Missing: esbuild@0.24.2 from lock file
+npm error Missing: estree-walker@3.0.3 from lock file
+npm error Missing: kleur@4.1.5 from lock file
+npm error Missing: mri@1.2.0 from lock file
+npm error Missing: playwright@1.54.1 from lock file
+npm error Missing: tsx@4.20.3 from lock file
+npm error Missing: unplugin@2.1.0 from lock file
+npm error Missing: @ampproject/remapping@2.3.0 from lock file
+npm error Missing: @babel/code-frame@7.27.1 from lock file
+npm error Missing: @babel/helper-compilation-targets@7.27.2 from lock file
+npm error Missing: @babel/helper-module-transforms@7.27.3 from lock file
+npm error Missing: @babel/helpers@7.28.2 from lock file
+npm error Missing: @babel/parser@7.28.0 from lock file
+npm error Missing: @babel/template@7.27.2 from lock file
+npm error Missing: @babel/traverse@7.28.0 from lock file
+npm error Missing: convert-source-map@2.0.0 from lock file
+npm error Missing: gensync@1.0.0-beta.2 from lock file
+npm error Missing: json5@2.2.3 from lock file
+npm error Missing: semver@6.3.1 from lock file
+npm error Missing: @babel/helper-validator-identifier@7.27.1 from lock file
+npm error Invalid: lock file's @jridgewell/gen-mapping@0.3.11 does not satisfy @jridgewell/gen-mapping@0.3.12
+npm error Missing: jsesc@3.1.0 from lock file
+npm error Missing: @babel/compat-data@7.28.0 from lock file
+npm error Missing: @babel/helper-validator-option@7.27.1 from lock file
+npm error Missing: lru-cache@5.1.1 from lock file
+npm error Missing: semver@6.3.1 from lock file
+npm error Missing: @babel/helper-module-imports@7.27.1 from lock file
+npm error Missing: @babel/helper-globals@7.28.0 from lock file
+npm error Missing: @babel/helper-string-parser@7.27.1 from lock file
+npm error Missing: @preact/signals-core@1.11.0 from lock file
+npm error Missing: estree-walker@2.0.2 from lock file
+npm error Missing: picomatch@4.0.3 from lock file
+npm error Missing: @esbuild/aix-ppc64@0.24.2 from lock file
+npm error Missing: @esbuild/android-arm@0.24.2 from lock file
+npm error Missing: @esbuild/android-arm64@0.24.2 from lock file
+npm error Missing: @esbuild/android-x64@0.24.2 from lock file
+npm error Missing: @esbuild/darwin-arm64@0.24.2 from lock file
+npm error Missing: @esbuild/darwin-x64@0.24.2 from lock file
+npm error Missing: @esbuild/freebsd-arm64@0.24.2 from lock file
+npm error Missing: @esbuild/freebsd-x64@0.24.2 from lock file
+npm error Missing: @esbuild/linux-arm@0.24.2 from lock file
+npm error Missing: @esbuild/linux-arm64@0.24.2 from lock file
+npm error Missing: @esbuild/linux-ia32@0.24.2 from lock file
+npm error Missing: @esbuild/linux-loong64@0.24.2 from lock file
+npm error Missing: @esbuild/linux-mips64el@0.24.2 from lock file
+npm error Missing: @esbuild/linux-ppc64@0.24.2 from lock file
+npm error Missing: @esbuild/linux-riscv64@0.24.2 from lock file
+npm error Missing: @esbuild/linux-s390x@0.24.2 from lock file
+npm error Missing: @esbuild/linux-x64@0.24.2 from lock file
+npm error Missing: @esbuild/netbsd-arm64@0.24.2 from lock file
+npm error Missing: @esbuild/netbsd-x64@0.24.2 from lock file
+npm error Missing: @esbuild/openbsd-arm64@0.24.2 from lock file
+npm error Missing: @esbuild/openbsd-x64@0.24.2 from lock file
+npm error Missing: @esbuild/sunos-x64@0.24.2 from lock file
+npm error Missing: @esbuild/win32-arm64@0.24.2 from lock file
+npm error Missing: @esbuild/win32-ia32@0.24.2 from lock file
+npm error Missing: @esbuild/win32-x64@0.24.2 from lock file
+npm error Missing: fsevents@2.3.2 from lock file
+npm error Missing: playwright-core@1.54.1 from lock file
+npm error Missing: qs@6.14.0 from lock file
+npm error Missing: esbuild@0.25.8 from lock file
+npm error Missing: webpack-virtual-modules@0.6.2 from lock file
+npm error Missing: eventsource-parser@3.0.3 from lock file
+npm error Missing: yallist@3.1.1 from lock file
+npm error Missing: eventsource-parser@1.1.2 from lock file
+npm error Missing: @esbuild/aix-ppc64@0.25.8 from lock file
+npm error Missing: @esbuild/android-arm@0.25.8 from lock file
+npm error Missing: @esbuild/android-arm64@0.25.8 from lock file
+npm error Missing: @esbuild/android-x64@0.25.8 from lock file
+npm error Missing: @esbuild/darwin-arm64@0.25.8 from lock file
+npm error Missing: @esbuild/darwin-x64@0.25.8 from lock file
+npm error Missing: @esbuild/freebsd-arm64@0.25.8 from lock file
+npm error Missing: @esbuild/freebsd-x64@0.25.8 from lock file
+npm error Missing: @esbuild/linux-arm@0.25.8 from lock file
+npm error Missing: @esbuild/linux-arm64@0.25.8 from lock file
+npm error Missing: @esbuild/linux-ia32@0.25.8 from lock file
+npm error Missing: @esbuild/linux-loong64@0.25.8 from lock file
+npm error Missing: @esbuild/linux-mips64el@0.25.8 from lock file
+npm error Missing: @esbuild/linux-ppc64@0.25.8 from lock file
+npm error Missing: @esbuild/linux-riscv64@0.25.8 from lock file
+npm error Missing: @esbuild/linux-s390x@0.25.8 from lock file
+npm error Missing: @esbuild/linux-x64@0.25.8 from lock file
+npm error Missing: @esbuild/netbsd-arm64@0.25.8 from lock file
+npm error Missing: @esbuild/netbsd-x64@0.25.8 from lock file
+npm error Missing: @esbuild/openbsd-arm64@0.25.8 from lock file
+npm error Missing: @esbuild/openbsd-x64@0.25.8 from lock file
+npm error Missing: @esbuild/openharmony-arm64@0.25.8 from lock file
+npm error Missing: @esbuild/sunos-x64@0.25.8 from lock file
+npm error Missing: @esbuild/win32-arm64@0.25.8 from lock file
+npm error Missing: @esbuild/win32-ia32@0.25.8 from lock file
+npm error Missing: @esbuild/win32-x64@0.25.8 from lock file
+npm error
+npm error Clean install a project
+npm error
+npm error Usage:
+npm error npm ci
+npm error
+npm error Options:
+npm error [--install-strategy <hoisted|nested|shallow|linked>] [--legacy-bundling]
+npm error [--global-style] [--omit <dev|optional|peer> [--omit <dev|optional|peer> ...]]
+npm error [--include <prod|dev|optional|peer> [--include <prod|dev|optional|peer> ...]]
+npm error [--strict-peer-deps] [--foreground-scripts] [--ignore-scripts] [--no-audit]
+npm error [--no-bin-links] [--no-fund] [--dry-run]
+npm error [-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]
+npm error [-ws|--workspaces] [--include-workspace-root] [--install-links]
+npm error
+npm error aliases: clean-install, ic, install-clean, isntall-clean
+npm error
+npm error Run "npm help ci" for more info
+npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2025-07-30T15_33_17_140Z-debug-0.log
+Error: Process completed with exit code 1.
+
