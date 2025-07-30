@@ -57,20 +57,86 @@ jobs:
         key: ${{ secrets.DO_SSH_KEY }}
         port: 22
         script: |
+          # Check if Node.js is installed, if not run initial setup
+          if ! command -v node &> /dev/null; then
+            echo "Node.js not found. Running initial server setup..."
+            
+            # Update system
+            apt update && apt upgrade -y
+            
+            # Install Node.js 20
+            curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+            apt-get install -y nodejs
+            
+            # Install PM2 globally
+            npm install -g pm2
+            
+            # Install Nginx
+            apt install -y nginx
+            
+            # Install Git if not present
+            apt install -y git
+            
+            # Create app directory
+            mkdir -p /var/www
+            
+            # Clone the repository
+            cd /var/www
+            git clone https://github.com/Happyesss/resumyy.git resumy
+            
+            echo "Initial setup completed!"
+          fi
+          
           # Navigate to app directory
           cd /var/www/resumy
           
           # Pull latest changes
           git pull origin main
           
+          # Create .env file with production environment variables
+          cat > .env.local << EOF
+          NODE_ENV=production
+          NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
+          GEMINI_ANALYZE_API_KEY=${{ secrets.GEMINI_ANALYZE_API_KEY }}
+          UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }}
+          UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+          NEXT_PUBLIC_SITE_URL=http://${{ secrets.DO_HOST }}:3000
+          EOF
+          
           # Install dependencies
-          npm install --production
+          npm install --legacy-peer-deps
           
           # Build the application
           npm run build
+          
+          # Create PM2 ecosystem config if it doesn't exist
+          if [ ! -f ecosystem.config.js ]; then
+            cat > ecosystem.config.js << EOF
+          module.exports = {
+            apps: [{
+              name: 'resumy',
+              script: 'npm',
+              args: 'start',
+              cwd: '/var/www/resumy',
+              env: {
+                NODE_ENV: 'production',
+                PORT: 3000
+              }
+            }]
+          };
+          EOF
+          fi
           
           # Restart PM2 process
           pm2 restart resumy || pm2 start ecosystem.config.js --name resumy
           
           # Save PM2 configuration
           pm2 save
+          
+          # Setup PM2 to start on boot
+          pm2 startup
+          
+          echo "Deployment completed successfully!"
