@@ -19,11 +19,10 @@ import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import 'react-pdf/dist/Page/TextLayer.css';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 
-// Configure PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url,
-).toString();
+// Configure PDF.js worker - Updated for pdfjs-dist v4.10.38 compatibility
+if (typeof window !== 'undefined') {
+  pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+}
 
 // Cache for storing generated PDFs
 const pdfCache = new Map<string, { url: string; timestamp: number }>();
