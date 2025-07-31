@@ -165,7 +165,7 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
       const MODEL_STORAGE_KEY = 'resumy-default-model';
       const LOCAL_STORAGE_KEY = 'resumy-api-keys';
       
-      const selectedModel = 'gemini-2.5-flash';
+      const selectedModel = 'gemini-2.5-flash-lite'; // Use same model as resume editor
       const storedKeys = localStorage.getItem(LOCAL_STORAGE_KEY);
       let apiKeys = [];
       
@@ -175,12 +175,13 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
         console.error('Error parsing API keys:', error);
       }
       
-      const result = await formatProfileWithAI(content, {
-        model: selectedModel,
-        apiKeys
-      });
-      
-      if (result) {
+      try {
+        const result = await formatProfileWithAI(content, {
+          model: selectedModel,
+          apiKeys
+        });
+        
+        if (result) {
         // Clean and transform the data to match our database schema
         const cleanedProfile: Partial<Profile> = {
           first_name: result.first_name || null,
@@ -251,7 +252,24 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
         setProfile(prev => {
           const newProfile = {
             ...prev,
-            ...cleanedProfile
+            ...cleanedProfile,
+            // Properly merge arrays instead of replacing them
+            work_experience: [
+              ...(prev.work_experience || []),
+              ...(cleanedProfile.work_experience || [])
+            ],
+            education: [
+              ...(prev.education || []),
+              ...(cleanedProfile.education || [])
+            ],
+            skills: [
+              ...(prev.skills || []),
+              ...(cleanedProfile.skills || [])
+            ],
+            projects: [
+              ...(prev.projects || []),
+              ...(cleanedProfile.projects || [])
+            ]
           };
           return newProfile;
         });
@@ -261,6 +279,10 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
         });
         setIsResumeDialogOpen(false);
         setResumeContent("");
+        }
+      } catch (aiError) {
+        console.error('AI processing error:', aiError);
+        throw aiError; // Re-throw to be caught by outer catch
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -603,13 +625,13 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                     </AlertDialogTrigger>
                     <AlertDialogContent className="sm:max-w-[425px]">
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Reset Profile</AlertDialogTitle>
+                        <AlertDialogTitle className="text-white">Reset Profile</AlertDialogTitle>
                         <AlertDialogDescription>
                           Are you sure you want to reset your profile? This action cannot be undone.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel disabled={isResetting}>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel disabled={isResetting} className="text-gray-100">Cancel</AlertDialogCancel>
                         <AlertDialogAction
                           onClick={handleReset}
                           disabled={isResetting}
