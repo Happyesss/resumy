@@ -125,13 +125,13 @@ export function VideoShowcase() {
           {/* Feature badges below video */}
           <div className="flex flex-wrap justify-center gap-3 mt-8">
             <span className="px-3 py-1 rounded-full bg-purple-900/30 text-sm border border-purple-700/50 text-purple-200 backdrop-blur-sm">
-              Interactive Demo
+              AI-Powered Magic
             </span>
             <span className="px-3 py-1 rounded-full bg-purple-900/30 text-sm border border-purple-700/50 text-purple-200 backdrop-blur-sm">
               User-friendly Interface
             </span>
             <span className="px-3 py-1 rounded-full bg-purple-900/30 text-sm border border-purple-700/50 text-purple-200 backdrop-blur-sm">
-              Real-time AI Assistance
+              Smart Resume Builder
             </span>
           </div>
         </div>

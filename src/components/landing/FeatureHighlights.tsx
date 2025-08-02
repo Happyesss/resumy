@@ -23,7 +23,7 @@ const FeatureHighlights = () => {
       title: "Completeness Analysis"
     },
     {
-      src: "/images/result/Impact & Voice.png",
+      src: "/images/result/Impact%20%26%20Voice.png",
       alt: "Impact & Voice Analysis",
       title: "Impact & Voice"
     },

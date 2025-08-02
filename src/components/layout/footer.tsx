@@ -31,7 +31,7 @@ export function Footer() {
         { name: "Resume Builder", href: "/home", icon: <FileText className="h-4 w-4" /> },
         { name: "Templates", href: "/templates", icon: <Layout className="h-4 w-4" /> },
         { name: "Resume Analysis", href: "/analyze-resume", icon: <BarChart3 className="h-4 w-4" /> },
-        { name: "Cover Letters", href: "/cover-letter", icon: <FileText className="h-4 w-4" /> },
+        { name: "Cover Letters", href: "#features", icon: <FileText className="h-4 w-4" /> },
       ]
     },
     {
@@ -47,9 +47,9 @@ export function Footer() {
       title: "Resources",
       links: [
         { name: "How It Works", href: "#how-it-works", icon: <BookOpen className="h-4 w-4" /> },
-        { name: "FAQ", href: "#faq", icon: <HelpCircle className="h-4 w-4" /> },
-        { name: "Career Tips", href: "/blog", icon: <Star className="h-4 w-4" /> },
-        { name: "Resume Examples", href: "/examples", icon: <Layout className="h-4 w-4" /> },
+        { name: "Pricing", href: "#pricing", icon: <BarChart3 className="h-4 w-4" /> },
+        { name: "About Us", href: "#about", icon: <Heart className="h-4 w-4" /> },
+        { name: "Testimonials", href: "#testimonials", icon: <Star className="h-4 w-4" /> },
       ]
     }
   ];
