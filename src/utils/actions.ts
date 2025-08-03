@@ -5,6 +5,7 @@ import { Profile, Resume } from "@/lib/types";
 
 interface DashboardData {
   profile: Profile | null;
+  displayName: string | null;
   baseResumes: Resume[];
   tailoredResumes: Resume[];
 }
@@ -61,6 +62,9 @@ export async function getDashboardData(): Promise<DashboardData> {
       throw new Error('Error fetching dashboard data');
     }
 
+    // Add display_name from Supabase user metadata to profile
+    const displayName = user.user_metadata?.display_name || user.user_metadata?.full_name || null;
+
     // Fetch resumes data
     const { data: resumes, error: resumesError } = await supabase
       .from('resumes')
@@ -87,6 +91,7 @@ export async function getDashboardData(): Promise<DashboardData> {
 
     return {
       profile,
+      displayName,
       baseResumes: baseResumesData,
       tailoredResumes: tailoredResumesData
     };
@@ -94,6 +99,7 @@ export async function getDashboardData(): Promise<DashboardData> {
     if (error instanceof Error && error.message === 'User not authenticated') {
       return {
         profile: null,
+        displayName: null,
         baseResumes: [],
         tailoredResumes: []
       };

@@ -108,7 +108,7 @@ export function SignupForm() {
       {formState.success ? (
         <Alert className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 rounded-lg">
           <AlertDescription>
-            Account created successfully! Please check your email to confirm your account.
+            Account created successfully! Please check your email to confirm your account. If you don't see the email, please check your spam folder.
           </AlertDescription>
         </Alert>
       ) : (

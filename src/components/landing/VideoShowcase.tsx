@@ -73,7 +73,7 @@ export function VideoShowcase() {
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/20 to-indigo-500/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
           
           {/* Video card */}
-          <div className="relative rounded-2xl bg-gray-900 border border-gray-800 shadow-xl overflow-hidden transition-all duration-300 hover:shadow-purple-500/20 z-10">
+          <div className="relative rounded-2xl bg-black border border-gray-800 shadow-xl overflow-hidden transition-all duration-300 hover:shadow-purple-500/20 z-10">
             {/* Video placeholder */}
             <div 
               className="relative aspect-video w-full cursor-pointer" 
@@ -81,9 +81,9 @@ export function VideoShowcase() {
             >
               <video 
                 ref={videoRef}
-                className="w-full h-full object-cover rounded-2xl"
-                src="/ResumeLM.mp4"
-                poster="/thumbnail.png"
+                className="w-full h-full max-h-[550px] object-fill"
+                src="/resumy.mp4"
+                poster="/images/ss1.png"
                 onEnded={() => setIsPlaying(false)}
               />
 

@@ -57,7 +57,7 @@ export default async function Home({
     redirect("/");
   }
 
-  const { profile, baseResumes: unsortedBaseResumes, tailoredResumes: unsortedTailoredResumes } = data;
+  const { profile, displayName, baseResumes: unsortedBaseResumes, tailoredResumes: unsortedTailoredResumes } = data;
 
   // Get sort parameters for both sections
   const baseSort = (params.baseSort as SortOption) || 'createdAt';
@@ -146,7 +146,7 @@ export default async function Home({
                 }}
               >
                 <h1 className="text-2xl font-semibold bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
-                  Hi there, {profile.first_name}
+                  Hi there, {displayName || profile.first_name || 'User'}
                 </h1>
                 <p className="text-sm text-slate-300 mt-0.5">
                   Welcome to your resume dashboard
