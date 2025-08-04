@@ -47,7 +47,7 @@ const plans = [
       { name: "Advanced AI optimization", included: true },
       { name: "ATS compatibility check", included: true },
       { name: "Smart content suggestions", included: true },
-      { name: "20 resume creation", included: true },
+      { name: "10 resume creation", included: true },
       { name: "All template designs", included: true },
       { name: "Cover letter generator", included: true },
       { name: "Cold Mail generator", included: true },

@@ -1,7 +1,7 @@
 'use client';
 
 // Daily limit configuration
-export const DAILY_REQUEST_LIMIT = 100;
+export const DAILY_REQUEST_LIMIT = 80;
 
 interface DailyUsage {
   date: string;

@@ -1,2 +1,2 @@
 // Application constants
-export const RESUME_LIMIT = 20;
+export const RESUME_LIMIT = 10;
