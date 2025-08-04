@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { User, Briefcase, GraduationCap, Wrench, FolderGit2, Upload, Save, Trash2, PanelLeft} from "lucide-react";
+import { User, Briefcase, GraduationCap, Wrench, FolderGit2, Upload, Save, Trash2, PanelLeft, Lock} from "lucide-react";
 
 import {
   Dialog,
@@ -36,13 +36,14 @@ import { importResume, updateProfile } from "@/utils/actions/profiles/actions";
 import { cn } from "@/lib/utils";
 import pdfToText from "react-pdftotext";
 import { LogoutButton } from "@/components/auth/logout-button";
+import { ChangePasswordForm } from "@/components/profile/change-password-form";
 
 interface ProfileEditFormProps {
   profile: Profile;
 }
 
 // Tab order for navigation
-const PROFILE_TABS = ["basic", "experience", "projects", "education", "skills"];
+const PROFILE_TABS = ["basic", "experience", "projects", "education", "skills", "security"];
 
 export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProps) {
   const [profile, setProfile] = useState(initialProfile);
@@ -590,6 +591,18 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                     </div>
                     <span className="font-medium">Skills</span>
                   </TabsTrigger>
+                  <TabsTrigger 
+                    value="security" 
+                    className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
+                      data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-900 data-[state=active]:to-black
+                      data-[state=active]:border-l-green-400 data-[state=active]:text-white
+                      data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 hover:bg-green-900/20"
+                  >
+                    <div className="p-2 rounded-full bg-green-400/10 transition-transform duration-300 group-data-[state=active]:scale-110 group-data-[state=active]:bg-green-400/20">
+                      <Lock className="h-5 w-5 text-green-400 transition-colors" />
+                    </div>
+                    <span className="font-medium">Security</span>
+                  </TabsTrigger>
 
                   {/* Divider after last tab */}
                   <div className="my-3 border-t border-gray-500 w-full" />
@@ -643,12 +656,6 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                     </AlertDialogContent>
                   </AlertDialog>
                   
-                  {/* Logout Button */}
-                  <div className="mt-3 pt-3 border-t border-gray-500">
-                    <LogoutButton 
-                      className="w-full h-10 px-4 text-sm font-medium border border-red-500/50 text-red-400 hover:bg-red-900/20 hover:border-red-400 hover:text-red-300 transition-all duration-200 rounded-md bg-transparent"
-                    />
-                  </div>
                 </div>
                 </TabsList>
               </div>
@@ -718,6 +725,13 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                         />
                       </div>
                     </Card>
+                  </TabsContent>
+
+                  <TabsContent value="security" className="animate-in fade-in-50 slide-in-from-left-2 duration-300">
+                    <div className="space-y-4">
+                      <h2 className="text-lg font-semibold mb-4 md:mb-6 text-green-400">Security Settings</h2>
+                      <ChangePasswordForm />
+                    </div>
                   </TabsContent>
 
                 </div>
@@ -841,6 +855,19 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                   </div>
                   <span className="font-medium">Skills</span>
                 </TabsTrigger>
+
+                <TabsTrigger 
+                  value="security" 
+                  className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
+                    data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-900 data-[state=active]:to-black
+                    data-[state=active]:border-l-green-400 data-[state=active]:text-white
+                    data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 hover:bg-green-900/20"
+                >
+                  <div className="p-2 rounded-full bg-green-400/10 transition-transform duration-300 group-data-[state=active]:scale-110 group-data-[state=active]:bg-green-400/20">
+                    <Lock className="h-5 w-5 text-green-400 transition-colors" />
+                  </div>
+                  <span className="font-medium">Security</span>
+                </TabsTrigger>
               </TabsList>
               </Tabs>
             </div>
@@ -900,12 +927,6 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                 </AlertDialogContent>
               </AlertDialog>
               
-              {/* Logout Button for Mobile */}
-              <div className="mt-3 pt-3 border-t border-gray-500">
-                <LogoutButton 
-                  className="w-full h-10 px-4 text-sm font-medium border border-red-500/50 text-red-400 hover:bg-red-900/20 hover:border-red-400 hover:text-red-300 transition-all duration-200 rounded-md bg-transparent"
-                />
-              </div>
             </div>
           </div>
         </SheetContent>
