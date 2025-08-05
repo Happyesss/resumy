@@ -187,7 +187,7 @@ export default function CookiePolicy() {
                   If you have any questions about our use of cookies, please contact us:
                 </p>
                 <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-4">
-                  <p>Email: <a href="mailto:privacy@resumy.live" className="text-purple-400 hover:text-purple-300">privacy@resumy.live</a></p>
+                  <p>Email: <a href="mailto:resumy.co@gmail.com" className="text-purple-400 hover:text-purple-300">resumy.co@gmail.com</a></p>
                 </div>
               </div>
             </section>

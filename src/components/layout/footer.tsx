@@ -75,7 +75,7 @@ export function Footer() {
     },
     {
       name: "Email",
-      href: "mailto:support@resumy.live",
+      href: "mailto:resumy.co@gmail.com",
       icon: <Mail className="h-5 w-5" />,
       color: "hover:text-green-400"
     }

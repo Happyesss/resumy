@@ -169,7 +169,7 @@ export default function TermsOfService() {
                   If you have questions about these Terms of Service, please contact us:
                 </p>
                 <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-4">
-                  <p>Email: <a href="mailto:legal@resumy.live" className="text-purple-400 hover:text-purple-300">legal@resumy.live</a></p>
+                  <p>Email: <a href="mailto:resumy.co@gmail.com" className="text-purple-400 hover:text-purple-300">resumy.co@gmail.com</a></p>
                 </div>
               </div>
             </section>
