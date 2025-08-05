@@ -262,8 +262,8 @@ export default async function Page() {
           <VideoShowcase />
         </section>
 
-        {/* Company Logos Section */}
-        <CompanyLogos />
+        {/* Company Logos Section
+        <CompanyLogos /> */}
 
         {/* Feature Highlights Section */}
         <section id="features" aria-labelledby="features-heading">

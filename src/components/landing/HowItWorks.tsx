@@ -1,27 +1,14 @@
 'use client';
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { 
   Upload, 
   Bot, 
   FileText, 
   Download,
   Sparkles,
-  ArrowRight,
   CheckCircle
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { AuthDialog } from "@/components/auth/auth-dialog";
-
-// Trusted by logos
-const companies = [
-  { name: "Google", logo: "/logos/google.png" },
-  { name: "Microsoft", logo: "/logos/microsoft.webp" },
-  { name: "Amazon", logo: "/logos/amazon.png" },
-  { name: "Meta", logo: "/logos/meta.png" },
-  { name: "Netflix", logo: "/logos/netflix.png" },
-];
 
 const steps = [
   {
