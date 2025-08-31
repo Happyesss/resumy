@@ -15,26 +15,120 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
 import Script from "next/script";
+import { BrandSchema } from "@/components/seo/BrandSchema";
 
 // Page-specific metadata that extends the base metadata from layout.tsx
 export const metadata: Metadata = {
   title: "Resumy - Free AI Resume Builder | Create Professional Resumes Online in Minutes",
-  description: "Create professional, ATS-optimized resumes for free with Resumy's AI-powered resume builder. Get hired faster with smart resume templates, keyword optimization, and expert guidance. Start building your perfect resume today!",
+  description: "Create professional, ATS-optimized resumes for free with Resumy's AI-powered resume builder. Get hired faster with smart resume templates, keyword optimization, AI assistance, and expert guidance. Build modern resumes that pass applicant tracking systems (ATS) and impress hiring managers. Perfect for software engineers, data scientists, marketing professionals, and all career levels. Start building your perfect resume today - no sign-up required!",
   keywords: [
-    "free resume builder",
-    "ai resume builder", 
-    "professional resume",
-    "create resume online",
-    "resume maker free",
-    "ATS resume builder",
-    "resume templates",
-    "job application resume",
-    "resume generator",
-    "online resume creator",
-    "resume writing tool",
-    "career builder",
-    "resume optimization",
-    "modern resume design"
+    // Long tail keywords - 100 specific phrases
+    "free AI powered resume builder online",
+    "create professional resume in minutes",
+    "ATS optimized resume builder free",
+    "best free resume maker 2025",
+    "AI resume builder that actually works",
+    "professional resume templates free download",
+    "how to build resume online for free",
+    "automated resume builder with AI assistance",
+    "free resume creator with ATS optimization",
+    "best online resume builder for tech jobs",
+    "AI resume maker for software engineers",
+    "free professional resume builder no sign up",
+    "create ATS friendly resume online free",
+    "modern resume builder with AI features",
+    "free resume builder for entry level jobs",
+    "professional CV maker online free",
+    "AI powered resume optimization tool",
+    "free resume builder for career change",
+    "online resume creator for students",
+    "best free ATS resume builder",
+    "AI resume builder for remote jobs",
+    "professional resume maker for executives",
+    "free resume builder with modern templates",
+    "automated resume writing with AI",
+    "best online CV builder free",
+    "AI resume creator for job seekers",
+    "free professional resume generator",
+    "ATS compliant resume builder online",
+    "modern resume maker with AI help",
+    "free resume builder for graduates",
+    "professional resume creator online free",
+    "AI powered CV builder free",
+    "best resume builder for tech professionals",
+    "free online resume maker with templates",
+    "AI resume optimization service free",
+    "professional resume builder for healthcare",
+    "free ATS resume checker and builder",
+    "modern CV creator with AI features",
+    "best free resume builder for managers",
+    "AI powered resume writing assistant",
+    "free professional CV maker online",
+    "resume builder that passes ATS systems",
+    "AI resume creator for marketing professionals",
+    "free online resume builder for teachers",
+    "professional resume maker for sales",
+    "best AI resume builder for finance",
+    "free resume creator with keyword optimization",
+    "modern resume builder for startups",
+    "AI powered professional resume maker",
+    "free ATS friendly resume creator",
+    "best online resume builder for nursing",
+    "professional CV builder with AI assistance",
+    "free resume maker for data scientists",
+    "AI resume builder for consulting jobs",
+    "modern professional resume creator free",
+    "best free CV builder online",
+    "AI powered resume template generator",
+    "free resume builder for project managers",
+    "professional resume maker for engineers",
+    "ATS optimized CV builder free",
+    "modern resume creator with AI help",
+    "best free resume builder for developers",
+    "AI resume optimization tool online",
+    "free professional resume builder 2025",
+    "online resume maker with AI features",
+    "best ATS resume builder free",
+    "professional CV creator online free",
+    "AI powered resume builder for executives",
+    "free modern resume maker online",
+    "best online resume creator free",
+    "AI resume builder for career changers",
+    "professional resume generator free",
+    "modern CV builder with templates",
+    "free AI resume writing service",
+    "best resume builder for remote work",
+    "professional online CV maker free",
+    "AI powered resume creator online",
+    "free ATS resume builder tool",
+    "modern professional resume maker",
+    "best free online resume builder",
+    "AI resume optimization platform",
+    "professional resume builder online free",
+    "free CV creator with AI assistance",
+    "modern resume maker for professionals",
+    "best AI powered resume builder",
+    "free online professional resume creator",
+    "ATS compliant CV builder online",
+    "AI resume builder for tech industry",
+    "professional resume maker free download",
+    "modern online resume builder free",
+    "best free AI resume creator",
+    "professional CV builder online free",
+    "free resume builder with AI optimization",
+    "modern professional CV maker",
+    "best online resume maker free",
+    "AI powered professional resume creator",
+    "free ATS optimized resume builder",
+    "modern resume builder for job seekers",
+    "professional online resume maker free",
+    "best free CV creator online",
+    "AI resume builder for all industries",
+    "free professional resume template builder",
+    "modern CV creator online free",
+    "best AI resume optimization tool",
+    "professional resume builder for free",
+    "free online modern resume maker"
   ],
   openGraph: {
     title: "Resumy - Free AI Resume Builder | Create Professional Resumes Online",
@@ -74,6 +168,9 @@ export default async function Page() {
   
   return (
     <>
+      {/* Brand Schema Component */}
+      <BrandSchema />
+      
       {/* JSON-LD structured data for SEO */}
       <Script
         id="schema-data"
@@ -144,7 +241,14 @@ export default async function Page() {
             "@type": "Organization",
             "name": "Resumy",
             "url": "https://resumy.live",
-            "logo": "https://resumy.live/logo.png",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://resumy.live/logo.png",
+              "width": 512,
+              "height": 512,
+              "caption": "Resumy Logo"
+            },
+            "image": "https://resumy.live/logo.png",
             "description": "Free AI-powered resume builder helping professionals create ATS-optimized resumes quickly and easily.",
             "foundingDate": "2024",
             "sameAs": [
@@ -155,6 +259,41 @@ export default async function Page() {
               "@type": "ContactPoint",
               "contactType": "customer service",
               "availableLanguage": "English"
+            },
+            "brand": {
+              "@type": "Brand",
+              "name": "Resumy",
+              "logo": "https://resumy.live/logo.png"
+            }
+          })
+        }}
+      />
+
+      {/* WebSite Schema */}
+      <Script
+        id="website-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "Resumy",
+            "url": "https://resumy.live",
+            "description": "Free AI-powered resume builder helping professionals create ATS-optimized resumes quickly and easily.",
+            "publisher": {
+              "@type": "Organization",
+              "name": "Resumy",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://resumy.live/logo.png",
+                "width": 512,
+                "height": 512
+              }
+            },
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://resumy.live/?search={search_term_string}",
+              "query-input": "required name=search_term_string"
             }
           })
         }}
