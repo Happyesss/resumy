@@ -1,13 +1,13 @@
 'use client';
 
-import { User, Briefcase, FolderGit2, GraduationCap, Wrench, Palette, Mail } from "lucide-react";
+import { User, Briefcase, FolderGit2, GraduationCap, Wrench, FileText } from "lucide-react";
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export function ResumeEditorTabs() {
   return (
     <>
 
-      <TabsList className="h-full w-full relative bg-gray-900/90 backdrop-blur-xl border border-gray-800 rounded-lg overflow-hidden grid grid-cols-3 @[500px]:grid-cols-7 gap-0.5 p-0.5 shadow-lg">
+      <TabsList className="h-full w-full relative bg-gray-900/90 backdrop-blur-xl border border-gray-800 rounded-lg overflow-hidden grid grid-cols-3 @[500px]:grid-cols-8 gap-0.5 p-0.5 shadow-lg">
         {/* Basic Info Tab */}
         <TabsTrigger 
           value="basic" 
@@ -22,6 +22,23 @@ export function ResumeEditorTabs() {
           <span className="relative text-xs whitespace-nowrap">
             Basic Info
             <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full bg-teal-400 scale-x-0 transition-transform duration-300 group-data-[state=active]:scale-x-100"></div>
+          </span>
+        </TabsTrigger>
+
+        {/* Summary Tab */}
+        <TabsTrigger 
+          value="summary" 
+          className="group flex items-center gap-1.5 px-2 py-1 rounded-md font-medium relative transition-all duration-300
+            data-[state=active]:bg-gradient-to-r data-[state=active]:from-fuchsia-500/20 data-[state=active]:to-pink-500/20
+            data-[state=active]:border-fuchsia-500/30 data-[state=active]:shadow-md hover:bg-gray-800/80
+            data-[state=active]:text-white data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200"
+        >
+          <div className="p-1 rounded-md bg-fuchsia-900/80 transition-transform duration-300 group-data-[state=active]:scale-105 group-data-[state=active]:bg-fuchsia-900">
+            <FileText className="h-3.5 w-3.5 text-fuchsia-400 transition-colors group-data-[state=inactive]:text-fuchsia-500/70" />
+          </div>
+          <span className="relative text-xs whitespace-nowrap">
+            Summary
+            <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full bg-fuchsia-400 scale-x-0 transition-transform duration-300 group-data-[state=active]:scale-x-100"></div>
           </span>
         </TabsTrigger>
 

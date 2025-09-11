@@ -193,6 +193,7 @@ export async function createBaseResume(
     name,
     target_role: name,
     is_base_resume: true,
+  professional_summary: '',
     first_name: importOption === 'import-resume' ? selectedContent?.first_name || '' : importOption === 'fresh' ? '' : profile?.first_name || '',
     last_name: importOption === 'import-resume' ? selectedContent?.last_name || '' : importOption === 'fresh' ? '' : profile?.last_name || '',
     email: importOption === 'import-resume' ? selectedContent?.email || '' : importOption === 'fresh' ? '' : profile?.email || '',
@@ -214,6 +215,7 @@ export async function createBaseResume(
       ? selectedContent.projects
       : [],
     section_order: [
+      'professional_summary',
       'work_experience',
       'education',
       'skills',

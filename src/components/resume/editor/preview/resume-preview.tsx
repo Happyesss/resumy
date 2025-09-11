@@ -44,6 +44,7 @@ function generateResumeHash(resume: Resume): string {
       contact: [resume.email, resume.phone_number, resume.location, resume.website, resume.linkedin_url, resume.github_url],
     },
     sections: {
+  professional_summary: resume.professional_summary,
       skills: resume.skills,
       experience: resume.work_experience,
       projects: resume.projects,

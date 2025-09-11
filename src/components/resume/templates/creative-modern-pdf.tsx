@@ -124,6 +124,15 @@ const creativeModernStyles = StyleSheet.create({
     borderBottomColor: '#e53e3e',
     paddingBottom: 4,
   },
+  summaryWrapper: {
+    marginBottom: 14,
+  },
+  summaryText: {
+    fontSize: 10,
+    lineHeight: 1.5,
+    color: '#2d3748',
+    marginTop: 2,
+  },
   entryContainer: {
     marginBottom: 12,
   },
@@ -431,6 +440,14 @@ export const CreativeModernPDF = memo(function CreativeModernPDF({ resume, varia
 
         {/* Main Content */}
         <View style={creativeModernStyles.mainContent}>
+          {resume.professional_summary && (
+            <View style={creativeModernStyles.summaryWrapper}>
+              <Text style={creativeModernStyles.mainSectionTitle}>Professional Summary</Text>
+              <Text style={creativeModernStyles.summaryText}>
+                {resume.professional_summary}
+              </Text>
+            </View>
+          )}
           {renderExperience()}
           {renderProjects()}
           {renderEducation()}

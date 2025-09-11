@@ -16,7 +16,8 @@ import {
   WorkExperienceForm,
   EducationForm,
   SkillsForm,
-  ProjectsForm
+  ProjectsForm,
+  SummaryForm
 } from '../dynamic-components';
 import { ResumeEditorTabs } from "../header/resume-editor-tabs";
 import ResumeScorePanel from "./resume-score-panel";
@@ -81,6 +82,21 @@ export function EditorPanel({
                 <BasicInfoForm
                   profile={profile}
                 />
+              </TabsContent>
+
+              {/* Summary Form */}
+              <TabsContent value="summary">
+                <Suspense fallback={
+                  <div className="space-y-4 animate-pulse">
+                    <div className="h-8 bg-muted rounded-md w-1/3" />
+                    <div className="h-24 bg-muted rounded-md" />
+                  </div>
+                }>
+                  <SummaryForm
+                    summary={resume.professional_summary || ''}
+                    onChange={(value: string) => onResumeChange('professional_summary', value)}
+                  />
+                </Suspense>
               </TabsContent>
 
               {/* Work Experience Form */}

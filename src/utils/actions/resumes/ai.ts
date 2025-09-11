@@ -6,7 +6,7 @@ import { textImportSchema, workExperienceBulletPointsSchema } from "@/lib/zod-sc
 import { generateObject, generateText } from "ai";
 import { z } from "zod";
 import { initializeAIClient, type AIConfig } from '@/utils/ai-tools';
-import { PROJECT_GENERATOR_MESSAGE, PROJECT_IMPROVER_MESSAGE, TEXT_ANALYZER_SYSTEM_MESSAGE, WORK_EXPERIENCE_GENERATOR_MESSAGE, WORK_EXPERIENCE_IMPROVER_MESSAGE } from "@/lib/prompts";
+import { PROJECT_GENERATOR_MESSAGE, PROJECT_IMPROVER_MESSAGE, TEXT_ANALYZER_SYSTEM_MESSAGE, WORK_EXPERIENCE_GENERATOR_MESSAGE, WORK_EXPERIENCE_IMPROVER_MESSAGE, SUMMARY_IMPROVER_MESSAGE } from "@/lib/prompts";
 import { projectAnalysisSchema, workExperienceItemsSchema } from "@/lib/zod-schemas";
 import { WorkExperience } from "@/lib/types";
 
@@ -189,6 +189,22 @@ export async function convertTextToResume(prompt: string, existingResume: Resume
           });
       
           return object.content;
+      }
+
+      // PROFESSIONAL SUMMARY IMPROVEMENT
+      export async function improveSummary(summary: string, customPrompt?: string, config?: AIConfig) {
+        const aiClient = initializeAIClient(config);
+
+        // For summary we expect plain string back (not JSON object with property) for simplicity
+        // Use safeGenerateObject to keep consistency & guardrails
+        const { object } = await safeGenerateObject({
+          model: aiClient,
+          schema: z.object({ content: z.string().describe("Improved professional summary (single paragraph)") }),
+          prompt: `Please improve the following professional resume summary${customPrompt ? ` with additional focus: ${customPrompt}` : ''} while strictly following the system rules. Return ONLY the improved summary text.\n\nOriginal Summary:\n"""${summary}"""`,
+          system: SUMMARY_IMPROVER_MESSAGE.content as string,
+        });
+
+        return object.content;
       }
       
       // NEW PROJECT BULLET POINTS

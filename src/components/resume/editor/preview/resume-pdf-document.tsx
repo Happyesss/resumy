@@ -133,6 +133,16 @@ const HeaderSection = memo(function HeaderSection({
   );
 });
 
+const SummarySection = memo(function SummarySection({ summary, styles }: { summary?: string | null; styles: ReturnType<typeof createResumeStyles>; }) {
+  if (!summary) return null;
+  return (
+    <View style={styles.summarySection}>
+      <Text style={styles.sectionTitle}>Professional Summary</Text>
+      <Text style={styles.summaryText}>{summary}</Text>
+    </View>
+  );
+});
+
 const SkillsSection = memo(function SkillsSection({ 
   skills, 
   styles 
@@ -414,6 +424,16 @@ function createResumeStyles(settings = {
       borderBottom: '0.5pt solid #e5e7eb',
       paddingBottom: 0,
     },
+    summarySection: {
+      marginTop: 4,
+      marginBottom: 8,
+    },
+    summaryText: {
+      fontSize: document_font_size,
+      color: '#374151',
+      lineHeight: document_line_height,
+      textAlign: 'justify'
+    },
     // Skills section
     skillsSection: {
       marginTop: skills_margin_top,
@@ -615,6 +635,7 @@ export const ResumePDFDocument = memo(function ResumePDFDocument({ resume, varia
       website: resume.website || '',
       linkedin_url: resume.linkedin_url || '',
       github_url: resume.github_url || '',
+  professional_summary: resume.professional_summary || '',
       work_experience: Array.isArray(resume.work_experience) ? resume.work_experience : [],
       education: Array.isArray(resume.education) ? resume.education : [],
       projects: Array.isArray(resume.projects) ? resume.projects : [],
@@ -684,6 +705,7 @@ export const ResumePDFDocument = memo(function ResumePDFDocument({ resume, varia
     <PDFDocument>
       <PDFPage size="LETTER" style={styles.page}>
         <HeaderSection resume={safeResume} styles={styles} />
+  <SummarySection summary={safeResume.professional_summary} styles={styles} />
         <ProjectsSection projects={safeResume.projects} styles={styles} />
         <ExperienceSection experiences={safeResume.work_experience} styles={styles} />
         <EducationSection education={safeResume.education} styles={styles} />

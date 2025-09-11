@@ -395,6 +395,16 @@ export const ClassicResumePDF = memo(function ClassicResumePDF({ resume, variant
           )}
         </View>
 
+        {/* Professional Summary */}
+        {resume.professional_summary && (
+          <View>
+            <Text style={classicStyles.sectionTitle}>Professional Summary</Text>
+            <Text style={{ fontSize: 10, lineHeight: 1.3 }}>
+              {parseMarkdownText(resume.professional_summary)}
+            </Text>
+          </View>
+        )}
+
         {/* Education */}
         {renderEducation()}
 

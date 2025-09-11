@@ -515,6 +515,14 @@ export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, v
         {renderTechnicalSkills()}
 
         {/* Experience */}
+        {resume.professional_summary && (
+          <View style={{ marginBottom: 10 }}>
+            <Text style={techProfessionalStyles.sectionTitle}>Professional Summary</Text>
+            <Text style={{ fontSize: 10, lineHeight: 1.4, color: '#1f2937' }}>
+              {resume.professional_summary}
+            </Text>
+          </View>
+        )}
         {renderExperience()}
 
         {/* Projects */}

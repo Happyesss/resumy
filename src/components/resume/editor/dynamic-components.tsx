@@ -31,6 +31,11 @@ interface SkillsFormProps {
   profile: { skills: Skill[] };
 }
 
+interface SummaryFormProps {
+  summary: string;
+  onChange: (summary: string) => void;
+}
+
 export const WorkExperienceForm = dynamic(
   () => import('./forms/work-experience-form').then(mod => ({ default: mod.WorkExperienceForm })) as Promise<ComponentType<WorkExperienceFormProps>>,
   {
@@ -57,6 +62,14 @@ export const SkillsForm = dynamic(
 
 export const ProjectsForm = dynamic(
   () => import('./forms/projects-form').then(mod => ({ default: mod.ProjectsForm })) as Promise<ComponentType<ProjectsFormProps>>,
+  {
+    loading: () => <LoadingFallback lines={1} />,
+    ssr: false
+  }
+);
+
+export const SummaryForm = dynamic(
+  () => import('./forms/summary-form').then(mod => ({ default: mod.SummaryForm })) as Promise<ComponentType<SummaryFormProps>>,
   {
     loading: () => <LoadingFallback lines={1} />,
     ssr: false
