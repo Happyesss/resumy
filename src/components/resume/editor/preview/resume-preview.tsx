@@ -10,7 +10,7 @@
 
 import { Resume } from "@/lib/types";
 import { Document, Page, pdfjs } from 'react-pdf';
-import { useState, useEffect, memo, useMemo, useCallback } from 'react';
+import { useState, useEffect, memo, useMemo, useCallback, useRef } from 'react';
 import { pdf } from '@react-pdf/renderer';
 import { ResumePDFDocument } from './resume-pdf-document';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
@@ -32,6 +32,14 @@ const CACHE_CLEANUP_INTERVAL = 5 * 60 * 1000;
 
 // Cache expiration time (30 minutes)
 const CACHE_EXPIRATION_TIME = 30 * 60 * 1000;
+
+// Helper to check if a URL is still present in the cache
+function isUrlInCache(targetUrl: string): boolean {
+  for (const { url } of pdfCache.values()) {
+    if (url === targetUrl) return true;
+  }
+  return false;
+}
 
 /**
  * Generate a simple hash from the resume content
@@ -123,6 +131,8 @@ export const ResumePreview = memo(function ResumePreview({ resume, variant = 'ba
 
   // Generate resume hash for caching - memoized to prevent unnecessary recalculations
   const resumeHash = useMemo(() => generateResumeHash(resume), [resume]);
+  // Debounce the hash so fast typing doesn't thrash pdf.js
+  const debouncedResumeHash = useDebouncedValue(resumeHash, 300);
 
   // Add styles to document head
   useEffect(() => {
@@ -136,6 +146,8 @@ export const ResumePreview = memo(function ResumePreview({ resume, variant = 'ba
 
   // Generate or retrieve PDF from cache
   useEffect(() => {
+    // Generation token to avoid race conditions when typing fast
+    const genId = (genRef.current = (genRef.current || 0) + 1);
     let currentUrl: string | null = null;
 
     async function generatePDF() {
@@ -164,10 +176,13 @@ export const ResumePreview = memo(function ResumePreview({ resume, variant = 'ba
         };
 
         // Check cache first
-        const cached = pdfCache.get(resumeHash);
+        const cached = pdfCache.get(debouncedResumeHash);
         if (cached) {
-          currentUrl = cached.url;
-          setUrl(cached.url);
+          // Ensure this is the latest generation before setting state
+          if (genRef.current === genId) {
+            currentUrl = cached.url;
+            setUrl(cached.url);
+          }
           return;
         }
 
@@ -181,11 +196,16 @@ export const ResumePreview = memo(function ResumePreview({ resume, variant = 'ba
         }
         
         const newUrl = URL.createObjectURL(blob);
-        currentUrl = newUrl;
-        
-        // Store in cache with timestamp
-        pdfCache.set(resumeHash, { url: newUrl, timestamp: Date.now() });
-        setUrl(newUrl);
+        // Only set if this is still the latest generation
+        if (genRef.current === genId) {
+          currentUrl = newUrl;
+          // Store in cache with timestamp
+          pdfCache.set(debouncedResumeHash, { url: newUrl, timestamp: Date.now() });
+          setUrl(newUrl);
+        } else {
+          // If stale, revoke immediately
+          URL.revokeObjectURL(newUrl);
+        }
       } catch (error) {
         console.error('PDF generation error:', error);
         // Don't throw error, just log it as PDF preview is not critical
@@ -196,21 +216,25 @@ export const ResumePreview = memo(function ResumePreview({ resume, variant = 'ba
 
     // Cleanup function
     return () => {
-      if (currentUrl && !pdfCache.has(resumeHash)) {
+      if (currentUrl && !isUrlInCache(currentUrl)) {
         URL.revokeObjectURL(currentUrl);
       }
     };
-  }, [resumeHash, variant, resume]);
+  }, [debouncedResumeHash, variant]);
 
   // Cleanup on component unmount
   useEffect(() => {
     return () => {
       // Final cleanup of this component's URL if not in cache
-      if (url && !pdfCache.has(resumeHash)) {
+      if (url && !isUrlInCache(url)) {
         URL.revokeObjectURL(url);
       }
+      setNumPages(0);
     };
-  }, [resumeHash, url]);
+  }, [debouncedResumeHash, url]);
+
+  // Ref to track async generations
+  const genRef = useRef(0);
 
   // Add state for text layer visibility with better management
   const [shouldRenderTextLayer, setShouldRenderTextLayer] = useState(false);
@@ -243,7 +267,7 @@ export const ResumePreview = memo(function ResumePreview({ resume, variant = 'ba
       clearTimeout(textLayerTimeout);
       setTextLayerTimeout(null);
     }
-  }, [resumeHash, variant]);
+  }, [debouncedResumeHash, variant]);
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -253,6 +277,13 @@ export const ResumePreview = memo(function ResumePreview({ resume, variant = 'ba
       }
     };
   }, [textLayerTimeout]);
+
+  // When the PDF URL changes, reset page count and text layer to avoid stale renders
+  useEffect(() => {
+    if (!url) return;
+    setNumPages(0);
+    setShouldRenderTextLayer(false);
+  }, [url]);
 
   // Show loading state while PDF is being generated
   if (!url) {
@@ -319,12 +350,18 @@ export const ResumePreview = memo(function ResumePreview({ resume, variant = 'ba
   return (
     <div className=" h-full relative bg-black/15">
         <Document
+          // Force remount when URL changes to avoid pdf.js worker race conditions
+          key={url}
           file={url}
           onLoadSuccess={onDocumentLoadSuccess}
           onLoadError={(error) => {
             console.error('PDF load error:', error);
+            // Reset state to avoid rendering pages from a disposed document
+            setNumPages(0);
+            setShouldRenderTextLayer(false);
             // Don't show TextLayer errors to user as they're not critical
           }}
+          error={<div className="p-2 text-xs text-red-500">PDF preview failed to load.</div>}
           className="relative h-full   "
           externalLinkTarget="_blank"
           loading={
@@ -393,6 +430,18 @@ export const ResumePreview = memo(function ResumePreview({ resume, variant = 'ba
               width={getPixelWidth()}
               renderAnnotationLayer={true}
               renderTextLayer={shouldRenderTextLayer}
+              onLoadError={(error) => {
+                // Swallow race-condition errors when rapidly changing documents
+                if (typeof error?.message === 'string' && (
+                  error.message.includes('WorkerTransport') ||
+                  error.message.includes('sendWithPromise') ||
+                  error.message.includes('getPage')
+                )) {
+                  console.warn('PDF page load warning (non-critical):', error.message);
+                  return;
+                }
+                console.error('PDF page load error:', error);
+              }}
               onRenderError={(error) => {
                 // Silently handle TextLayer errors - they're not critical for PDF display
                 if (error.message?.includes('TextLayer')) {
@@ -401,6 +450,7 @@ export const ResumePreview = memo(function ResumePreview({ resume, variant = 'ba
                   console.error('PDF render error:', error);
                 }
               }}
+              error={<div className="hidden" />}
             />
           ))}
         </Document>
