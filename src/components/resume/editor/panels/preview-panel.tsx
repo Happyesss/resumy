@@ -6,6 +6,10 @@ import { cn } from "@/lib/utils";
 import { ResumePreview } from "../preview/resume-preview";
 import CoverLetter from "@/components/cover-letter/cover-letter";
 import { ResumeContextMenu } from "../preview/resume-context-menu";
+import { Button } from "@/components/ui/button";
+import { Maximize2 } from "lucide-react";
+import { useState } from "react";
+import { MobileFullscreenPreview } from "../preview/mobile-fullscreen-preview";
 
 interface PreviewPanelProps {
   resume: Resume;
@@ -19,33 +23,57 @@ export function PreviewPanel({
   // onResumeChange,
   width
 }: PreviewPanelProps) {
-  return (
-    <ScrollArea className={cn(
-      " z-50     bg-red-500 h-full",
-      resume.is_base_resume
-        ? "bg-purple-50/30"
-        : "bg-pink-50/60 shadow-sm shadow-pink-200/20"
-    )}>
-      <div className="">
-      <ResumeContextMenu resume={resume}>
-          <ResumePreview resume={resume} containerWidth={width} />
-        </ResumeContextMenu>
-      </div>
+  const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
 
-      <CoverLetter 
-        // resumeId={resume.id} 
-        // hasCoverLetter={resume.has_cover_letter}
-        // coverLetterData={resume.cover_letter}
-        containerWidth={width}
-        // onCoverLetterChange={(data: Record<string, unknown>) => {
-        //   if ('has_cover_letter' in data) {
-        //     onResumeChange('has_cover_letter', data.has_cover_letter as boolean);
-        //   }
-        //   if ('cover_letter' in data) {    
-        //     onResumeChange('cover_letter', data.cover_letter as Record<string, unknown>);
-        //   }
-        // }}
+  return (
+    <>
+      <ScrollArea className={cn(
+        " z-50     bg-red-500 h-full relative",
+        resume.is_base_resume
+          ? "bg-purple-50/30"
+          : "bg-pink-50/60 shadow-sm shadow-pink-200/20"
+      )}>
+        {/* Mobile Fullscreen Button */}
+        <div className="md:hidden absolute top-3 right-3 z-50">
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => setIsFullscreenOpen(true)}
+            className="bg-white/95 backdrop-blur-sm shadow-lg hover:bg-white border border-gray-300 hover:shadow-xl transition-all duration-200"
+          >
+            <Maximize2 className="h-4 w-4 mr-1.5" />
+            <span className="text-sm font-medium">View Full</span>
+          </Button>
+        </div>
+
+        <div className="">
+        <ResumeContextMenu resume={resume}>
+            <ResumePreview resume={resume} containerWidth={width} />
+          </ResumeContextMenu>
+        </div>
+
+        <CoverLetter 
+          // resumeId={resume.id} 
+          // hasCoverLetter={resume.has_cover_letter}
+          // coverLetterData={resume.cover_letter}
+          containerWidth={width}
+          // onCoverLetterChange={(data: Record<string, unknown>) => {
+          //   if ('has_cover_letter' in data) {
+          //     onResumeChange('has_cover_letter', data.has_cover_letter as boolean);
+          //   }
+          //   if ('cover_letter' in data) {    
+          //     onResumeChange('cover_letter', data.cover_letter as Record<string, unknown>);
+          //   }
+          // }}
+        />
+      </ScrollArea>
+
+      {/* Mobile Fullscreen Modal */}
+      <MobileFullscreenPreview
+        resume={resume}
+        isOpen={isFullscreenOpen}
+        onClose={() => setIsFullscreenOpen(false)}
       />
-    </ScrollArea>
+    </>
   );
 } 
