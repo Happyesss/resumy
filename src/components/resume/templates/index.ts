@@ -5,6 +5,7 @@ export { CreativeMinimalPDF } from './creative-minimal-pdf';
 export { MinimalCleanPDF } from './minimal-clean-pdf';
 export { ModernProfessionalPDF } from './modern-professional-pdf';
 export { TechProfessionalPDF } from './tech-professional-pdf';
+export { CAPDFResume } from './ca-professional-pdf';
 
 // Template Selection Components
 export { TemplateSelectionModal } from './template-selection-modal';

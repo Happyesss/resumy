@@ -10,6 +10,7 @@ import { CreativeMinimalPDF } from '../../templates/creative-minimal-pdf';
 import { MinimalCleanPDF } from '../../templates/minimal-clean-pdf';
 import { ModernProfessionalPDF } from '../../templates/modern-professional-pdf';
 import { TechProfessionalPDF } from '../../templates/tech-professional-pdf';
+import { CAPDFResume } from '../../templates/ca-professional-pdf';
 
 // Base styles that don't depend on resume settings
 const baseStyles = {
@@ -698,6 +699,10 @@ export const ResumePDFDocument = memo(function ResumePDFDocument({ resume, varia
 
   if (safeResume.template && (safeResume.template.includes('modern-2') || safeResume.template === 'modern-2')) {
     return <TechProfessionalPDF resume={safeResume} variant={variant} />;
+  }
+
+  if (safeResume.template && (safeResume.template.includes('ca-professional') || safeResume.template === 'ca-professional')) {
+    return <CAPDFResume resume={safeResume} />;
   }
 
   // Default template (includes 'default' and undefined template)

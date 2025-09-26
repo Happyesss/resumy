@@ -92,6 +92,15 @@ const templates: Template[] = [
     image: '/templates/creative-minimal.png',
     features: ['Minimal Design', 'Creative Elements', 'Typography Focus', 'Clean Layout'],
     premium: false
+  },
+  {
+    id: 'ca-professional',
+    name: 'CA Professional',
+    description: 'Specialized template designed for Chartered Accountants with finance industry styling',
+    category: 'classic',
+    image: '/templates/caProfessional.png',
+    features: ['Finance Focused', 'Professional Layout', 'ATS Optimized', 'CA Specialized'],
+    premium: false
   }
 ];
 

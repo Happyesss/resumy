@@ -307,6 +307,51 @@ export function TemplatePreview({ templateId, className }: TemplatePreviewProps)
             </div>
           </div>
         );
+      case 'ca-professional':
+        return (
+          <div className="w-full h-full bg-white p-2 text-xs">
+            {/* Header with green accent for CA */}
+            <div className="text-center border-b-2 border-green-700 pb-2 mb-2">
+              <div className="h-2 bg-green-700 w-3/4 mx-auto mb-2"></div>
+              <div className="flex justify-center gap-1 text-[0.3rem]">
+                <div className="h-0.5 bg-gray-600 w-6"></div>
+                <div className="h-0.5 bg-gray-600 w-8"></div>
+                <div className="h-0.5 bg-gray-600 w-6"></div>
+              </div>
+            </div>
+            
+            {/* Education Table */}
+            <div className="mb-2">
+              <div className="h-0.5 bg-green-700 w-1/4 mb-1 font-bold"></div>
+              <div className="border border-gray-400">
+                <div className="grid grid-cols-4 gap-0.5 text-[0.25rem]">
+                  <div className="h-0.5 bg-gray-600 border-r border-gray-400 p-0.5"></div>
+                  <div className="h-0.5 bg-gray-600 border-r border-gray-400 p-0.5"></div>
+                  <div className="h-0.5 bg-gray-600 border-r border-gray-400 p-0.5"></div>
+                  <div className="h-0.5 bg-gray-600 p-0.5"></div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Experience section */}
+            <div className="mb-2">
+              <div className="h-0.5 bg-green-700 w-1/3 mb-1"></div>
+              <div className="flex justify-between mb-0.5">
+                <div className="h-0.5 bg-green-700 w-1/2"></div>
+                <div className="h-0.5 bg-gray-600 w-1/5"></div>
+              </div>
+              <div className="h-0.5 bg-gray-600 w-full"></div>
+              <div className="h-0.5 bg-gray-600 w-4/5"></div>
+            </div>
+            
+            {/* Skills section */}
+            <div>
+              <div className="h-0.5 bg-green-700 w-1/4 mb-1"></div>
+              <div className="h-0.5 bg-gray-600 w-full"></div>
+              <div className="h-0.5 bg-gray-600 w-3/4"></div>
+            </div>
+          </div>
+        );
       default:
         return (
           <div className="w-full h-full bg-gray-100 p-2 flex items-center justify-center">

@@ -109,6 +109,18 @@ const templates: Template[] = [
     rating: 4.6,
     downloads: 6890,
     preview: '/templates/creativeMinimal.png'
+  },
+  {
+    id: 'ca-professional',
+    name: 'CA Professional',
+    description: 'Specialized template for Chartered Accountants with professional finance industry styling',
+    category: 'classic',
+    image: '/templates/caProfessional.png',
+    features: ['Finance Industry Focus', 'Professional Layout', 'ATS Optimized', 'CA Specialized'],
+
+    rating: 4.9,
+    downloads: 5420,
+    preview: '/templates/caProfessional.png'
   }
 ];
 
