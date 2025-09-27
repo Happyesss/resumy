@@ -312,7 +312,7 @@ const CAPDFResume = memo(({ resume }: CAPDFResumeProps) => {
     return (
       <View style={caStyles.section}>
         <Text style={caStyles.summary}>
-          {resume.professional_summary}
+          {parseMarkdownText(resume.professional_summary)}
         </Text>
       </View>
     );
@@ -378,12 +378,11 @@ const CAPDFResume = memo(({ resume }: CAPDFResumeProps) => {
               {edu.date}
             </Text>
             <Text style={[caStyles.tableCell, { flex: 3 }]}>
-              {edu.school}
+              {edu.school}{edu.location ? `\u00A0\u00A0(${edu.location})` : ''}
             </Text>
             <Text style={[caStyles.tableCellLast, { flex: 2.5 }]}>
-              {edu.gpa && `${typeof edu.gpa === 'number' ? edu.gpa.toFixed(2) : edu.gpa}% `}
+              {edu.gpa && `${typeof edu.gpa === 'number' ? edu.gpa.toFixed(0) : edu.gpa} `}
               {edu.achievements && edu.achievements.length > 0 && edu.achievements.join(', ')}
-              {edu.location && ` (${edu.location})`}
             </Text>
           </View>
         ))}

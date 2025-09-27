@@ -391,7 +391,7 @@ export const MinimalCleanPDF = memo(function MinimalCleanPDF({ resume, variant =
           <View style={{ marginBottom: 8 }}>
             <Text style={minimalCleanStyles.sectionTitle}>Professional Summary</Text>
             <Text style={{ fontSize: 10, lineHeight: 1.4 }}>
-              {resume.professional_summary}
+              {parseMarkdownText(resume.professional_summary)}
             </Text>
           </View>
         )}

@@ -519,7 +519,7 @@ export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, v
           <View style={{ marginBottom: 10 }}>
             <Text style={techProfessionalStyles.sectionTitle}>Professional Summary</Text>
             <Text style={{ fontSize: 10, lineHeight: 1.4, color: '#1f2937' }}>
-              {resume.professional_summary}
+              {parseMarkdownText(resume.professional_summary)}
             </Text>
           </View>
         )}

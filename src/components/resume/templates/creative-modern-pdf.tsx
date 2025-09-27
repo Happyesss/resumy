@@ -444,7 +444,7 @@ export const CreativeModernPDF = memo(function CreativeModernPDF({ resume, varia
             <View style={creativeModernStyles.summaryWrapper}>
               <Text style={creativeModernStyles.mainSectionTitle}>Professional Summary</Text>
               <Text style={creativeModernStyles.summaryText}>
-                {resume.professional_summary}
+                {parseMarkdownText(resume.professional_summary)}
               </Text>
             </View>
           )}

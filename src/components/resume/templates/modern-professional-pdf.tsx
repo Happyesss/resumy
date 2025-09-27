@@ -463,7 +463,7 @@ export const ModernProfessionalPDF = memo(function ModernProfessionalPDF({ resum
         {resume.professional_summary && (
           <View style={{ marginBottom: 10 }}>
             <Text style={{ fontSize: 10, lineHeight: 1.4, color: '#1f2937' }}>
-              {resume.professional_summary}
+              {parseMarkdownText(resume.professional_summary)}
             </Text>
           </View>
         )}

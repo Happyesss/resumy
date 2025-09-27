@@ -611,7 +611,7 @@ export const CreativeMinimalPDF = memo(function CreativeMinimalPDF({ resume, var
                   <View style={creativeMinimalStyles.sectionUnderline} />
                 </View>
                 <Text style={{ fontSize: 10, lineHeight: 1.4, color: '#1f2937', marginBottom: 8 }}>
-                  {resume.professional_summary}
+                  {parseMarkdownText(resume.professional_summary)}
                 </Text>
               </View>
             )}

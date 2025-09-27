@@ -30,6 +30,7 @@ const baseStyles = {
 
 // Create a cache outside of components to persist between renders
 const textProcessingCache = new Map<string, ReactNode[]>();
+const MAX_CACHE_SIZE = 100; // Prevent memory leaks
 
 // Memoized text processing function
 function useTextProcessor() {
@@ -44,6 +45,14 @@ function useTextProcessor() {
     if (ignoreMarkdown) {
       const content = text.match(/\*\*(.*?)\*\*/)?.[1] || text;
       const processed = [<Text key={0}>{content}</Text>];
+      
+      // Manage cache size
+      if (textProcessingCache.size >= MAX_CACHE_SIZE) {
+        const firstKey = textProcessingCache.keys().next().value;
+        if (firstKey) {
+          textProcessingCache.delete(firstKey);
+        }
+      }
       textProcessingCache.set(cacheKey, processed);
       return processed;
     }
@@ -57,7 +66,13 @@ function useTextProcessor() {
       return <Text key={index}>{part}</Text>;
     });
 
-    // Store in cache
+    // Store in cache with size management
+    if (textProcessingCache.size >= MAX_CACHE_SIZE) {
+      const firstKey = textProcessingCache.keys().next().value;
+      if (firstKey) {
+        textProcessingCache.delete(firstKey);
+      }
+    }
     textProcessingCache.set(cacheKey, processed);
     return processed;
   }, []);
@@ -134,12 +149,24 @@ const HeaderSection = memo(function HeaderSection({
   );
 });
 
-const SummarySection = memo(function SummarySection({ summary, styles }: { summary?: string | null; styles: ReturnType<typeof createResumeStyles>; }) {
-  if (!summary) return null;
+const SummarySection = memo(function SummarySection({ 
+  summary, 
+  styles, 
+  processText 
+}: { 
+  summary?: string | null; 
+  styles: ReturnType<typeof createResumeStyles>;
+  processText: (text: string, ignoreMarkdown?: boolean) => ReactNode[] | undefined;
+}) {
+  if (!summary?.trim()) return null;
+  
+  const processedText = processText(summary);
+  if (!processedText) return null;
+  
   return (
     <View style={styles.summarySection}>
       <Text style={styles.sectionTitle}>Professional Summary</Text>
-      <Text style={styles.summaryText}>{summary}</Text>
+      <Text style={styles.summaryText}>{processedText}</Text>
     </View>
   );
 });
@@ -675,6 +702,7 @@ export const ResumePDFDocument = memo(function ResumePDFDocument({ resume, varia
     footer_width: 80,
   };
   const styles = useMemo(() => createResumeStyles(defaultResumeStyles), []);
+  const processText = useTextProcessor();
 
   // Check template and render appropriate component
   if (safeResume.template && (safeResume.template.includes('classic') || safeResume.template === 'classic-1')) {
@@ -710,7 +738,7 @@ export const ResumePDFDocument = memo(function ResumePDFDocument({ resume, varia
     <PDFDocument>
       <PDFPage size="LETTER" style={styles.page}>
         <HeaderSection resume={safeResume} styles={styles} />
-  <SummarySection summary={safeResume.professional_summary} styles={styles} />
+        <SummarySection summary={safeResume.professional_summary} styles={styles} processText={processText} />
         <ProjectsSection projects={safeResume.projects} styles={styles} />
         <ExperienceSection experiences={safeResume.work_experience} styles={styles} />
         <EducationSection education={safeResume.education} styles={styles} />
