@@ -52,13 +52,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly', 
       priority: 0.3,
     },
-    // Add SEO-friendly blog/guide URLs if you create them in the future
-    // {
-    //   url: `${baseUrl}/guides/how-to-build-ats-resume`,
-    //   lastModified: new Date(),
-    //   changeFrequency: 'monthly',
-    //   priority: 0.7,
-    // },
+    {
+      url: `${baseUrl}/guides/ats-resume`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/guides/resume-writing`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    // Additional future guides
     // {
     //   url: `${baseUrl}/guides/resume-keywords-optimization`,
     //   lastModified: new Date(),

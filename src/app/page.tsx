@@ -1,6 +1,5 @@
 import { Hero } from "@/components/landing/Hero";
 import { VideoShowcase } from "@/components/landing/VideoShowcase";
-import { CompanyLogos } from "@/components/landing/CompanyLogos";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import FeatureHighlights from "@/components/landing/FeatureHighlights";
 import { KeepEverythingInPlace } from "@/components/landing/KeepEverythingInPlace";
@@ -16,6 +15,8 @@ import { redirect } from "next/navigation";
 import { Metadata } from "next";
 import Script from "next/script";
 import { BrandSchema } from "@/components/seo/BrandSchema";
+import { AdvancedSeoSchema } from "@/components/seo/AdvancedSeoSchema";
+import { SeoContent } from "@/components/seo/SeoContent";
 
 // Page-specific metadata that extends the base metadata from layout.tsx
 export const metadata: Metadata = {
@@ -128,7 +129,120 @@ export const metadata: Metadata = {
     "modern CV creator online free",
     "best AI resume optimization tool",
     "professional resume builder for free",
-    "free online modern resume maker"
+    "free online modern resume maker",
+    
+    // Additional 100+ Long-tail Keywords for Resume & Resume Builder
+    "AI resume creator with templates",
+    "best professional resume builder online",
+    "create winning resume in 5 minutes",
+    "professional resume builder that works",
+    "free resume builder with spell check",
+    "AI powered resume maker 2025",
+    "modern resume templates for download",
+    "executive level resume builder free",
+    "ATS resume builder with keyword suggestions",
+    "professional CV maker for job seekers",
+    "resume builder with industry templates",
+    "free AI resume writer online",
+    "smart resume creator with optimization",
+    "modern professional resume generator",
+    "resume builder for college graduates",
+    "AI resume assistant for career growth",
+    "professional resume maker with examples",
+    "free resume builder no watermark",
+    "ATS friendly resume creator online",
+    "resume builder with cover letter maker",
+    "professional resume templates 2025",
+    "AI powered CV builder online",
+    "resume maker for job applications",
+    "free professional resume editor",
+    "modern resume builder for executives",
+    "AI resume optimization software",
+    "resume creator for remote workers",
+    "professional resume builder with tips",
+    "free ATS resume maker online",
+    "resume builder for career switchers",
+    "AI powered professional CV maker",
+    "modern resume templates free download",
+    "resume builder with real time preview",
+    "professional resume creator 2025",
+    "free resume maker with AI suggestions",
+    "ATS optimized resume builder tool",
+    "resume builder for tech professionals",
+    "AI resume writer for job seekers",
+    "professional resume maker online free",
+    "modern CV builder with AI features",
+    "resume creator with keyword optimization",
+    "free professional resume generator 2025",
+    "AI powered resume building platform",
+    "resume builder for healthcare workers",
+    "professional CV creator with templates",
+    "modern resume maker for students",
+    "AI resume builder for marketing jobs",
+    "free resume creator with ATS scoring",
+    "professional resume builder for nurses",
+    "resume maker with industry expertise",
+    "AI powered CV generator online",
+    "modern resume builder for managers",
+    "professional resume creator with AI",
+    "free resume builder for internships",
+    "ATS compliant resume maker online",
+    "resume builder for finance professionals",
+    "AI powered professional resume tool",
+    "modern CV maker for job hunting",
+    "resume creator for entry level jobs",
+    "professional resume builder with guidance",
+    "free AI resume maker 2025",
+    "resume builder for software engineers",
+    "modern professional CV creator",
+    "AI resume writer with templates",
+    "professional resume maker for sales",
+    "free resume creator for graduates",
+    "ATS optimized CV builder online",
+    "resume builder for project managers",
+    "AI powered resume creation tool",
+    "modern resume maker with examples",
+    "professional CV builder for executives",
+    "free resume generator with AI help",
+    "resume builder for data scientists",
+    "AI resume creator for professionals",
+    "modern CV maker with optimization",
+    "professional resume builder platform",
+    "free ATS resume creator 2025",
+    "resume maker for consulting jobs",
+    "AI powered CV building software",
+    "modern professional resume tool",
+    "resume builder for startup employees",
+    "professional CV creator online free",
+    "free resume maker with AI writing",
+    "ATS friendly CV builder online",
+    "resume creator for remote positions",
+    "AI powered professional resume maker",
+    "modern resume builder with AI guidance",
+    "professional resume generator online",
+    "free CV maker for job applications",
+    "resume builder for academic positions",
+    "AI resume writer for career change",
+    "modern professional CV generator",
+    "resume creator with expert templates",
+    "professional resume maker 2025 edition",
+    "free AI powered CV builder",
+    "resume builder for government jobs",
+    "modern CV creator with AI assistance",
+    "professional resume tool for executives",
+    "ATS resume builder with analytics",
+    "free resume maker for professionals",
+    "AI powered resume platform online",
+    "modern professional resume creator",
+    "resume builder for nonprofit jobs",
+    "professional CV maker with AI features",
+    "free resume generator for students",
+    "AI resume creator for all industries",
+    "modern resume builder for job seekers",
+    "professional CV builder 2025 version",
+    "resume maker with personalization",
+    "free ATS friendly resume builder",
+    "AI powered CV creation platform"
   ],
   openGraph: {
     title: "Resumy - Free AI Resume Builder | Create Professional Resumes Online",
@@ -391,10 +505,8 @@ export default async function Page() {
         {/* Hero Section - Full width */}
         <Hero />
         
-        {/* Main content */}
-        <div className="relative z-10 mx-auto px-4 sm:px-6 lg:px-24 flex flex-col justify-center">
-          {/* Other sections will go here if needed */}
-        </div>
+        {/* SEO Content Section */}
+        <SeoContent />
         
         {/* Video Showcase Section */}
         <section id="product-demo">
@@ -429,6 +541,9 @@ export default async function Page() {
         {/* Footer */}
         <Footer />
       </main>
+      
+      {/* Advanced SEO Schema */}
+      <AdvancedSeoSchema />
     </>
   );
 }
