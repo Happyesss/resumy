@@ -716,7 +716,7 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                     )}
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full">
+                  <div className="flex flex-row gap-2 w-full">
                     <Button
                       variant="outline"
                       size="sm"

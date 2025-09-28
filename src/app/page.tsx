@@ -16,7 +16,6 @@ import { Metadata } from "next";
 import Script from "next/script";
 import { BrandSchema } from "@/components/seo/BrandSchema";
 import { AdvancedSeoSchema } from "@/components/seo/AdvancedSeoSchema";
-import { SeoContent } from "@/components/seo/SeoContent";
 
 // Page-specific metadata that extends the base metadata from layout.tsx
 export const metadata: Metadata = {
@@ -504,9 +503,6 @@ export default async function Page() {
         
         {/* Hero Section - Full width */}
         <Hero />
-        
-        {/* SEO Content Section */}
-        <SeoContent />
         
         {/* Video Showcase Section */}
         <section id="product-demo">
