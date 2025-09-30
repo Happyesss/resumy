@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { AnalyzeResumeOptimization } from "@/components/seo/AnalyzeResumeOptimization";
 
 export const metadata: Metadata = {
   title: "Free Resume Analyzer | ATS Score & Optimization Tips - Resumy",
@@ -48,5 +49,11 @@ export default function AnalyzeResumeLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      {/* Next-Generation AI Optimization for Resume Analysis */}
+      <AnalyzeResumeOptimization />
+      {children}
+    </>
+  );
 }

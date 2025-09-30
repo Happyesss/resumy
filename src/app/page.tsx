@@ -16,6 +16,7 @@ import { Metadata } from "next";
 import Script from "next/script";
 import { BrandSchema } from "@/components/seo/BrandSchema";
 import { AdvancedSeoSchema } from "@/components/seo/AdvancedSeoSchema";
+import { NextGenSEOSuite } from "@/components/seo/NextGenSEOSuite";
 
 // Page-specific metadata that extends the base metadata from layout.tsx
 export const metadata: Metadata = {
@@ -283,6 +284,9 @@ export default async function Page() {
     <>
       {/* Brand Schema Component */}
       <BrandSchema />
+      
+      {/* Next-Generation AI Optimization Suite */}
+      <NextGenSEOSuite />
       
       {/* JSON-LD structured data for SEO */}
       <Script
