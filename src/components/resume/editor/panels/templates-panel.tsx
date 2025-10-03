@@ -36,7 +36,7 @@ export function TemplatesPanel({ resume, onTemplateSelect }: TemplatesPanelProps
           </div>
           <h2 className="text-2xl font-bold text-white">Resume Templates</h2>
         </div>
-        <p className="text-gray-400 max-w-2xl mx-auto">
+        <p className="text-gray-400 max-w-2xl mx-auto hidden md:block">
           Choose from our collection of professionally designed templates. 
           Each template is ATS-optimized and customizable to match your industry and style.
         </p>

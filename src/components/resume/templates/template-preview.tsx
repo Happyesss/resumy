@@ -1,13 +1,115 @@
 'use client';
 
+import { useState, useRef, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 
 interface TemplatePreviewProps {
   templateId: string;
   className?: string;
+  enableZoom?: boolean;
 }
 
-export function TemplatePreview({ templateId, className }: TemplatePreviewProps) {
+export function TemplatePreview({ templateId, className, enableZoom = false }: TemplatePreviewProps) {
+  const [scale, setScale] = useState(1);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [lastPinchDistance, setLastPinchDistance] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const lastTouchRef = useRef({ x: 0, y: 0 });
+
+  const getDistance = (touches: React.TouchList) => {
+    if (touches.length < 2) return 0;
+    const touch1 = touches[0];
+    const touch2 = touches[1];
+    return Math.sqrt(
+      Math.pow(touch2.clientX - touch1.clientX, 2) +
+      Math.pow(touch2.clientY - touch1.clientY, 2)
+    );
+  };
+
+  const getTouchCenter = (touches: React.TouchList) => {
+    if (touches.length === 1) {
+      return { x: touches[0].clientX, y: touches[0].clientY };
+    }
+    return {
+      x: (touches[0].clientX + touches[1].clientX) / 2,
+      y: (touches[0].clientY + touches[1].clientY) / 2
+    };
+  };
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (!enableZoom) return;
+    
+    e.preventDefault();
+    const touches = e.touches;
+    
+    if (touches.length === 2) {
+      // Pinch gesture
+      const distance = getDistance(touches);
+      setLastPinchDistance(distance);
+      setIsDragging(false);
+    } else if (touches.length === 1) {
+      // Pan gesture
+      const touch = getTouchCenter(touches);
+      lastTouchRef.current = touch;
+      setIsDragging(true);
+    }
+  }, [enableZoom]);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!enableZoom) return;
+    
+    e.preventDefault();
+    const touches = e.touches;
+    
+    if (touches.length === 2 && lastPinchDistance > 0) {
+      // Pinch zoom
+      const distance = getDistance(touches);
+      const scaleChange = distance / lastPinchDistance;
+      const newScale = Math.max(0.5, Math.min(3, scale * scaleChange));
+      
+      setScale(newScale);
+      setLastPinchDistance(distance);
+    } else if (touches.length === 1 && isDragging && scale > 1) {
+      // Pan when zoomed
+      const touch = getTouchCenter(touches);
+      const deltaX = touch.x - lastTouchRef.current.x;
+      const deltaY = touch.y - lastTouchRef.current.y;
+      
+      setPosition(prev => ({
+        x: prev.x + deltaX,
+        y: prev.y + deltaY
+      }));
+      
+      lastTouchRef.current = touch;
+    }
+  }, [enableZoom, lastPinchDistance, scale, isDragging]);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (!enableZoom) return;
+    
+    e.preventDefault();
+    setIsDragging(false);
+    setLastPinchDistance(0);
+    
+    // Reset position if zoomed out completely
+    if (scale <= 1) {
+      setPosition({ x: 0, y: 0 });
+      setScale(1);
+    }
+  }, [enableZoom, scale]);
+
+  const handleDoubleClick = useCallback((e: React.MouseEvent) => {
+    if (!enableZoom) return;
+    
+    e.preventDefault();
+    if (scale === 1) {
+      setScale(2);
+    } else {
+      setScale(1);
+      setPosition({ x: 0, y: 0 });
+    }
+  }, [enableZoom, scale]);
   // This would render different template previews based on templateId
   const getTemplatePreview = (id: string) => {
     switch (id) {
@@ -362,8 +464,33 @@ export function TemplatePreview({ templateId, className }: TemplatePreviewProps)
   };
 
   return (
-    <div className={cn("border rounded overflow-hidden", className)}>
-      {getTemplatePreview(templateId)}
+    <div 
+      ref={containerRef}
+      className={cn("border rounded overflow-hidden relative", className)}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onDoubleClick={handleDoubleClick}
+      style={{ 
+        touchAction: enableZoom ? 'none' : 'auto',
+        userSelect: 'none'
+      }}
+    >
+      <div
+        className="w-full h-full transition-transform duration-200 ease-out origin-center"
+        style={{
+          transform: `scale(${scale}) translate(${position.x / scale}px, ${position.y / scale}px)`,
+        }}
+      >
+        {getTemplatePreview(templateId)}
+      </div>
+      
+      {/* Zoom indicator */}
+      {enableZoom && scale > 1 && (
+        <div className="absolute top-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded z-10">
+          {Math.round(scale * 100)}%
+        </div>
+      )}
     </div>
   );
 }

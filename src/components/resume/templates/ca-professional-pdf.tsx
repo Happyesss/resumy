@@ -362,25 +362,25 @@ const CAPDFResume = memo(({ resume }: CAPDFResumeProps) => {
         
         {/* Table Header */}
         <View style={caStyles.tableHeader}>
-          <Text style={[caStyles.tableHeaderCell, { flex: 3 }]}>Course</Text>
+          <Text style={[caStyles.tableHeaderCell, { flex: 2 }]}>Course</Text>
           <Text style={[caStyles.tableHeaderCell, { flex: 1.5 }]}>Year</Text>
-          <Text style={[caStyles.tableHeaderCell, { flex: 3 }]}>Institution/Board</Text>
-          <Text style={[caStyles.tableHeaderCellLast, { flex: 2.5 }]}>Remarks</Text>
+          <Text style={[caStyles.tableHeaderCell, { flex: 2 }]}>Institution/Board</Text>
+          <Text style={[caStyles.tableHeaderCellLast, { flex: 4.5 }]}>Remarks</Text>
         </View>
         
         {/* Table Rows */}
         {resume.education.map((edu, index) => (
           <View key={index} style={caStyles.tableRow}>
-            <Text style={[caStyles.tableCell, { flex: 3 }]}>
+            <Text style={[caStyles.tableCell, { flex: 2 }]}>
               {edu.degree}{edu.field ? ` in ${edu.field}` : ''}
             </Text>
             <Text style={[caStyles.tableCell, { flex: 1.5 }]}>
               {edu.date}
             </Text>
-            <Text style={[caStyles.tableCell, { flex: 3 }]}>
+            <Text style={[caStyles.tableCell, { flex: 2 }]}>
               {edu.school}{edu.location ? `\u00A0\u00A0(${edu.location})` : ''}
             </Text>
-            <Text style={[caStyles.tableCellLast, { flex: 2.5 }]}>
+            <Text style={[caStyles.tableCellLast, { flex: 4.5 }]}>
               {edu.gpa && `${typeof edu.gpa === 'number' ? edu.gpa.toFixed(0) : edu.gpa} `}
               {edu.achievements && edu.achievements.length > 0 && edu.achievements.join(', ')}
             </Text>

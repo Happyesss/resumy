@@ -28,175 +28,191 @@ The Resume Link Sharing feature allows users to share their resumes via shareabl
 
 ### Database Schema Changes
 
-```sql
--- Add sharing features to resumes table
-ALTER TABLE public.resumes ADD COLUMN IF NOT EXISTS sharing_enabled boolean DEFAULT false;
-ALTER TABLE public.resumes ADD COLUMN IF NOT EXISTS sharing_url_slug varchar(32) UNIQUE;
-ALTER TABLE public.resumes ADD COLUMN IF NOT EXISTS sharing_password varchar(255) NULL;
-ALTER TABLE public.resumes ADD COLUMN IF NOT EXISTS sharing_expires_at timestamp with time zone NULL;
-ALTER TABLE public.resumes ADD COLUMN IF NOT EXISTS view_count integer DEFAULT 0;
-ALTER TABLE public.resumes ADD COLUMN IF NOT EXISTS last_viewed_at timestamp with time zone NULL;
-
--- Create resume views tracking table
-CREATE TABLE IF NOT EXISTS public.resume_views (
-  id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
-  resume_id uuid NOT NULL REFERENCES public.resumes(id) ON DELETE CASCADE,
-  viewer_ip varchar(45) NULL,
-  viewer_user_agent text NULL,
-  viewer_country varchar(2) NULL,
-  referrer text NULL,
-  viewed_at timestamp with time zone DEFAULT NOW(),
-  session_id varchar(100) NULL
-);
-
--- Add index for performance
-CREATE INDEX IF NOT EXISTS idx_resume_views_resume_id ON public.resume_views(resume_id);
-CREATE INDEX IF NOT EXISTS idx_resume_views_viewed_at ON public.resume_views(viewed_at);
-CREATE INDEX IF NOT EXISTS idx_resumes_sharing_url_slug ON public.resumes(sharing_url_slug);
-```
+The system requires adding sharing features to the resumes table including sharing_enabled boolean, sharing_url_slug, view_count, and last_viewed_at fields with appropriate indexes for performance.
 
 ### New Routes & Pages
 
-```
-src/app/
-├── api/
-│   ├── resume-share/
-│   │   ├── [slug]/
-│   │   │   └── route.ts          # Get shared resume data
-│   │   ├── generate/
-│   │   │   └── route.ts          # Generate sharing URL
-│   │   ├── toggle/
-│   │   │   └── route.ts          # Enable/disable sharing
-│   │   └── analytics/
-│   │       └── route.ts          # Get view analytics
-├── shared/
-│   └── [slug]/
-│       └── page.tsx              # Public resume viewer
-└── (dashboard)/
-    └── resumes/
-        └── [id]/
-            └── sharing/
-                └── page.tsx      # Resume sharing management
-```
+The application will need new API routes for resume sharing, analytics, and a public viewer page structure with proper routing configuration.
+
+## 🏗 High-Scale System Design (Instagram-like Architecture)
+
+### Overview
+To handle millions of concurrent resume sharing requests similar to Instagram's like system, we implement an event-driven, horizontally scalable architecture with aggressive caching and async processing.
+
+### 1. Event-Driven Architecture
+The system follows a pattern where user views generate immediate responses while queuing view events for async processing using message queues.
+
+**Message Queue System:**
+- **Redis/Kafka**: Decouple view tracking from resume serving
+- **Immediate Response**: Sub-100ms response to users
+- **Batch Processing**: Process views in batches of 1000-5000 events
+- **Dead Letter Queue**: Handle failed processing attempts
+
+### 2. Multi-Layer Caching Strategy
+
+The caching strategy involves multiple layers:
+- **CDN Layer**: Global caching of shared resumes
+- **Application Cache Layer**: Redis cluster for hot data, view counts, and sessions
+- **Database Layer**: Primary write DB with read replicas and separate analytics DB
+
+### 3. Database Architecture & Sharding
+
+**Primary Database (PostgreSQL):**
+- Partition resumes table by creation date for better performance
+- Shard view_logs by resume_id hash for horizontal scaling
+
+**Read Replicas Configuration:**
+- **Geographic Distribution**: US East, US West, EU, Asia-Pacific
+- **Load Balancing**: Round-robin with health checks
+- **Connection Pooling**: PgBouncer with 500 connections per instance
+
+**Analytics Database (TimescaleDB):**
+- Hypertable for time-series view data
+- Continuous aggregates for real-time analytics
+
+### 4. Microservices Architecture
+
+Three main services handle different aspects:
+- **Resume API**: Serve resumes, handle cache, rate limiting
+- **Analytics API**: Track views, process stats, real-time aggregation
+- **Sharing API**: Generate URLs, manage access, handle authentication
+
+All connected through a message queue layer with Redis and Kafka for different event types.
+
+### 5. View Tracking System (Instagram-like)
+
+**Immediate Response Pattern:**
+The system checks cache first, queues view events asynchronously, and provides immediate responses while handling database operations in the background.
+
+**Batching Strategy:**
+A batch processor groups events by resume_id for efficient database updates, running every 10 seconds to balance performance and real-time updates.
+
+**Rate Limiting & Bot Detection:**
+Redis-based sliding window rate limiter with bot detection using user agent analysis and request pattern recognition.
+
+### 6. Horizontal Scaling Strategy
+
+**Auto-Scaling Configuration:**
+Kubernetes HPA configuration for automatic scaling based on CPU and memory utilization with 3-100 replica range.
+
+**Load Balancing:**
+- **Layer 7 Load Balancer**: NGINX/HAProxy with health checks
+- **Geographic Routing**: Route users to nearest data center
+- **Sticky Sessions**: For stateful operations
+- **Circuit Breakers**: Prevent cascade failures
+
+### 7. Performance Optimizations
+
+**Lazy Loading & Progressive Enhancement:**
+Progressive resume loading starting with header section, then loading remaining sections after initial render.
+
+**Image & Asset Optimization:**
+Responsive images with WebP support and lazy loading for optimal performance across devices.
+
+**Precomputation & Background Jobs:**
+Pre-render popular resumes to HTML and cache them, with hourly background jobs to maintain fresh content.
+
+### 8. Monitoring & Observability
+
+**Real-time Metrics Dashboard:**
+Track key metrics including requests per second, response times, error rates, cache hit ratios, and queue depth.
+
+**Health Checks & Alerting:**
+Comprehensive health checks for database, Redis, message queues, and external APIs with proper alerting.
+
+### 9. Fault Tolerance & Disaster Recovery
+
+**Circuit Breaker Pattern:**
+Implement circuit breakers to handle service failures gracefully with automatic recovery mechanisms.
+
+**Data Backup & Recovery:**
+Continuous WAL archiving for point-in-time recovery and cross-region database replication.
+
+### 10. Cost Optimization Strategies
+
+**Tiered Storage:**
+Intelligent data lifecycle management to move old, low-view resumes to cold storage for cost savings.
+
+**Resource Optimization:**
+Use spot instances for batch processing to achieve 70% cost savings on non-critical workloads.
+
+### 11. Implementation Phases for Scale
+
+**Phase 1: Foundation (Week 1-2)**
+- Redis caching layer
+- Basic message queue (Redis)
+- Rate limiting implementation
+- Database read replicas
+- Basic monitoring
+
+**Phase 2: Optimization (Week 3-4)**
+- Advanced caching strategies
+- Batch processing system
+- Circuit breakers
+- Performance monitoring
+- CDN integration
+
+**Phase 3: Scaling (Week 5-6)**
+- Horizontal auto-scaling
+- Database sharding
+- Advanced analytics pipeline
+- Geographic distribution
+- Machine learning for optimization
+
+**Phase 4: Enterprise (Week 7-8)**
+- Multi-region deployment
+- Advanced security features
+- Enterprise monitoring
+- Disaster recovery
+- Performance SLAs
+
+### 12. Performance Targets
+
+**Response Time SLAs:**
+- Resume loading: < 100ms (95th percentile)
+- Search results: < 200ms (95th percentile)
+- Analytics queries: < 500ms (95th percentile)
+
+**Throughput Targets:**
+- 100,000 concurrent users
+- 1M resume views per minute
+- 10,000 new resume shares per minute
+- 99.9% uptime SLA
+
+**Scalability Limits:**
+- Horizontal: Up to 1000 application instances
+- Database: Handle 10TB+ of resume data
+- Cache: 100GB+ Redis cluster
+- Messages: 1M+ events per second
+
+This architecture ensures Resumy can handle Instagram-scale traffic while maintaining sub-100ms response times and providing rich analytics capabilities.
 
 ## 📱 User Interface Components
 
 ### 1. Resume Sharing Management Panel
-**Location**: `/resumes/[id]/sharing`
-
-```tsx
-// Features:
-- Toggle sharing on/off
-- Generate/regenerate sharing URL  
-- Set password protection (optional)
-- Set expiration date (optional)
-- View analytics (views, countries, referrers)
-- Copy sharing link
-- Preview shared resume
-- Customize sharing settings
-```
+Located at `/resumes/[id]/sharing` with features for toggling sharing, generating URLs, viewing analytics, copying links, and previewing shared resumes.
 
 ### 2. Shared Resume Viewer
-**Location**: `/shared/[slug]`
-
-```tsx
-// Features:
-- Clean, PDF-like resume display
-- Resumy branding (subtle but present)
-- "Create Your Own Resume" CTA
-- Print functionality
-- Download option (if enabled by owner)
-- Mobile-responsive design
-- Loading states
-- Error handling (expired, private, etc.)
-```
+Located at `/shared/[slug]` with clean PDF-like display, Resumy branding, CTAs, print functionality, and mobile-responsive design.
 
 ### 3. Resume Management Enhancements
-**Location**: Dashboard resume cards
-
-```tsx
-// Added features:
-- Share button with quick copy
-- Share status indicator
-- View count badge
-- Quick share settings
-```
+Dashboard resume cards with share buttons, status indicators, view count badges, and quick share settings.
 
 ## 🔧 Implementation Details
 
 ### 1. URL Generation System
-
-```typescript
-// Generate secure, unique sharing URLs
-export function generateSharingSlug(): string {
-  return nanoid(24); // e.g., "kx7b_2Hj9vN8m1Q5w9P3zE7F"
-}
-
-// URL format: https://resumy.live/shared/kx7b_2Hj9vN8m1Q5w9P3zE7F
-```
+Generate secure, unique sharing URLs using nanoid with 24-character length for format like `https://resumy.live/shared/kx7b_2Hj9vN8m1Q5w9P3zE7F`.
 
 ### 2. View Tracking System
-
-```typescript
-interface ResumeView {
-  id: string;
-  resume_id: string;
-  viewer_ip: string;
-  viewer_user_agent: string;
-  viewer_country: string;
-  referrer: string;
-  viewed_at: Date;
-  session_id: string;
-}
-
-// Track views with privacy considerations
-async function trackResumeView(slug: string, request: Request) {
-  // Rate limit: 1 view per IP per hour per resume
-  // Anonymize IP addresses for privacy
-  // Detect and filter bot traffic
-}
-```
+Track resume views with privacy considerations including rate limiting, IP anonymization, and bot traffic filtering.
 
 ### 3. Security Features
-
-```typescript
-// Password protection
-interface SharingSettings {
-  enabled: boolean;
-  password?: string;
-  expiresAt?: Date;
-  allowDownload: boolean;
-  requirePassword: boolean;
-}
-
-// Access control
-async function validateResumeAccess(
-  slug: string, 
-  password?: string
-): Promise<{ success: boolean; resume?: Resume; error?: string }> {
-  // Check if resume exists and sharing is enabled
-  // Validate password if required
-  // Check expiration
-  // Return appropriate response
-}
-```
+Simple sharing settings with access control validation for resume sharing permissions.
 
 ## 📊 Analytics Dashboard
 
 ### Resume Owner Analytics
-```typescript
-interface ResumeAnalytics {
-  totalViews: number;
-  uniqueViews: number;
-  viewsToday: number;
-  viewsThisWeek: number;
-  viewsThisMonth: number;
-  topCountries: Array<{ country: string; views: number }>;
-  topReferrers: Array<{ referrer: string; views: number }>;
-  dailyViews: Array<{ date: string; views: number }>;
-  lastViewedAt?: Date;
-}
-```
+Basic analytics showing total views and last viewed timestamp.
 
 ### Platform Analytics (Admin)
 - Most shared resumes
@@ -208,84 +224,40 @@ interface ResumeAnalytics {
 ## 🎨 UI/UX Design
 
 ### Shared Resume Viewer Design
-```
-┌─────────────────────────────────────┐
-│  [Resumy Logo]              [Print] │ <- Header with branding
-├─────────────────────────────────────┤
-│                                     │
-│        JOHN DOE                     │ <- Resume content
-│    Software Engineer                │    (PDF-like styling)
-│                                     │
-│  📧 john@example.com                │
-│  📱 (555) 123-4567                  │
-│                                     │
-│  EXPERIENCE                         │
-│  Senior Developer at Tech Corp      │
-│  • Built scalable applications...  │
-│                                     │
-├─────────────────────────────────────┤
-│ 👀 This resume has been viewed 47   │ <- View counter
-│    times                            │
-├─────────────────────────────────────┤
-│  Create your own professional       │ <- Resumy promotion
-│  resume with Resumy                 │
-│            [Get Started]            │
-└─────────────────────────────────────┘
-```
+Clean layout with Resumy branding, resume content in PDF-like styling, view counter, and promotional CTA for new users.
 
 ### Sharing Management Panel
-```
-┌─────────────────────────────────────┐
-│ Resume Sharing Settings             │
-├─────────────────────────────────────┤
-│ ☑️ Enable sharing                    │
-│                                     │
-│ 🔗 Share URL                        │
-│ https://resumy.live/shared/abc123   │
-│                           [Copy]    │
-│                                     │
-│ 🔒 Privacy Settings                 │
-│ ☐ Require password                  │
-│ ☐ Set expiration date               │
-│                                     │
-│ 📊 Analytics (Last 30 days)         │
-│ Total Views: 23                     │
-│ Unique Views: 18                    │
-│ Countries: 🇺🇸 12, 🇨🇦 6, 🇬🇧 3       │
-│                                     │
-│           [View Details]            │
-└─────────────────────────────────────┘
-```
+Simple interface for enabling sharing, displaying share URL with copy functionality, and basic analytics display.
 
 ## 🚀 Implementation Phases
 
 ### Phase 1: Core Functionality (Week 1-2)
-- [ ] Database schema updates
-- [ ] Basic sharing URL generation
-- [ ] Simple shared resume viewer
-- [ ] Enable/disable sharing toggle
-- [ ] Basic view tracking
+- Database schema updates
+- Basic sharing URL generation
+- Simple shared resume viewer
+- Enable/disable sharing toggle
+- Basic view tracking
 
-### Phase 2: Enhanced Features (Week 3-4)  
-- [ ] Password protection
-- [ ] Expiration dates
-- [ ] Analytics dashboard
-- [ ] Improved viewer UI
-- [ ] Mobile optimization
+### Phase 2: Enhanced Features (Week 3-4)
+- Password protection
+- Expiration dates
+- Analytics dashboard
+- Improved viewer UI
+- Mobile optimization
 
 ### Phase 3: Advanced Features (Week 5-6)
-- [ ] Geographic analytics
-- [ ] Referrer tracking  
-- [ ] Advanced privacy controls
-- [ ] Bulk sharing management
-- [ ] Integration with existing features
+- Geographic analytics
+- Referrer tracking
+- Advanced privacy controls
+- Bulk sharing management
+- Integration with existing features
 
 ### Phase 4: Growth & Optimization (Week 7-8)
-- [ ] SEO optimization
-- [ ] Social media previews
-- [ ] Conversion optimization
-- [ ] Performance monitoring
-- [ ] A/B testing framework
+- SEO optimization
+- Social media previews
+- Conversion optimization
+- Performance monitoring
+- A/B testing framework
 
 ## 🔐 Privacy & Security Considerations
 
@@ -330,51 +302,236 @@ interface ResumeAnalytics {
 ## 🛠 Technical Implementation Guide
 
 ### 1. Database Migration
-```bash
-# Run the schema update
-psql -U your_username -d resumy -f migrations/add-sharing-features.sql
-```
+Run schema updates using PostgreSQL migration scripts to add sharing features.
 
 ### 2. Environment Variables
-```bash
-# Add to .env.local
-SHARING_URL_BASE=https://resumy.live/shared
-ANALYTICS_RETENTION_DAYS=365
-```
+Configure sharing URL base and analytics retention settings in environment variables.
 
 ### 3. Key Components to Build
 
 #### Sharing Service
-```typescript
-// src/lib/sharing-service.ts
-export class ResumeSharingService {
-  async generateSharingUrl(resumeId: string): Promise<string>
-  async enableSharing(resumeId: string, settings: SharingSettings): Promise<void>
-  async disableSharing(resumeId: string): Promise<void>
-  async trackView(slug: string, request: Request): Promise<void>
-  async getAnalytics(resumeId: string): Promise<ResumeAnalytics>
-}
-```
+Service class with methods for generating sharing URLs, enabling/disabling sharing, tracking views, and getting analytics.
 
 #### Shared Resume API
+API endpoint for validating access, tracking views, and returning resume data.
+
+#### Shared Resume Viewer
+Page component for fetching resume data, handling authentication, and rendering with branding.
+
+## 🔧 Redis Configuration Guide for Beginners
+
+### What is Redis?
+Redis is an in-memory data structure store used as a database, cache, and message broker. For our resume sharing system, we'll use it for:
+- Caching frequently accessed resume data
+- Storing view counts temporarily
+- Rate limiting user requests
+- Session management
+
+### Installation Options
+
+#### Option 1: Local Development (Windows)
+1. **Download Redis for Windows**
+   - Go to https://github.com/microsoftarchive/redis/releases
+   - Download the latest .msi file
+   - Install with default settings
+
+2. **Start Redis Server**
+   - Open Command Prompt as Administrator
+   - Run: `redis-server`
+   - Redis will start on port 6379 by default
+
+3. **Test Connection**
+   - Open another Command Prompt
+   - Run: `redis-cli`
+   - Type: `ping` (should return "PONG")
+
+#### Option 2: Docker (Recommended)
+1. **Install Docker Desktop**
+   - Download from https://www.docker.com/products/docker-desktop
+
+2. **Run Redis Container**
+   ```bash
+   docker run --name resumy-redis -p 6379:6379 -d redis:alpine
+   ```
+
+3. **Connect to Redis**
+   ```bash
+   docker exec -it resumy-redis redis-cli
+   ```
+
+#### Option 3: Cloud Redis (Production)
+- **AWS ElastiCache**: Managed Redis service
+- **Redis Cloud**: Free tier available
+- **DigitalOcean Managed Redis**: Simple setup
+- **Railway/Render**: Easy deployment with Redis add-ons
+
+### Basic Redis Configuration
+
+#### 1. Redis Configuration File (redis.conf)
+Create a basic configuration file:
+```
+# Network
+bind 127.0.0.1
+port 6379
+
+# Memory
+maxmemory 256mb
+maxmemory-policy allkeys-lru
+
+# Persistence (for development)
+save 900 1
+save 300 10
+save 60 10000
+
+# Security (for production)
+# requirepass your_strong_password
+```
+
+#### 2. Environment Variables for Your App
+Add to your `.env.local` file:
+```
+REDIS_URL=redis://localhost:6379
+REDIS_PASSWORD=your_password_if_set
+REDIS_DB=0
+```
+
+### Basic Redis Commands You'll Need
+
+#### Connection Commands
+- `ping` - Test connection
+- `info` - Server information
+- `flushdb` - Clear current database (development only)
+
+#### Data Commands
+- `set key value` - Store a value
+- `get key` - Retrieve a value
+- `del key` - Delete a key
+- `exists key` - Check if key exists
+- `expire key seconds` - Set expiration
+- `ttl key` - Check time to live
+
+#### Hash Commands (for complex data)
+- `hset hash field value` - Set hash field
+- `hget hash field` - Get hash field
+- `hgetall hash` - Get all hash fields
+
+### Setting Up Redis in Your Next.js App
+
+#### 1. Install Redis Client
+```bash
+npm install redis
+```
+
+#### 2. Create Redis Connection
+Create `lib/redis.ts`:
 ```typescript
-// src/app/api/resume-share/[slug]/route.ts
-export async function GET(request: Request, { params }: { params: { slug: string } }) {
-  // Validate access
-  // Track view
-  // Return resume data
+import { createClient } from 'redis';
+
+const client = createClient({
+  url: process.env.REDIS_URL || 'redis://localhost:6379'
+});
+
+client.on('error', (err) => console.log('Redis Client Error', err));
+
+export const connectRedis = async () => {
+  if (!client.isOpen) {
+    await client.connect();
+  }
+  return client;
+};
+
+export default client;
+```
+
+#### 3. Basic Usage Examples
+```typescript
+// Cache resume data
+await client.setEx(`resume:${slug}`, 3600, JSON.stringify(resumeData));
+
+// Get cached data
+const cached = await client.get(`resume:${slug}`);
+
+// Increment view count
+await client.incr(`views:${resumeId}`);
+
+// Rate limiting
+const requests = await client.incr(`rate:${userIP}`);
+if (requests === 1) {
+  await client.expire(`rate:${userIP}`, 3600);
 }
 ```
 
-#### Shared Resume Viewer
-```typescript
-// src/app/shared/[slug]/page.tsx
-export default async function SharedResumePage({ params }: { params: { slug: string } }) {
-  // Fetch resume data
-  // Handle authentication/password
-  // Render resume with branding
-}
-```
+### Redis Best Practices for Beginners
+
+#### 1. Key Naming Convention
+- Use descriptive prefixes: `resume:123`, `user:456`, `cache:data`
+- Use colons to separate namespaces
+- Keep keys short but meaningful
+
+#### 2. Memory Management
+- Set expiration times on temporary data
+- Use appropriate data types (strings, hashes, sets)
+- Monitor memory usage with `info memory`
+
+#### 3. Security
+- Always use passwords in production
+- Bind to specific IPs, not 0.0.0.0
+- Use SSL/TLS for network connections
+- Keep Redis behind firewall
+
+#### 4. Performance Tips
+- Use pipelining for multiple commands
+- Prefer SCAN over KEYS for large datasets
+- Use connection pooling in production
+- Monitor slow queries with SLOWLOG
+
+### Common Issues & Solutions
+
+#### 1. Connection Refused
+- Check if Redis server is running
+- Verify port 6379 is not blocked
+- Check if Redis is bound to correct IP
+
+#### 2. Memory Issues
+- Increase maxmemory setting
+- Set appropriate eviction policy
+- Clear unnecessary keys
+
+#### 3. Authentication Errors
+- Verify password in connection string
+- Check AUTH command if using CLI
+
+### Monitoring Redis
+
+#### Basic Monitoring Commands
+- `info stats` - Connection and command stats
+- `info memory` - Memory usage information
+- `slowlog get 10` - Recent slow commands
+- `client list` - Connected clients
+
+#### Production Monitoring
+- Use Redis monitoring tools (RedisInsight, Redis CLI)
+- Set up alerts for memory usage
+- Monitor connection counts
+- Track key expiration patterns
+
+### Development vs Production Setup
+
+#### Development
+- Single Redis instance
+- No password (if local only)
+- Basic persistence
+- Default configuration
+
+#### Production
+- Redis cluster for high availability
+- Strong authentication
+- SSL encryption
+- Proper backup strategy
+- Memory and performance monitoring
+- Geographic replication if needed
+
+This Redis setup will handle the caching, rate limiting, and session management needed for the high-scale resume sharing system.
 
 ## 🎯 Enhanced Ideas & Future Features
 
@@ -384,7 +541,7 @@ export default async function SharedResumePage({ params }: { params: { slug: str
 - **Embeddable Widget**: Allow resume embedding on other websites
 - **Bulk Sharing**: Share multiple resumes at once
 
-### Collaboration Features  
+### Collaboration Features
 - **Comment System**: Allow viewers to leave feedback (if enabled)
 - **Review Requests**: Send resume for review with specific questions
 - **Team Sharing**: Share resumes within organization teams
@@ -403,7 +560,7 @@ export default async function SharedResumePage({ params }: { params: { slug: str
 
 ### Monetization Opportunities
 - **Premium Analytics**: Advanced analytics for paid users
-- **Custom Branding**: Remove Resumy branding for premium users  
+- **Custom Branding**: Remove Resumy branding for premium users
 - **White Label**: Allow companies to use their own branding
 - **API Access**: Let developers integrate sharing features
 
@@ -435,7 +592,7 @@ This Resume Link Sharing feature transforms Resumy from a simple resume builder 
 
 The feature is designed to be:
 - **User-friendly**: Simple to use for both sharers and viewers
-- **Secure**: With proper privacy controls and security measures  
+- **Secure**: With proper privacy controls and security measures
 - **Scalable**: Built to handle millions of shared resumes
 - **Beneficial**: Creates value for users, viewers, and the platform
 
