@@ -5,10 +5,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Check, Eye, Sparkles, Briefcase, GraduationCap, Palette, Maximize2 as Maximize } from 'lucide-react';
+import { Check, Eye, Sparkles, Briefcase, GraduationCap, Palette } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { TemplatePreview } from './template-preview';
-import { FullscreenTemplatePreview } from './fullscreen-template-preview';
 
 interface Template {
   id: string;
@@ -127,11 +126,6 @@ export function TemplateSelectionModal({
 }: TemplateSelectionModalProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(currentTemplate || null);
-  const [fullscreenPreview, setFullscreenPreview] = useState<{ isOpen: boolean; templateId: string; templateName: string }>({
-    isOpen: false,
-    templateId: '',
-    templateName: ''
-  });
 
   const categories = [
     { id: 'all', name: 'All Templates', icon: Eye },
@@ -154,14 +148,6 @@ export function TemplateSelectionModal({
       onTemplateSelect(selectedTemplate);
       onOpenChange(false);
     }
-  };
-
-  const handleFullscreenPreview = (templateId: string, templateName: string) => {
-    setFullscreenPreview({
-      isOpen: true,
-      templateId,
-      templateName
-    });
   };
 
   return (
@@ -205,8 +191,11 @@ export function TemplateSelectionModal({
 
           {/* Templates Grid */}
           <div className="flex-1 flex flex-col">
-            <ScrollArea className="flex-1 p-2 sm:p-4 lg:p-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
+            <ScrollArea 
+              className="max-h-[60vh] px-3 sm:px-5 lg:px-6 py-2"
+              style={{ scrollbarGutter: 'stable both-edges' as any }}
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 pr-2 sm:pr-3 lg:pr-4">
                 {filteredTemplates.map((template) => {
                   const Icon = categoryIcons[template.category];
                   return (
@@ -219,30 +208,16 @@ export function TemplateSelectionModal({
                           : "border-gray-700 hover:border-gray-600 hover:shadow-lg"
                       )}
                       onClick={() => handleTemplateSelect(template.id)}
+                      role="button"
+                      aria-label={`Select template ${template.name}`}
                     >
                       {/* Template Preview */}
                       <div className="aspect-[3/4] bg-gray-700 rounded-t-lg overflow-hidden relative group">
                         <TemplatePreview 
                           templateId={template.id}
                           className="w-full h-full border-none"
-                          enableZoom={true}
+                          enableZoom={false}
                         />
-                        
-                        {/* Overlay with actions on hover */}
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleFullscreenPreview(template.id, template.name);
-                            }}
-                            className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20"
-                          >
-                            <Maximize className="h-4 w-4 mr-2" />
-                            Preview
-                          </Button>
-                        </div>
                         
                         {/* Selected Indicator */}
                         {selectedTemplate === template.id && (
@@ -338,14 +313,6 @@ export function TemplateSelectionModal({
           </div>
         </div>
       </DialogContent>
-
-      {/* Fullscreen Preview Modal */}
-      <FullscreenTemplatePreview
-        isOpen={fullscreenPreview.isOpen}
-        onOpenChange={(open) => setFullscreenPreview(prev => ({ ...prev, isOpen: open }))}
-        templateId={fullscreenPreview.templateId}
-        templateName={fullscreenPreview.templateName}
-      />
     </Dialog>
   );
 }

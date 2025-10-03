@@ -67,7 +67,6 @@ export function FullscreenTemplatePreview({
 
   // Touch handlers
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    e.preventDefault();
     const touches = e.touches;
     
     if (touches.length === 2) {
@@ -82,7 +81,6 @@ export function FullscreenTemplatePreview({
   }, []);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    e.preventDefault();
     const touches = e.touches;
     
     if (touches.length === 2 && lastPinchDistance > 0) {
@@ -107,7 +105,6 @@ export function FullscreenTemplatePreview({
   }, [lastPinchDistance, scale, isDragging]);
 
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    e.preventDefault();
     setIsDragging(false);
     setLastPinchDistance(0);
     
@@ -120,7 +117,6 @@ export function FullscreenTemplatePreview({
   // Mouse handlers for desktop
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (scale > 1) {
-      e.preventDefault();
       setIsDragging(true);
       lastMouseRef.current = { x: e.clientX, y: e.clientY };
     }
@@ -128,7 +124,6 @@ export function FullscreenTemplatePreview({
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (isDragging && scale > 1) {
-      e.preventDefault();
       const deltaX = e.clientX - lastMouseRef.current.x;
       const deltaY = e.clientY - lastMouseRef.current.y;
       
@@ -146,7 +141,6 @@ export function FullscreenTemplatePreview({
   }, []);
 
   const handleWheel = useCallback((e: React.WheelEvent) => {
-    e.preventDefault();
     const delta = e.deltaY > 0 ? 0.9 : 1.1;
     const newScale = Math.max(0.5, Math.min(3, scale * delta));
     setScale(newScale);

@@ -39,8 +39,7 @@ export function TemplatePreview({ templateId, className, enableZoom = false }: T
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     if (!enableZoom) return;
-    
-    e.preventDefault();
+
     const touches = e.touches;
     
     if (touches.length === 2) {
@@ -58,8 +57,7 @@ export function TemplatePreview({ templateId, className, enableZoom = false }: T
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!enableZoom) return;
-    
-    e.preventDefault();
+
     const touches = e.touches;
     
     if (touches.length === 2 && lastPinchDistance > 0) {
@@ -87,8 +85,7 @@ export function TemplatePreview({ templateId, className, enableZoom = false }: T
 
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
     if (!enableZoom) return;
-    
-    e.preventDefault();
+
     setIsDragging(false);
     setLastPinchDistance(0);
     
@@ -101,8 +98,7 @@ export function TemplatePreview({ templateId, className, enableZoom = false }: T
 
   const handleDoubleClick = useCallback((e: React.MouseEvent) => {
     if (!enableZoom) return;
-    
-    e.preventDefault();
+
     if (scale === 1) {
       setScale(2);
     } else {
@@ -466,7 +462,7 @@ export function TemplatePreview({ templateId, className, enableZoom = false }: T
   return (
     <div 
       ref={containerRef}
-      className={cn("border rounded overflow-hidden relative", className)}
+      className={cn("overflow-hidden relative", className)}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
