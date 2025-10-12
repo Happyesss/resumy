@@ -1,5 +1,6 @@
 <div align="center">
-  <h1>📄 Resumy - AI-Powered Resume Builder</h1>
+  <img src="public/logo.png" alt="Resumy Logo" width="120" height="120"/>
+  <h1>Resumy - AI-Powered Resume Builder</h1>
   <p><strong>Create professional, ATS-optimized resumes with the power of AI</strong></p>
   
   [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -24,7 +25,19 @@
 
 ## ✨ Key Features
 
-### � Intelligent Resume Management
+### 📊 Advanced Resume Analysis & Optimization
+<div align="center">
+  <img src="public/images/analyze.png" alt="Resume Analysis" width="700"/>
+  <p><em>Advanced resume analysis and optimization features</em></p>
+</div>
+
+- **🎯 ATS Scoring System**: Real-time feedback to optimize resume compatibility
+- **📈 Performance Analytics**: Track how well your resume performs against job requirements
+- **🔍 Content Analysis**: Deep analysis of keywords, formatting, and structure
+- **💡 Smart Suggestions**: AI-powered recommendations for content improvement
+- **📊 Compatibility Reports**: Detailed insights on ATS-friendliness
+
+### 🎯 Intelligent Resume Management
 <div align="center">
   <img src="public/images/editorImage.png" alt="Resume Editor Interface" width="700"/>
   <p><em>Powerful resume editor with real-time AI suggestions</em></p>
@@ -32,7 +45,6 @@
 
 - **📝 Two-Tier System**: Create base resumes and generate tailored versions for specific jobs
 - **💼 Comprehensive Sections**: Work experience, education, projects, skills, and more
-- **📊 ATS Scoring**: Real-time feedback to optimize resume compatibility
 - **🎨 Professional Templates**: Clean, modern designs that pass ATS systems
 - **📱 Mobile-First Design**: Responsive interface that works everywhere
 
@@ -209,11 +221,6 @@ pnpm start
 
 ## 🏗️ Development Status
 
-<div align="center">
-  <img src="public/images/analyze.png" alt="Resume Analysis" width="600"/>
-  <p><em>Advanced resume analysis and optimization features</em></p>
-</div>
-
 ### ✅ Production Ready Features
 - **🎯 Resume Management**: Complete CRUD operations for resumes and profiles
 - **🤖 AI Integration**: Full Gemini API integration with content generation
@@ -256,17 +263,46 @@ We welcome contributions from the community! Here's how you can help:
 
 ---
 
-## � License
+## 📋 License
 
-This project is licensed under the **Apache License 2.0** - see the [LICENSE](LICENSE) file for details.
+<div align="center">
+  
+### Apache License 2.0
 
-### 📜 License Summary
-- ✅ **Commercial Use**: Use for commercial projects
-- ✅ **Modification**: Modify and distribute
-- ✅ **Distribution**: Distribute original or modified versions
-- ✅ **Patent Use**: Express grant of patent rights from contributors
-- ❗ **License Notice**: Include license and copyright notice
-- ❗ **State Changes**: Document significant changes made
+This project is open source and available under the [Apache License 2.0](LICENSE)
+
+<table>
+  <tr>
+    <td align="center">
+      <h4>✅ Permissions</h4>
+      <ul align="left">
+        <li>Commercial use</li>
+        <li>Modification</li>
+        <li>Distribution</li>
+        <li>Patent use</li>
+        <li>Private use</li>
+      </ul>
+    </td>
+    <td align="center">
+      <h4>📋 Conditions</h4>
+      <ul align="left">
+        <li>License and copyright notice</li>
+        <li>State changes</li>
+      </ul>
+    </td>
+    <td align="center">
+      <h4>❌ Limitations</h4>
+      <ul align="left">
+        <li>Liability</li>
+        <li>Warranty</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<p><em>You are free to use, modify, and distribute this software for any purpose, including commercial use.</em></p>
+
+</div>
 
 ---
 
