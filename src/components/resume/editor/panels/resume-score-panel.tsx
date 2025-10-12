@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 import { generateResumeScore } from "@/utils/actions/resumes/actions";
 import { Resume } from "@/lib/types";
 import { ApiKey } from "@/utils/ai-tools";
-import { hasReachedDailyLimit, incrementDailyUsage, DAILY_REQUEST_LIMIT } from "@/lib/daily-limit";
+import { hasReachedDailyLimit, incrementDailyUsage, getCurrentDailyLimit } from "@/lib/daily-limit";
 import { useToast } from "@/hooks/use-toast";
 
 export interface ResumeScoreMetrics {
@@ -70,6 +70,7 @@ export interface ResumeScoreMetrics {
 // Add props interface
 interface ResumeScorePanelProps {
   resume: Resume;
+  userEmail?: string | null;
 }
 
 const LOCAL_STORAGE_KEY = 'resumelm-resume-scores';
@@ -106,7 +107,7 @@ function updateStoredScores(resumeId: string, score: ResumeScoreMetrics) {
   }
 }
 
-export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
+export default function ResumeScorePanel({ resume, userEmail }: ResumeScorePanelProps) {
   const { toast } = useToast();
   const [isCalculating, setIsCalculating] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -125,10 +126,11 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
 
   const handleRecalculate = async () => {
     // Check daily API request limit
-    if (hasReachedDailyLimit()) {
+    if (hasReachedDailyLimit(userEmail)) {
+      const dailyLimit = getCurrentDailyLimit(userEmail);
       toast({
         title: "Daily Request Limit Reached",
-        description: `You have reached the daily limit of ${DAILY_REQUEST_LIMIT} AI requests. Please try again tomorrow.`,
+        description: `You have reached the daily limit of ${dailyLimit} AI requests. Please try again tomorrow.`,
         variant: "destructive",
       });
       return;

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,9 +19,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Textarea } from "@/components/ui/textarea";
 import { convertTextToResume } from "@/utils/actions/resumes/ai";
-import { RESUME_LIMIT } from '@/lib/constants';
+import { RESUME_LIMIT, getResumeLimit } from '@/lib/constants';
 import { countResumes } from '@/utils/actions/resumes/actions';
-import { hasReachedDailyLimit, getRemainingRequests, incrementDailyUsage, DAILY_REQUEST_LIMIT } from '@/lib/daily-limit';
+import { hasReachedDailyLimit, getRemainingRequests, incrementDailyUsage, getCurrentDailyLimit } from '@/lib/daily-limit';
 import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
 
 interface CreateBaseResumeDialogProps {
@@ -55,6 +56,7 @@ export function CreateBaseResumeDialog({ children, profile, totalResumesCount }:
     description: ""
   });
   const [isDragging, setIsDragging] = useState(false);
+  const [showLimitDialog, setShowLimitDialog] = useState(false);
 
   const getItemId = (type: keyof typeof selectedItems, item: WorkExperience | Education | Skill | Project, index?: number): string => {
     const baseId = (() => {
@@ -136,20 +138,18 @@ export function CreateBaseResumeDialog({ children, profile, totalResumesCount }:
       }
     }
 
-    if (currentTotalCount >= RESUME_LIMIT) {
-      toast({
-        title: "Resume Limit Reached",
-        description: `You have reached the maximum limit of ${RESUME_LIMIT} resumes. This app is completely free with this limit.`,
-        variant: "destructive",
-      });
+    const resumeLimit = getResumeLimit(profile.email);
+    if (currentTotalCount >= resumeLimit) {
+      setShowLimitDialog(true);
       return;
     }
 
-    // Check daily API request limit (only for AI-powered creation)
-    if (importOption === 'import-resume' && hasReachedDailyLimit()) {
+    // Check daily AI request limit (only for AI-powered creation)
+    if (importOption === 'import-resume' && hasReachedDailyLimit(profile.email)) {
+      const dailyLimit = getCurrentDailyLimit(profile.email);
       toast({
         title: "Daily Request Limit Reached",
-        description: `You have reached the daily limit of ${DAILY_REQUEST_LIMIT} AI requests. Please try again tomorrow.`,
+        description: `You have reached the daily limit of ${dailyLimit} AI requests. Please try again tomorrow.`,
         variant: "destructive",
       });
       return;
@@ -716,6 +716,22 @@ export function CreateBaseResumeDialog({ children, profile, totalResumesCount }:
           title={errorMessage.title}
           description={errorMessage.description}
         />
+
+        {/* Resume Limit Reached Dialog */}
+        <AlertDialog open={showLimitDialog} onOpenChange={setShowLimitDialog}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Resume Limit Reached</AlertDialogTitle>
+              <AlertDialogDescription>
+                You have reached the maximum limit of {getResumeLimit(profile.email)} resumes. 
+                To create a new resume, please delete one of your existing resumes first.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Close</AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
 
         {/* Footer */}
         <div className="px-6 py-4 border-t border-gray-800 bg-gradient-to-r from-neutral-900 via-black to-neutral-900">

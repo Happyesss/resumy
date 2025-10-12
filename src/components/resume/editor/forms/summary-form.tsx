@@ -9,16 +9,17 @@ import { Button } from '@/components/ui/button';
 import { Sparkles, Loader2, Check, X } from 'lucide-react';
 import { improveSummary } from '@/utils/actions/resumes/ai';
 import { AIImprovementPrompt } from '../../shared/ai-improvement-prompt';
-import { DAILY_REQUEST_LIMIT, hasReachedDailyLimit, incrementDailyUsage } from '@/lib/daily-limit';
+import { hasReachedDailyLimit, incrementDailyUsage, getCurrentDailyLimit } from '@/lib/daily-limit';
 import { useToast } from '@/hooks/use-toast';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface SummaryFormProps {
   summary: string;
   onChange: (summary: string) => void;
+  userEmail?: string | null;
 }
 
-export function SummaryForm({ summary, onChange }: SummaryFormProps) {
+export function SummaryForm({ summary, onChange, userEmail }: SummaryFormProps) {
   const { toast } = useToast();
   const [improvementPrompt, setImprovementPrompt] = useState('');
   const [isImproving, setIsImproving] = useState(false);
@@ -79,10 +80,11 @@ export function SummaryForm({ summary, onChange }: SummaryFormProps) {
       });
       return;
     }
-    if (hasReachedDailyLimit()) {
+    if (hasReachedDailyLimit(userEmail)) {
+      const dailyLimit = getCurrentDailyLimit(userEmail);
       toast({
         title: 'Daily Request Limit Reached',
-        description: `You have reached the daily limit of ${DAILY_REQUEST_LIMIT} AI requests. Try again tomorrow.`,
+        description: `You have reached the daily limit of ${dailyLimit} AI requests. Try again tomorrow.`,
         variant: 'destructive'
       });
       return;

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Resume, Profile } from "@/lib/types";
@@ -20,9 +21,9 @@ import { ImportMethodRadioGroup } from "../import-method-radio-group";
 import { JobDescriptionInput } from "../job-description-input";
 import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
 import { cn } from "@/lib/utils";
-import { RESUME_LIMIT } from '@/lib/constants';
+import { RESUME_LIMIT, getResumeLimit } from '@/lib/constants';
 import { countResumes } from '@/utils/actions/resumes/actions';
-import { hasReachedDailyLimit, getRemainingRequests, incrementDailyUsage, DAILY_REQUEST_LIMIT } from '@/lib/daily-limit';
+import { hasReachedDailyLimit, getRemainingRequests, incrementDailyUsage, getCurrentDailyLimit } from '@/lib/daily-limit';
 
 interface CreateTailoredResumeDialogProps {
   children: React.ReactNode;
@@ -43,6 +44,7 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
   const [isJobDescriptionInvalid, setIsJobDescriptionInvalid] = useState(false);
   const [showErrorDialog, setShowErrorDialog] = useState(false);
   const [errorMessage, setErrorMessage] = useState({ title: '', description: '' });
+  const [showLimitDialog, setShowLimitDialog] = useState(false);
   const router = useRouter();
   
 
@@ -76,20 +78,18 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
       }
     }
 
-    if (currentTotalCount >= RESUME_LIMIT) {
-      toast({
-        title: "Resume Limit Reached",
-        description: `You have reached the maximum limit of ${RESUME_LIMIT} resumes. This app is completely free with this limit.`,
-        variant: "destructive",
-      });
+    const resumeLimit = getResumeLimit(profile?.email);
+    if (currentTotalCount >= resumeLimit) {
+      setShowLimitDialog(true);
       return;
     }
 
-    // Check daily API request limit
-    if (hasReachedDailyLimit()) {
+    // Check daily AI request limit
+    if (hasReachedDailyLimit(profile?.email)) {
+      const dailyLimit = getCurrentDailyLimit(profile?.email);
       toast({
         title: "Daily Request Limit Reached",
-        description: `You have reached the daily limit of ${DAILY_REQUEST_LIMIT} AI requests. Please try again tomorrow.`,
+        description: `You have reached the daily limit of ${dailyLimit} AI requests. Please try again tomorrow.`,
         variant: "destructive",
       });
       return;
@@ -684,6 +684,22 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
         title={errorMessage.title}
         description={errorMessage.description}
       />
+
+      {/* Resume Limit Reached Dialog */}
+      <AlertDialog open={showLimitDialog} onOpenChange={setShowLimitDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Resume Limit Reached</AlertDialogTitle>
+            <AlertDialogDescription>
+              You have reached the maximum limit of {getResumeLimit(profile?.email)} resumes. 
+              To create a new resume, please delete one of your existing resumes first.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Close</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

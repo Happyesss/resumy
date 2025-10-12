@@ -22,7 +22,7 @@ import { generateWorkExperiencePoints, improveWorkExperience } from "@/utils/act
 import { AIImprovementPrompt } from "../../shared/ai-improvement-prompt";
 import { AIGenerationSettingsTooltip } from "../components/ai-generation-tooltip";
 import { AISuggestions } from "../../shared/ai-suggestions";
-import { hasReachedDailyLimit, incrementDailyUsage, DAILY_REQUEST_LIMIT } from '@/lib/daily-limit';
+import { hasReachedDailyLimit, incrementDailyUsage, getCurrentDailyLimit } from '@/lib/daily-limit';
 import { toast } from "@/hooks/use-toast";
 
 
@@ -161,10 +161,11 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
     if (!exp) return; // Safety check
 
     // Check daily API request limit
-    if (hasReachedDailyLimit()) {
+    if (hasReachedDailyLimit(profile.email)) {
+      const dailyLimit = getCurrentDailyLimit(profile.email);
       toast({
         title: "Daily Request Limit Reached",
-        description: `You have reached the daily limit of ${DAILY_REQUEST_LIMIT} AI requests. Please try again tomorrow.`,
+        description: `You have reached the daily limit of ${dailyLimit} AI requests. Please try again tomorrow.`,
         variant: "destructive",
       });
       return;
@@ -276,10 +277,11 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
     const customPrompt = improvementConfig[expIndex]?.[pointIndex] || "";  // Add default value
     
     // Check daily API request limit
-    if (hasReachedDailyLimit()) {
+    if (hasReachedDailyLimit(profile.email)) {
+      const dailyLimit = getCurrentDailyLimit(profile.email);
       toast({
         title: "Daily Request Limit Reached",
-        description: `You have reached the daily limit of ${DAILY_REQUEST_LIMIT} AI requests. Please try again tomorrow.`,
+        description: `You have reached the daily limit of ${dailyLimit} AI requests. Please try again tomorrow.`,
         variant: "destructive",
       });
       return;

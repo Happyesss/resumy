@@ -10,7 +10,7 @@ import { generate } from "@/utils/actions/cover-letter/actions";
 import { useResumeContext } from "../resume-editor-context";
 import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
 import { CreateTailoredResumeDialog } from "@/components/resume/management/dialogs/create-tailored-resume-dialog";
-import { hasReachedDailyLimit, getRemainingRequests, incrementDailyUsage, DAILY_REQUEST_LIMIT } from '@/lib/daily-limit';
+import { hasReachedDailyLimit, getRemainingRequests, incrementDailyUsage, getCurrentDailyLimit } from '@/lib/daily-limit';
 import { toast } from "@/hooks/use-toast";
 
 
@@ -18,12 +18,14 @@ interface CoverLetterPanelProps {
   resume: Resume;
   job: Job | null;
   aiConfig?: AIConfig;
+  userEmail?: string | null;
 }
 
 export function CoverLetterPanel({
   resume,
   job,
   aiConfig,
+  userEmail,
 }: CoverLetterPanelProps) {
   const { dispatch } = useResumeContext();
   const [isGenerating, setIsGenerating] = useState(false);
@@ -43,10 +45,11 @@ export function CoverLetterPanel({
     if (!job) return;
 
     // Check daily API request limit
-    if (hasReachedDailyLimit()) {
+    if (hasReachedDailyLimit(userEmail)) {
+      const dailyLimit = getCurrentDailyLimit(userEmail);
       toast({
         title: "Daily Request Limit Reached",
-        description: `You have reached the daily limit of ${DAILY_REQUEST_LIMIT} AI requests. Please try again tomorrow.`,
+        description: `You have reached the daily limit of ${dailyLimit} AI requests. Please try again tomorrow.`,
         variant: "destructive",
       });
       return;

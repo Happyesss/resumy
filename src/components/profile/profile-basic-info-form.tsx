@@ -71,10 +71,10 @@ export function ProfileBasicInfoForm({ profile, onChange }: ProfileBasicInfoForm
                   type="email"
                   value={profile.email || ''}
                   onChange={(e) => onChange('email', e.target.value)}
-                  className="pr-12 bg-gray-800 border-gray-700 rounded-lg
-                    focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20
-                    hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
-                    placeholder:text-gray-500 text-white focus:bg-gray-800"
+                  disabled
+                  className="pr-12 bg-gray-700 border-gray-600 rounded-lg
+                    text-gray-400 cursor-not-allowed
+                    placeholder:text-gray-500"
                   placeholder="email@example.com"
                 />
                 <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[10px] font-medium text-purple-400 border border-gray-700">

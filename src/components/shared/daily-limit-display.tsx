@@ -1,20 +1,22 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getRemainingRequests, DAILY_REQUEST_LIMIT } from '@/lib/daily-limit';
+import { getRemainingRequests, getCurrentDailyLimit } from '@/lib/daily-limit';
 import { cn } from '@/lib/utils';
 
 interface DailyLimitDisplayProps {
   className?: string;
   showLabel?: boolean;
+  userEmail?: string | null;
 }
 
-export function DailyLimitDisplay({ className, showLabel = true }: DailyLimitDisplayProps) {
-  const [remaining, setRemaining] = useState(DAILY_REQUEST_LIMIT);
+export function DailyLimitDisplay({ className, showLabel = true, userEmail }: DailyLimitDisplayProps) {
+  const dailyLimit = getCurrentDailyLimit(userEmail);
+  const [remaining, setRemaining] = useState(dailyLimit);
 
   useEffect(() => {
     const updateRemaining = () => {
-      setRemaining(getRemainingRequests());
+      setRemaining(getRemainingRequests(userEmail));
     };
 
     // Update immediately
@@ -38,8 +40,8 @@ export function DailyLimitDisplay({ className, showLabel = true }: DailyLimitDis
     };
   }, []);
 
-  const usedCount = DAILY_REQUEST_LIMIT - remaining;
-  const percentage = (usedCount / DAILY_REQUEST_LIMIT) * 100;
+  const usedCount = dailyLimit - remaining;
+  const percentage = (usedCount / dailyLimit) * 100;
 
   return (
     <div className={cn("flex items-center space-x-2", className)}>
@@ -58,7 +60,7 @@ export function DailyLimitDisplay({ className, showLabel = true }: DailyLimitDis
           {remaining}
         </span>
         <span className="text-sm text-muted-foreground">
-          / {DAILY_REQUEST_LIMIT}
+          / {dailyLimit}
         </span>
       </div>
       <div className="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">

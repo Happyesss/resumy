@@ -23,7 +23,7 @@ import Tiptap from "@/components/ui/tiptap";
 import { AIImprovementPrompt } from "../../shared/ai-improvement-prompt";
 import { AIGenerationSettingsTooltip } from "../components/ai-generation-tooltip";
 import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
-import { hasReachedDailyLimit, incrementDailyUsage, DAILY_REQUEST_LIMIT } from "@/lib/daily-limit";
+import { hasReachedDailyLimit, incrementDailyUsage, getCurrentDailyLimit } from "@/lib/daily-limit";
 import { useToast } from "@/hooks/use-toast";
 
 interface AISuggestion {
@@ -146,10 +146,11 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
     const config = aiConfig[index] || { numPoints: 3, customPrompt: '' };
     
     // Check daily API request limit
-    if (hasReachedDailyLimit()) {
+    if (hasReachedDailyLimit(profile.email)) {
+      const dailyLimit = getCurrentDailyLimit(profile.email);
       toast({
         title: "Daily Request Limit Reached",
-        description: `You have reached the daily limit of ${DAILY_REQUEST_LIMIT} AI requests. Please try again tomorrow.`,
+        description: `You have reached the daily limit of ${dailyLimit} AI requests. Please try again tomorrow.`,
         variant: "destructive",
       });
       return;
@@ -245,10 +246,11 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
     const customPrompt = improvementConfig[projectIndex]?.[pointIndex];
     
     // Check daily API request limit
-    if (hasReachedDailyLimit()) {
+    if (hasReachedDailyLimit(profile.email)) {
+      const dailyLimit = getCurrentDailyLimit(profile.email);
       toast({
         title: "Daily Request Limit Reached",
-        description: `You have reached the daily limit of ${DAILY_REQUEST_LIMIT} AI requests. Please try again tomorrow.`,
+        description: `You have reached the daily limit of ${dailyLimit} AI requests. Please try again tomorrow.`,
         variant: "destructive",
       });
       return;

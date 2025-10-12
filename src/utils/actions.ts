@@ -29,6 +29,18 @@ export async function getDashboardData(): Promise<DashboardData> {
     
     profile = data;
 
+    // Ensure email is always populated from the authenticated user
+    if (profile && !profile.email && user.email) {
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ email: user.email })
+        .eq('user_id', user.id);
+      
+      if (!updateError) {
+        profile.email = user.email;
+      }
+    }
+
     // If profile doesn't exist, create one
     if (profileError?.code === 'PGRST116') {
       const { data: newProfile, error: createError } = await supabase

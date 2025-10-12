@@ -12,19 +12,21 @@ import { CreateTailoredResumeDialog } from "@/components/resume/management/dialo
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { hasReachedDailyLimit, getRemainingRequests, incrementDailyUsage, DAILY_REQUEST_LIMIT } from '@/lib/daily-limit';
+import { hasReachedDailyLimit, getRemainingRequests, incrementDailyUsage, getCurrentDailyLimit } from '@/lib/daily-limit';
 import { toast } from "@/hooks/use-toast";
 
 interface ColdMailPanelProps {
   resume: Resume;
   job: Job | null;
   aiConfig?: AIConfig;
+  userEmail?: string | null;
 }
 
 export function ColdMailPanel({
   resume,
   job,
   aiConfig,
+  userEmail,
 }: ColdMailPanelProps) {
   const { dispatch } = useResumeContext();
   const [isGenerating, setIsGenerating] = useState(false);
@@ -58,10 +60,11 @@ export function ColdMailPanel({
     }
 
     // Check daily API request limit
-    if (hasReachedDailyLimit()) {
+    if (hasReachedDailyLimit(userEmail)) {
+      const dailyLimit = getCurrentDailyLimit(userEmail);
       toast({
         title: "Daily Request Limit Reached",
-        description: `You have reached the daily limit of ${DAILY_REQUEST_LIMIT} AI requests. Please try again tomorrow.`,
+        description: `You have reached the daily limit of ${dailyLimit} AI requests. Please try again tomorrow.`,
         variant: "destructive",
       });
       return;

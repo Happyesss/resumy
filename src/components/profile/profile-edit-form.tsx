@@ -670,7 +670,7 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                         <ProfileBasicInfoForm
                           profile={profile}
                           onChange={(field, value) => {
-                            if (field in profile) {
+                            if (field in profile && field !== 'email') {
                               updateField(field as keyof Profile, value);
                             }
                           }}

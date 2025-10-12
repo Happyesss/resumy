@@ -34,6 +34,7 @@ interface SkillsFormProps {
 interface SummaryFormProps {
   summary: string;
   onChange: (summary: string) => void;
+  userEmail?: string | null;
 }
 
 export const WorkExperienceForm = dynamic(

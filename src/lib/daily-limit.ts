@@ -1,7 +1,10 @@
 'use client';
 
+import { isEducationalEmail } from './constants';
+
 // Daily limit configuration
-export const DAILY_REQUEST_LIMIT = 80;
+export const DAILY_REQUEST_LIMIT = 30;
+export const EDUCATIONAL_DAILY_REQUEST_LIMIT = 50;
 
 interface DailyUsage {
   date: string;
@@ -41,16 +44,28 @@ export function getDailyUsage(): DailyUsage {
   }
 }
 
+// Get the appropriate daily limit based on email
+function getDailyRequestLimit(email?: string | null): number {
+  return isEducationalEmail(email) ? EDUCATIONAL_DAILY_REQUEST_LIMIT : DAILY_REQUEST_LIMIT;
+}
+
 // Check if user has reached daily limit
-export function hasReachedDailyLimit(): boolean {
+export function hasReachedDailyLimit(email?: string | null): boolean {
   const usage = getDailyUsage();
-  return usage.count >= DAILY_REQUEST_LIMIT;
+  const limit = getDailyRequestLimit(email);
+  return usage.count >= limit;
 }
 
 // Get remaining requests for today
-export function getRemainingRequests(): number {
+export function getRemainingRequests(email?: string | null): number {
   const usage = getDailyUsage();
-  return Math.max(0, DAILY_REQUEST_LIMIT - usage.count);
+  const limit = getDailyRequestLimit(email);
+  return Math.max(0, limit - usage.count);
+}
+
+// Get current daily limit for a user
+export function getCurrentDailyLimit(email?: string | null): number {
+  return getDailyRequestLimit(email);
 }
 
 // Increment daily usage count

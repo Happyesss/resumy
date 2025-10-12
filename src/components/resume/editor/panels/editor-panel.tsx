@@ -95,6 +95,7 @@ export function EditorPanel({
                   <SummaryForm
                     summary={resume.professional_summary || ''}
                     onChange={(value: string) => onResumeChange('professional_summary', value)}
+                    userEmail={profile.email}
                   />
                 </Suspense>
               </TabsContent>
@@ -170,6 +171,7 @@ export function EditorPanel({
                 <ColdMailPanel
                   resume={resume}
                   job={job}
+                  userEmail={profile.email}
                 />
               </TabsContent>
 
@@ -193,6 +195,7 @@ export function EditorPanel({
                 <CoverLetterPanel
                   resume={resume}
                   job={job}
+                  userEmail={profile.email}
                 />
               </TabsContent>
 
@@ -201,6 +204,7 @@ export function EditorPanel({
               <TabsContent value="resume-score">
                 <ResumeScorePanel
                   resume={resume}
+                  userEmail={profile.email}
                   // job={job}
                 />
               </TabsContent>

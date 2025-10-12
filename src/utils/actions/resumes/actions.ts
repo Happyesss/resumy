@@ -9,7 +9,7 @@ import { AIConfig } from "@/utils/ai-tools";
 import { generateObject } from "ai";
 import { initializeAIClient } from "@/utils/ai-tools";
 import { resumeScoreSchema } from "@/lib/zod-schemas";
-import { RESUME_LIMIT } from "@/lib/constants";
+import { RESUME_LIMIT, getResumeLimit } from "@/lib/constants";
 
 
 //  SUPABASE ACTIONS
@@ -169,9 +169,10 @@ export async function createBaseResume(
 
   // Check resume limit
   const totalResumesCount = await countResumes('all');
+  const resumeLimit = getResumeLimit(user.email);
   
-  if (totalResumesCount >= RESUME_LIMIT) {
-    throw new Error(`You have reached the maximum limit of ${RESUME_LIMIT} resumes. Please delete an existing resume to create a new one.`);
+  if (totalResumesCount >= resumeLimit) {
+    throw new Error(`You have reached the maximum limit of ${resumeLimit} resumes. Please delete an existing resume to create a new one.`);
   }
 
   let profile = null;
@@ -273,9 +274,10 @@ export async function createTailoredResume(
 
   // Check resume limit
   const totalResumesCount = await countResumes('all');
+  const resumeLimit = getResumeLimit(user.email);
   
-  if (totalResumesCount >= RESUME_LIMIT) {
-    throw new Error(`You have reached the maximum limit of ${RESUME_LIMIT} resumes. Please delete an existing resume to create a new one.`);
+  if (totalResumesCount >= resumeLimit) {
+    throw new Error(`You have reached the maximum limit of ${resumeLimit} resumes. Please delete an existing resume to create a new one.`);
   }
 
   // Extract the ID from base resume to prevent duplicate ID error
@@ -367,9 +369,10 @@ export async function copyResume(resumeId: string): Promise<Resume> {
 
   // Check resume limit
   const totalResumesCount = await countResumes('all');
+  const resumeLimit = getResumeLimit(user.email);
   
-  if (totalResumesCount >= RESUME_LIMIT) {
-    throw new Error(`You have reached the maximum limit of ${RESUME_LIMIT} resumes. Please delete an existing resume to create a new one.`);
+  if (totalResumesCount >= resumeLimit) {
+    throw new Error(`You have reached the maximum limit of ${resumeLimit} resumes. Please delete an existing resume to create a new one.`);
   }
 
   const { data: sourceResume, error: fetchError } = await supabase

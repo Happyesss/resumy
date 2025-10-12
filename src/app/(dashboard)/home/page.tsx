@@ -10,7 +10,7 @@ import type { Resume } from "@/lib/types";
 import { ResumesSection } from "@/components/dashboard/resumes-section";
 import { createClient } from "@/utils/supabase/server";
 import { getDashboardData } from "@/utils/actions";
-import { RESUME_LIMIT } from "@/lib/constants";
+import { RESUME_LIMIT, getResumeLimit } from "@/lib/constants";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -92,9 +92,12 @@ export default async function Home({
   const tailoredResumesCount = await countResumes('tailored');
   const totalResumesCount = await countResumes('all');
 
-  // Limit users to 20 total resumes (base + tailored combined)
-  const canCreateBase = totalResumesCount < RESUME_LIMIT;
-  const canCreateTailored = totalResumesCount < RESUME_LIMIT;
+  // Get the appropriate resume limit based on user's email
+  const userResumeLimit = getResumeLimit(profile.email);
+  
+  // Limit users to total resumes (base + tailored combined)
+  const canCreateBase = totalResumesCount < userResumeLimit;
+  const canCreateTailored = totalResumesCount < userResumeLimit;
 
 
   // Display a friendly message if no profile exists
@@ -169,7 +172,7 @@ export default async function Home({
                 currentDirection={baseDirection}
                 canCreateMore={canCreateBase}
                 totalResumesCount={totalResumesCount}
-                resumeLimit={RESUME_LIMIT}
+                resumeLimit={userResumeLimit}
               />
 
               {/* Thin Divider */}
@@ -189,7 +192,7 @@ export default async function Home({
                 baseResumes={baseResumes}
                 canCreateMore={canCreateTailored}
                 totalResumesCount={totalResumesCount}
-                resumeLimit={RESUME_LIMIT}
+                resumeLimit={userResumeLimit}
               />
             </div>
           </div>
