@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getRemainingRequests, getCurrentDailyLimit } from '@/lib/daily-limit';
+import { getRemainingAIRequests, getAIRequestLimit } from '@/lib/ai-request-limit';
 import { cn } from '@/lib/utils';
 
 interface DailyLimitDisplayProps {
@@ -11,12 +11,12 @@ interface DailyLimitDisplayProps {
 }
 
 export function DailyLimitDisplay({ className, showLabel = true, userEmail }: DailyLimitDisplayProps) {
-  const dailyLimit = getCurrentDailyLimit(userEmail);
+  const dailyLimit = getAIRequestLimit();
   const [remaining, setRemaining] = useState(dailyLimit);
 
   useEffect(() => {
     const updateRemaining = () => {
-      setRemaining(getRemainingRequests(userEmail));
+      setRemaining(getRemainingAIRequests());
     };
 
     // Update immediately

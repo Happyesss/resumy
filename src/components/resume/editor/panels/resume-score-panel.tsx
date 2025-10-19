@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 import { generateResumeScore } from "@/utils/actions/resumes/actions";
 import { Resume } from "@/lib/types";
 import { ApiKey } from "@/utils/ai-tools";
-import { hasReachedDailyLimit, incrementDailyUsage, getCurrentDailyLimit } from "@/lib/daily-limit";
+import { hasReachedAILimit, incrementAIUsage, getAIRequestLimit } from "@/lib/ai-request-limit";
 import { useToast } from "@/hooks/use-toast";
 
 export interface ResumeScoreMetrics {
@@ -125,12 +125,11 @@ export default function ResumeScorePanel({ resume, userEmail }: ResumeScorePanel
   }, [resume.id]);
 
   const handleRecalculate = async () => {
-    // Check daily API request limit
-    if (hasReachedDailyLimit(userEmail)) {
-      const dailyLimit = getCurrentDailyLimit(userEmail);
+    // Check AI request limit
+    if (hasReachedAILimit()) {
       toast({
-        title: "Daily Request Limit Reached",
-        description: `You have reached the daily limit of ${dailyLimit} AI requests. Please try again tomorrow.`,
+        title: "AI Request Limit Reached",
+        description: "You have crossed 50 AI request limit.",
         variant: "destructive",
       });
       return;
@@ -165,8 +164,8 @@ export default function ResumeScorePanel({ resume, userEmail }: ResumeScorePanel
         apiKeys: apiKeys
       });
 
-      // Increment daily usage after successful API call
-      incrementDailyUsage();
+      // Increment AI usage after successful API call
+      incrementAIUsage();
 
       // Update state and storage
       setScoreData(newScore as ResumeScoreMetrics);

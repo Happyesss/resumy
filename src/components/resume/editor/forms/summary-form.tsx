@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Sparkles, Loader2, Check, X } from 'lucide-react';
 import { improveSummary } from '@/utils/actions/resumes/ai';
 import { AIImprovementPrompt } from '../../shared/ai-improvement-prompt';
-import { hasReachedDailyLimit, incrementDailyUsage, getCurrentDailyLimit } from '@/lib/daily-limit';
+import { hasReachedAILimit, incrementAIUsage, getAIRequestLimit } from '@/lib/ai-request-limit';
 import { useToast } from '@/hooks/use-toast';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -80,11 +80,10 @@ export function SummaryForm({ summary, onChange, userEmail }: SummaryFormProps) 
       });
       return;
     }
-    if (hasReachedDailyLimit(userEmail)) {
-      const dailyLimit = getCurrentDailyLimit(userEmail);
+    if (hasReachedAILimit()) {
       toast({
-        title: 'Daily Request Limit Reached',
-        description: `You have reached the daily limit of ${dailyLimit} AI requests. Try again tomorrow.`,
+        title: 'AI Request Limit Reached',
+        description: 'You have crossed 50 AI request limit.',
         variant: 'destructive'
       });
       return;
@@ -92,7 +91,7 @@ export function SummaryForm({ summary, onChange, userEmail }: SummaryFormProps) 
     try {
       setIsImproving(true);
       const improved = await improveSummary(summary, improvementPrompt);
-      incrementDailyUsage();
+      incrementAIUsage();
       
       // Store both original and improved versions
       setImprovedSummary({

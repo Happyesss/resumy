@@ -21,7 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { convertTextToResume } from "@/utils/actions/resumes/ai";
 import { RESUME_LIMIT, getResumeLimit } from '@/lib/constants';
 import { countResumes } from '@/utils/actions/resumes/actions';
-import { hasReachedDailyLimit, getRemainingRequests, incrementDailyUsage, getCurrentDailyLimit } from '@/lib/daily-limit';
+import { hasReachedAILimit, getRemainingAIRequests, incrementAIUsage, getAIRequestLimit } from '@/lib/ai-request-limit';
 import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
 
 interface CreateBaseResumeDialogProps {
@@ -144,12 +144,11 @@ export function CreateBaseResumeDialog({ children, profile, totalResumesCount }:
       return;
     }
 
-    // Check daily AI request limit (only for AI-powered creation)
-    if (importOption === 'import-resume' && hasReachedDailyLimit(profile.email)) {
-      const dailyLimit = getCurrentDailyLimit(profile.email);
+    // Check AI request limit (only for AI-powered creation)
+    if (importOption === 'import-resume' && hasReachedAILimit()) {
       toast({
-        title: "Daily Request Limit Reached",
-        description: `You have reached the daily limit of ${dailyLimit} AI requests. Please try again tomorrow.`,
+        title: "AI Request Limit Reached",
+        description: "You have crossed 50 AI request limit.",
         variant: "destructive",
       });
       return;
@@ -212,7 +211,7 @@ export function CreateBaseResumeDialog({ children, profile, totalResumesCount }:
             apiKeys
           });
           // Increment usage after successful AI call
-          incrementDailyUsage();
+          incrementAIUsage();
           
           // Extract content sections and basic info for createBaseResume
           const selectedContent = {

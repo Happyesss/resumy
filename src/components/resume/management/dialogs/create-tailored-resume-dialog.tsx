@@ -23,7 +23,7 @@ import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
 import { cn } from "@/lib/utils";
 import { RESUME_LIMIT, getResumeLimit } from '@/lib/constants';
 import { countResumes } from '@/utils/actions/resumes/actions';
-import { hasReachedDailyLimit, getRemainingRequests, incrementDailyUsage, getCurrentDailyLimit } from '@/lib/daily-limit';
+import { hasReachedAILimit, getRemainingAIRequests, incrementAIUsage, getAIRequestLimit } from '@/lib/ai-request-limit';
 
 interface CreateTailoredResumeDialogProps {
   children: React.ReactNode;
@@ -84,12 +84,11 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
       return;
     }
 
-    // Check daily AI request limit
-    if (hasReachedDailyLimit(profile?.email)) {
-      const dailyLimit = getCurrentDailyLimit(profile?.email);
+    // Check AI request limit (hardcoded 50 requests)
+    if (hasReachedAILimit()) {
       toast({
-        title: "Daily Request Limit Reached",
-        description: `You have reached the daily limit of ${dailyLimit} AI requests. Please try again tomorrow.`,
+        title: "AI Request Limit Reached",
+        description: "You have crossed 50 AI request limit.",
         variant: "destructive",
       });
       return;
@@ -155,7 +154,7 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
               apiKeys
             });
             // Increment usage after successful AI call
-            incrementDailyUsage();
+            incrementAIUsage();
 
             setCurrentStep('formatting');
             const jobEntry = await createJob(formattedJobListing);
@@ -234,7 +233,7 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
           apiKeys
         });
         // Increment usage after successful AI call
-        incrementDailyUsage();
+        incrementAIUsage();
       } catch (error: Error | unknown) {
         if (error instanceof Error && (
             error.message.toLowerCase().includes('api key') || 
@@ -278,7 +277,7 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
           apiKeys
         });
         // Increment usage after successful AI call
-        incrementDailyUsage();
+        incrementAIUsage();
       } catch (error: Error | unknown) {
         if (error instanceof Error && (
             error.message.toLowerCase().includes('api key') || 

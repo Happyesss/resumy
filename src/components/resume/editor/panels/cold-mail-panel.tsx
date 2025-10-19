@@ -12,7 +12,7 @@ import { CreateTailoredResumeDialog } from "@/components/resume/management/dialo
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { hasReachedDailyLimit, getRemainingRequests, incrementDailyUsage, getCurrentDailyLimit } from '@/lib/daily-limit';
+import { hasReachedAILimit, getRemainingAIRequests, incrementAIUsage, getAIRequestLimit } from '@/lib/ai-request-limit';
 import { toast } from "@/hooks/use-toast";
 
 interface ColdMailPanelProps {
@@ -59,12 +59,11 @@ export function ColdMailPanel({
       return;
     }
 
-    // Check daily API request limit
-    if (hasReachedDailyLimit(userEmail)) {
-      const dailyLimit = getCurrentDailyLimit(userEmail);
+    // Check AI request limit
+    if (hasReachedAILimit()) {
       toast({
-        title: "Daily Request Limit Reached",
-        description: `You have reached the daily limit of ${dailyLimit} AI requests. Please try again tomorrow.`,
+        title: "AI Request Limit Reached",
+        description: "You have crossed 50 AI request limit.",
         variant: "destructive",
       });
       return;
@@ -102,7 +101,7 @@ export function ColdMailPanel({
         apiKeys: apiKeys
       });
       // Increment usage after successful AI call
-      incrementDailyUsage();
+      incrementAIUsage();
 
       let generatedContent = '';
       let extractedSubject = '';
