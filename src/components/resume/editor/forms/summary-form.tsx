@@ -83,7 +83,7 @@ export function SummaryForm({ summary, onChange, userEmail }: SummaryFormProps) 
     if (hasReachedAILimit()) {
       toast({
         title: 'AI Request Limit Reached',
-        description: 'You have crossed 50 AI request limit.',
+  description: 'You have reached your daily AI request limit.',
         variant: 'destructive'
       });
       return;
