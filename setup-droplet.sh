@@ -56,7 +56,6 @@ SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 
 # AI API Keys
 GEMINI_API_KEY=your_gemini_api_key
-GEMINI_ANALYZE_API_KEY=your_gemini_analyze_api_key
 
 # Redis Configuration
 UPSTASH_REDIS_REST_URL=your_redis_url

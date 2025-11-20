@@ -65,7 +65,6 @@ SUPABASE_SERVICE_ROLE_KEY=your_actual_service_role_key
 
 # AI API Keys
 GEMINI_API_KEY=your_actual_gemini_key
-GEMINI_ANALYZE_API_KEY=your_actual_analyze_key
 
 # Redis Configuration
 UPSTASH_REDIS_REST_URL=https://your-redis.upstash.io
@@ -117,7 +116,6 @@ NEXT_PUBLIC_SUPABASE_URL = your-supabase-url
 NEXT_PUBLIC_SUPABASE_ANON_KEY = your-supabase-anon-key
 SUPABASE_SERVICE_ROLE_KEY = your-service-role-key
 GEMINI_API_KEY = your-gemini-api-key
-GEMINI_ANALYZE_API_KEY = your-analyze-api-key
 UPSTASH_REDIS_REST_URL = your-redis-url
 UPSTASH_REDIS_REST_TOKEN = your-redis-token
 ```

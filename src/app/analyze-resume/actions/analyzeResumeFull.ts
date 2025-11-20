@@ -285,28 +285,15 @@ async function analyzeResumeWithSingleAIRequest(
   apiKeys: ApiKey[]
 ): Promise<{ structuredResume: Resume; score: ResumeScoreMetrics; keywordAnalysis: any }> {
   try {
-    // Use specific GEMINI_ANALYZE_API_KEY for resume analysis if available, fallback to GEMINI_API_KEY
-    const analyzeApiKey = process.env.GEMINI_ANALYZE_API_KEY;
-    const fallbackApiKey = process.env.GEMINI_API_KEY;
+    // Use GEMINI_API_KEY for resume analysis
+    const apiKey = process.env.GEMINI_API_KEY;
     
-    // Initialize AI client with appropriate key - prefer analyze key, fallback to main key
-    let aiClient: LanguageModelV1;
-    if (analyzeApiKey) {
-      try {
-        aiClient = createGoogleGenerativeAI({ apiKey: analyzeApiKey })(model) as LanguageModelV1;
-      } catch (error) {
-        console.warn('GEMINI_ANALYZE_API_KEY failed, falling back to GEMINI_API_KEY');
-        if (fallbackApiKey) {
-          aiClient = createGoogleGenerativeAI({ apiKey: fallbackApiKey })(model) as LanguageModelV1;
-        } else {
-          aiClient = initializeAIClient({ model, apiKeys });
-        }
-      }
-    } else if (fallbackApiKey) {
-      aiClient = createGoogleGenerativeAI({ apiKey: fallbackApiKey })(model) as LanguageModelV1;
-    } else {
-      aiClient = initializeAIClient({ model, apiKeys });
+    if (!apiKey) {
+      throw new Error('GEMINI_API_KEY not found. Please set it in .env.local');
     }
+    
+    // Initialize AI client
+    const aiClient = createGoogleGenerativeAI({ apiKey })(model) as LanguageModelV1;
     
     const { object } = (await generateObject({
       model: aiClient,
@@ -513,16 +500,10 @@ export async function analyzeResumeFull(
   }
 
   // Environment validation
-  const hasGeminiAnalyzeKey = Boolean(process.env.GEMINI_ANALYZE_API_KEY);
-  const hasGeminiKey = Boolean(process.env.GEMINI_API_KEY);
-  
-  if (!hasGeminiAnalyzeKey && !hasGeminiKey) {
-    console.error('Missing API keys: Both GEMINI_ANALYZE_API_KEY and GEMINI_API_KEY are undefined');
+  if (!process.env.GEMINI_API_KEY) {
+    console.error('Missing API key: GEMINI_API_KEY is undefined');
     throw new Error("AI service is temporarily unavailable. Please try again later.");
   }
-
-  // Note: The specialized GEMINI_ANALYZE_API_KEY will be used if available
-  // This is configured in the analyzeResumeWithSingleAIRequest function
   const {
     model = "gemini-2.5-flash-lite",
     atsEnhanced = true,
@@ -608,8 +589,7 @@ export async function analyzeResumeQuick(
   config: Omit<AnalysisConfig, 'atsEnhanced'> = {}
 ): Promise<Omit<FullAnalysisResult, 'atsDiagnostics'>> {
   const startTime = Date.now();
-  // Note: The specialized GEMINI_ANALYZE_API_KEY will be used if available
-  // This is configured in the analyzeResumeWithSingleAIRequest function
+  
   const {
     model = "gemini-2.5-flash-lite",
     apiKeys = [],
