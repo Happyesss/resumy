@@ -78,6 +78,7 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
   useEffect(() => {
     if (!isResumeDialogOpen) {
       setApiKeyError("");
+      setResumeContent(""); // Clear content when dialog closes
     }
   }, [isResumeDialogOpen]);
 

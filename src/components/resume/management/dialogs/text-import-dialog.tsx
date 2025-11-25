@@ -32,6 +32,7 @@ export function TextImportDialog({
   useEffect(() => {
     if (!open) {
       setApiKeyError("");
+      setContent(""); // Clear content when dialog closes
     }
   }, [open]);
 
