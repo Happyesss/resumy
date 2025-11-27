@@ -1,14 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { analyzeResumeFull } from "./actions/analyzeResumeFull"; // 🆕 local action
-import { ResumeScoreMetrics } from "@/components/resume/editor/panels/resume-score-panel";
-import { AnalyzeNavbar } from "@/components/analyze-resume/navbar";
-import { UploadForm } from "@/components/analyze-resume/upload-form";
 import { DetailedResults } from "@/components/analyze-resume/detailed-results";
+import { AnalyzeNavbar } from "@/components/analyze-resume/navbar";
 import ResumePreviewCard from "@/components/analyze-resume/resume-preview-card";
+import { UploadForm } from "@/components/analyze-resume/upload-form";
+import { ResumeScoreMetrics } from "@/components/resume/editor/panels/resume-score-panel";
 import { createClient } from "@/utils/supabase/client";
-import { Metadata } from "next";
+import { useEffect, useState } from "react";
+import { analyzeResumeFull } from "./actions/analyzeResumeFull"; // 🆕 local action
 
 // Note: Client components can't export metadata directly
 // This metadata should be moved to a layout.tsx or page wrapper

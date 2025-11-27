@@ -1,9 +1,9 @@
 'use client';
 
-import { cn } from "@/lib/utils";
-import { Progress } from "@/components/ui/progress";
-import { CheckCircle2 } from "lucide-react";
 import { LoadingDots } from "@/components/ui/loading-dots";
+import { Progress } from "@/components/ui/progress";
+import { cn } from "@/lib/utils";
+import { CheckCircle2 } from "lucide-react";
 
 // Define the creation steps
 export const CREATION_STEPS = [

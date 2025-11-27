@@ -1,14 +1,14 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { FileText, RefreshCw } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import pdfToText from 'react-pdftotext';
-import mammoth from 'mammoth';
 import { trackResumeEvent } from '@/lib/analytics';
+import { cn } from '@/lib/utils';
+import { FileText, RefreshCw } from 'lucide-react';
+import mammoth from 'mammoth';
+import { useRef, useState } from 'react';
+import pdfToText from 'react-pdftotext';
 
 interface UploadFormProps {
   resumeText: string;

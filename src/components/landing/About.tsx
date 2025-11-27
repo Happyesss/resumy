@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from "framer-motion";
-import { CheckCircle, Target, Users, Zap, Award, Globe } from "lucide-react";
+import { CheckCircle, Target, Zap } from "lucide-react";
 import Image from "next/image";
 
 export function About() {

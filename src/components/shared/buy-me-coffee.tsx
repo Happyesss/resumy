@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
-import { Coffee, Heart, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { Coffee, ExternalLink, Heart } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect } from 'react';
 
 interface BuyMeCoffeeProps {
   className?: string;

@@ -1,14 +1,14 @@
 'use client';
 
-import { WorkExperience, Project, Profile, Education, Skill } from "@/lib/types";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Import } from "lucide-react";
+import { Education, Profile, Project, Skill, WorkExperience } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { Import } from "lucide-react";
 import { useState } from "react";
-import { Badge } from "@/components/ui/badge";
 
 type ImportItem = WorkExperience | Project | Education | Skill;
 

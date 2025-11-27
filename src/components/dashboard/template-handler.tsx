@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
 import { CreateBaseResumeDialog } from '@/components/resume/management/dialogs/create-base-resume-dialog';
-import { Profile } from '@/lib/types';
 import { Button } from '@/components/ui/button';
+import { Profile } from '@/lib/types';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 interface TemplateHandlerProps {
   profile: Profile;

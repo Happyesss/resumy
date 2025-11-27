@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Check, Eye, Sparkles, Briefcase, GraduationCap, Palette } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Briefcase, Check, Eye, GraduationCap, Palette, Sparkles } from 'lucide-react';
+import { useState } from 'react';
 import { TemplatePreview } from './template-preview';
 
 interface Template {

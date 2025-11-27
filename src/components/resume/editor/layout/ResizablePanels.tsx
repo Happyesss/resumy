@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-import { ReactNode, useRef, useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 interface ResizablePanelsProps {
   isBaseResume: boolean;

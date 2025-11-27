@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { getRemainingAIRequests, getAIRequestLimit } from '@/lib/ai-request-limit';
+import { getAIRequestLimit, getRemainingAIRequests } from '@/lib/ai-request-limit';
 import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 
 interface DailyLimitDisplayProps {
   className?: string;

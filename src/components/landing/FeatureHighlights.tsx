@@ -1,11 +1,6 @@
 "use client"
-import React, { useState } from 'react';
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { CheckCircle2 } from "lucide-react";
-import Link from "next/link";
+import { useState } from 'react';
 import { SplitContent } from '../ui/split-content';
-import { AuthDialog } from "@/components/auth/auth-dialog";
 
 const FeatureHighlights = () => {
   const [selectedAnalyzeImage, setSelectedAnalyzeImage] = useState("/images/analyze.png");

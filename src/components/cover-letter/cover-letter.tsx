@@ -1,8 +1,8 @@
-import CoverLetterEditor from "./cover-letter-editor";
-import { useRef, useCallback } from 'react';
+import { useResumeContext } from '@/components/resume/editor/resume-editor-context';
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { useResumeContext } from '@/components/resume/editor/resume-editor-context';
+import { useCallback, useRef } from 'react';
+import CoverLetterEditor from "./cover-letter-editor";
 
 
 interface CoverLetterProps {

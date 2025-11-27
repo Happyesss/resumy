@@ -1,8 +1,8 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-import { FileText } from "lucide-react";
 import { Resume } from "@/lib/types";
+import { FileText } from "lucide-react";
 import { TextImportDialog } from "./management/dialogs/text-import-dialog";
 
 

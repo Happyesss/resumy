@@ -137,3 +137,144 @@ ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 CREATE POLICY profiles_policy ON public.profiles
   USING (user_id = auth.uid())
   WITH CHECK (user_id = auth.uid());
+
+-- Resume Shares table (for public sharing links)
+CREATE TABLE IF NOT EXISTS public.resume_shares (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  resume_id UUID NOT NULL REFERENCES public.resumes(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  share_id TEXT NOT NULL UNIQUE,
+  custom_slug TEXT UNIQUE,
+  is_active BOOLEAN DEFAULT true,
+  is_public BOOLEAN DEFAULT true,
+  allow_indexing BOOLEAN DEFAULT false,
+  view_count INTEGER DEFAULT 0,
+  expires_at TIMESTAMPTZ,
+  last_viewed_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Indexes for resume_shares
+CREATE INDEX IF NOT EXISTS idx_resume_shares_share_id ON public.resume_shares(share_id);
+CREATE INDEX IF NOT EXISTS idx_resume_shares_user_id ON public.resume_shares(user_id);
+CREATE INDEX IF NOT EXISTS idx_resume_shares_resume_id ON public.resume_shares(resume_id);
+
+-- Resume Shares RLS
+ALTER TABLE public.resume_shares ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can manage own shares" ON public.resume_shares
+  FOR ALL USING (user_id = auth.uid())
+  WITH CHECK (user_id = auth.uid());
+
+-- Policy for public read access to active shares (for share viewer app)
+CREATE POLICY "Public can read active shares" ON public.resume_shares
+  FOR SELECT USING (is_active = true);
+
+-- Share View Analytics table (consolidated - one row per share with arrays)
+CREATE TABLE IF NOT EXISTS public.share_view_analytics (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  share_id UUID NOT NULL REFERENCES public.resume_shares(id) ON DELETE CASCADE,
+  device_types TEXT[] DEFAULT '{}',
+  browsers TEXT[] DEFAULT '{}',
+  operating_systems TEXT[] DEFAULT '{}',
+  referrers TEXT[] DEFAULT '{}',
+  referrer_domains TEXT[] DEFAULT '{}',
+  countries TEXT[] DEFAULT '{}',
+  session_ids TEXT[] DEFAULT '{}',
+  viewed_at_times TIMESTAMPTZ[] DEFAULT '{}',
+  total_views INTEGER DEFAULT 0,
+  last_viewed_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(share_id)
+);
+
+-- Index for share_view_analytics
+CREATE INDEX IF NOT EXISTS idx_share_view_analytics_share_id ON public.share_view_analytics(share_id);
+
+-- Share View Analytics RLS
+ALTER TABLE public.share_view_analytics ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Service role full access" ON public.share_view_analytics
+  FOR ALL USING (true) WITH CHECK (true);
+
+CREATE POLICY "Users can read own share analytics" ON public.share_view_analytics
+  FOR SELECT USING (
+    EXISTS (
+      SELECT 1 FROM public.resume_shares 
+      WHERE resume_shares.id = share_view_analytics.share_id 
+      AND resume_shares.user_id = auth.uid()
+    )
+  );
+
+-- Function to increment share view count atomically
+CREATE OR REPLACE FUNCTION increment_share_view_count(p_share_id uuid)
+RETURNS void AS $$
+BEGIN
+  UPDATE public.resume_shares
+  SET view_count = view_count + 1, 
+      last_viewed_at = NOW(),
+      updated_at = NOW()
+  WHERE id = p_share_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Policy for resumes to allow public read when shared
+CREATE POLICY "Public can read shared resumes" ON public.resumes
+  FOR SELECT USING (
+    EXISTS (
+      SELECT 1 FROM public.resume_shares 
+      WHERE resume_shares.resume_id = resumes.id 
+      AND resume_shares.is_active = true
+    )
+  );
+
+-- =====================================================
+-- FEEDBACK AND BUG REPORTING SYSTEM
+-- =====================================================
+
+-- Feedback table - stores all user feedback, bug reports, and feature requests
+CREATE TABLE IF NOT EXISTS public.feedback (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  user_email TEXT,
+  type TEXT NOT NULL CHECK (type IN ('bug', 'feature', 'improvement', 'general')),
+  priority TEXT NOT NULL DEFAULT 'medium' CHECK (priority IN ('low', 'medium', 'high', 'critical')),
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'in_review', 'in_progress', 'resolved', 'closed', 'wont_fix')),
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  screenshot_url TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Indexes for feedback table
+CREATE INDEX IF NOT EXISTS idx_feedback_user_id ON public.feedback(user_id);
+CREATE INDEX IF NOT EXISTS idx_feedback_type ON public.feedback(type);
+CREATE INDEX IF NOT EXISTS idx_feedback_status ON public.feedback(status);
+CREATE INDEX IF NOT EXISTS idx_feedback_priority ON public.feedback(priority);
+CREATE INDEX IF NOT EXISTS idx_feedback_created_at ON public.feedback(created_at DESC);
+
+-- Create updated_at trigger for feedback
+DROP TRIGGER IF EXISTS update_feedback_updated_at ON public.feedback;
+CREATE TRIGGER update_feedback_updated_at BEFORE
+UPDATE ON feedback FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+-- Feedback RLS Policies
+ALTER TABLE public.feedback ENABLE ROW LEVEL SECURITY;
+
+-- Allow anyone (including anonymous) to insert feedback
+CREATE POLICY "Anyone can insert feedback" ON public.feedback
+  FOR INSERT WITH CHECK (true);
+
+-- Users can view their own feedback
+CREATE POLICY "Users can view own feedback" ON public.feedback
+  FOR SELECT USING (
+    user_id = auth.uid() OR
+    user_id IS NULL -- Allow viewing anonymous feedback for admins
+  );
+
+-- Service role (admin) can do everything
+CREATE POLICY "Service role full access to feedback" ON public.feedback
+  FOR ALL USING (true) WITH CHECK (true);

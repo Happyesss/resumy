@@ -1,17 +1,17 @@
 'use client';
 
-import { useRef } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { Download, Code } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { GradientHover } from "./gradient-hover";
 import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
+    ContextMenu,
+    ContextMenuContent,
+    ContextMenuItem,
+    ContextMenuTrigger
 } from "@/components/ui/context-menu";
+import { cn } from "@/lib/utils";
+import { Code, Download } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRef } from "react";
+import { GradientHover } from "./gradient-hover";
 
 interface LogoProps {
   className?: string;

@@ -1,13 +1,13 @@
-import { getDashboardData } from "@/utils/actions";
-import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import Link from "next/link";
+import { getDashboardData } from "@/utils/actions";
 import { Metadata } from "next";
+import Link from "next/link";
+import { Suspense } from "react";
 
-import { cn } from "@/lib/utils";
-import { MiniResumePreview } from "@/components/resume/shared/mini-resume-preview";
+import type { SortDirection, SortOption } from "@/components/resume/management/resume-sort-controls";
 import { ResumeSortControls } from "@/components/resume/management/resume-sort-controls";
-import type { SortOption, SortDirection } from "@/components/resume/management/resume-sort-controls";
+import { MiniResumePreview } from "@/components/resume/shared/mini-resume-preview";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "My Resumes | Manage Your Professional Resumes - Resumy",

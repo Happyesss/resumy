@@ -1,30 +1,27 @@
 'use client';
 
-import { Project, Profile } from "@/lib/types";
+import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Plus, Trash2, GripVertical, Loader2, Sparkles, Check, X } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { ImportFromProfileDialog } from "../../management/dialogs/import-from-profile-dialog";
-import { useState, useRef, useEffect, memo } from "react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider,
-} from "@/components/ui/tooltip";
-import { AISuggestions } from "../../shared/ai-suggestions";
-import { generateProjectPoints, improveProject } from "@/utils/actions/resumes/ai";
-import { Badge } from "@/components/ui/badge";
-import { KeyboardEvent } from "react";
 import Tiptap from "@/components/ui/tiptap";
-import { AIImprovementPrompt } from "../../shared/ai-improvement-prompt";
-import { AIGenerationSettingsTooltip } from "../components/ai-generation-tooltip";
-import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
-import { hasReachedDailyLimit, incrementDailyUsage, getCurrentDailyLimit } from "@/lib/daily-limit";
+import {
+    Tooltip,
+    TooltipContent, TooltipProvider, TooltipTrigger
+} from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
+import { getCurrentDailyLimit, hasReachedDailyLimit, incrementDailyUsage } from "@/lib/daily-limit";
+import { Profile, Project } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import { generateProjectPoints, improveProject } from "@/utils/actions/resumes/ai";
+import { Check, GripVertical, Loader2, Plus, Sparkles, Trash2, X } from "lucide-react";
+import { KeyboardEvent, memo, useEffect, useRef, useState } from "react";
+import { ImportFromProfileDialog } from "../../management/dialogs/import-from-profile-dialog";
+import { AIImprovementPrompt } from "../../shared/ai-improvement-prompt";
+import { AISuggestions } from "../../shared/ai-suggestions";
+import { AIGenerationSettingsTooltip } from "../components/ai-generation-tooltip";
 
 interface AISuggestion {
   id: string;

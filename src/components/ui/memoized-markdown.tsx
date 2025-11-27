@@ -1,8 +1,8 @@
 import { marked } from 'marked';
 import { memo, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm'
-import remarkBreaks from 'remark-breaks'
+import remarkBreaks from 'remark-breaks';
+import remarkGfm from 'remark-gfm';
 
 
 function parseMarkdownIntoBlocks(markdown: string): string[] {

@@ -1,24 +1,19 @@
 'use client'
 
-import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import { useEffect } from 'react'
-import Underline from '@tiptap/extension-underline'
-import TextAlign from '@tiptap/extension-text-align'
-import { 
-  Bold as BoldIcon, 
-  Italic as ItalicIcon, 
-  Strikethrough as StrikeIcon,
-  Underline as UnderlineIcon,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
-  Heading1,
-  Heading2
-} from 'lucide-react'
-import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { cn } from '@/lib/utils'
+import TextAlign from '@tiptap/extension-text-align'
+import Underline from '@tiptap/extension-underline'
+import { BubbleMenu, EditorContent, useEditor } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+import {
+    AlignCenter, AlignLeft, AlignRight, Bold as BoldIcon, Heading1,
+    Heading2, Italic as ItalicIcon,
+    Strikethrough as StrikeIcon,
+    Underline as UnderlineIcon
+} from 'lucide-react'
+import { useEffect } from 'react'
 
 interface CoverLetterEditorProps {
   initialData: Record<string, unknown>;

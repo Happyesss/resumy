@@ -1,13 +1,13 @@
 'use client'
 
+import { signup } from "@/app/auth/login/actions";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signup } from "@/app/auth/login/actions";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CheckCircle2, Loader2, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "./auth-context";
 
 function SubmitButton() {

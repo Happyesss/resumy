@@ -1,5 +1,5 @@
-import { createContext, useContext,  Dispatch } from 'react';
 import { Resume, WorkExperience } from '@/lib/types';
+import { createContext, Dispatch, useContext } from 'react';
 
 interface ResumeState {
   resume: Resume;
@@ -67,4 +67,4 @@ export function useResumeContext() {
   return context;
 }
 
-export { ResumeContext, resumeReducer }; 
+export { ResumeContext, resumeReducer };

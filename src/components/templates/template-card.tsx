@@ -1,13 +1,13 @@
 'use client';
 
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Eye, Download, Star, Users } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { trackResumeEvent } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
+import { Eye, Star, Users } from "lucide-react";
 import Image from "next/image";
 import { useTemplateHandler } from "./use-template-handler";
-import { trackResumeEvent } from "@/lib/analytics";
 
 interface Template {
   id: string;

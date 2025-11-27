@@ -1,12 +1,12 @@
 'use client';
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Check, X, Sparkles } from "lucide-react";
-import { WorkExperience, Project, Skill, Education } from "@/lib/types";
-import { useState } from 'react';
 import Tiptap from "@/components/ui/tiptap";
+import { Education, Project, Skill, WorkExperience } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import { Check, Sparkles, X } from "lucide-react";
+import { useState } from 'react';
 
 const DIFF_HIGHLIGHT_CLASSES = "bg-yellow-200 text-gray-900 px-1 rounded-sm font-medium";
 

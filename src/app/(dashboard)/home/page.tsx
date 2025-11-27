@@ -1,17 +1,18 @@
-import { redirect } from "next/navigation";
-import { countResumes } from "@/utils/actions/resumes/actions";
-import { User } from "lucide-react";
+import { ResumesSection } from "@/components/dashboard/resumes-section";
+import { TemplateHandler } from "@/components/dashboard/template-handler";
+import { WelcomeDialog } from "@/components/dashboard/welcome-dialog";
+import { type SortDirection, type SortOption } from "@/components/resume/management/resume-sort-controls";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { WelcomeDialog } from "@/components/dashboard/welcome-dialog";
-import { TemplateHandler } from "@/components/dashboard/template-handler";
-import { type SortOption, type SortDirection } from "@/components/resume/management/resume-sort-controls";
+import { getResumeLimit } from "@/lib/constants";
 import type { Resume } from "@/lib/types";
-import { ResumesSection } from "@/components/dashboard/resumes-section";
-import { createClient } from "@/utils/supabase/server";
 import { getDashboardData } from "@/utils/actions";
-import { RESUME_LIMIT, getResumeLimit } from "@/lib/constants";
+import { countResumes } from "@/utils/actions/resumes/actions";
+import { createClient } from "@/utils/supabase/server";
+import { Share2, User } from "lucide-react";
 import { Metadata } from "next";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Dashboard | Your Resume Builder Workspace - Resumy",
@@ -142,19 +143,35 @@ export default async function Home({
           <div className="mb-6 space-y-4">
             <div className="flex items-center justify-between">
               <div
-                className="p-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-[0_8px_24px_rgba(0,0,0,0.2)]"
+                className="p-3 sm:p-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-[0_8px_24px_rgba(0,0,0,0.2)]"
                 style={{
                   WebkitBackdropFilter: 'blur(12px)',
                   backdropFilter: 'blur(12px)',
                 }}
               >
-                <h1 className="text-2xl font-semibold bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
+                <h1 className="text-lg sm:text-2xl font-semibold bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
                   Hi there, {displayName || profile.first_name || 'User'}
                 </h1>
-                <p className="text-sm text-slate-300 mt-0.5">
+                <p className="text-xs sm:text-sm text-slate-300 mt-0.5">
                   Welcome to your resume dashboard
                 </p>
               </div>
+
+              {/* Share Management Button */}
+              <Link
+                href="/resumes/share"
+                className="flex items-center gap-2 p-2.5 sm:px-4 sm:py-2.5 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md hover:bg-white/10 transition-all group"
+                style={{
+                  WebkitBackdropFilter: 'blur(12px)',
+                  backdropFilter: 'blur(12px)',
+                }}
+                title="Share Resumes"
+              >
+                <Share2 className="w-5 h-5 text-purple-400 group-hover:text-purple-300 transition-colors" />
+                <span className="hidden sm:inline text-sm font-medium text-slate-200 group-hover:text-white transition-colors">
+                  Share Resumes
+                </span>
+              </Link>
             </div>
 
             {/* Resume Bookshelf */}

@@ -1,20 +1,20 @@
 'use client';
 
-import * as React from 'react';
-import { Trash2, Copy, FileText, Sparkles, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { cn } from '@/lib/utils';
-import { MiniResumePreview } from '@/components/resume/shared/mini-resume-preview';
 import { CreateResumeDialog } from '@/components/resume/management/dialogs/create-resume-dialog';
-import { ResumeSortControls, type SortOption, type SortDirection } from '@/components/resume/management/resume-sort-controls';
-import type { Profile, Resume } from '@/lib/types';
-import { deleteResume, copyResume } from '@/utils/actions/resumes/actions';
-import { Pagination, PaginationContent, PaginationItem } from '@/components/ui/pagination';
+import { ResumeSortControls, type SortDirection, type SortOption } from '@/components/resume/management/resume-sort-controls';
+import { MiniResumePreview } from '@/components/resume/shared/mini-resume-preview';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { toast } from 'sonner';
+import { Pagination, PaginationContent, PaginationItem } from '@/components/ui/pagination';
 import { RESUME_LIMIT } from '@/lib/constants';
+import type { Profile, Resume } from '@/lib/types';
+import { cn } from '@/lib/utils';
+import { copyResume, deleteResume } from '@/utils/actions/resumes/actions';
+import { ChevronLeft, ChevronRight, Copy, FileText, Loader2, Sparkles, Trash2 } from 'lucide-react';
+import Link from 'next/link';
+import * as React from 'react';
+import { toast } from 'sonner';
 
 interface OptimisticResume extends Resume {
   isOptimistic?: boolean;
@@ -237,7 +237,7 @@ export function ResumesSection({
               </div>
             </button>
           </AlertDialogTrigger>
-          <AlertDialogContent className="bg-gray-900 border-gray-800">
+          <AlertDialogContent className="border-black">
             <AlertDialogHeader>
               <AlertDialogTitle className="text-white">Resume Limit Reached</AlertDialogTitle>
               <AlertDialogDescription className="text-gray-400">
@@ -487,7 +487,7 @@ export function ResumesSection({
                         <Copy className="h-4 w-4 text-white" />
                       </Button>
                     </AlertDialogTrigger>
-                    <AlertDialogContent className="bg-gray-900 border-gray-800">
+                    <AlertDialogContent className="border-black">
                       <AlertDialogHeader>
                         <AlertDialogTitle className="text-white">
                           {canCreateMore ? "Create Resume" : "Resume Limit Reached"}
@@ -524,7 +524,7 @@ export function ResumesSection({
               </div>
             )}
           </div>
-          <AlertDialogContent className="bg-gray-900 border-gray-800">
+          <AlertDialogContent className="border-black">
             <AlertDialogHeader>
               <AlertDialogTitle className="text-white">Delete Resume</AlertDialogTitle>
               <AlertDialogDescription className="text-gray-400">

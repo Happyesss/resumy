@@ -1,10 +1,9 @@
 'use server';
-import { generateObject, LanguageModelV1 } from 'ai';
-import { z } from 'zod';
-import { RESUME_FORMATTER_SYSTEM_MESSAGE, TEXT_IMPORT_SYSTEM_MESSAGE } from "@/lib/prompts";
-import { initializeAIClient, type AIConfig } from '@/utils/ai-tools';
 import { sanitizeUnknownStrings } from '@/lib/utils';
 import { textImportSchema } from '@/lib/zod-schemas';
+import { initializeAIClient, type AIConfig } from '@/utils/ai-tools';
+import { generateObject, LanguageModelV1 } from 'ai';
+import { z } from 'zod';
 
 // Helper function to clean JSON responses that might be wrapped in markdown
 function cleanJsonResponse(text: string): string {

@@ -1,8 +1,8 @@
 'use server';
 
+import { initializeAIClient, type AIConfig } from '@/utils/ai-tools';
 import { LanguageModelV1, streamText } from 'ai';
 import { createStreamableValue } from 'ai/rsc';
-import { initializeAIClient, type AIConfig } from '@/utils/ai-tools';
 
 export async function generate(input: string, config?: AIConfig) {
   try {

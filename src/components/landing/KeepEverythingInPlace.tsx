@@ -1,15 +1,10 @@
 'use client';
 
 import { motion } from "framer-motion";
-import Image from "next/image";
-import { 
-  Users, 
-  Clock, 
-  BarChart3, 
-  Settings,
-  ArrowRight,
-  Mail
+import {
+    BarChart3, Clock, Mail, Settings
 } from "lucide-react";
+import Image from "next/image";
 
 const features = [
   {

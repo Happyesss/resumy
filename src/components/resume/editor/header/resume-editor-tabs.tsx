@@ -1,7 +1,7 @@
 'use client';
 
-import { User, Briefcase, FolderGit2, GraduationCap, Wrench, FileText } from "lucide-react";
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Briefcase, FileText, FolderGit2, GraduationCap, User, Wrench } from "lucide-react";
 
 export function ResumeEditorTabs() {
   return (

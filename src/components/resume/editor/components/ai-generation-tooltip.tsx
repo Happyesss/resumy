@@ -1,9 +1,9 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
-import { Loader2, Sparkles } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { Loader2, Sparkles } from "lucide-react";
 
 interface AIGenerationTooltipProps {
   index: number;

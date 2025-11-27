@@ -1,15 +1,15 @@
 'use client';
 
-import { Education, Profile } from "@/lib/types";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Plus, Trash2 } from "lucide-react";
-import { ImportFromProfileDialog } from "../../management/dialogs/import-from-profile-dialog";
-import { memo } from 'react';
-import { cn } from "@/lib/utils";
 import Tiptap from "@/components/ui/tiptap";
+import { Education, Profile } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import { Plus, Trash2 } from "lucide-react";
+import { memo } from 'react';
+import { ImportFromProfileDialog } from "../../management/dialogs/import-from-profile-dialog";
 
 
 interface EducationFormProps {

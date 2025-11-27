@@ -1,17 +1,17 @@
 'use client';
 
 import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
+    ContextMenu,
+    ContextMenuContent,
+    ContextMenuItem,
+    ContextMenuTrigger
 } from "@/components/ui/context-menu";
-import { Download, Copy } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { Resume, WorkExperience, Education, Project } from "@/lib/types";
-import { pdf } from '@react-pdf/renderer';
-import { ResumePDFDocument } from "../preview/resume-pdf-document";
 import { trackResumeEvent } from "@/lib/analytics";
+import { Education, Project, Resume, WorkExperience } from "@/lib/types";
+import { pdf } from '@react-pdf/renderer';
+import { Copy, Download } from "lucide-react";
+import { ResumePDFDocument } from "../preview/resume-pdf-document";
 
 interface ResumeContextMenuProps {
   children: React.ReactNode;

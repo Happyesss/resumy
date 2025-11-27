@@ -1,8 +1,8 @@
 'use client';
 
-import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { WorkExperience } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { useState } from 'react';
 
 const DIFF_HIGHLIGHT_CLASSES = "bg-yellow-200 text-gray-900 px-1 rounded-sm font-medium";

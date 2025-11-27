@@ -1,16 +1,16 @@
 'use client';
 
-import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, Upload, AlertTriangle } from "lucide-react";
 import { Resume } from "@/lib/types";
+import { AlertTriangle, Loader2, Upload } from "lucide-react";
+import { useEffect, useState } from "react";
 
-import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 import { convertTextToResume } from "@/utils/actions/resumes/ai";
 import pdfToText from "react-pdftotext";
-import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 interface TextImportDialogProps {
   resume: Resume;

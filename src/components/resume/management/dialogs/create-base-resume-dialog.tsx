@@ -1,28 +1,28 @@
 'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
-import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel } from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Profile, WorkExperience, Education, Skill, Project, Resume } from "@/lib/types";
 import { toast } from "@/hooks/use-toast";
-import { Loader2, FileText, Copy, Wand2, Upload } from "lucide-react";
+import { Education, Profile, Project, Resume, Skill, WorkExperience } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { createBaseResume } from "@/utils/actions/resumes/actions";
+import { Copy, FileText, Loader2, Upload, Wand2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import pdfToText from "react-pdftotext";
 
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Textarea } from "@/components/ui/textarea";
-import { convertTextToResume } from "@/utils/actions/resumes/ai";
-import { RESUME_LIMIT, getResumeLimit } from '@/lib/constants';
+import { hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
+import { getResumeLimit } from '@/lib/constants';
 import { countResumes } from '@/utils/actions/resumes/actions';
-import { hasReachedAILimit, getRemainingAIRequests, incrementAIUsage, getAIRequestLimit } from '@/lib/ai-request-limit';
-import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
+import { convertTextToResume } from "@/utils/actions/resumes/ai";
 
 interface CreateBaseResumeDialogProps {
   children: React.ReactNode;

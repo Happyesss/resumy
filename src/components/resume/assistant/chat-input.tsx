@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { CornerRightUp, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import { CornerRightUp, X } from "lucide-react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 interface ChatInputProps {
   isLoading: boolean;

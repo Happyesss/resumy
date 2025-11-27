@@ -1,25 +1,21 @@
 'use client';
 
-import { Resume, Profile, Job } from "@/lib/types";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Accordion } from "@/components/ui/accordion";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { Suspense, useRef, useState } from "react";
+import { Job, Profile, Resume } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { ResumeEditorActions } from "../actions/resume-editor-actions";
-import { TailoredJobAccordion } from "../../management/cards/tailored-job-card";
-import { BasicInfoForm } from "../forms/basic-info-form";
+import { Suspense, useRef, useState } from "react";
 import ChatBot from "../../assistant/chatbot";
-import { CoverLetterPanel } from "./cover-letter-panel";
-import { ColdMailPanel } from "./cold-mail-panel";
+import { TailoredJobAccordion } from "../../management/cards/tailored-job-card";
+import { ResumeEditorActions } from "../actions/resume-editor-actions";
 import {
-  WorkExperienceForm,
-  EducationForm,
-  SkillsForm,
-  ProjectsForm,
-  SummaryForm
+    EducationForm, ProjectsForm, SkillsForm, SummaryForm, WorkExperienceForm
 } from '../dynamic-components';
+import { BasicInfoForm } from "../forms/basic-info-form";
 import { ResumeEditorTabs } from "../header/resume-editor-tabs";
+import { ColdMailPanel } from "./cold-mail-panel";
+import { CoverLetterPanel } from "./cover-letter-panel";
 import ResumeScorePanel from "./resume-score-panel";
 import { TemplatesPanel } from "./templates-panel";
 

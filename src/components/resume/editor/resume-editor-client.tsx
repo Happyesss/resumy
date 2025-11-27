@@ -1,16 +1,15 @@
 'use client';
 
-import React from 'react';
-import { Resume, Profile, Job } from "@/lib/types";
-import { useState, useEffect, useReducer } from "react";
-import { useRouter } from "next/navigation";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
-import { ResumeContext, resumeReducer } from './resume-editor-context';
+import { Job, Profile, Resume } from "@/lib/types";
 import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
+import { useEffect, useReducer, useState } from "react";
+import { UnsavedChangesDialog } from './dialogs/unsaved-changes-dialog';
 import { EditorLayout } from "./layout/EditorLayout";
 import { EditorPanel } from './panels/editor-panel';
 import { PreviewPanel } from './panels/preview-panel';
-import { UnsavedChangesDialog } from './dialogs/unsaved-changes-dialog';
+import { ResumeContext, resumeReducer } from './resume-editor-context';
 
 interface ResumeEditorClientProps {
   initialResume: Resume;

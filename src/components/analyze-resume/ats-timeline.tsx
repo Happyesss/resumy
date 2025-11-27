@@ -1,11 +1,11 @@
 'use client'
 
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, AlertTriangle, FileText, Search, Brain, Filter, Award, ArrowDown, Clock, Zap } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
 import { ResumeScoreMetrics } from '@/components/resume/editor/panels/resume-score-panel';
+import { Badge } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
+import { AlertTriangle, Award, Brain, CheckCircle, Clock, FileText, Filter, Search, XCircle, Zap } from 'lucide-react';
 
 interface ATSStep {
   id: number;

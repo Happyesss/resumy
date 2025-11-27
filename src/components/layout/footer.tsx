@@ -1,26 +1,13 @@
 'use client';
 
-import Link from "next/link";
-import { Logo } from "@/components/ui/logo";
 import { DonationBook } from "@/components/shared/donation-book";
-import { 
-  Github, 
-  Twitter, 
-  Linkedin, 
-  Mail, 
-  Heart,
-  ExternalLink,
-  Shield,
-  Zap,
-  Sparkles,
-  FileText,
-  Layout,
-  BarChart3,
-  BookOpen,
-  HelpCircle,
-  Star
+import { Logo } from "@/components/ui/logo";
+import {
+    BarChart3,
+    BookOpen, ExternalLink, FileText, Github, Heart, Layout, Linkedin,
+    Mail, Shield, Sparkles, Star, Twitter, Zap
 } from "lucide-react";
-import { motion } from "framer-motion";
+import Link from "next/link";
 
 export function Footer() {
 

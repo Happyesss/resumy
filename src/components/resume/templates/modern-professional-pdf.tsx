@@ -1,7 +1,7 @@
 'use client';
 
 import { Resume } from "@/lib/types";
-import { Document as PDFDocument, Page as PDFPage, Text, View, StyleSheet, Link } from '@react-pdf/renderer';
+import { Document as PDFDocument, Page as PDFPage, StyleSheet, Text, View } from '@react-pdf/renderer';
 import { memo } from 'react';
 
 // Utility function to parse markdown and render mixed text with bold formatting

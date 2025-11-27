@@ -1,15 +1,15 @@
 'use client';
 
-import { Resume } from "@/lib/types";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
-import { ResumePreview } from "../preview/resume-preview";
 import CoverLetter from "@/components/cover-letter/cover-letter";
-import { ResumeContextMenu } from "../preview/resume-context-menu";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Resume } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { Maximize2 } from "lucide-react";
 import { useState } from "react";
 import { MobileFullscreenPreview } from "../preview/mobile-fullscreen-preview";
+import { ResumeContextMenu } from "../preview/resume-context-menu";
+import { ResumePreview } from "../preview/resume-preview";
 
 interface PreviewPanelProps {
   resume: Resume;

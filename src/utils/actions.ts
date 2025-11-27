@@ -1,7 +1,7 @@
 'use server'
 
-import { createClient } from "@/utils/supabase/server";
 import { Profile, Resume } from "@/lib/types";
+import { createClient } from "@/utils/supabase/server";
 
 interface DashboardData {
   profile: Profile | null;

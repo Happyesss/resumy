@@ -1,18 +1,18 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { RefreshCw, AlertCircle, Sparkles, FileText } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
-import { generateResumeScore } from "@/utils/actions/resumes/actions";
-import { Resume } from "@/lib/types";
-import { ApiKey } from "@/utils/ai-tools";
-import { hasReachedAILimit, incrementAIUsage, getAIRequestLimit } from "@/lib/ai-request-limit";
+import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { hasReachedAILimit, incrementAIUsage } from "@/lib/ai-request-limit";
+import { Resume } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import { generateResumeScore } from "@/utils/actions/resumes/actions";
+import { ApiKey } from "@/utils/ai-tools";
+import { motion } from "framer-motion";
+import { AlertCircle, FileText, RefreshCw, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
+import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 export interface ResumeScoreMetrics {
   overallScore: {

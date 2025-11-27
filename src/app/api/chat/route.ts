@@ -1,9 +1,9 @@
-import { LanguageModelV1, ToolInvocation, smoothStream, streamText } from 'ai';
-import { Resume, Job } from '@/lib/types';
-import { initializeAIClient, type AIConfig } from '@/utils/ai-tools';
-import { tools } from '@/lib/tools';
 import { checkRateLimit } from '@/lib/rateLimiter';
+import { tools } from '@/lib/tools';
+import { Job, Resume } from '@/lib/types';
+import { initializeAIClient, type AIConfig } from '@/utils/ai-tools';
 import { getAuthenticatedUser } from '@/utils/auth';
+import { LanguageModelV1, smoothStream, streamText, ToolInvocation } from 'ai';
 
 interface Message {
   role: 'user' | 'assistant';

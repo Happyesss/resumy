@@ -1,11 +1,11 @@
 'use client';
 
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowRight, Sparkles, Mail, User } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
+import { ArrowRight, Mail, Sparkles, User } from "lucide-react";
 
 const gradientClasses = {
   base: "bg-gradient-to-r from-violet-600 via-blue-600 to-violet-600",

@@ -1,8 +1,8 @@
 'use client';
 
-import Link from 'next/link';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableCaption } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import Link from 'next/link';
 
 // Define the structure of the resume data expected by this component
 interface ResumeInfo {

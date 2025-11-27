@@ -1,7 +1,7 @@
 'use client';
 
-import Script from 'next/script';
 import { usePageTracking } from '@/hooks/use-page-tracking';
+import Script from 'next/script';
 
 const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_TRACKING_ID || 'G-TXWV913LE4';
 

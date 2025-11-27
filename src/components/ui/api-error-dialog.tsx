@@ -1,13 +1,12 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle
+} from '@/components/ui/dialog';
 import { AlertCircle } from 'lucide-react';
-import Link from 'next/link';
 
 interface ApiErrorDialogProps {
   open: boolean;

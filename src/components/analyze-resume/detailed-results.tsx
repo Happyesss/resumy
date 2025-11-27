@@ -1,18 +1,18 @@
 'use client'
 
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, AlertTriangle, Target, TrendingUp, Award, Users, Zap, FileText, Brain, Eye, Shield, User, BarChart, Sparkles } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
-import { cn } from '@/lib/utils';
-import { ResumeScoreMetrics } from '@/components/resume/editor/panels/resume-score-panel';
-import { ATSTimeline } from './ats-timeline';
-import { useState, useEffect } from 'react';
 import { AuthDialog } from '@/components/auth/auth-dialog';
+import { ResumeScoreMetrics } from '@/components/resume/editor/panels/resume-score-panel';
+import { Badge } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 import { createClient } from '@/utils/supabase/client';
+import { motion } from 'framer-motion';
+import { AlertTriangle, BarChart, Brain, Eye, FileText, Sparkles, Target, TrendingUp, Zap } from 'lucide-react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import { ATSTimeline } from './ats-timeline';
 
 interface DetailedResultsProps {
   scoreData: ResumeScoreMetrics;

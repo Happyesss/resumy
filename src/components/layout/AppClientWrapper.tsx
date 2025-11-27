@@ -1,6 +1,6 @@
 "use client";
-import { ReactNode, useEffect } from "react";
 import AuthErrorHandler from "@/components/auth/auth-error-handler";
+import { ReactNode, useEffect } from "react";
 import { Toaster } from "sonner";
 
 export default function AppClientWrapper({ children }: { children: ReactNode }) {

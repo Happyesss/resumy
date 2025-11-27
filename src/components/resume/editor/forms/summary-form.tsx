@@ -1,17 +1,16 @@
 'use client';
 
-import React from 'react';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Tiptap from '@/components/ui/tiptap';
-import { useCallback, useState } from 'react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Sparkles, Loader2, Check, X } from 'lucide-react';
-import { improveSummary } from '@/utils/actions/resumes/ai';
-import { AIImprovementPrompt } from '../../shared/ai-improvement-prompt';
-import { hasReachedAILimit, incrementAIUsage, getAIRequestLimit } from '@/lib/ai-request-limit';
-import { useToast } from '@/hooks/use-toast';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useToast } from '@/hooks/use-toast';
+import { hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
+import { cn } from '@/lib/utils';
+import { improveSummary } from '@/utils/actions/resumes/ai';
+import { Check, Loader2, Sparkles, X } from 'lucide-react';
+import React, { useCallback, useState } from 'react';
+import { AIImprovementPrompt } from '../../shared/ai-improvement-prompt';
 
 interface SummaryFormProps {
   summary: string;

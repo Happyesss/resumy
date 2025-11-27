@@ -1,40 +1,36 @@
 'use client';
 
 
-import React, { useEffect, useCallback, useState } from 'react';
-import { useChat } from 'ai/react';
-import { Card } from "@/components/ui/card";
-import { Bot, Trash2, Pencil, ChevronDown, ChevronLeft, RefreshCw } from "lucide-react";
-import { Education, Project, Resume, Skill, WorkExperience, Job } from '@/lib/types';
-import { Message } from 'ai';
-import { cn } from '@/lib/utils';
-import { ToolInvocation } from 'ai';
-import { MemoizedMarkdown } from '@/components/ui/memoized-markdown';
-import { Suggestion } from './suggestions';
-import { SuggestionSkeleton } from './suggestion-skeleton';
-import ChatInput from './chat-input';
-import { LoadingDots } from '@/components/ui/loading-dots';
-import { ApiKey } from '@/utils/ai-tools';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { Logo } from "@/components/ui/logo";
-import { WholeResumeSuggestion } from './suggestions';
-import { QuickSuggestions } from './quick-suggestions';
-import { StickToBottom, useStickToBottomContext } from 'use-stick-to-bottom';
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 import { ApiKeyErrorAlert } from '@/components/ui/api-key-error-alert';
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { LoadingDots } from '@/components/ui/loading-dots';
+import { MemoizedMarkdown } from '@/components/ui/memoized-markdown';
 import { Textarea } from '@/components/ui/textarea';
+import { Education, Job, Project, Resume, Skill, WorkExperience } from '@/lib/types';
+import { cn } from '@/lib/utils';
+import { ApiKey } from '@/utils/ai-tools';
+import { Message, ToolInvocation } from 'ai';
+import { useChat } from 'ai/react';
+import { Bot, ChevronDown, ChevronLeft, RefreshCw } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useCallback, useEffect, useState } from 'react';
+import { StickToBottom, useStickToBottomContext } from 'use-stick-to-bottom';
+import ChatInput from './chat-input';
+import { QuickSuggestions } from './quick-suggestions';
+import { SuggestionSkeleton } from './suggestion-skeleton';
+import { Suggestion, WholeResumeSuggestion } from './suggestions';
 
 
 

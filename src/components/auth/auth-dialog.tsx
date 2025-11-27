@@ -1,17 +1,16 @@
 'use client';
 
-import { useState } from "react";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { signInWithGithub } from "@/app/auth/login/actions";
 import { LoginForm } from "@/components/auth/login-form";
 import { SignupForm } from "@/components/auth/signup-form";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Github, Sparkles, Loader2 } from "lucide-react";
-import { Logo } from "@/components/ui/logo";
-import { AuthProvider } from "./auth-context";
-import { signInWithGithub } from "@/app/auth/login/actions";
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { trackResumeEvent } from "@/lib/analytics";
+import { ArrowRight, Github, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { AuthProvider } from "./auth-context";
 
 const gradientClasses = {
   base: "bg-gradient-to-r from-violet-600 via-blue-600 to-violet-600",

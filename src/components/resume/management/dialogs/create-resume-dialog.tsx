@@ -1,8 +1,8 @@
 'use client';
 
+import { Profile, Resume } from "@/lib/types";
 import { CreateBaseResumeDialog } from "./create-base-resume-dialog";
 import { CreateTailoredResumeDialog } from "./create-tailored-resume-dialog";
-import { Resume, Profile } from "@/lib/types";
 
 interface CreateResumeDialogProps {
   children: React.ReactNode;

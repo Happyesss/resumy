@@ -1,29 +1,27 @@
 'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Resume, Profile } from "@/lib/types";
 import { toast } from "@/hooks/use-toast";
-import { Loader2, Sparkles,ArrowRight, Plus } from "lucide-react";
-import { createTailoredResume } from "@/utils/actions/resumes/actions";
-import { CreateBaseResumeDialog } from "./create-base-resume-dialog";
-import { tailorResumeToJob } from "@/utils/actions/jobs/ai";
-import { formatJobListing } from "@/utils/actions/jobs/ai";
+import { hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
+import { getResumeLimit } from '@/lib/constants';
+import { Profile, Resume } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { createJob } from "@/utils/actions/jobs/actions";
+import { formatJobListing, tailorResumeToJob } from "@/utils/actions/jobs/ai";
+import { countResumes, createTailoredResume } from "@/utils/actions/resumes/actions";
+import { ArrowRight, Loader2, Plus, Sparkles } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { MiniResumePreview } from "../../shared/mini-resume-preview";
-import { LoadingOverlay, type CreationStep } from "../loading-overlay";
-import { BaseResumeSelector } from "../base-resume-selector"; 
+import { BaseResumeSelector } from "../base-resume-selector";
 import { ImportMethodRadioGroup } from "../import-method-radio-group";
 import { JobDescriptionInput } from "../job-description-input";
-import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
-import { cn } from "@/lib/utils";
-import { RESUME_LIMIT, getResumeLimit } from '@/lib/constants';
-import { countResumes } from '@/utils/actions/resumes/actions';
-import { hasReachedAILimit, getRemainingAIRequests, incrementAIUsage, getAIRequestLimit } from '@/lib/ai-request-limit';
+import { LoadingOverlay, type CreationStep } from "../loading-overlay";
+import { CreateBaseResumeDialog } from "./create-base-resume-dialog";
 
 interface CreateTailoredResumeDialogProps {
   children: React.ReactNode;

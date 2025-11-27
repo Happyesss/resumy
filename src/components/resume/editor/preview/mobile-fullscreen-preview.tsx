@@ -1,16 +1,16 @@
 'use client';
 
-import { Resume } from "@/lib/types";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { X, ZoomIn, ZoomOut, RotateCcw, Download } from "lucide-react";
-import { ResumePreview } from "./resume-preview";
-import { useState, useEffect, useRef } from "react";
-import { cn } from "@/lib/utils";
-import { pdf } from '@react-pdf/renderer';
-import { ResumePDFDocument } from "./resume-pdf-document";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { trackResumeEvent } from '@/lib/analytics';
+import { Resume } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import { pdf } from '@react-pdf/renderer';
+import { Download, RotateCcw, X, ZoomIn, ZoomOut } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ResumePDFDocument } from "./resume-pdf-document";
+import { ResumePreview } from "./resume-preview";
 
 interface MobileFullscreenPreviewProps {
   resume: Resume;

@@ -1,5 +1,5 @@
-import { User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { User } from "lucide-react";
 
 interface ProfileCardProps {
   title: string;

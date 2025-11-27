@@ -1,8 +1,8 @@
 "use client";
 import { AuthDialog } from "@/components/auth/auth-dialog";
-import { Sparkles, ArrowRight, Star, Rocket, Brain, Globe2, Trophy, ChevronDown } from "lucide-react";
-import { useState, useEffect } from "react";
 import { DotPattern } from "@/components/magicui/dot-pattern";
+import { ArrowRight, ChevronDown, Globe2, Rocket, Sparkles, Star, Trophy } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });

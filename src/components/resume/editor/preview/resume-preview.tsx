@@ -8,16 +8,16 @@
 
 "use client";
 
-import { Resume } from "@/lib/types";
-import { Document, Page, pdfjs } from 'react-pdf';
-import { useState, useEffect, memo, useMemo, useCallback, useRef } from 'react';
-import { pdf } from '@react-pdf/renderer';
-import { ResumePDFDocument } from './resume-pdf-document';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
+import { Resume } from "@/lib/types";
+import { pdf } from '@react-pdf/renderer';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Document, Page, pdfjs } from 'react-pdf';
+import { ResumePDFDocument } from './resume-pdf-document';
 
 // Import required CSS for react-pdf
-import 'react-pdf/dist/Page/TextLayer.css';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
+import 'react-pdf/dist/Page/TextLayer.css';
 
 // Configure PDF.js worker - Updated for pdfjs-dist v4.10.38 compatibility
 if (typeof window !== 'undefined') {

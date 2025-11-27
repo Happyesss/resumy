@@ -1,22 +1,23 @@
-import { Hero } from "@/components/landing/Hero";
-import { VideoShowcase } from "@/components/landing/VideoShowcase";
-import { HowItWorks } from "@/components/landing/HowItWorks";
-import FeatureHighlights from "@/components/landing/FeatureHighlights";
-import { KeepEverythingInPlace } from "@/components/landing/KeepEverythingInPlace";
-import { Testimonials } from "@/components/landing/Testimonials";
-import { About } from "@/components/landing/About";
-import { Pricing } from "@/components/landing/Pricing";
-import { Footer } from "@/components/layout/footer";
-import { NavLinks, MobileNavLinks } from "@/components/layout/nav-links";
-import { Logo } from "@/components/ui/logo";
 import { AuthDialog } from "@/components/auth/auth-dialog";
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
-import { Metadata } from "next";
-import Script from "next/script";
-import { BrandSchema } from "@/components/seo/BrandSchema";
+import { About } from "@/components/landing/About";
+import FeatureHighlights from "@/components/landing/FeatureHighlights";
+import { Hero } from "@/components/landing/Hero";
+import { HowItWorks } from "@/components/landing/HowItWorks";
+import { KeepEverythingInPlace } from "@/components/landing/KeepEverythingInPlace";
+import { Pricing } from "@/components/landing/Pricing";
+import { ResumeTracking } from "@/components/landing/ResumeTracking";
+import { Testimonials } from "@/components/landing/Testimonials";
+import { VideoShowcase } from "@/components/landing/VideoShowcase";
+import { Footer } from "@/components/layout/footer";
+import { MobileNavLinks, NavLinks } from "@/components/layout/nav-links";
 import { AdvancedSeoSchema } from "@/components/seo/AdvancedSeoSchema";
+import { BrandSchema } from "@/components/seo/BrandSchema";
 import { NextGenSEOSuite } from "@/components/seo/NextGenSEOSuite";
+import { Logo } from "@/components/ui/logo";
+import { createClient } from "@/utils/supabase/server";
+import { Metadata } from "next";
+import { redirect } from "next/navigation";
+import Script from "next/script";
 
 // Page-specific metadata that extends the base metadata from layout.tsx
 export const metadata: Metadata = {
@@ -523,6 +524,9 @@ export default async function Page() {
 
         {/* Keep Everything In Place Section */}
         <KeepEverythingInPlace />
+
+        {/* Resume Sharing & Tracking Section */}
+        <ResumeTracking />
 
         {/* How It Works Section */}
         <HowItWorks />

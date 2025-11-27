@@ -1,14 +1,13 @@
 // Removed unused redirect import
 import Link from 'next/link';
 // Removed getUserId import
-import { getUserDetailsById, getResumeCountForUser, getResumesForUser, ensureAdmin } from '../actions'; // Import getResumesForUser and ensureAdmin
-import UserResumeList from '../components/user-resume-list'; // Import the new component
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 import { ArrowLeft } from 'lucide-react';
 import { notFound } from 'next/navigation'; // Import notFound
+import { ensureAdmin, getResumeCountForUser, getResumesForUser, getUserDetailsById } from '../actions'; // Import getResumesForUser and ensureAdmin
+import UserResumeList from '../components/user-resume-list'; // Import the new component
 
 interface AdminUserDetailPageProps {
   params: Promise<{

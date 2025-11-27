@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils";
-import { Resume } from "@/lib/types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Resume } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 interface BaseResumeSelectorProps {
   baseResumes: Resume[];

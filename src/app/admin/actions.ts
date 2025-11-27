@@ -2,7 +2,6 @@
 
 import { createClient, createServiceClient } from "@/utils/supabase/server"; // Import createClient as well
 import { redirect } from 'next/navigation'; // Import redirect
-import { revalidatePath } from 'next/cache';
 
 export async function getAllUsers() {
   const supabase = await createServiceClient();

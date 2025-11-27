@@ -1,6 +1,6 @@
+import { AlertTriangle, ArrowLeft, FileText, Mail, Users } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, FileText, Users, AlertTriangle, Mail } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Terms of Service - Resumy",
@@ -27,7 +27,7 @@ export default function TermsOfService() {
             <h1 className="text-3xl md:text-4xl font-bold">Terms of Service</h1>
           </div>
           <p className="text-gray-400 text-lg">
-            Last updated: {new Date().toLocaleDateString()}
+            Last updated: November 27, 2025
           </p>
         </div>
 

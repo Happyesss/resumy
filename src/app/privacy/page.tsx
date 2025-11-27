@@ -1,6 +1,6 @@
+import { ArrowLeft, Eye, Lock, Mail, Shield } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, Shield, Eye, Lock, Mail } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Privacy Policy - Resumy",
@@ -27,7 +27,7 @@ export default function PrivacyPolicy() {
             <h1 className="text-3xl md:text-4xl font-bold">Privacy Policy</h1>
           </div>
           <p className="text-gray-400 text-lg">
-            Last updated: {new Date().toLocaleDateString()}
+            Last updated: November 27, 2025
           </p>
         </div>
 

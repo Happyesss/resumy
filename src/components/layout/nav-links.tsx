@@ -1,9 +1,9 @@
 'use client'
 import { cn } from "@/lib/utils";
-import { useState, useEffect, useRef } from "react";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, Sparkles, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 interface NavLinkProps {
   href: string;

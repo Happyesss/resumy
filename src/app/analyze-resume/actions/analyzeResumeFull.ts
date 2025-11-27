@@ -1,14 +1,12 @@
 'use server'
 
-import { Resume } from "@/lib/types";
 import { ResumeScoreMetrics } from "@/components/resume/editor/panels/resume-score-panel";
-import { ApiKey, initializeAIClient } from "@/utils/ai-tools";
-import { generateObject } from "ai";
-import { LanguageModelV1 } from "ai";
+import { Resume } from "@/lib/types";
+import { resumeScoreSchema, simplifiedResumeSchema } from "@/lib/zod-schemas";
+import { ApiKey } from "@/utils/ai-tools";
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
+import { generateObject, LanguageModelV1 } from "ai";
 import { z } from "zod";
-import { resumeScoreSchema } from "@/lib/zod-schemas";
-import { simplifiedResumeSchema } from "@/lib/zod-schemas";
 
 /**
  * Enhanced ATS diagnostics interface for comprehensive resume analysis
@@ -632,8 +630,8 @@ export async function analyzeResumeQuick(
 /**
  * Export types for use in other components
  */
-export type { 
-  AtsDiagnostics, 
-  AnalysisConfig, 
-  FullAnalysisResult 
+export type {
+    AtsDiagnostics,
+    AnalysisConfig,
+    FullAnalysisResult
 };

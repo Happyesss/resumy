@@ -1,7 +1,7 @@
 import { Resume } from "@/lib/types";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import Link from "next/link";
 
 interface ResumeListProps {
   resumes: Resume[];

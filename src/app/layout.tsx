@@ -1,10 +1,11 @@
-import { Inter } from "next/font/google";
-import "./globals.css";
+import { FeedbackButton } from "@/components/feedback";
 import { AppHeader } from "@/components/layout/app-header";
-import { createClient } from "@/utils/supabase/server";
-import { Metadata } from "next";
 import ClientAppWrapper from "@/components/layout/AppClientWrapper";
 import { GoogleAnalytics } from "@/components/shared/GoogleAnalytics";
+import { createClient } from "@/utils/supabase/server";
+import { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -381,6 +382,8 @@ export default async function RootLayout({
               {children}
             </main>
           </div>
+          {/* Floating Feedback Button */}
+          <FeedbackButton />
         </ClientAppWrapper>
       </body>
     </html>

@@ -1,7 +1,6 @@
 "use client"
-import React, { useState } from 'react';
-import Image from "next/image";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface ImageGalleryProps {
   images: {

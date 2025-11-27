@@ -1,12 +1,12 @@
 'use client';
 
 import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
+    ContextMenu,
+    ContextMenuContent,
+    ContextMenuItem,
+    ContextMenuTrigger
 } from "@/components/ui/context-menu";
-import { Download, Copy } from "lucide-react";
+import { Copy, Download } from "lucide-react";
 
 interface CoverLetterContextMenuProps {
   children: React.ReactNode;

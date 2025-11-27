@@ -1,5 +1,5 @@
-import { Metadata } from "next";
 import { AnalyzeResumeOptimization } from "@/components/seo/AnalyzeResumeOptimization";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Free Resume Analyzer | ATS Score & Optimization Tips - Resumy",

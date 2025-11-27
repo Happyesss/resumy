@@ -1,21 +1,19 @@
 'use client';
 
-import { Resume } from "@/lib/types";
-import { Button } from "@/components/ui/button";
-import { Download, Loader2, Save, FileText, Palette } from "lucide-react";
+import { CoverLetterPDFDocument } from "@/components/cover-letter/cover-letter-pdf-document";
 import { toast } from "@/hooks/use-toast";
+import { Resume } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { pdf } from '@react-pdf/renderer';
+import { Download, Loader2, Palette, Save } from "lucide-react";
 import { TextImportDialog } from "../../management/dialogs/text-import-dialog";
 import { ResumePDFDocument } from "../preview/resume-pdf-document";
-import { CoverLetterPDFDocument } from "@/components/cover-letter/cover-letter-pdf-document";
-import { cn } from "@/lib/utils";
 import { useResumeContext } from "../resume-editor-context";
 
-import { updateResume } from "@/utils/actions/resumes/actions";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useState } from "react";
 import { trackResumeEvent } from "@/lib/analytics";
+import { updateResume } from "@/utils/actions/resumes/actions";
+import { useState } from "react";
 
 import { Dispatch, SetStateAction } from "react";
 

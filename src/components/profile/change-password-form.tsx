@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { LogoutButton } from "@/components/auth/logout-button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Lock, Loader2, Eye, EyeOff } from "lucide-react";
-import { toast } from "sonner";
 import { changePassword } from "@/utils/actions/auth/change-password";
-import { LogoutButton } from "@/components/auth/logout-button";
+import { Eye, EyeOff, Loader2, Lock } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export function ChangePasswordForm() {
   const [currentPassword, setCurrentPassword] = useState("");

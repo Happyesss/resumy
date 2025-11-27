@@ -1,9 +1,9 @@
 'use client';
 
-import { Profile } from "@/lib/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Mail, Phone, MapPin, Globe, Github, User } from "lucide-react";
+import { Profile } from "@/lib/types";
+import { Github, Globe, Mail, MapPin, Phone, User } from "lucide-react";
 
 interface ProfileBasicInfoFormProps {
   profile: Profile;

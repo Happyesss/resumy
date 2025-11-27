@@ -1,16 +1,15 @@
 'use server';
 
+import { checkRateLimit } from '@/lib/rateLimiter';
+import { Job, Resume } from "@/lib/types";
+import {
+    simplifiedJobSchema,
+    simplifiedResumeSchema
+} from "@/lib/zod-schemas";
+import { AIConfig, initializeAIClient } from '@/utils/ai-tools';
+import { getAuthenticatedUser } from '@/utils/auth';
 import { generateObject, LanguageModelV1 } from 'ai';
 import { z } from 'zod';
-import { 
-  simplifiedJobSchema, 
-  simplifiedResumeSchema, 
-} from "@/lib/zod-schemas";
-import { Job, Resume } from "@/lib/types";
-import { AIConfig } from '@/utils/ai-tools';
-import { initializeAIClient } from '@/utils/ai-tools';
-import { checkRateLimit } from '@/lib/rateLimiter';
-import { getAuthenticatedUser } from '@/utils/auth';
 
 
 export async function tailorResumeToJob(

@@ -2,16 +2,14 @@
 
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
+    Dialog,
+    DialogContent, DialogDescription, DialogHeader,
+    DialogTitle
 } from "@/components/ui/dialog";
 import { AlertCircle } from "lucide-react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 interface ErrorDialogProps {
   isOpen: boolean;

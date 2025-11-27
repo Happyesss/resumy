@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { X, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { RotateCcw, X, ZoomIn, ZoomOut } from 'lucide-react';
+import { useCallback, useRef, useState } from 'react';
 import { TemplatePreview } from './template-preview';
 
 interface FullscreenTemplatePreviewProps {

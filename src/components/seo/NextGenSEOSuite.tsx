@@ -1,5 +1,5 @@
+import { AIEngineOptimization } from "./AIEngineOptimization";
 import { NextGenOptimization } from "./NextGenOptimization";
-import { AIEngineOptimization } from "./AIEngineOptimization";  
 import { VoiceSearchOptimization } from "./VoiceSearchOptimization";
 
 /**

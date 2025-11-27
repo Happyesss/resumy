@@ -1,26 +1,26 @@
 'use client';
 
-import { useEffect, useState } from "react";
-import { Card } from "@/components/ui/card";
-import {  MapPin, Clock, DollarSign, Briefcase, Trash2, Loader2, Plus, Sparkles, AlertCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { motion, AnimatePresence } from "framer-motion";
-import { Job, Resume } from "@/lib/types";
-import { createClient } from "@/utils/supabase/client";
-import { updateResume } from "@/utils/actions/resumes/actions";
-import { createJob, deleteJob } from "@/utils/actions/jobs/actions";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Card } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { Job, Resume } from "@/lib/types";
+import { createJob, deleteJob } from "@/utils/actions/jobs/actions";
+import { updateResume } from "@/utils/actions/resumes/actions";
+import { createClient } from "@/utils/supabase/client";
+import { AnimatePresence, motion } from "framer-motion";
+import { AlertCircle, Briefcase, Clock, DollarSign, Loader2, MapPin, Plus, Sparkles, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-import { toast } from "@/hooks/use-toast";
+import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { useResumeContext } from "../../editor/resume-editor-context";
-import { AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
-import { BriefcaseIcon } from "lucide-react";
 import { formatJobListing } from "@/utils/actions/jobs/ai";
+import { BriefcaseIcon } from "lucide-react";
+import { useResumeContext } from "../../editor/resume-editor-context";
 
 interface TailoredJobCardProps {
   jobId: string | null;

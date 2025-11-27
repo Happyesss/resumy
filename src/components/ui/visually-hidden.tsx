@@ -1,7 +1,7 @@
 'use client';
 
-import * as React from "react";
 import { cn } from "@/lib/utils";
+import * as React from "react";
 
 const VisuallyHidden = React.forwardRef<
   HTMLSpanElement,
@@ -22,4 +22,4 @@ const VisuallyHidden = React.forwardRef<
 
 VisuallyHidden.displayName = "VisuallyHidden";
 
-export { VisuallyHidden }; 
+export { VisuallyHidden };

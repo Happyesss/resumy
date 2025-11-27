@@ -1,13 +1,8 @@
 'use client';
 
 import { motion } from "framer-motion";
-import { 
-  Upload, 
-  Bot, 
-  FileText, 
-  Download,
-  Sparkles,
-  CheckCircle
+import {
+    Bot, CheckCircle, Download, FileText, Sparkles, Upload
 } from "lucide-react";
 
 const steps = [

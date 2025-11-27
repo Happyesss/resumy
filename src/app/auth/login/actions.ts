@@ -1,8 +1,8 @@
 'use server'
 
+import { getAuthenticatedClient, getServiceClient } from "@/utils/actions/utils/supabase";
 import { createClient, createServiceClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { getAuthenticatedClient, getServiceClient } from "@/utils/actions/utils/supabase";
 
 interface AuthResult {
   success: boolean;

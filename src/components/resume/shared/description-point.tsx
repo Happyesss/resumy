@@ -1,15 +1,13 @@
 'use client';
 
-import Tiptap from "@/components/ui/tiptap";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { Sparkles, Loader2, Trash2, Check, X } from "lucide-react";
+import Tiptap from "@/components/ui/tiptap";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider,
+    Tooltip,
+    TooltipContent, TooltipProvider, TooltipTrigger
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
+import { Check, Loader2, Sparkles, Trash2, X } from "lucide-react";
 import { AIImprovementPrompt } from "./ai-improvement-prompt";
 
 interface DescriptionPointProps {

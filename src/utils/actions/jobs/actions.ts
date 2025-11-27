@@ -1,9 +1,9 @@
 'use server';
 
+import type { Job } from "@/lib/types";
+import { simplifiedJobSchema } from "@/lib/zod-schemas";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from 'next/cache';
-import { simplifiedJobSchema } from "@/lib/zod-schemas";
-import type { Job } from "@/lib/types";
 import { z } from "zod";
 import { JobListingParams } from "./schema";
 

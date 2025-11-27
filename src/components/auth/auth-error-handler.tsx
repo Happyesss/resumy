@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
-import { toast } from 'sonner'
 import { AuthError } from '@supabase/supabase-js'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+import { toast } from 'sonner'
 
 /**
  * Component that handles authentication errors globally

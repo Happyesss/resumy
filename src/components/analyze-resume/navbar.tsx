@@ -1,9 +1,9 @@
 'use client'
 
-import { Button } from '@/components/ui/button';
-import { NavLinks, MobileNavLinks } from "@/components/layout/nav-links";
-import { Logo } from "@/components/ui/logo";
 import { AuthDialog } from "@/components/auth/auth-dialog";
+import { MobileNavLinks, NavLinks } from "@/components/layout/nav-links";
+import { Button } from '@/components/ui/button';
+import { Logo } from "@/components/ui/logo";
 
 export function AnalyzeNavbar() {
   return (

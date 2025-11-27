@@ -1,15 +1,14 @@
 'use client'
 
-import React, { useState } from "react"
-import Image from "next/image"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { ServiceName } from "@/lib/types"
-import { toast } from "sonner"
+import { cn } from "@/lib/utils"
 import { ArrowRight } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
+import React, { useState } from "react"
+import { toast } from "sonner"
 
 interface ApiKey {
   service: ServiceName
@@ -158,4 +157,4 @@ export function ModelSelector({
 
 // Export the types and constants for reuse
 export type { AIModel, ApiKey }
-export { AI_MODELS, PROVIDERS } 
+export { AI_MODELS, PROVIDERS }

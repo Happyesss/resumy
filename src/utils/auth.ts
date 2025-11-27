@@ -1,6 +1,6 @@
 import { headers } from 'next/headers';
-import { createClient } from './supabase/server';
 import AuthCache from './auth-cache';
+import { createClient } from './supabase/server';
 
 // Cache the auth check using React cache()
 export async function getAuthenticatedUser() {

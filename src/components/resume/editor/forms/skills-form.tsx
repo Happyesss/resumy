@@ -1,14 +1,14 @@
 'use client';
 
-import { Skill, Profile } from "@/lib/types";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Plus, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Profile, Skill } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { Plus, Trash2 } from "lucide-react";
+import { KeyboardEvent, useState } from 'react';
 import { ImportFromProfileDialog } from "../../management/dialogs/import-from-profile-dialog";
-import { useState, KeyboardEvent } from 'react';
 
 interface SkillsFormProps {
   skills: Skill[];

@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Copy, Sparkles, Brain } from "lucide-react";
+import { Brain, Copy } from "lucide-react";
 import { ComponentPropsWithoutRef } from "react";
 
 interface ImportMethodRadioItemProps extends ComponentPropsWithoutRef<'input'> {

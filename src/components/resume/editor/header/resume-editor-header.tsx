@@ -1,10 +1,10 @@
 'use client';
 
-import { Resume } from "@/lib/types";
-import { Logo } from "@/components/ui/logo";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { useRouter } from "next/navigation";
+import { Logo } from "@/components/ui/logo";
+import { Resume } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface ResumeEditorHeaderProps {
   resume: Resume;

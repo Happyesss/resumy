@@ -1,13 +1,13 @@
 'use client';
 
-import { Profile, Resume } from "@/lib/types";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Mail, Phone, MapPin, Globe, Github, User, UserCircle2, LucideIcon, Linkedin, Link } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useResumeContext } from '../resume-editor-context';
-import { memo, useCallback } from 'react';
+import { Profile, Resume } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { Github, Globe, Linkedin, LucideIcon, Mail, MapPin, Phone, User, UserCircle2 } from "lucide-react";
+import { memo, useCallback } from 'react';
+import { useResumeContext } from '../resume-editor-context';
 
 interface BasicInfoFormProps {
   profile: Profile;

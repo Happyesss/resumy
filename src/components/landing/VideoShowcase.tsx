@@ -1,6 +1,6 @@
 "use client"
-import { useRef, useState, useEffect } from "react"
-import { Play, Maximize2 } from "lucide-react"
+import { Maximize2, Play } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
 
 export function VideoShowcase() {
   const videoRef = useRef<HTMLVideoElement>(null)

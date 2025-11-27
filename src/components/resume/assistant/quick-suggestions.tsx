@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Bot, SpellCheck, Briefcase, FileSearch } from "lucide-react";
+import { Bot, Briefcase, FileSearch, SpellCheck } from "lucide-react";
 
 interface QuickSuggestionsProps {
   onSuggestionClick: (suggestion: string) => void;

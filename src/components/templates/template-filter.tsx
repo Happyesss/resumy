@@ -1,9 +1,9 @@
 'use client';
 
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Palette, Monitor, GraduationCap, Sparkles, Eye } from "lucide-react";
+import { Eye, GraduationCap, Monitor, Palette, Sparkles } from "lucide-react";
 
 interface Category {
   id: string;

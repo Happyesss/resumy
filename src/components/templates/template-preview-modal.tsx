@@ -1,33 +1,25 @@
 'use client';
 
-import { useState } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
 import {
-  Star,
-  Users,
-  Download,
-  Eye,
-  ZoomIn,
-  ZoomOut,
-  RotateCcw,
-  Sparkles,
-  Check,
-  ArrowRight,
-  Share2
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
-import { useTemplateHandler } from "./use-template-handler";
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle
+} from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 import { trackResumeEvent } from "@/lib/analytics";
+import { cn } from "@/lib/utils";
+import {
+    ArrowRight, Check, RotateCcw, Star,
+    Users, ZoomIn,
+    ZoomOut
+} from "lucide-react";
+import Image from "next/image";
+import { useState } from 'react';
+import { useTemplateHandler } from "./use-template-handler";
 
 interface Template {
   id: string;

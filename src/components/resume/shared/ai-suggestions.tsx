@@ -1,9 +1,9 @@
 'use client';
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Check, Sparkles, X } from "lucide-react";
 import Tiptap from "@/components/ui/tiptap";
+import { cn } from "@/lib/utils";
+import { Check, Sparkles, X } from "lucide-react";
 
 interface AISuggestion {
   id: string;

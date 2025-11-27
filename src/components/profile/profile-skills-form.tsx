@@ -1,16 +1,16 @@
 'use client';
 
-import { Skill } from "@/lib/types";
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger
+} from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { Skill } from "@/lib/types";
 import { Plus, Trash2 } from "lucide-react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import React from "react";
 
 interface ProfileSkillsFormProps {

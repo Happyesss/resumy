@@ -1,7 +1,7 @@
 'use client';
 
 import { Resume } from "@/lib/types";
-import { Document as PDFDocument, Page as PDFPage, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Document as PDFDocument, Page as PDFPage, StyleSheet, Text, View } from '@react-pdf/renderer';
 import { memo, useMemo } from 'react';
 
 const styles = StyleSheet.create({

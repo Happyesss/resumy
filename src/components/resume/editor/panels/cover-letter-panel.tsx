@@ -1,17 +1,17 @@
-import { Resume, Job } from "@/lib/types";
-import { Button } from "@/components/ui/button";
-import { FileText, Trash2, Plus, Sparkles, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useState } from 'react';
-import { readStreamableValue } from 'ai/rsc';
-import type { AIConfig } from "@/utils/ai-tools";
-import { AIImprovementPrompt } from "../../shared/ai-improvement-prompt";
-import { generate } from "@/utils/actions/cover-letter/actions";
-import { useResumeContext } from "../resume-editor-context";
-import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
 import { CreateTailoredResumeDialog } from "@/components/resume/management/dialogs/create-tailored-resume-dialog";
-import { hasReachedAILimit, getRemainingAIRequests, incrementAIUsage, getAIRequestLimit } from '@/lib/ai-request-limit';
+import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
+import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
+import { hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
+import { Job, Resume } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import { generate } from "@/utils/actions/cover-letter/actions";
+import type { AIConfig } from "@/utils/ai-tools";
+import { readStreamableValue } from 'ai/rsc';
+import { FileText, Loader2, Plus, Sparkles, Trash2 } from "lucide-react";
+import { useState } from 'react';
+import { AIImprovementPrompt } from "../../shared/ai-improvement-prompt";
+import { useResumeContext } from "../resume-editor-context";
 
 
 interface CoverLetterPanelProps {

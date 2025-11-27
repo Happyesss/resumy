@@ -1,14 +1,14 @@
 'use client';
 
-import * as React from 'react';
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle
 } from "@/components/ui/dialog";
 import Link from "next/link";
+import * as React from 'react';
 
 interface WelcomeDialogProps {
   isOpen: boolean;

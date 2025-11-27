@@ -1,15 +1,15 @@
 'use client';
 
-import { Logo } from "@/components/ui/logo";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { Menu, User, Sparkles, Layout } from "lucide-react";
-import { PageTitle } from "./page-title";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/ui/logo";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
+import { Layout, Menu, Sparkles, User } from "lucide-react";
+import Link from "next/link";
+import { PageTitle } from "./page-title";
 
-import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 interface AppHeaderProps {
   children?: React.ReactNode;

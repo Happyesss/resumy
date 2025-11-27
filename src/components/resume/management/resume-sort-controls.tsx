@@ -2,12 +2,12 @@
 
 import { Button } from "@/components/ui/button"
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
-import { Briefcase, ArrowDownAZ, Calendar } from "lucide-react"
+import { ArrowDownAZ, Briefcase, Calendar } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 
 export type SortOption = 'name' | 'jobTitle' | 'createdAt'
@@ -26,7 +26,7 @@ interface ResumeSortControlsProps {
   currentDirection?: SortDirection;
 }
 
-import { usePathname } from "next/navigation";
+import { usePathname } from "next/navigation"
 
 export function ResumeSortControls({ 
   sortParam = 'sort',

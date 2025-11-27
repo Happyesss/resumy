@@ -1,15 +1,15 @@
 "use client";
 
+import { login } from "@/app/auth/login/actions";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { login } from "@/app/auth/login/actions";
-import { useState, useEffect } from "react";
-import { useFormStatus } from "react-dom";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
 
 function SubmitButton() {

@@ -1,29 +1,27 @@
 'use client';
 
-import { WorkExperience, Profile } from "@/lib/types";
+import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Plus, Trash2, GripVertical, Check, X, Loader2, Sparkles } from "lucide-react";
+import { Profile, WorkExperience } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { Check, GripVertical, Loader2, Plus, Sparkles, Trash2, X } from "lucide-react";
 import { ImportFromProfileDialog } from "../../management/dialogs/import-from-profile-dialog";
-import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
 
-import { useState, useRef, useEffect, memo } from "react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider,
-} from "@/components/ui/tooltip";
 import Tiptap from "@/components/ui/tiptap";
-import { generateWorkExperiencePoints, improveWorkExperience } from "@/utils/actions/resumes/ai";
-import { AIImprovementPrompt } from "../../shared/ai-improvement-prompt";
-import { AIGenerationSettingsTooltip } from "../components/ai-generation-tooltip";
-import { AISuggestions } from "../../shared/ai-suggestions";
-import { hasReachedAILimit, incrementAIUsage, getAIRequestLimit } from '@/lib/ai-request-limit';
+import {
+    Tooltip,
+    TooltipContent, TooltipProvider, TooltipTrigger
+} from "@/components/ui/tooltip";
 import { toast } from "@/hooks/use-toast";
+import { hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
+import { generateWorkExperiencePoints, improveWorkExperience } from "@/utils/actions/resumes/ai";
+import { memo, useEffect, useRef, useState } from "react";
+import { AIImprovementPrompt } from "../../shared/ai-improvement-prompt";
+import { AISuggestions } from "../../shared/ai-suggestions";
+import { AIGenerationSettingsTooltip } from "../components/ai-generation-tooltip";
 
 
 interface AISuggestion {

@@ -1,42 +1,41 @@
 'use client';
 
-import { Profile, WorkExperience, Education, Project } from "@/lib/types";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { Education, Profile, Project, WorkExperience } from "@/lib/types";
 
+import { Briefcase, FolderGit2, GraduationCap, Lock, PanelLeft, Save, Trash2, Upload, User, Wrench } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { User, Briefcase, GraduationCap, Wrench, FolderGit2, Upload, Save, Trash2, PanelLeft, Lock} from "lucide-react";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Loader2 } from "lucide-react";
 import { ProfileBasicInfoForm } from "@/components/profile/profile-basic-info-form";
-import { ProfileWorkExperienceForm } from "@/components/profile/profile-work-experience-form";
-import { ProfileProjectsForm } from "@/components/profile/profile-projects-form";
 import { ProfileEducationForm } from "@/components/profile/profile-education-form";
+import { ProfileProjectsForm } from "@/components/profile/profile-projects-form";
 import { ProfileSkillsForm } from "@/components/profile/profile-skills-form";
+import { ProfileWorkExperienceForm } from "@/components/profile/profile-work-experience-form";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Loader2 } from "lucide-react";
 // import { ProfileEditorHeader } from "./profile-editor-header";
-import { formatProfileWithAI } from "../../utils/actions/profiles/ai";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { formatProfileWithAI } from "../../utils/actions/profiles/ai";
 
-import { AlertTriangle } from "lucide-react";
-import { importResume, updateProfile } from "@/utils/actions/profiles/actions";
-import { cn } from "@/lib/utils";
-import pdfToText from "react-pdftotext";
-import { LogoutButton } from "@/components/auth/logout-button";
 import { ChangePasswordForm } from "@/components/profile/change-password-form";
+import { cn } from "@/lib/utils";
+import { importResume, updateProfile } from "@/utils/actions/profiles/actions";
+import { AlertTriangle } from "lucide-react";
+import pdfToText from "react-pdftotext";
 
 interface ProfileEditFormProps {
   profile: Profile;

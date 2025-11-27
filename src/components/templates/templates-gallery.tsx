@@ -1,11 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Eye, Download, Star, Filter } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Card, CardContent } from "@/components/ui/card";
+import { Download, Eye, Filter, Sparkles, Star } from "lucide-react";
+import { useState } from 'react';
 import { TemplateCard } from "./template-card";
 import { TemplateFilter } from "./template-filter";
 import { TemplatePreviewModal } from "./template-preview-modal";

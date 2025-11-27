@@ -1,19 +1,17 @@
-import { Resume, Job } from "@/lib/types";
-import { Button } from "@/components/ui/button";
-import { Mail, Send, Trash2, Plus, Sparkles, Loader2, MapPin, Calendar, Building } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useState } from 'react';
-import { readStreamableValue } from 'ai/rsc';
-import type { AIConfig } from "@/utils/ai-tools";
-import { generate } from "@/utils/actions/cold-mail/actions";
-import { useResumeContext } from "../resume-editor-context";
-import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
 import { CreateTailoredResumeDialog } from "@/components/resume/management/dialogs/create-tailored-resume-dialog";
+import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { hasReachedAILimit, getRemainingAIRequests, incrementAIUsage, getAIRequestLimit } from '@/lib/ai-request-limit';
 import { toast } from "@/hooks/use-toast";
+import { hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
+import { Job, Resume } from "@/lib/types";
+import { generate } from "@/utils/actions/cold-mail/actions";
+import type { AIConfig } from "@/utils/ai-tools";
+import { readStreamableValue } from 'ai/rsc';
+import { Building, Loader2, Mail, Plus, Sparkles, Trash2 } from "lucide-react";
+import { useState } from 'react';
+import { useResumeContext } from "../resume-editor-context";
 
 interface ColdMailPanelProps {
   resume: Resume;

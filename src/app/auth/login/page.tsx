@@ -1,6 +1,6 @@
 import { LoginForm } from "@/components/auth/login-form";
-import { Metadata } from "next";
 import { createClient } from "@/utils/supabase/server";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {

@@ -1,8 +1,7 @@
+import type { Education, Project, Skill, WorkExperience } from '@/lib/types';
 import dynamic from 'next/dynamic';
-import React from 'react';
 import type { ComponentType } from 'react';
 import { LoadingFallback } from './shared/LoadingFallback';
-import type { WorkExperience, Education, Skill, Project } from '@/lib/types';
 
 interface WorkExperienceFormProps {
   experiences: WorkExperience[];

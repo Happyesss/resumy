@@ -1,17 +1,12 @@
 'use client';
 
-import { motion } from "framer-motion";
-import { 
-  Check, 
-  X, 
-  Sparkles, 
-  Crown, 
-  Star,
-  ArrowRight,
-  Zap
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { AuthDialog } from "@/components/auth/auth-dialog";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import {
+    ArrowRight, Check, Crown, Sparkles, Star, X, Zap
+} from "lucide-react";
+import { StudentDiary } from "./StudentDiary";
 
 const plans = [
   {
@@ -244,6 +239,9 @@ export function Pricing() {
             </div>
           </div>
         </motion.div>
+
+        {/* Student Diary Section */}
+        <StudentDiary />
       </div>
     </section>
   );

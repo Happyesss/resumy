@@ -1,16 +1,16 @@
 'use client';
 
 import { Resume } from "@/lib/types";
-import { Document as PDFDocument, Page as PDFPage, Text, View, StyleSheet, Link, Image } from '@react-pdf/renderer';
-import { memo, useMemo, useCallback } from 'react';
+import { Document as PDFDocument, Image, Link, Page as PDFPage, StyleSheet, Text, View } from '@react-pdf/renderer';
 import type { ReactNode } from 'react';
+import { memo, useCallback, useMemo } from 'react';
+import { CAPDFResume } from '../../templates/ca-professional-pdf';
 import { ClassicResumePDF } from '../../templates/classic-resume-pdf';
-import { CreativeModernPDF } from '../../templates/creative-modern-pdf';
 import { CreativeMinimalPDF } from '../../templates/creative-minimal-pdf';
+import { CreativeModernPDF } from '../../templates/creative-modern-pdf';
 import { MinimalCleanPDF } from '../../templates/minimal-clean-pdf';
 import { ModernProfessionalPDF } from '../../templates/modern-professional-pdf';
 import { TechProfessionalPDF } from '../../templates/tech-professional-pdf';
-import { CAPDFResume } from '../../templates/ca-professional-pdf';
 
 // Base styles that don't depend on resume settings
 const baseStyles = {

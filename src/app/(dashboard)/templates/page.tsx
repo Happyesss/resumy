@@ -1,5 +1,5 @@
-import { Metadata } from "next";
 import { TemplatesGallery } from "@/components/templates/templates-gallery";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Resume Templates | Professional Resume Designs - Resumy",

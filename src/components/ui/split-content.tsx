@@ -1,6 +1,6 @@
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { CheckCircle2, Star } from "lucide-react";
+import Image from "next/image";
 import { ImageGallery } from "./image-gallery";
 
 
