@@ -153,16 +153,16 @@ export function ResumeTracking() {
               {/* Animated Sharing Visualization - Magic UI Style Layout */}
               <div 
                 ref={containerRef}
-                className="relative flex h-[280px] w-full items-center justify-center overflow-hidden"
+                className="relative flex h-[200px] sm:h-[240px] md:h-[280px] w-full items-center justify-center overflow-hidden"
               >
-                <div className="flex size-full max-w-2xl flex-row items-stretch justify-between gap-16">
+                <div className="flex size-full max-w-2xl flex-row items-stretch justify-between gap-4 sm:gap-8 md:gap-16 px-2 sm:px-4">
                   {/* Left - Resume */}
                   <div className="flex flex-col justify-center">
                     <div
                       ref={resumeRef}
-                      className="z-10 flex size-14 items-center justify-center rounded-full border-2 border-purple-500/50 bg-gradient-to-br from-purple-500/20 to-blue-500/20 p-3 shadow-[0_0_20px_-12px_rgba(168,85,247,0.8)]"
+                      className="z-10 flex size-10 sm:size-12 md:size-14 items-center justify-center rounded-full border-2 border-purple-500/50 bg-gradient-to-br from-purple-500/20 to-blue-500/20 p-2 sm:p-3 shadow-[0_0_20px_-12px_rgba(168,85,247,0.8)]"
                     >
-                      <FileText className="h-7 w-7 text-purple-400" />
+                      <FileText className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-purple-400" />
                     </div>
                   </div>
 
@@ -170,49 +170,49 @@ export function ResumeTracking() {
                   <div className="flex flex-col justify-center">
                     <div
                       ref={hubRef}
-                      className="z-10 flex size-20 items-center justify-center rounded-full border-2 border-purple-500/50 bg-gradient-to-br from-purple-600 to-blue-600 p-2 shadow-[0_0_40px_-5px_rgba(168,85,247,0.7)]"
+                      className="z-10 flex size-14 sm:size-16 md:size-20 items-center justify-center rounded-full border-2 border-purple-500/50 bg-gradient-to-br from-purple-600 to-blue-600 p-1.5 sm:p-2 shadow-[0_0_40px_-5px_rgba(168,85,247,0.7)]"
                     >
                       <Image
                         src="/logo.png"
                         alt="Resumy Logo"
                         width={48}
                         height={48}
-                        className="rounded-full"
+                        className="rounded-full w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
                       />
                     </div>
                   </div>
 
                   {/* Right - Viewers */}
-                  <div className="flex flex-col justify-center gap-3">
+                  <div className="flex flex-col justify-center gap-1.5 sm:gap-2 md:gap-3">
                     <div
                       ref={view1Ref}
-                      className="z-10 flex size-12 items-center justify-center rounded-full border-2 border-green-500/50 bg-green-500/10 p-3 shadow-[0_0_20px_-12px_rgba(34,197,94,0.8)]"
+                      className="z-10 flex size-8 sm:size-10 md:size-12 items-center justify-center rounded-full border-2 border-green-500/50 bg-green-500/10 p-1.5 sm:p-2 md:p-3 shadow-[0_0_20px_-12px_rgba(34,197,94,0.8)]"
                     >
-                      <User className="h-5 w-5 text-green-400" />
+                      <User className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-green-400" />
                     </div>
                     <div
                       ref={view2Ref}
-                      className="z-10 flex size-12 items-center justify-center rounded-full border-2 border-blue-500/50 bg-blue-500/10 p-3 shadow-[0_0_20px_-12px_rgba(59,130,246,0.8)]"
+                      className="z-10 flex size-8 sm:size-10 md:size-12 items-center justify-center rounded-full border-2 border-blue-500/50 bg-blue-500/10 p-1.5 sm:p-2 md:p-3 shadow-[0_0_20px_-12px_rgba(59,130,246,0.8)]"
                     >
-                      <Monitor className="h-5 w-5 text-blue-400" />
+                      <Monitor className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-blue-400" />
                     </div>
                     <div
                       ref={view3Ref}
-                      className="z-10 flex size-12 items-center justify-center rounded-full border-2 border-cyan-500/50 bg-cyan-500/10 p-3 shadow-[0_0_20px_-12px_rgba(6,182,212,0.8)]"
+                      className="z-10 flex size-8 sm:size-10 md:size-12 items-center justify-center rounded-full border-2 border-cyan-500/50 bg-cyan-500/10 p-1.5 sm:p-2 md:p-3 shadow-[0_0_20px_-12px_rgba(6,182,212,0.8)]"
                     >
-                      <Smartphone className="h-5 w-5 text-cyan-400" />
+                      <Smartphone className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-cyan-400" />
                     </div>
                     <div
                       ref={view4Ref}
-                      className="z-10 flex size-12 items-center justify-center rounded-full border-2 border-pink-500/50 bg-pink-500/10 p-3 shadow-[0_0_20px_-12px_rgba(236,72,153,0.8)]"
+                      className="hidden sm:flex z-10 size-8 sm:size-10 md:size-12 items-center justify-center rounded-full border-2 border-pink-500/50 bg-pink-500/10 p-1.5 sm:p-2 md:p-3 shadow-[0_0_20px_-12px_rgba(236,72,153,0.8)]"
                     >
-                      <User className="h-5 w-5 text-pink-400" />
+                      <User className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-pink-400" />
                     </div>
                     <div
                       ref={view5Ref}
-                      className="z-10 flex size-12 items-center justify-center rounded-full border-2 border-orange-500/50 bg-orange-500/10 p-3 shadow-[0_0_20px_-12px_rgba(249,115,22,0.8)]"
+                      className="hidden md:flex z-10 size-8 sm:size-10 md:size-12 items-center justify-center rounded-full border-2 border-orange-500/50 bg-orange-500/10 p-1.5 sm:p-2 md:p-3 shadow-[0_0_20px_-12px_rgba(249,115,22,0.8)]"
                     >
-                      <Globe className="h-5 w-5 text-orange-400" />
+                      <Globe className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-orange-400" />
                     </div>
                   </div>
                 </div>
@@ -295,7 +295,7 @@ export function ResumeTracking() {
               </div>
 
               {/* Labels below */}
-              <div className="flex justify-between max-w-2xl mx-auto px-8 mt-2 text-xs text-gray-500">
+              <div className="flex justify-between max-w-xs sm:max-w-md md:max-w-2xl mx-auto px-4 sm:px-6 md:px-8 mt-2 text-[10px] sm:text-xs text-gray-500">
                 <span>Your Resume</span>
                 <span>Tracking Hub</span>
                 <span>Viewers</span>
@@ -490,22 +490,22 @@ export function ResumeTracking() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500"
+          className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6 text-xs sm:text-sm text-gray-500"
         >
-          <div className="flex items-center gap-2">
-            <Shield className="h-4 w-4 text-green-500" />
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <Shield className="h-3 w-3 sm:h-4 sm:w-4 text-green-500" />
             <span>End-to-end encrypted</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Eye className="h-4 w-4 text-blue-500" />
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <Eye className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500" />
             <span>Real-time tracking</span>
           </div>
-          <div className="flex items-center gap-2">
-            <FileText className="h-4 w-4 text-purple-500" />
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <FileText className="h-3 w-3 sm:h-4 sm:w-4 text-purple-500" />
             <span>No file storage needed</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Zap className="h-4 w-4 text-yellow-500" />
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <Zap className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-500" />
             <span>Instant sharing</span>
           </div>
         </motion.div>

@@ -220,11 +220,11 @@ export function ShareManagementContent({
                     </div>
 
                     {/* Share Status & Actions */}
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                       {share ? (
                         <>
                           {/* View Count */}
-                          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 text-sm">
+                          <div className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg bg-white/5 text-sm">
                             <Eye className="w-4 h-4 text-slate-400" />
                             <span className="text-slate-300">{share.view_count}</span>
                           </div>
@@ -233,7 +233,7 @@ export function ShareManagementContent({
                           <button
                             onClick={() => handleToggleStatus(share.id, share.is_active)}
                             disabled={isLoading}
-                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${share.is_active
+                            className={`flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${share.is_active
                                 ? "bg-green-500/20 text-green-400 hover:bg-green-500/30"
                                 : "bg-red-500/20 text-red-400 hover:bg-red-500/30"
                               }`}
@@ -241,12 +241,12 @@ export function ShareManagementContent({
                             {share.is_active ? (
                               <>
                                 <Globe className="w-4 h-4" />
-                                <span>Active</span>
+                                <span className="hidden sm:inline">Active</span>
                               </>
                             ) : (
                               <>
                                 <Lock className="w-4 h-4" />
-                                <span>Disabled</span>
+                                <span className="hidden sm:inline">Disabled</span>
                               </>
                             )}
                           </button>
@@ -254,17 +254,17 @@ export function ShareManagementContent({
                           {/* Copy Link */}
                           <button
                             onClick={() => copyLink(share.share_id)}
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 text-sm font-medium transition-colors"
+                            className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 text-sm font-medium transition-colors"
                           >
                             {copiedId === share.share_id ? (
                               <>
                                 <Check className="w-4 h-4" />
-                                <span>Copied!</span>
+                                <span className="hidden sm:inline">Copied!</span>
                               </>
                             ) : (
                               <>
                                 <Copy className="w-4 h-4" />
-                                <span>Copy Link</span>
+                                <span className="hidden sm:inline">Copy Link</span>
                               </>
                             )}
                           </button>
@@ -307,18 +307,18 @@ export function ShareManagementContent({
                   {/* Share Details (if exists) */}
                   {share && (
                     <div className="mt-4 pt-4 border-t border-white/5">
-                      <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500">
-                        <span className="flex items-center gap-1">
-                          <Link2 className="w-3.5 h-3.5" />
-                          {shareBaseUrl}/r/{share.share_id}
+                      <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-4 text-xs text-slate-500">
+                        <span className="flex items-center gap-1 truncate max-w-full">
+                          <Link2 className="w-3.5 h-3.5 flex-shrink-0" />
+                          <span className="truncate">{shareBaseUrl}/r/{share.share_id}</span>
                         </span>
                         <span className="flex items-center gap-1">
-                          <Calendar className="w-3.5 h-3.5" />
+                          <Calendar className="w-3.5 h-3.5 flex-shrink-0" />
                           Created {new Date(share.created_at).toLocaleDateString('en-US')}
                         </span>
                         {share.last_viewed_at && (
                           <span className="flex items-center gap-1">
-                            <Clock className="w-3.5 h-3.5" />
+                            <Clock className="w-3.5 h-3.5 flex-shrink-0" />
                             Last viewed {new Date(share.last_viewed_at).toLocaleDateString('en-US')}
                           </span>
                         )}

@@ -186,6 +186,24 @@ function parseResumeManually(text: string) {
       result.projects = parseProjectsSection(sections.projects);
     }
     
+    // If section-based parsing failed, use pattern-based extraction on ENTIRE text
+    // This handles non-standard formats where content doesn't follow headers
+    
+    // Extract skills from entire text if not found
+    if (result.skills.length === 0) {
+      result.skills = extractSkillsFromText(text);
+    }
+    
+    // Extract education from entire text if not found
+    if (result.education.length === 0) {
+      result.education = extractEducationFromText(text);
+    }
+    
+    // Extract projects from entire text if not found
+    if (result.projects.length === 0) {
+      result.projects = extractProjectsFromText(text);
+    }
+    
   } catch (error) {
     // Silently handle parsing errors
   }
@@ -193,12 +211,189 @@ function parseResumeManually(text: string) {
   return result;
 }
 
+// Pattern-based extraction functions that work on entire text regardless of format
+
+function extractSkillsFromText(text: string): Array<{category: string; items: string[]}> {
+  const skills: Array<{category: string; items: string[]}> = [];
+  
+  // Pattern: "Category : item1, item2, item3" or "Category: item1, item2"
+  const skillPattern = /(?:^|\s)(Frontend|Backend|DevOps\s*&?\s*Tools?|Frameworks?\s*&?\s*Libraries?|Languages?\s*&?\s*Databases?|Programming\s+Languages?|Soft\s+Skills?|(?:Technical\s+)?Skills?|Concepts?|Technologies?|Tools?)\s*:\s*([^•–\n]+)/gi;
+  
+  let match;
+  while ((match = skillPattern.exec(text)) !== null) {
+    const category = match[1].trim();
+    const itemsText = match[2].trim();
+    
+    // Split by comma and clean up
+    const items = itemsText
+      .split(/,/)
+      .map(item => item.trim().replace(/[•–—]/g, '').trim())
+      .filter(item => item.length > 0 && item.length < 50 && !item.match(/^\d+$/));
+    
+    if (items.length > 0) {
+      // Check if this category already exists
+      const existingCategory = skills.find(s => s.category.toLowerCase() === category.toLowerCase());
+      if (existingCategory) {
+        existingCategory.items = [...new Set([...existingCategory.items, ...items])];
+      } else {
+        skills.push({ category, items });
+      }
+    }
+  }
+  
+  return skills;
+}
+
+function extractEducationFromText(text: string): Array<{school: string; degree: string; field: string; date: string; location: string; achievements: string[]}> {
+  const education: Array<{school: string; degree: string; field: string; date: string; location: string; achievements: string[]}> = [];
+  
+  // Find school/institution names anywhere in text
+  const schoolPattern = /((?:[A-Z][A-Za-z]+\s+)*(?:Academy|Institute|University|College|School|Convent)(?:\s+of\s+[A-Z][A-Za-z\s]+)?)/gi;
+  let match;
+  
+  while ((match = schoolPattern.exec(text)) !== null) {
+    const schoolName = match[1].trim();
+    if (schoolName.length < 5) continue;
+    
+    // Look for degree near the school name (within ~200 chars)
+    const contextStart = Math.max(0, match.index - 50);
+    const contextEnd = Math.min(text.length, match.index + 300);
+    const context = text.substring(contextStart, contextEnd);
+    
+    let degree = '';
+    let date = '';
+    
+    // Find degree
+    const degreeMatch = context.match(/(?:B\.?Tech|Bachelor|B\.?Sc|Master|M\.?Tech|M\.?Sc|PhD|Diploma|Senior\s+Secondary|XII|X|HSC|SSC)(?:\s+in\s+[A-Za-z\s&]+)?/i);
+    if (degreeMatch) {
+      degree = degreeMatch[0].trim();
+    }
+    
+    // Find date
+    const dateMatch = context.match(/((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|September|October|November|December|January|February|March|April|May|June|July|August)\s+\d{4}\s*[-–—]\s*(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|September|October|November|December|January|February|March|April|May|June|July|August)?\s*\d{4}|\d{4}\s*[-–—]\s*\d{4}|\d{4}\s*[-–—]\s*(?:Present|Current))/i);
+    if (dateMatch) {
+      date = dateMatch[1].trim();
+    }
+    
+    // Avoid duplicates
+    if (!education.find(e => e.school.toLowerCase() === schoolName.toLowerCase())) {
+      education.push({
+        school: schoolName,
+        degree: degree,
+        field: '',
+        date: date,
+        location: '',
+        achievements: []
+      });
+    }
+  }
+  
+  return education;
+}
+
+function extractProjectsFromText(text: string): Array<{name: string; description: string[]; technologies: string[]; date: string; url?: string; github_url?: string}> {
+  const projects: Array<{name: string; description: string[]; technologies: string[]; date: string; url?: string; github_url?: string}> = [];
+  
+  // Pattern 1: "ProjectName (tech1, tech2)" or "ProjectName – description"
+  // Find project names with tech stack in parentheses
+  const techStackPattern = /([A-Z][A-Za-z0-9\s-]+?)\s*\(\s*([A-Za-z0-9,\s.]+)\s*\)/g;
+  let match;
+  
+  while ((match = techStackPattern.exec(text)) !== null) {
+    const projectName = match[1].trim();
+    const techStack = match[2].split(',').map(t => t.trim()).filter(t => t.length > 0);
+    
+    // Filter out false positives (like degree names)
+    if (projectName.match(/B\.?Tech|Bachelor|Master|M\.?Tech|Senior|XII|PCM|Physics/i)) continue;
+    if (projectName.length < 3 || projectName.length > 50) continue;
+    
+    // Look for description bullets near this match
+    const contextEnd = Math.min(text.length, match.index + 500);
+    const context = text.substring(match.index, contextEnd);
+    
+    const descriptions: string[] = [];
+    const bulletPattern = /[•–—-]\s*([^•–—\n]{20,})/g;
+    let bulletMatch;
+    while ((bulletMatch = bulletPattern.exec(context)) !== null) {
+      const desc = bulletMatch[1].trim();
+      if (desc.length > 20 && desc.length < 500) {
+        descriptions.push(desc);
+      }
+      if (descriptions.length >= 4) break;
+    }
+    
+    // Find URL near project
+    let url = '';
+    const urlMatch = context.match(/([a-z0-9-]+\.(?:live|com|io|dev|app|me|vercel\.app)(?:\/[^\s]*)?)/i);
+    if (urlMatch) {
+      url = urlMatch[1];
+    }
+    
+    if (!projects.find(p => p.name.toLowerCase() === projectName.toLowerCase())) {
+      projects.push({
+        name: projectName,
+        description: descriptions,
+        technologies: techStack,
+        date: '',
+        url: url || undefined
+      });
+    }
+  }
+  
+  // Pattern 2: Find "Tools: ..." lines and work backwards to find project name
+  const toolsPattern = /Tools?:\s*([A-Za-z0-9,\s./]+?)(?=\n|Tools:|$)/gi;
+  while ((match = toolsPattern.exec(text)) !== null) {
+    const techStack = match[1].split(',').map(t => t.trim()).filter(t => t.length > 0 && t.length < 30);
+    if (techStack.length === 0) continue;
+    
+    // Look backwards for a project name (capitalized phrase ending with dash or before bullets)
+    const contextStart = Math.max(0, match.index - 400);
+    const context = text.substring(contextStart, match.index);
+    
+    // Find the last capitalized phrase that could be a project name
+    const projectNameMatch = context.match(/([A-Z][A-Za-z0-9\s-]+?)\s*[–—-]/g);
+    if (projectNameMatch && projectNameMatch.length > 0) {
+      const lastMatch = projectNameMatch[projectNameMatch.length - 1];
+      const projectName = lastMatch.replace(/[–—-]\s*$/, '').trim();
+      
+      if (projectName.length > 3 && projectName.length < 50 && 
+          !projectName.match(/B\.?Tech|Bachelor|Master|Frontend|Backend|Full\s*Stack/i) &&
+          !projects.find(p => p.name.toLowerCase() === projectName.toLowerCase())) {
+        
+        // Find descriptions
+        const descriptions: string[] = [];
+        const bulletPattern = /[•–—-]\s*([^•–—\n]{20,})/g;
+        let bulletMatch;
+        while ((bulletMatch = bulletPattern.exec(context)) !== null) {
+          const desc = bulletMatch[1].trim();
+          if (desc.length > 20 && desc.length < 500) {
+            descriptions.push(desc);
+          }
+        }
+        
+        projects.push({
+          name: projectName,
+          description: descriptions,
+          technologies: techStack,
+          date: '',
+          url: undefined
+        });
+      }
+    }
+  }
+  
+  return projects;
+}
+
 // Normalize resume text by adding newlines at logical breakpoints
 function normalizeResumeText(text: string): string {
   let normalized = text;
   
-  // Step 1: Add newlines before major section headers
-  normalized = normalized.replace(/\s{2,}(PROJECTS?|EDUCATION|SKILLS?|EXPERIENCE|WORK\s+HISTORY)\b/gi, '\n\n$1\n');
+  // Step 0: Handle cases where section headers appear with double spaces (e.g., "Skills  Projects  Education")
+  normalized = normalized.replace(/\s{2,}(Projects?|Education|(?:Technical\s+|Key\s+)?Skills?|Experience|Work\s+History|Certifications?)\s{2,}/gi, '\n\n$1\n\n');
+  
+  // Step 1: Add newlines before major section headers including "Technical Skills"
+  normalized = normalized.replace(/\s{2,}(PROJECTS?|EDUCATION|(?:TECHNICAL\s+|KEY\s+)?SKILLS?|EXPERIENCE|WORK\s+HISTORY|CERTIFICATIONS?)\b/gi, '\n\n$1\n');
   
   // Step 2: Add newlines before bullet points with various styles
   normalized = normalized.replace(/\s{2,}(•|–|—|-)\s+/g, '\n$1 ');
@@ -225,7 +420,7 @@ function normalizeResumeText(text: string): string {
   normalized = normalized.replace(/\s{2,}(\d{4}\s*[-–—]\s*\d{2,4})/g, '\n$1');
   
   // Step 9: Add newlines before skill categories (e.g., "Frontend:", "Languages:")
-  normalized = normalized.replace(/\s{2,}([A-Za-z\s&]+\s*:)(?=\s+[A-Z])/g, '\n$1');
+  normalized = normalized.replace(/\s{2,}([A-Za-z\s&\/]+\s*:)(?=\s+[A-Z])/g, '\n$1');
   
   // Step 10: Clean up multiple consecutive newlines
   normalized = normalized.replace(/\n{3,}/g, '\n\n');
@@ -240,8 +435,8 @@ function normalizeResumeText(text: string): string {
 function findSections(text: string): Record<string, string> {
   const sections: Record<string, string> = {};
   
-  // Match section headers - must be uppercase and at line boundaries
-  const sectionRegex = /(^|\n)(PROJECTS?|EDUCATION|SKILLS?|EXPERIENCE|WORK\s+HISTORY)(?=\s|$)/gi;
+  // Match section headers including "Technical Skills", "Key Skills", etc.
+  const sectionRegex = /(^|\n)(PROJECTS?|EDUCATION|(?:TECHNICAL\s+|KEY\s+)?SKILLS?|EXPERIENCE|WORK\s+HISTORY)(?=\s|$)/gi;
   const matches: Array<{ key: string; header: string; headerStart: number; headerEnd: number }> = [];
 
   let match: RegExpExecArray | null;
@@ -250,7 +445,7 @@ function findSections(text: string): Record<string, string> {
     let key: string | null = null;
     if (headerRaw.startsWith('project')) key = 'projects';
     else if (headerRaw.startsWith('education')) key = 'education';
-    else if (headerRaw.startsWith('skill')) key = 'skills';
+    else if (headerRaw.includes('skill')) key = 'skills';
     else if (headerRaw.startsWith('experience') || headerRaw.startsWith('work')) key = 'experience';
 
     if (!key) continue;
