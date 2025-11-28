@@ -7,7 +7,7 @@ import {
     Tablet
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { createShareLink, deleteShare, toggleShareStatus } from "./actions";
 import { DeleteShareDialog } from "./delete-share-dialog";
 
@@ -59,16 +59,9 @@ export function ShareManagementContent({
   const [selectedResume, setSelectedResume] = useState<Resume | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [loading, setLoading] = useState<string | null>(null);
-  const [shareBaseUrl, setShareBaseUrl] = useState<string>(
-    process.env.NEXT_PUBLIC_SHARE_URL || "http://localhost:3001"
-  );
-
-  // Update share URL on client-side to match current environment
-  useEffect(() => {
-    if (!process.env.NEXT_PUBLIC_SHARE_URL) {
-      setShareBaseUrl(`${window.location.protocol}//${window.location.hostname}:3001`);
-    }
-  }, []);
+  
+  // Use environment variable or fallback for development
+  const shareBaseUrl = process.env.NEXT_PUBLIC_SHARE_URL || "https://share.resumy.live";
 
   // Get share for a resume
   const getShareForResume = (resumeId: string) => {
