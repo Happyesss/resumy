@@ -57,13 +57,11 @@ function SocialAuth() {
       setIsLoading(true);
       const result = await signInWithGithub();
       
-      if (!result.success) {
-        console.error('❌ GitHub sign in error:', result.error);
-      } else if (result.url) {
+      if (result.success && result.url) {
         window.location.href = result.url;
       }
-    } catch (error) {
-      console.error('💥 Failed to sign in with GitHub:', error);
+    } catch {
+      // Silent fail - user can retry
     } finally {
       setIsLoading(false);
     }
