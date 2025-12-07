@@ -155,10 +155,7 @@ jobs:
               env: {
                 NODE_ENV: 'production',
                 PORT: 3000
-              },
-              error_file: '/var/log/resumy/error.log',
-              out_file: '/var/log/resumy/out.log',
-              log_date_format: 'YYYY-MM-DD HH:mm:ss Z'
+              }
             }]
           };
           PMEOF
