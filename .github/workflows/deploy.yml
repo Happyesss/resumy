@@ -141,10 +141,9 @@ jobs:
           # Set PM2_HOME to user directory
           export PM2_HOME=/home/deployer/.pm2
           
-          # Ensure ecosystem.config.js exists
+          # Create ecosystem.config.js
           echo -e "${GREEN}Creating PM2 config...${NC}"
-          cat > ecosystem.config.js << 'PMEOF'
-          module.exports = {
+          echo "module.exports = {
             apps: [{
               name: 'resumy',
               script: 'pnpm',
@@ -159,8 +158,7 @@ jobs:
                 PORT: 3000
               }
             }]
-          };
-          PMEOF
+          };" > ecosystem.config.js
           
           # Restart PM2 process
           echo -e "${GREEN}Restarting application...${NC}"
