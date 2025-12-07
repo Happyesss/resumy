@@ -138,31 +138,18 @@ jobs:
           # Secure permissions
           chmod 600 .env.local
           
-          # Set PM2_HOME to user directory
+          # Set PM2 home to deployer user and ensure directories exist
+          export HOME=/home/deployer
           export PM2_HOME=/home/deployer/.pm2
+          mkdir -p "$PM2_HOME"
           
-          # Create ecosystem.config.js
+          # Create ecosystem.config.js (single-line printf to avoid heredoc injection)
           echo -e "${GREEN}Creating PM2 config...${NC}"
-          echo "module.exports = {
-            apps: [{
-              name: 'resumy',
-              script: 'pnpm',
-              args: 'start',
-              cwd: '/var/www/resumy',
-              instances: 1,
-              autorestart: true,
-              watch: false,
-              max_memory_restart: '1G',
-              env: {
-                NODE_ENV: 'production',
-                PORT: 3000
-              }
-            }]
-          };" > ecosystem.config.js
+          printf "module.exports = {\n  apps: [{\n    name: 'resumy',\n    script: 'pnpm',\n    args: 'start',\n    cwd: '/var/www/resumy',\n    instances: 1,\n    autorestart: true,\n    watch: false,\n    max_memory_restart: '1G',\n    env: {\n      NODE_ENV: 'production',\n      PORT: 3000\n    }\n  }]\n};\n" > ecosystem.config.js
           
           # Restart PM2 process
           echo -e "${GREEN}Restarting application...${NC}"
-          pm2 restart resumy || pm2 start ecosystem.config.js
+          pm2 restart resumy --update-env || pm2 start ecosystem.config.js
           
           # Wait for the application to start
           sleep 5
