@@ -3,12 +3,15 @@ name: Deploy to DigitalOcean
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  # Remove pull_request trigger - only deploy on push to main
+  workflow_dispatch: # Allow manual deployment
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    
+    # Security: Only deploy from main branch
+    if: github.ref == 'refs/heads/main'
     
     steps:
     - name: Checkout code
@@ -19,32 +22,30 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Install dependencies
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8
+
+    - name: Get pnpm store directory
+      id: pnpm-cache
+      shell: bash
       run: |
-        # Delete node_modules and package-lock.json to start fresh
-        rm -rf node_modules package-lock.json
-        # Install dependencies (including devDependencies needed for build)
-        npm install --legacy-peer-deps
+        echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+    - name: Setup pnpm cache
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
 
     - name: Build application
-      run: |
-        # Set environment variables for build
-        export NODE_ENV=production
-        # Show node and npm versions for debugging
-        node --version
-        npm --version
-        # Show installed packages
-        npm list --depth=0 || true
-        # Try building with Next.js
-        npm run build || {
-          echo "Build failed, trying alternative approach..."
-          # Clear Next.js cache
-          rm -rf .next
-          # Show more detailed npm list
-          npm list tailwindcss autoprefixer postcss typescript || true
-          # Try building again without Turbo
-          npx next build --debug
-        }
+      run: pnpm run build
       env:
         NODE_ENV: production
         NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
@@ -54,16 +55,34 @@ jobs:
         UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
         UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
 
-    - name: Transfer files to server
+    - name: Create deployment package
+      run: |
+        # Create a clean deployment package with only necessary files
+        mkdir -p deploy-package
+        
+        # Copy built files
+        cp -r .next deploy-package/
+        cp -r public deploy-package/
+        cp -r node_modules deploy-package/ 2>/dev/null || echo "Skipping node_modules copy"
+        
+        # Copy config files
+        cp package.json deploy-package/
+        cp pnpm-lock.yaml deploy-package/
+        cp next.config.ts deploy-package/ 2>/dev/null || cp next.config.js deploy-package/ 2>/dev/null || true
+        cp ecosystem.config.js deploy-package/ 2>/dev/null || true
+        
+        # Create a tarball
+        tar -czf deploy.tar.gz -C deploy-package .
+
+    - name: Transfer deployment package to server
       uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.DO_HOST }}
         username: ${{ secrets.DO_USERNAME }}
         key: ${{ secrets.DO_SSH_KEY }}
-        port: 22
-        source: "."
-        target: "/var/www/resumy"
-        rm: true
+        port: ${{ secrets.DO_SSH_PORT || 22 }}
+        source: "deploy.tar.gz"
+        target: "/tmp/"
 
     - name: Deploy to DigitalOcean
       uses: appleboy/ssh-action@v1.0.0
@@ -71,41 +90,41 @@ jobs:
         host: ${{ secrets.DO_HOST }}
         username: ${{ secrets.DO_USERNAME }}
         key: ${{ secrets.DO_SSH_KEY }}
-        port: 22
+        port: ${{ secrets.DO_SSH_PORT || 22 }}
+        script_stop: true # Stop on first error
         script: |
-          # Check if Node.js is installed, if not run initial setup
-          if ! command -v node &> /dev/null; then
-            echo "Node.js not found. Running initial server setup..."
-            
-            # Update system
-            apt update && apt upgrade -y
-            
-            # Install Node.js 20
-            curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
-            apt-get install -y nodejs
-            
-            # Install PM2 globally
-            npm install -g pm2
-            
-            # Install Nginx
-            apt install -y nginx
-            
-            echo "Initial setup completed!"
-          fi
+          set -e # Exit on any error
           
-          # Ensure PM2 is installed globally
-          if ! command -v pm2 &> /dev/null; then
-            npm install -g pm2
-          fi
+          # Define colors for output
+          GREEN='\033[0;32m'
+          YELLOW='\033[1;33m'
+          NC='\033[0m' # No Color
           
-          # Create app directory
-          mkdir -p /var/www/resumy
+          echo -e "${GREEN}Starting deployment...${NC}"
           
           # Navigate to app directory
           cd /var/www/resumy
           
-          # Create .env file with production environment variables
-          cat > .env.local << EOF
+          # Backup current deployment
+          if [ -d ".next" ]; then
+            echo -e "${YELLOW}Backing up current deployment...${NC}"
+            tar -czf ../resumy-backup-$(date +%Y%m%d-%H%M%S).tar.gz .next public node_modules 2>/dev/null || true
+          fi
+          
+          # Extract new deployment
+          echo -e "${GREEN}Extracting new deployment...${NC}"
+          tar -xzf /tmp/deploy.tar.gz -C /var/www/resumy/
+          rm /tmp/deploy.tar.gz
+          
+          # Install/update dependencies if needed
+          if [ ! -d "node_modules" ] || [ pnpm-lock.yaml -nt node_modules ]; then
+            echo -e "${GREEN}Installing dependencies...${NC}"
+            pnpm install --frozen-lockfile --prod
+          fi
+          
+          # Create secure .env.local file
+          echo -e "${GREEN}Creating environment configuration...${NC}"
+          cat > .env.local << 'ENVEOF'
           NODE_ENV=production
           NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
@@ -114,137 +133,63 @@ jobs:
           UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }}
           UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
           NEXT_PUBLIC_SITE_URL=https://resumy.live
-          EOF
+          ENVEOF
           
-          # Ensure proper permissions
+          # Secure permissions
           chmod 600 .env.local
           
-          # Install dependencies (including devDependencies needed for build)
-          npm install --legacy-peer-deps
-          
-          # Build the application
-          npm run build
-          
-          # Create PM2 ecosystem config if it doesn't exist
+          # Ensure ecosystem.config.js exists
           if [ ! -f ecosystem.config.js ]; then
-            cat > ecosystem.config.js << EOF
+            echo -e "${GREEN}Creating PM2 config...${NC}"
+            cat > ecosystem.config.js << 'PMEOF'
           module.exports = {
             apps: [{
               name: 'resumy',
-              script: 'npm',
+              script: 'pnpm',
               args: 'start',
               cwd: '/var/www/resumy',
+              instances: 1,
+              autorestart: true,
+              watch: false,
+              max_memory_restart: '1G',
               env: {
                 NODE_ENV: 'production',
                 PORT: 3000
-              }
+              },
+              error_file: '/var/log/resumy/error.log',
+              out_file: '/var/log/resumy/out.log',
+              log_date_format: 'YYYY-MM-DD HH:mm:ss Z'
             }]
           };
-          EOF
+          PMEOF
           fi
           
           # Restart PM2 process
-          pm2 restart resumy || pm2 start ecosystem.config.js --name resumy
+          echo -e "${GREEN}Restarting application...${NC}"
+          pm2 restart resumy || pm2 start ecosystem.config.js
           
           # Wait for the application to start
-          sleep 10
+          sleep 5
           
           # Check if the application is running
           pm2 list
           
-          # Test if the application responds
-          curl -f http://localhost:3000 || {
-            echo "Application health check failed"
-            pm2 logs resumy --lines 50
-            exit 1
-          }
+          # Health check
+          echo -e "${GREEN}Running health check...${NC}"
+          for i in {1..10}; do
+            if curl -f http://localhost:3000 > /dev/null 2>&1; then
+              echo -e "${GREEN}✓ Application is healthy${NC}"
+              break
+            fi
+            echo "Waiting for application to start... ($i/10)"
+            sleep 2
+          done
           
           # Save PM2 configuration
           pm2 save
           
-          # Setup PM2 to start on boot
-          pm2 startup
+          # Cleanup old backups (keep last 5)
+          cd /var/www
+          ls -t resumy-backup-*.tar.gz 2>/dev/null | tail -n +6 | xargs -r rm
           
-          # Configure Nginx for domain with SSL support
-          # Check if SSL certificates exist
-          if [ -f /etc/ssl/resumy/resumy.live.key ] && [ -f /etc/ssl/resumy/resumy.live.fullchain.crt ]; then
-            echo "SSL certificates found, creating SSL-enabled configuration"
-            cat > /etc/nginx/sites-available/resumy.live << 'NGINX_EOF'
-          # HTTP server - redirect to HTTPS
-          server {
-              listen 80;
-              server_name resumy.live www.resumy.live;
-              return 301 https://$server_name$request_uri;
-          }
-          
-          # HTTPS server
-          server {
-              listen 443 ssl http2;
-              server_name resumy.live www.resumy.live;
-              
-              # SSL Configuration
-              ssl_certificate /etc/ssl/resumy/resumy.live.fullchain.crt;
-              ssl_certificate_key /etc/ssl/resumy/resumy.live.key;
-              
-              # SSL Security Settings
-              ssl_protocols TLSv1.2 TLSv1.3;
-              ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384;
-              ssl_prefer_server_ciphers off;
-              ssl_session_cache shared:SSL:10m;
-              ssl_session_timeout 10m;
-              
-              # Security headers
-              add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
-              add_header X-Frame-Options DENY always;
-              add_header X-Content-Type-Options nosniff always;
-              add_header X-XSS-Protection "1; mode=block" always;
-              
-              location / {
-                  proxy_pass http://localhost:3000;
-                  proxy_http_version 1.1;
-                  proxy_set_header Upgrade $http_upgrade;
-                  proxy_set_header Connection 'upgrade';
-                  proxy_set_header Host $host;
-                  proxy_set_header X-Real-IP $remote_addr;
-                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                  proxy_set_header X-Forwarded-Proto $scheme;
-                  proxy_cache_bypass $http_upgrade;
-              }
-          }
-          NGINX_EOF
-          else
-            echo "SSL certificates not found, creating HTTP-only configuration"
-            cat > /etc/nginx/sites-available/resumy.live << 'NGINX_EOF'
-          server {
-              listen 80;
-              server_name resumy.live www.resumy.live;
-              
-              location / {
-                  proxy_pass http://localhost:3000;
-                  proxy_http_version 1.1;
-                  proxy_set_header Upgrade $http_upgrade;
-                  proxy_set_header Connection 'upgrade';
-                  proxy_set_header Host $host;
-                  proxy_set_header X-Real-IP $remote_addr;
-                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                  proxy_set_header X-Forwarded-Proto $scheme;
-                  proxy_cache_bypass $http_upgrade;
-              }
-          }
-          NGINX_EOF
-          fi
-          
-          # Enable the site
-          ln -sf /etc/nginx/sites-available/resumy.live /etc/nginx/sites-enabled/
-          
-          # Remove default Nginx site
-          rm -f /etc/nginx/sites-enabled/default
-          
-          # Test Nginx configuration
-          nginx -t
-          
-          # Restart Nginx
-          systemctl restart nginx
-          systemctl enable nginx
-          
-          echo "Deployment completed successfully!"
+          echo -e "${GREEN}✓ Deployment completed successfully!${NC}"
