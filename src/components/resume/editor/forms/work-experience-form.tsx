@@ -76,10 +76,11 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
   const [errorMessage, setErrorMessage] = useState({ title: '', description: '' });
 
   // Effect to force re-render when descriptions change
+  const descriptionLengths = experiences.map(exp => exp.description?.length || 0).join(',');
   useEffect(() => {
     // This effect ensures that the UI updates when descriptions are added/removed
     // by creating a dependency on the description arrays
-  }, [experiences.map(exp => exp.description?.length || 0).join(',')]);
+  }, [descriptionLengths]);
 
   // Effect to focus textarea when popover opens
   useEffect(() => {
@@ -515,7 +516,7 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                   <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-cyan-400 border border-gray-700">
                     DATE
                   </div>
-                  <span className="ml-2 text-[8px] sm:text-[10px] text-gray-400">Use 'Present' in the date field for current positions</span>
+                  <span className="ml-2 text-[8px] sm:text-[10px] text-gray-400">Use &apos;Present&apos; in the date field for current positions</span>
                 </div>
 
                 {/* Description Section */}
@@ -716,7 +717,7 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
                       <div className="text-[11px] md:text-xs text-gray-400 border-2 border-dashed border-gray-700/60 italic px-4 py-3 bg-gray-800/30 rounded-lg backdrop-blur-sm">
                         <div className="flex items-center justify-center gap-2">
                           <Plus className="h-3 w-3 text-cyan-400" />
-                          <span>Add points to describe your project's features and achievements</span>
+                          <span>Add points to describe your project&apos;s features and achievements</span>
                         </div>
                       </div>
                     )}

@@ -18,7 +18,7 @@ export default function AuthErrorHandler() {
     // Listen for auth state changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    } = supabase.auth.onAuthStateChange((event, _session) => {
       // Only handle sign out events, let successful logins flow naturally
       if (event === 'SIGNED_OUT') {
         // User signed out, redirect to login
@@ -36,7 +36,7 @@ export default function AuthErrorHandler() {
     // Set up an interval to check authentication status (less frequent to avoid conflicts)
     const checkInterval = setInterval(async () => {
       try {
-        const { data, error } = await supabase.auth.getSession()
+        const { data: _data, error } = await supabase.auth.getSession()
         
         if (error) {
           handleAuthError(error)

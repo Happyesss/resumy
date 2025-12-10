@@ -25,7 +25,7 @@ function cleanExtraSpaces(text: string): string {
 }
 
 // Recursively clean all string values in an object
-function cleanAllStrings(obj: any): any {
+function cleanAllStrings(obj: unknown): unknown {
   if (typeof obj === 'string') {
     return cleanExtraSpaces(obj);
   }
@@ -33,17 +33,25 @@ function cleanAllStrings(obj: any): any {
     return obj.map(item => cleanAllStrings(item));
   }
   if (obj && typeof obj === 'object') {
-    const cleaned: any = {};
+    const cleaned: Record<string, unknown> = {};
     for (const key of Object.keys(obj)) {
-      cleaned[key] = cleanAllStrings(obj[key]);
+      cleaned[key] = cleanAllStrings((obj as Record<string, unknown>)[key]);
     }
     return cleaned;
   }
   return obj;
 }
 
+// Define proper type for safeGenerateObject params
+interface SafeGenerateObjectParams {
+  model: LanguageModelV1;
+  schema: z.ZodType;
+  prompt: string;
+  system?: string;
+}
+
 // Wrapper function for generateObject with fallback to generateText
-async function safeGenerateObject(params: any) {
+async function safeGenerateObject(params: SafeGenerateObjectParams) {
   try {
     return await generateObject(params);
   } catch (error) {
@@ -68,7 +76,7 @@ async function safeGenerateObject(params: any) {
         const cleanedText = cleanJsonResponse(text);
         const parsedObject = JSON.parse(cleanedText);
         return { object: parsedObject };
-      } catch (parseError) {
+      } catch (_parseError) {
         throw new Error(`Failed to parse AI response as JSON: ${text}`);
       }
     }
@@ -81,7 +89,7 @@ async function safeGenerateObject(params: any) {
 export async function formatProfileWithAI(
   userMessages: string,
   config?: AIConfig
-) {
+): Promise<Record<string, unknown>> {
     try {
       const aiClient = initializeAIClient(config);
       
@@ -149,7 +157,7 @@ SCHEMA:
       }
       
       // Clean all extra spaces from the result before returning
-      const cleanedContent = cleanAllStrings(object.content);
+      const cleanedContent = cleanAllStrings(object.content) as Record<string, unknown>;
       return sanitizeUnknownStrings(cleanedContent);
     } catch (error) {
       throw error;
@@ -159,9 +167,9 @@ SCHEMA:
 // Manual fallback parsing function
 function parseResumeManually(text: string) {
   const result = {
-    education: [] as any[],
-    skills: [] as any[],
-    projects: [] as any[]
+    education: [] as Array<{ school: string; degree: string; field: string; date: string; location: string; achievements: string[] }>,
+    skills: [] as Array<{ category: string; items: string[] }>,
+    projects: [] as Array<{ name: string; description: string[]; technologies: string[]; date?: string; url?: string; github_url?: string }>
   };
   
   try {
@@ -204,7 +212,7 @@ function parseResumeManually(text: string) {
       result.projects = extractProjectsFromText(text);
     }
     
-  } catch (error) {
+  } catch (_error) {
     // Silently handle parsing errors
   }
   
@@ -482,11 +490,11 @@ function findSections(text: string): Record<string, string> {
 }
 
 // Parse education section
-function parseEducationSection(text: string): any[] {
-  const education: any[] = [];
+function parseEducationSection(text: string): Array<{ school: string; degree: string; field: string; date: string; location: string; achievements: string[] }> {
+  const education: Array<{ school: string; degree: string; field: string; date: string; location: string; achievements: string[] }> = [];
   const lines = text.split('\n').filter(line => line.trim()).map(line => line.trim());
   
-  let currentEdu: any = null;
+  let currentEdu: { school: string; degree: string; field: string; date: string; location: string; achievements: string[] } | null = null;
   let i = 0;
   
   while (i < lines.length) {
@@ -546,8 +554,8 @@ function parseEducationSection(text: string): any[] {
 }
 
 // Parse skills section
-function parseSkillsSection(text: string): any[] {
-  const skills: any[] = [];
+function parseSkillsSection(text: string): Array<{ category: string; items: string[] }> {
+  const skills: Array<{ category: string; items: string[] }> = [];
   const lines = text.split('\n').filter(line => line.trim()).map(line => line.trim());
   
   for (const line of lines) {
@@ -573,11 +581,11 @@ function parseSkillsSection(text: string): any[] {
 }
 
 // Parse projects section
-function parseProjectsSection(text: string): any[] {
-  const projects: any[] = [];
+function parseProjectsSection(text: string): Array<{ name: string; description: string[]; technologies: string[]; date?: string; url?: string; github_url?: string }> {
+  const projects: Array<{ name: string; description: string[]; technologies: string[]; date?: string; url?: string; github_url?: string }> = [];
   const lines = text.split('\n').filter(line => line.trim()).map(line => line.trim());
   
-  let currentProject: any = null;
+  let currentProject: { name: string; description: string[]; technologies: string[]; date?: string; url?: string; github_url?: string } | null = null;
   
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];

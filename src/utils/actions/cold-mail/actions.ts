@@ -134,34 +134,40 @@ ${resume.website ? `Portfolio: ${resume.website}` : ''}
 Current Role/Target: ${resume.target_role}
 
 === PROFESSIONAL EXPERIENCE (most recent 2) ===
-${limitedExperience.length > 0 ? limitedExperience.map((exp: any) => `
-📍 ${exp.position} at ${exp.company}
-   Duration: ${exp.date}
-   Location: ${exp.location || 'Remote/Not specified'}
-   Key Achievements: ${exp.description?.slice(0,2).join('; ') || 'No specific achievements listed'}
-   Technologies Used: ${exp.technologies?.join(', ') || 'Not specified'}
-`).join('\n') : 'No professional experience provided'}
+${limitedExperience.length > 0 ? limitedExperience.map((exp: unknown) => {
+  const e = exp as { position?: string; company?: string; date?: string; location?: string; description?: string[]; technologies?: string[] };
+  return `
+📍 ${e.position} at ${e.company}
+   Duration: ${e.date}
+   Location: ${e.location || 'Remote/Not specified'}
+   Key Achievements: ${e.description?.slice(0,2).join('; ') || 'No specific achievements listed'}
+   Technologies Used: ${e.technologies?.join(', ') || 'Not specified'}
+`;}).join('\n') : 'No professional experience provided'}
 
 === EDUCATION BACKGROUND (most recent 2) ===
-${limitedEducation.length > 0 ? limitedEducation.map((edu: any) => `
-🎓 ${edu.degree} in ${edu.field || 'Not specified'}
-   School: ${edu.school}
-   Date: ${edu.date || 'Not specified'}
-   ${edu.gpa ? `GPA: ${edu.gpa}` : ''}
-   ${edu.achievements?.length ? `Achievements: ${edu.achievements.slice(0,2).join(', ')}` : ''}
-`).join('\n') : 'No education information provided'}
+${limitedEducation.length > 0 ? limitedEducation.map((edu: unknown) => {
+  const ed = edu as { degree?: string; field?: string; school?: string; date?: string; gpa?: string; achievements?: string[] };
+  return `
+🎓 ${ed.degree} in ${ed.field || 'Not specified'}
+   School: ${ed.school}
+   Date: ${ed.date || 'Not specified'}
+   ${ed.gpa ? `GPA: ${ed.gpa}` : ''}
+   ${ed.achievements?.length ? `Achievements: ${ed.achievements.slice(0,2).join(', ')}` : ''}
+`;}).join('\n') : 'No education information provided'}
 
 === TECHNICAL SKILLS (summary) ===
-${resume.skills?.map((skillCategory: any) => `${skillCategory.category}: ${skillCategory.items?.slice(0,4).join(', ') || 'Not specified'}`).join('; ') || 'No skills information provided'}
+${resume.skills?.map((skillCategory: unknown) => { const sc = skillCategory as { category?: string; items?: string[] }; return `${sc.category}: ${sc.items?.slice(0,4).join(', ') || 'Not specified'}`; }).join('; ') || 'No skills information provided'}
 
 === NOTABLE PROJECTS (up to 2) ===
-${limitedProjects.length > 0 ? limitedProjects.map((project: any) => `
-🚀 ${project.name}
-   ${Array.isArray(project.description) ? project.description.slice(0,2).join(' ') : project.description || 'No description available'}
-   Technologies: ${project.technologies?.join(', ') || 'Not specified'}
-   ${project.url ? `Live Demo: ${project.url}` : ''}
-   ${project.github_url ? `Code: ${project.github_url}` : ''}
-`).join('\n') : 'No projects listed'}
+${limitedProjects.length > 0 ? limitedProjects.map((project: unknown) => {
+  const p = project as { name?: string; description?: string | string[]; technologies?: string[]; url?: string; github_url?: string };
+  return `
+🚀 ${p.name}
+   ${Array.isArray(p.description) ? p.description.slice(0,2).join(' ') : p.description || 'No description available'}
+   Technologies: ${p.technologies?.join(', ') || 'Not specified'}
+   ${p.url ? `Live Demo: ${p.url}` : ''}
+   ${p.github_url ? `Code: ${p.github_url}` : ''}
+`;}).join('\n') : 'No projects listed'}
 
 === TARGET OPPORTUNITY ===
 Company: ${job.company_name || (data.resume.name.includes(' at ') ? data.resume.name.split(' at ')[1] : 'Target Company')}

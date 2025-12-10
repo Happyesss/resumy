@@ -26,12 +26,12 @@ export function UploadForm({
   resumeText,
   setResumeText,
   isAnalyzing,
-  error,
+  error: _error,
   setError,
   onAnalyze,
-  hasResults = false,
+  hasResults: _hasResults = false,
   setResumeFile,
-  delayCountdown,
+  delayCountdown: _delayCountdown,
 }: UploadFormProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -91,7 +91,7 @@ export function UploadForm({
       } else {
         setError('Please upload a PDF or text file (.pdf, .txt), or copy-paste your resume content.');
       }
-    } catch (err) {
+    } catch (_err) {
       setError('Failed to extract text from the file. Please try again or copy-paste the content manually.');
     } finally {
       setIsProcessing(false);

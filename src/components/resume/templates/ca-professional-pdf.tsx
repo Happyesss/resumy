@@ -441,7 +441,7 @@ const CAPDFResume = memo(({ resume }: CAPDFResumeProps) => {
     );
   };
 
-  const renderProfessionalHighlight = () => {
+  const _renderProfessionalHighlight = () => {
     // Remove this section as requested
     return null;
   };

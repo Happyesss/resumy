@@ -475,7 +475,7 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
                     Select Your Base Resume
                   </h3>
                   <p className="text-gray-400 max-w-lg mx-auto leading-relaxed">
-                    Choose which resume you'd like to tailor for this specific job opportunity
+                    Choose which resume you&apos;d like to tailor for this specific job opportunity
                   </p>
                 </div>
                 

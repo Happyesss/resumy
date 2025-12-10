@@ -46,7 +46,7 @@ export async function getResumeById(resumeId: string): Promise<{ resume: Resume;
       resume: resumeResult.data, 
       profile: profileResult.data 
     };
-  } catch (error) {
+  } catch (_error) {
     return null;
   }
 }
@@ -279,7 +279,6 @@ export async function createTailoredResume(
   }
 
   // Extract the ID from base resume to prevent duplicate ID error
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id: _baseId, ...baseResumeWithoutId } = baseResume;
 
   // Ensure all properties of tailoredContent are properly initialized
@@ -385,7 +384,6 @@ export async function copyResume(resumeId: string): Promise<Resume> {
   }
 
   // Exclude auto-generated fields that shouldn't be copied
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id: _id, created_at: _created_at, updated_at: _updated_at, ...resumeDataToCopy } = sourceResume;
 
   let newJobId = null;
@@ -401,7 +399,6 @@ export async function copyResume(resumeId: string): Promise<Resume> {
 
     if (!jobFetchError && sourceJob) {
       // Create a copy of the job
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { id: _jobId, created_at: _jobCreated, updated_at: _jobUpdated, ...jobDataToCopy } = sourceJob;
       
       const { data: newJob, error: jobCreateError } = await supabase

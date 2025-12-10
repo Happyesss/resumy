@@ -45,9 +45,9 @@ function cleanAllStrings(obj: unknown): unknown {
 }
 
 // Wrapper function for generateObject with fallback to generateText
-async function safeGenerateObject(params: any) {
+async function safeGenerateObject(params: Record<string, unknown>) {
   try {
-    return await generateObject(params);
+    return await generateObject(params as Parameters<typeof generateObject>[0]);
   } catch (error) {
     // Check if it's a JSON parsing error or AI generation error
     if (error instanceof Error && (
@@ -61,9 +61,9 @@ async function safeGenerateObject(params: any) {
       
       // Fallback to generateText
       const { text } = await generateText({
-        model: params.model,
-        prompt: params.prompt + "\n\nIMPORTANT: Return your response as valid JSON only, without markdown code blocks.",
-        system: params.system,
+        model: params.model as Parameters<typeof generateText>[0]['model'],
+        prompt: (params.prompt as string) + "\n\nIMPORTANT: Return your response as valid JSON only, without markdown code blocks.",
+        system: params.system as string | undefined,
       });
       
       try {

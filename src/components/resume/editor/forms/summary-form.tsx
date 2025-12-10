@@ -18,7 +18,7 @@ interface SummaryFormProps {
   userEmail?: string | null;
 }
 
-export function SummaryForm({ summary, onChange, userEmail }: SummaryFormProps) {
+export function SummaryForm({ summary, onChange }: SummaryFormProps) {
   const { toast } = useToast();
   const [improvementPrompt, setImprovementPrompt] = useState('');
   const [isImproving, setIsImproving] = useState(false);
@@ -259,8 +259,8 @@ export function SummaryForm({ summary, onChange, userEmail }: SummaryFormProps) 
           )}
           <div className="text-[11px] leading-relaxed text-gray-400 space-y-1">
             <p><span className="text-fuchsia-400 font-medium">Tip:</span> Start with your title + years of experience. Add 1–2 standout achievements or impact metrics.</p>
-            <p>Only include technologies, domains, or achievements you actually have experience with—don’t add anything you can’t defend in an interview.</p>
-            <p>Keep it targeted to the role you want; avoid generic claims like 'hard-working team player'.</p>
+            <p>Only include technologies, domains, or achievements you actually have experience with—don&apos;t add anything you can&apos;t defend in an interview.</p>
+            <p>Keep it targeted to the role you want; avoid generic claims like &apos;hard-working team player&apos;.</p>
           </div>
         </CardContent>
       </Card>

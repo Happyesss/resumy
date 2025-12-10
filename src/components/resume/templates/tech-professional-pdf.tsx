@@ -288,7 +288,7 @@ interface TechProfessionalPDFProps {
   variant?: 'base' | 'tailored';
 }
 
-export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, variant = 'base' }: TechProfessionalPDFProps) {
+export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, variant: _variant = 'base' }: TechProfessionalPDFProps) {
   
   const renderContactInfo = () => {
     const contactItems = [
@@ -317,7 +317,7 @@ export const TechProfessionalPDF = memo(function TechProfessionalPDF({ resume, v
               </Text>
             </View>
           ))}
-          {links.length > 0 && links.map((link, idx) => (
+          {links.length > 0 && links.map((link, _idx) => (
             <View key={link.url} style={techProfessionalStyles.contactItem}>
               <View style={techProfessionalStyles.contactIcon} />
               <Link src={link.url} style={techProfessionalStyles.linkText}>

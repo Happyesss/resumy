@@ -44,7 +44,7 @@ const FeatureHighlights = () => {
     }
   ];
 
-  const containerVariants = {
+  const _containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -54,7 +54,7 @@ const FeatureHighlights = () => {
     }
   };
 
-  const itemVariants = {
+  const _itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,

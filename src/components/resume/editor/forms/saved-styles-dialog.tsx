@@ -16,13 +16,13 @@ import { Check, Plus, Save, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface SavedStylesDialogProps {
-  currentSettings: Record<string, any>;
-  onApplyStyle: (settings: Record<string, any>) => void;
+  currentSettings: Record<string, unknown>;
+  onApplyStyle: (settings: Record<string, unknown>) => void;
 }
 
 interface SavedStyle {
   name: string;
-  settings: Record<string, any>;
+  settings: Record<string, unknown>;
   timestamp: number;
 }
 
@@ -65,7 +65,7 @@ export function SavedStylesDialog({ currentSettings, onApplyStyle }: SavedStyles
   };
 
   // Apply a saved style
-  const handleApplyStyle = (settings: Record<string, any>) => {
+  const handleApplyStyle = (settings: Record<string, unknown>) => {
     onApplyStyle(settings);
     setIsOpen(false);
   };

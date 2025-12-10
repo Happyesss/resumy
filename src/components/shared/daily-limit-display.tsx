@@ -10,7 +10,7 @@ interface DailyLimitDisplayProps {
   userEmail?: string | null;
 }
 
-export function DailyLimitDisplay({ className, showLabel = true, userEmail }: DailyLimitDisplayProps) {
+export function DailyLimitDisplay({ className, showLabel = true, userEmail: _userEmail }: DailyLimitDisplayProps) {
   const dailyLimit = getAIRequestLimit();
   const [remaining, setRemaining] = useState(dailyLimit);
 

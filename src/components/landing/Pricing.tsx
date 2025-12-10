@@ -100,12 +100,12 @@ export function Pricing() {
               <Star className="h-6 w-6 text-white" />
             </div>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
-              Why Pay When It's
+              Why Pay When It&apos;s
               <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent"> Free</span>?
             </h2>
           </div>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Compare what you'd pay elsewhere vs. what you get with Resumy - completely free, forever.
+            Compare what you&apos;d pay elsewhere vs. what you get with Resumy - completely free, forever.
           </p>
         </motion.div>
 
@@ -117,7 +117,7 @@ export function Pricing() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          {plans.map((plan, index) => (
+          {plans.map((plan, _index) => (
             <motion.div
               key={plan.name}
               variants={itemVariants}
@@ -221,7 +221,7 @@ export function Pricing() {
             </div>
             <p className="text-gray-400 mb-6">
               While others charge premium prices, we believe everyone deserves access to professional resume tools. 
-              That's why Resumy is completely free, forever.
+              That&apos;s why Resumy is completely free, forever.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500">
               <div className="flex items-center gap-2">

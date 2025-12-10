@@ -115,7 +115,7 @@ function TestimonialCard({ testimonial, featured = false }: { testimonial: typeo
 
       {/* Content */}
       <blockquote className="text-gray-300 mb-5 leading-relaxed italic text-sm">
-        "{testimonial.content}"
+        &quot;{testimonial.content}&quot;
       </blockquote>
 
       {/* Author */}
@@ -171,7 +171,7 @@ export function Testimonials() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          {featuredTestimonials.map((testimonial, index) => (
+          {featuredTestimonials.map((testimonial, _index) => (
             <TestimonialCard key={testimonial.name} testimonial={testimonial} featured />
           ))}
         </motion.div>
@@ -184,7 +184,7 @@ export function Testimonials() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          {otherTestimonials.map((testimonial, index) => (
+          {otherTestimonials.map((testimonial, _index) => (
             <TestimonialCard key={testimonial.name} testimonial={testimonial} />
           ))}
         </motion.div>

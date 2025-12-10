@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
+import SocialAuth from "@/components/auth/social-auth";
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
 import { useAuth } from "./auth-context";
@@ -108,7 +109,7 @@ export function SignupForm() {
       {formState.success ? (
         <Alert className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 rounded-lg">
           <AlertDescription>
-            Account created successfully! Please check your email to confirm your account. If you don't see the email, please check your spam folder.
+            Account created successfully! Please check your email to confirm your account. If you don&apos;t see the email, please check your spam folder.
           </AlertDescription>
         </Alert>
       ) : (
@@ -222,6 +223,7 @@ export function SignupForm() {
           </div>
 
           <SubmitButton />
+          <SocialAuth />
         </form>
       )}
     </>

@@ -247,7 +247,7 @@ interface CreativeModernPDFProps {
   variant?: 'base' | 'tailored';
 }
 
-export const CreativeModernPDF = memo(function CreativeModernPDF({ resume, variant = 'base' }: CreativeModernPDFProps) {
+export const CreativeModernPDF = memo(function CreativeModernPDF({ resume, variant: _variant = 'base' }: CreativeModernPDFProps) {
   
   const renderContactInfo = () => {
     const contactItems = [

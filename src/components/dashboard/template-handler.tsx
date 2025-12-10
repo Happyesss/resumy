@@ -13,11 +13,11 @@ interface TemplateHandlerProps {
 export function TemplateHandler({ profile }: TemplateHandlerProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [shouldShow, setShouldShow] = useState(false);
+  const [_shouldShow, setShouldShow] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   const shouldCreateBase = searchParams?.get('createBase') === 'true';
-  const templateId = searchParams?.get('template');
+  const _templateId = searchParams?.get('template');
 
   useEffect(() => {
     setMounted(true);
@@ -39,7 +39,7 @@ export function TemplateHandler({ profile }: TemplateHandlerProps) {
     }
   }, [mounted, shouldCreateBase]);
 
-  const handleAfterCreate = () => {
+  const _handleAfterCreate = () => {
     // Clean up URL parameters after dialog closes
     const url = new URL(window.location.href);
     url.searchParams.delete('createBase');

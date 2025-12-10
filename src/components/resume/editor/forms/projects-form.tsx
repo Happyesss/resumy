@@ -71,11 +71,14 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
   const textareaRefs = useRef<{ [key: number]: HTMLTextAreaElement }>({});
   const [newTechnologies, setNewTechnologies] = useState<{ [key: number]: string }>({});
 
+  // Extract dependency for useEffect to satisfy lint rules
+  const projectDescriptionLengths = projects.map(proj => proj.description?.length || 0).join(',');
+
   // Effect to force re-render when descriptions change
   useEffect(() => {
     // This effect ensures that the UI updates when descriptions are added/removed
     // by creating a dependency on the description arrays
-  }, [projects.map(proj => proj.description?.length || 0).join(',')]);
+  }, [projectDescriptionLengths]);
 
   // Effect to focus textarea when popover opens
   useEffect(() => {

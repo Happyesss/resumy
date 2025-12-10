@@ -51,7 +51,7 @@ export function ProfileSkillsForm({ skills, onChange }: ProfileSkillsFormProps) 
         skills.map((s, i) => [i, s.items?.join(', ') || ''])
       )
     );
-  }, [skills.length]);
+  }, [skills]);
 
   return (
     <div className="space-y-3">

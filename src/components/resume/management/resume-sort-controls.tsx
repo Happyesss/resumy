@@ -36,7 +36,7 @@ export function ResumeSortControls({
 }: ResumeSortControlsProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const pathname = usePathname();
+  const _pathname = usePathname();
 
   const currentSort = propCurrentSort || (searchParams.get(sortParam) as SortOption) || 'createdAt'
   const direction = propCurrentDirection || (searchParams.get(directionParam) as SortDirection) || 'desc'
@@ -50,7 +50,7 @@ export function ResumeSortControls({
     router.push(`?${params.toString()}`)
   }
 
-  function toggleDirection() {
+  function _toggleDirection() {
     const params = new URLSearchParams(searchParams)
     params.set(directionParam, direction === 'asc' ? 'desc' : 'asc')
     router.push(`?${params.toString()}`)

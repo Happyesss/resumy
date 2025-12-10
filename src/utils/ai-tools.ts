@@ -17,7 +17,7 @@ export type AIConfig = {
  * Initializes an AI client using environment variables
  * Uses gemini-2.5-flash-lite model with GEMINI_API_KEY from environment
  */
-export function initializeAIClient(config?: AIConfig, useThinking?: boolean) {
+export function initializeAIClient(_config?: AIConfig, _useThinking?: boolean) {
   // Always use environment variable since user API keys are no longer supported
   const envKey = process.env.GEMINI_API_KEY;
   if (!envKey) {

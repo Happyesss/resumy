@@ -185,7 +185,7 @@ interface ClassicResumePDFProps {
   variant?: 'base' | 'tailored';
 }
 
-export const ClassicResumePDF = memo(function ClassicResumePDF({ resume, variant = 'base' }: ClassicResumePDFProps) {
+export const ClassicResumePDF = memo(function ClassicResumePDF({ resume, variant: _variant = 'base' }: ClassicResumePDFProps) {
   
   const renderContactInfo = () => {
     const contactItems = [

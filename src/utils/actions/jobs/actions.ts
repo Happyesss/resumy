@@ -8,22 +8,23 @@ import { z } from "zod";
 import { JobListingParams } from "./schema";
 
 // Temporary mapper to handle database column name differences
-function mapDbJobToJob(dbJob: any): Job {
+function mapDbJobToJob(dbJob: unknown): Job {
+  const job = dbJob as Record<string, unknown>;
   return {
-    id: dbJob.id,
-    user_id: dbJob.user_id,
-    company_name: dbJob.company_name || dbJob.company || '',
-    position_title: dbJob.position_title || dbJob.title || '',
-    job_url: dbJob.job_url,
-    description: dbJob.description,
-    location: dbJob.location,
-    salary_range: dbJob.salary_range,
-    keywords: dbJob.keywords || [],
-    work_location: dbJob.work_location,
-    employment_type: dbJob.employment_type,
-    created_at: dbJob.created_at,
-    updated_at: dbJob.updated_at,
-    is_active: dbJob.is_active !== undefined ? dbJob.is_active : true
+    id: job.id as string,
+    user_id: job.user_id as string,
+    company_name: (job.company_name || job.company || '') as string,
+    position_title: (job.position_title || job.title || '') as string,
+    job_url: (job.job_url as string | undefined) ?? null,
+    description: (job.description as string | undefined) ?? null,
+    location: (job.location as string | undefined) ?? null,
+    salary_range: (job.salary_range as string | undefined) ?? null,
+    keywords: (job.keywords || []) as string[],
+    work_location: (job.work_location as 'remote' | 'in_person' | 'hybrid' | undefined) ?? null,
+    employment_type: (job.employment_type as 'full_time' | 'part_time' | 'co_op' | 'internship' | 'contract' | undefined) ?? null,
+    created_at: job.created_at as string,
+    updated_at: job.updated_at as string,
+    is_active: job.is_active !== undefined ? job.is_active as boolean : true
   };
 }
 
@@ -130,7 +131,7 @@ export async function getJobListings({
       if (filters.keywords && filters.keywords.length > 0) {
         query = query.contains('keywords', filters.keywords);
       }
-    } catch (error) {
+    } catch (_error) {
       console.log('Some filter columns may not exist yet, skipping advanced filters');
     }
   }

@@ -34,7 +34,7 @@ export default function AnalyzeResumePage() {
   const [error, setError] = useState<string | null>(null);
   const [delayCountdown, setDelayCountdown] = useState<number | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const [apiKeyTestResult, setApiKeyTestResult] = useState<any>(null);
+  const [_apiKeyTestResult, _setApiKeyTestResult] = useState<unknown>(null);
 
   // Check authentication status
   useEffect(() => {

@@ -55,10 +55,13 @@ export function FeedbackButton({ className, variant = 'floating' }: FeedbackButt
       <button
         onClick={() => setOpen(true)}
         className={cn(
-          'fixed z-50 group',
+          // ensure this button sits above other widgets (eg. BuyMeCoffee) on mobile
+          'fixed z-[9999] group pointer-events-auto',
+          // use safe-area for bottom inset on devices with home indicators
           'bottom-6 right-6',
           'flex items-center gap-2',
-          'px-4 py-3 rounded-full',
+          // show only icon on small screens but make hit area touch-friendly
+          'p-3 rounded-full sm:px-4 sm:py-3',
           'bg-gradient-to-r from-purple-600 to-purple-500',
           'hover:from-purple-500 hover:to-purple-400',
           'text-white font-medium text-sm',
@@ -69,6 +72,11 @@ export function FeedbackButton({ className, variant = 'floating' }: FeedbackButt
           className
         )}
         aria-label="Send feedback"
+        // Ensure the button has a generous hit area on mobile
+        style={{
+          // add bottom safe area inset fallback value for older browsers
+          bottom: 'calc(env(safe-area-inset-bottom, 0px) + 1.5rem)'
+        }}
       >
         <MessageSquareText className="h-5 w-5" />
         <span className="hidden sm:inline">Feedback</span>

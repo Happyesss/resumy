@@ -28,7 +28,7 @@ export function ResumeEditorActions({
 }: ResumeEditorActionsProps) {
   const { state, dispatch } = useResumeContext();
   const { resume, isSaving } = state;
-  const [downloadOptions, setDownloadOptions] = useState({
+  const [downloadOptions, _setDownloadOptions] = useState({
     resume: true,
     coverLetter: true
   });
@@ -86,14 +86,14 @@ export function ResumeEditorActions({
     "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0"
   );
 
-  const importButtonClasses = cn(
+  const _importButtonClasses = cn(
     buttonBaseStyle,
     colors.importBg,
     colors.importHover,
     colors.importShadow
   );
 
-  const actionButtonClasses = cn(
+  const _actionButtonClasses = cn(
     buttonBaseStyle,
     colors.actionBg,
     colors.actionHover,

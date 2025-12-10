@@ -353,7 +353,7 @@ export async function getShareAnalytics(shareId: string): Promise<{
     }, {} as Record<string, number>);
 
     const deviceBreakdown = Object.entries(deviceCounts)
-      .map(([device_type, count]) => ({ device_type, count }))
+      .map(([device_type, count]) => ({ device_type, count: count as number }))
       .sort((a, b) => b.count - a.count);
 
     // Top referrers from referrer_domains array
@@ -365,7 +365,7 @@ export async function getShareAnalytics(shareId: string): Promise<{
     }, {} as Record<string, number>);
 
     const topReferrers = Object.entries(referrerCounts)
-      .map(([referrer_domain, count]) => ({ referrer_domain, count }))
+      .map(([referrer_domain, count]) => ({ referrer_domain, count: count as number }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 5);
 
@@ -378,7 +378,7 @@ export async function getShareAnalytics(shareId: string): Promise<{
     }, {} as Record<string, number>);
 
     const topCountries = Object.entries(countryCounts)
-      .map(([country, count]) => ({ country, count }))
+      .map(([country, count]) => ({ country, count: count as number }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 5);
 
@@ -472,8 +472,8 @@ export async function getAggregatedAnalytics(): Promise<{
     const deviceBreakdown = Object.entries(deviceCounts)
       .map(([device_type, count]) => ({
         device_type,
-        count,
-        percentage: totalDeviceEvents > 0 ? Math.round((count / totalDeviceEvents) * 100) : 0,
+        count: count as number,
+        percentage: totalDeviceEvents > 0 ? Math.round(((count as number) / totalDeviceEvents) * 100) : 0,
       }))
       .sort((a, b) => b.count - a.count);
 
@@ -486,7 +486,7 @@ export async function getAggregatedAnalytics(): Promise<{
     }, {} as Record<string, number>);
 
     const topReferrers = Object.entries(referrerCounts)
-      .map(([referrer_domain, count]) => ({ referrer_domain, count }))
+      .map(([referrer_domain, count]) => ({ referrer_domain, count: count as number }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 5);
 

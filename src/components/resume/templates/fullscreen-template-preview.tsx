@@ -103,7 +103,7 @@ export function FullscreenTemplatePreview({
     }
   }, [lastPinchDistance, scale, isDragging]);
 
-  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+  const handleTouchEnd = useCallback((_e: React.TouchEvent) => {
     setIsDragging(false);
     setLastPinchDistance(0);
     

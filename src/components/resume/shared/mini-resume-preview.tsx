@@ -29,8 +29,8 @@ export function MiniResumePreview({
   }
 
   const accentBorder = type === 'base' ? 'gray-200' : 'purple-300';
-  const accentBg = type === 'base' ? 'white' : 'purple-50';
-  const accentText = type === 'base' ? 'gray-700' : 'purple-600';
+  const _accentBg = type === 'base' ? 'white' : 'purple-50';
+  const _accentText = type === 'base' ? 'gray-700' : 'purple-600';
   const glowColor = type === 'base' 
     ? 'shadow-gray-300/20 hover:shadow-gray-300/30' 
     : 'shadow-purple-500/20 hover:shadow-purple-500/30';

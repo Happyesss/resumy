@@ -54,7 +54,7 @@ export default function ResumeWritingGuide() {
           <h2>What Makes a Great Resume in 2025?</h2>
           <p>
             A great resume in 2025 must accomplish three key objectives: pass through Applicant 
-            Tracking Systems (ATS), grab a hiring manager's attention within 6 seconds, and 
+            Tracking Systems (ATS), grab a hiring manager&apos;s attention within 6 seconds, and 
             clearly demonstrate your value to potential employers. The modern resume is both 
             a marketing document and a professional summary that tells your career story.
           </p>
@@ -74,7 +74,7 @@ export default function ResumeWritingGuide() {
 
           <h3>2. Professional Summary</h3>
           <p>
-            Replace outdated "objective statements" with a compelling professional summary. 
+            Replace outdated &quot;objective statements&quot; with a compelling professional summary. 
             This 2-4 sentence paragraph should highlight your experience level, key skills, 
             and what you bring to the role. Include relevant keywords from the job description.
           </p>
@@ -82,10 +82,10 @@ export default function ResumeWritingGuide() {
           <div className="bg-gray-50 p-6 rounded-lg my-6">
             <h4 className="text-lg font-semibold text-gray-900 mb-3">Professional Summary Example</h4>
             <p className="text-gray-700 italic">
-              "Experienced software engineer with 5+ years developing scalable web applications 
+              &quot;Experienced software engineer with 5+ years developing scalable web applications 
               using React, Node.js, and Python. Proven track record of leading cross-functional 
               teams and delivering high-quality software solutions that increased user engagement 
-              by 40%. Passionate about clean code, test-driven development, and mentoring junior developers."
+              by 40%. Passionate about clean code, test-driven development, and mentoring junior developers.&quot;
             </p>
           </div>
 
@@ -121,7 +121,7 @@ export default function ResumeWritingGuide() {
           <h3>4. Skills Section</h3>
           <p>
             Include both hard skills (technical abilities) and soft skills (interpersonal abilities). 
-            Prioritize skills mentioned in the job description you're targeting.
+            Prioritize skills mentioned in the job description you&apos;re targeting.
           </p>
 
           <div className="grid md:grid-cols-2 gap-6 my-6">
@@ -153,7 +153,7 @@ export default function ResumeWritingGuide() {
             <li><strong>Graduation Year</strong></li>
             <li><strong>GPA</strong> (only if 3.5 or higher and recent graduate)</li>
             <li><strong>Relevant Coursework</strong> (for new graduates or career changers)</li>
-            <li><strong>Academic Honors</strong> (Dean's List, Magna Cum Laude, etc.)</li>
+            <li><strong>Academic Honors</strong> (Dean&apos;s List, Magna Cum Laude, etc.)</li>
           </ul>
 
           <h2>Resume Formatting Best Practices</h2>
@@ -163,7 +163,7 @@ export default function ResumeWritingGuide() {
             <li><strong>Use standard fonts:</strong> Arial, Calibri, Times New Roman, or Helvetica</li>
             <li><strong>Font size:</strong> 10-12pt for body text, 14-16pt for headings</li>
             <li><strong>Consistent formatting:</strong> Same style for all similar elements</li>
-            <li><strong>Standard section headers:</strong> "Work Experience," "Education," "Skills"</li>
+            <li><strong>Standard section headers:</strong> &quot;Work Experience,&quot; &quot;Education,&quot; &quot;Skills&quot;</li>
             <li><strong>Avoid graphics:</strong> No images, charts, or complex designs</li>
             <li><strong>Use bullet points:</strong> Easy for ATS to parse</li>
           </ul>
@@ -228,14 +228,14 @@ export default function ResumeWritingGuide() {
 
           <h2>Resume Keywords and ATS Optimization</h2>
           <p>
-            Modern resumes must be optimized for both ATS and human readers. Here's how to 
+            Modern resumes must be optimized for both ATS and human readers. Here&apos;s how to 
             incorporate keywords effectively:
           </p>
           
           <ol>
             <li><strong>Study the job description:</strong> Identify key skills, qualifications, and requirements</li>
             <li><strong>Use exact keyword matches:</strong> Include important terms as they appear in the job posting</li>
-            <li><strong>Include variations:</strong> Use both "AI" and "Artificial Intelligence"</li>
+            <li><strong>Include variations:</strong> Use both &quot;AI&quot; and &quot;Artificial Intelligence&quot;</li>
             <li><strong>Natural integration:</strong> Work keywords into your experience descriptions organically</li>
             <li><strong>Skills section optimization:</strong> Include relevant technical and soft skills</li>
           </ol>
@@ -258,7 +258,7 @@ export default function ResumeWritingGuide() {
 
           <h2>Ready to Build Your Professional Resume?</h2>
           <p>
-            Creating a professional resume doesn't have to be overwhelming. Use our free 
+            Creating a professional resume doesn&apos;t have to be overwhelming. Use our free 
             AI-powered resume builder to create a polished, ATS-optimized resume in minutes. 
             Our platform guides you through each section and provides real-time suggestions 
             to help you create a resume that gets results.

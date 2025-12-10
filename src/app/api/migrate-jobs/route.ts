@@ -16,7 +16,7 @@ export async function POST() {
     console.log('Starting jobs table check...')
     
     // Check current table structure by trying to select with the new column names
-    const { data: testData, error: testError } = await supabase
+    const { data: _testData, error: testError } = await supabase
       .from('jobs')
       .select('id, company_name, position_title')
       .limit(1)

@@ -311,17 +311,17 @@ export function AnalyzeResumeOptimization() {
       <div style={{ display: 'none' }} aria-hidden="true">
         <section data-voice-qa="resume-analysis">
           <h3>How to analyze my resume for ATS compatibility</h3>
-          <p>Analyze your resume for ATS compatibility using Resumy's free resume analyzer. Upload your resume file and get instant scoring on formatting, keywords, and optimization suggestions.</p>
+          <p>Analyze your resume for ATS compatibility using Resumy&apos;s free resume analyzer. Upload your resume file and get instant scoring on formatting, keywords, and optimization suggestions.</p>
         </section>
         
         <section data-voice-qa="ats-score">
           <h3>What is a good ATS score for resumes</h3>
-          <p>A good ATS score is 80 percent or higher. Resumy's analyzer provides detailed scoring to help you achieve optimal ATS compatibility and improve your job application success rate.</p>
+          <p>A good ATS score is 80 percent or higher. Resumy&apos;s analyzer provides detailed scoring to help you achieve optimal ATS compatibility and improve your job application success rate.</p>
         </section>
         
         <section data-voice-qa="resume-keywords">
           <h3>How to find the right keywords for my resume</h3>
-          <p>Use Resumy's keyword analysis tool to identify missing keywords and optimize your resume. The analyzer compares your resume against industry standards and job requirements.</p>
+          <p>Use Resumy&apos;s keyword analysis tool to identify missing keywords and optimize your resume. The analyzer compares your resume against industry standards and job requirements.</p>
         </section>
       </div>
 

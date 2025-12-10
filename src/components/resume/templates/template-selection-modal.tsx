@@ -104,7 +104,7 @@ const templates: Template[] = [
   }
 ];
 
-const categoryIcons = {
+const _categoryIcons = {
   modern: Briefcase,
   classic: GraduationCap,
   creative: Palette,
@@ -193,11 +193,9 @@ export function TemplateSelectionModal({
           <div className="flex-1 flex flex-col">
             <ScrollArea 
               className="max-h-[60vh] px-3 sm:px-5 lg:px-6 py-2"
-              style={{ scrollbarGutter: 'stable both-edges' as any }}
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 pr-2 sm:pr-3 lg:pr-4">
                 {filteredTemplates.map((template) => {
-                  const Icon = categoryIcons[template.category];
                   return (
                     <div
                       key={template.id}

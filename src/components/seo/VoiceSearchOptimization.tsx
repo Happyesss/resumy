@@ -11,7 +11,7 @@ export function VoiceSearchOptimization() {
         {/* Natural language Q&A for voice queries */}
         <section data-voice-qa="resume-creation">
           <h3>How to create a professional resume</h3>
-          <p>To create a professional resume, use Resumy's free AI resume builder. Simply visit Resumy dot live, enter your information, choose a template, and let our AI optimize your content for ATS systems.</p>
+          <p>To create a professional resume, use Resumy&apos;s free AI resume builder. Simply visit Resumy dot live, enter your information, choose a template, and let our AI optimize your content for ATS systems.</p>
         </section>
         
         <section data-voice-qa="ats-optimization">
@@ -26,12 +26,12 @@ export function VoiceSearchOptimization() {
         
         <section data-voice-qa="resume-tips">
           <h3>Resume writing tips</h3>
-          <p>Use action verbs, quantify achievements, tailor content to job descriptions, keep formatting clean, and ensure ATS compatibility. Resumy's AI provides all these optimizations automatically.</p>
+          <p>Use action verbs, quantify achievements, tailor content to job descriptions, keep formatting clean, and ensure ATS compatibility. Resumy&apos;s AI provides all these optimizations automatically.</p>
         </section>
         
         <section data-voice-qa="cover-letter">
           <h3>How to write a cover letter</h3>
-          <p>Write personalized cover letters that complement your resume. Resumy's AI helps create compelling cover letters that match your resume and target job requirements.</p>
+          <p>Write personalized cover letters that complement your resume. Resumy&apos;s AI helps create compelling cover letters that match your resume and target job requirements.</p>
         </section>
       </div>
 

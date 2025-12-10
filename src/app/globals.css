@@ -205,6 +205,15 @@ body {
     transform: scale(0.9) !important;
   }
 }
+
+/* Move BuyMeCoffee widget to the left on narrow screens to avoid overlapping other fixed widgets like FeedbackButton */
+@media (max-width: 640px) {
+  #bmc-wbtn {
+    left: 1rem !important;
+    right: auto !important;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem) !important;
+  }
+}
 /* 
 h1 {
   display: block;

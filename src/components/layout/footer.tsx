@@ -41,7 +41,7 @@ export function Footer() {
     }
   ];
 
-  const socialLinks = [
+  const _socialLinks = [
     {
       name: "GitHub",
       href: "https://github.com/Happyesss/resumyy",

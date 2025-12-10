@@ -193,6 +193,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={cn(
         "bg-gray-900 border-gray-800 text-white max-h-[90vh] overflow-y-auto",
+        "w-[calc(100vw-2rem)] mx-auto",
         step === 'form' ? 'sm:max-w-[600px]' : 'sm:max-w-[360px]'
       )}>
         {step === 'form' && (
@@ -213,7 +214,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
                 <Label className="text-sm font-medium text-gray-300">
                   What type of feedback is this?
                 </Label>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                   {FEEDBACK_TYPE_OPTIONS.map((option) => (
                     <button
                       key={option.value}
@@ -247,7 +248,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
               {/* Priority Selection */}
               <div className="space-y-3">
                 <Label className="text-sm font-medium text-gray-300">Priority Level</Label>
-                <div className="flex gap-2">
+                <div className="grid grid-cols-2 sm:flex gap-2">
                   {FEEDBACK_PRIORITY_OPTIONS.map((option) => (
                     <button
                       key={option.value}
@@ -340,10 +341,11 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
                   </div>
                 ) : (
                   <div className="relative rounded-xl overflow-hidden border-2 border-gray-700 bg-gray-800/30">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={screenshotPreview}
                       alt="Screenshot preview"
-                      className="w-full h-48 object-contain bg-gray-900"
+                      className="w-full h-36 sm:h-48 object-contain bg-gray-900"
                     />
                     <button
                       type="button"

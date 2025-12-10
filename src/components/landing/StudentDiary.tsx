@@ -154,7 +154,7 @@ export function StudentDiary() {
           <span className="text-sm font-semibold text-yellow-300">Supported Emails</span>
         </div>
         <div className="flex flex-wrap gap-1.5">
-          {['.edu', '.ac.in', '.ac.uk', '.edu.au'].map((domain, i) => (
+          {['.edu', '.ac.in', '.ac.uk', '.edu.au'].map((domain, _i) => (
             <span
               key={domain}
               className="px-2 py-1 rounded-md bg-slate-800/80 border border-slate-600/50 text-slate-300 text-xs font-mono"
@@ -193,7 +193,7 @@ export function StudentDiary() {
               AS
             </div>
             <div>
-              <p className="text-sm text-gray-300 italic">"Got my dream internship with a resume I made here!"</p>
+              <p className="text-sm text-gray-300 italic">&quot;Got my dream internship with a resume I made here!&quot;</p>
               <p className="text-xs text-gray-500 mt-1">- CS Student, IIT Kanpur</p>
             </div>
           </div>
@@ -205,7 +205,7 @@ export function StudentDiary() {
               RK
             </div>
             <div>
-              <p className="text-sm text-gray-300 italic">"The AI suggestions helped me stand out from the crowd."</p>
+              <p className="text-sm text-gray-300 italic">&quot;The AI suggestions helped me stand out from the crowd.&quot;</p>
               <p className="text-xs text-gray-500 mt-1">- MBA Student</p>
             </div>
           </div>
@@ -217,7 +217,7 @@ export function StudentDiary() {
               NU
             </div>
             <div>
-              <p className="text-sm text-gray-300 italic">"8 resumes let me tailor for every company!"</p>
+              <p className="text-sm text-gray-300 italic">&quot;8 resumes let me tailor for every company!&quot;</p>
               <p className="text-xs text-gray-500 mt-1">- Engineering, IIT BHU</p>
             </div>
           </div>

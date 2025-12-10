@@ -199,7 +199,7 @@ interface MinimalCleanPDFProps {
   variant?: 'base' | 'tailored';
 }
 
-export const MinimalCleanPDF = memo(function MinimalCleanPDF({ resume, variant = 'base' }: MinimalCleanPDFProps) {
+export const MinimalCleanPDF = memo(function MinimalCleanPDF({ resume, variant: _variant = 'base' }: MinimalCleanPDFProps) {
   
   const renderContactInfo = () => {
     const contactItems = [

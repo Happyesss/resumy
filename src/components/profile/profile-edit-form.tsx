@@ -151,7 +151,7 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
     }
   };
 
-  const handleLinkedInImport = () => {
+  const _handleLinkedInImport = () => {
     toast.info("LinkedIn import feature coming soon!", {
       position: "bottom-right",
       className: "bg-gradient-to-r from-blue-500 to-indigo-500 text-white border-none",
@@ -163,7 +163,7 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
       setIsProcessingResume(true);
       
       // Get model and API key from local storage
-      const MODEL_STORAGE_KEY = 'resumy-default-model';
+      const _MODEL_STORAGE_KEY = 'resumy-default-model';
       const LOCAL_STORAGE_KEY = 'resumy-api-keys';
       
       const selectedModel = 'gemini-2.5-flash-lite'; // Use same model as resume editor
@@ -185,16 +185,16 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
         if (result) {
         // Clean and transform the data to match our database schema
         const cleanedProfile: Partial<Profile> = {
-          first_name: result.first_name || null,
-          last_name: result.last_name || null,
-          email: result.email || null,
-          phone_number: result.phone_number || null,
-          location: result.location || null,
-          website: result.website || null,
-          linkedin_url: result.linkedin_url || null,
-          github_url: result.github_url || null,
+          first_name: (result.first_name as string) || null,
+          last_name: (result.last_name as string) || null,
+          email: (result.email as string) || null,
+          phone_number: (result.phone_number as string) || null,
+          location: (result.location as string) || null,
+          website: (result.website as string) || null,
+          linkedin_url: (result.linkedin_url as string) || null,
+          github_url: (result.github_url as string) || null,
           work_experience: Array.isArray(result.work_experience) 
-            ? result.work_experience.map((exp: Partial<WorkExperience>) => ({
+            ? (result.work_experience as Partial<WorkExperience>[]).map((exp: Partial<WorkExperience>) => ({
                 company: exp.company || '',
                 position: exp.position || '',
                 location: exp.location || '',
@@ -208,7 +208,7 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
               }))
             : [],
           education: Array.isArray(result.education)
-            ? result.education.map((edu: Partial<Education & { description?: string[] }>) => ({
+            ? (result.education as Partial<Education & { description?: string[] }>[]).map((edu: Partial<Education & { description?: string[] }>) => ({
                 school: edu.school || '',
                 degree: edu.degree || '',
                 field: edu.field || '',
@@ -223,7 +223,7 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
               }))
             : [],
           skills: Array.isArray(result.skills)
-            ? result.skills.map((skill: { category: string; skills?: string[]; items?: string[] }) => ({
+            ? (result.skills as { category: string; skills?: string[]; items?: string[] }[]).map((skill: { category: string; skills?: string[]; items?: string[] }) => ({
                 category: skill.category || '',
                 items: Array.isArray(skill.skills) 
                   ? skill.skills 
@@ -233,7 +233,7 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
               }))
             : [],
           projects: Array.isArray(result.projects)
-            ? result.projects.map((proj: Partial<Project>) => ({
+            ? (result.projects as Partial<Project>[]).map((proj: Partial<Project>) => ({
                 name: proj.name || '',
                 description: Array.isArray(proj.description) 
                   ? proj.description 
@@ -417,7 +417,7 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                                 alongside your current data, avoiding duplicates and enhancing missing details.
                               </p>
                               <p className="text-gray-400 text-xs">
-                                💡 <span className="text-amber-400">Pro tip:</span> Want to start fresh? Use the "Reset Profile" option before uploading.
+                                💡 <span className="text-amber-400">Pro tip:</span> Want to start fresh? Use the &quot;Reset Profile&quot; option before uploading.
                               </p>
                             </div>
                           </div>

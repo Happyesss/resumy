@@ -22,7 +22,7 @@ const createMockRedisClient = () => {
       
       return 'OK';
     },
-    expire: async (key: string, seconds: number) => {
+    expire: async (_key: string, _seconds: number) => {
       return 'OK';
     }
   };

@@ -107,7 +107,7 @@ function updateStoredScores(resumeId: string, score: ResumeScoreMetrics) {
   }
 }
 
-export default function ResumeScorePanel({ resume, userEmail }: ResumeScorePanelProps) {
+export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
   const { toast } = useToast();
   const [isCalculating, setIsCalculating] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -149,7 +149,7 @@ export default function ResumeScorePanel({ resume, userEmail }: ResumeScorePanel
         if (storedKeys) {
           try {
             apiKeys = JSON.parse(storedKeys);
-          } catch (e) {
+          } catch (_e) {
             console.warn('Failed to parse stored API keys');
           }
         }

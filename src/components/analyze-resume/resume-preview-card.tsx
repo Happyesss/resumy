@@ -8,7 +8,7 @@ interface ResumePreviewCardProps {
   resumeText?: string;
 }
 
-export default function ResumePreviewCard({ resumeText }: ResumePreviewCardProps) {
+export default function ResumePreviewCard({ resumeText: _resumeText }: ResumePreviewCardProps) {
   return (
     <section className="relative w-[98%] h-screen bg-black flex flex-col items-center justify-start p-4 pt-8">
       {/* Two small CTA boxes connected by a dotted line */}

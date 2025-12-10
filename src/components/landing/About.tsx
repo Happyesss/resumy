@@ -66,7 +66,7 @@ export function About() {
                 Resumy is revolutionizing the way professionals create resumes. Our AI-powered platform combines cutting-edge technology with expert career insights to help you craft the perfect resume that gets noticed by recruiters and passes through ATS systems.
               </p>
               <p className="text-gray-400 leading-relaxed">
-                Born from the frustration of traditional resume builders, Resumy uses advanced artificial intelligence to analyze job descriptions, optimize keywords, and suggest improvements that dramatically increase your chances of landing interviews. We've helped thousands of professionals from top companies like Google, Microsoft, Meta, and Amazon advance their careers.
+                Born from the frustration of traditional resume builders, Resumy uses advanced artificial intelligence to analyze job descriptions, optimize keywords, and suggest improvements that dramatically increase your chances of landing interviews. We&apos;ve helped thousands of professionals from top companies like Google, Microsoft, Meta, and Amazon advance their careers.
               </p>
             </div>
 

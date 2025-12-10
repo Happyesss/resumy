@@ -231,7 +231,7 @@ export const EducationForm = memo(function EducationFormComponent({
 
               {/* Current Status Note */}
               <div className="flex items-center space-x-2 -mt-1">
-                <span className="text-[8px] sm:text-[10px] text-gray-400">Use 'Present' in the date field for current education</span>
+                <span className="text-[8px] sm:text-[10px] text-gray-400">Use &apos;Present&apos; in the date field for current education</span>
               </div>
 
               {/* GPA */}

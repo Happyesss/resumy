@@ -220,7 +220,7 @@ export const ResumePreview = memo(function ResumePreview({ resume, variant = 'ba
         URL.revokeObjectURL(currentUrl);
       }
     };
-  }, [debouncedResumeHash, variant]);
+  }, [debouncedResumeHash, variant, resume]);
 
   // Cleanup on component unmount
   useEffect(() => {
@@ -267,7 +267,7 @@ export const ResumePreview = memo(function ResumePreview({ resume, variant = 'ba
       clearTimeout(textLayerTimeout);
       setTextLayerTimeout(null);
     }
-  }, [debouncedResumeHash, variant]);
+  }, [debouncedResumeHash, variant, textLayerTimeout]);
 
   // Cleanup timeout on unmount
   useEffect(() => {

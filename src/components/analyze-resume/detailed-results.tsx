@@ -46,7 +46,7 @@ const estimateFontSizeFromFile = (file: File): number => {
 };
 
 // Function to analyze resume and suggest missing keywords (fallback only)
-const analyzeKeywords = (resumeText?: string) => {
+const _analyzeKeywords = (_resumeText?: string) => {
   // Return empty results - we only want to use Gemini AI suggestions
   return { existingKeywords: [], missingKeywords: [], suggestions: [] };
 };
@@ -55,7 +55,7 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [averageFontSize, setAverageFontSize] = useState<number | null>(null);
   const [lineCount, setLineCount] = useState<number>(0);
-  const [showLogin, setShowLogin] = useState(false);
+  const [_showLogin, _setShowLogin] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   // Check authentication status
@@ -156,9 +156,9 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
     scoreData.roleMatch.experienceAlignment.score,
     scoreData.roleMatch.educationFit.score
   ];
-  const averageScore = Math.round(allScores.reduce((sum, score) => sum + score, 0) / allScores.length);
-  const highestScore = Math.max(...allScores);
-  const lowestScore = Math.min(...allScores);
+  const _averageScore = Math.round(allScores.reduce((sum, score) => sum + score, 0) / allScores.length);
+  const _highestScore = Math.max(...allScores);
+  const _lowestScore = Math.min(...allScores);
 
   // Organize scores by category for better display
   const organizedScores = [
@@ -287,7 +287,7 @@ export function DetailedResults({ scoreData, onAnalyzeAnother, resumeText, resum
               <div className="text-center">
                 <div className="text-green-400 text-sm font-medium mb-1">100%</div>
                 <div className="text-xs text-gray-400">High impact</div>
-                <div className="text-xs text-gray-500 hidden sm:block">Percentage of achievements you've quantified on time</div>
+                <div className="text-xs text-gray-500 hidden sm:block">Percentage of achievements you&apos;ve quantified on time</div>
               </div>
             </Card>
             <Card className="bg-gray-800 border-gray-700 p-3 sm:p-4">

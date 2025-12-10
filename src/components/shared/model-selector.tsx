@@ -54,7 +54,8 @@ interface ModelSelectorProps {
   showToast?: boolean
 }
 
-// Helper component for unavailable model popover
+// Helper component for unavailable model popover - currently unused but kept for future use
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function UnavailableModelPopover({ children, model }: { children: React.ReactNode; model: AIModel }) {
   const [open, setOpen] = useState(false)
   const provider = PROVIDERS.find(p => p.id === model.provider)
@@ -121,19 +122,19 @@ function UnavailableModelPopover({ children, model }: { children: React.ReactNod
 }
 
 export function ModelSelector({ 
-  value, 
-  onValueChange, 
+  value: _value, 
+  onValueChange: _onValueChange, 
   apiKeys, 
   className,
-  placeholder = "Gemini 2.0 Flash",
-  showToast = true
+  placeholder: _placeholder = "Gemini 2.0 Flash",
+  showToast: _showToast = true
 }: ModelSelectorProps) {
   // We only support Gemini 2.0 Flash now
   const model = AI_MODELS[0];
   const provider = PROVIDERS[0];
   
   // Check if user has Google API key
-  const hasGoogleKey = apiKeys.some(k => k.service === 'google');
+  const _hasGoogleKey = apiKeys.some(k => k.service === 'google');
   
   return (
     <div className={cn(

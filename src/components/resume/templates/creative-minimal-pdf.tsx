@@ -351,7 +351,7 @@ interface CreativeMinimalPDFProps {
   variant?: 'base' | 'tailored';
 }
 
-export const CreativeMinimalPDF = memo(function CreativeMinimalPDF({ resume, variant = 'base' }: CreativeMinimalPDFProps) {
+export const CreativeMinimalPDF = memo(function CreativeMinimalPDF({ resume, variant: _variant = 'base' }: CreativeMinimalPDFProps) {
   
   const renderHeader = () => (
     <View style={creativeMinimalStyles.header}>

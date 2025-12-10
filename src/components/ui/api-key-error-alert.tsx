@@ -32,7 +32,7 @@ export function ApiKeyErrorAlert({ error, router }: ApiKeyErrorAlertProps) {
   const errorJson = JSON.stringify(error);
   
   // Try to parse error as JSON to get more details
-  let parsedError: any = null;
+  let parsedError: Record<string, unknown> | null = null;
   try {
     parsedError = JSON.parse(errorString);
   } catch {

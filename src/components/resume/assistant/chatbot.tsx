@@ -103,8 +103,8 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
   // Remove document_settings from resume for the chat API
   const resumeForChat = { ...resume };
   // Use type assertion to handle the document_settings property
-  if ((resumeForChat as any).document_settings) {
-    delete (resumeForChat as any).document_settings;
+  if ((resumeForChat as unknown as Record<string, unknown>).document_settings) {
+    delete (resumeForChat as unknown as Record<string, unknown>).document_settings;
   }
 
   const { messages, error, append, isLoading, addToolResult, stop, setMessages } = useChat({
@@ -248,12 +248,12 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
   }, [append]);
 
   // Add delete handler
-  const handleDelete = (id: string) => {
+  const _handleDelete = (id: string) => {
     setMessages(messages.filter(message => message.id !== id));
   };
 
   // Add edit handler
-  const handleEdit = (id: string, content: string) => {
+  const _handleEdit = (id: string, content: string) => {
     setEditingMessageId(id);
     setEditContent(content);
   };

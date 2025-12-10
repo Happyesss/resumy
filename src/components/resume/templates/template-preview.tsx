@@ -83,7 +83,7 @@ export function TemplatePreview({ templateId, className, enableZoom = false }: T
     }
   }, [enableZoom, lastPinchDistance, scale, isDragging]);
 
-  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+  const handleTouchEnd = useCallback((_e: React.TouchEvent) => {
     if (!enableZoom) return;
 
     setIsDragging(false);
@@ -96,7 +96,7 @@ export function TemplatePreview({ templateId, className, enableZoom = false }: T
     }
   }, [enableZoom, scale]);
 
-  const handleDoubleClick = useCallback((e: React.MouseEvent) => {
+  const handleDoubleClick = useCallback((_e: React.MouseEvent) => {
     if (!enableZoom) return;
 
     if (scale === 1) {

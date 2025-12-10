@@ -55,7 +55,7 @@ const categoryDescriptions = {
 
 export function TemplatePreviewModal({ template, isOpen, onClose }: TemplatePreviewModalProps) {
   const [zoom, setZoom] = useState(1);
-  const { handleUseTemplate: useTemplate } = useTemplateHandler();
+  const { handleUseTemplate: applyTemplate } = useTemplateHandler();
 
   if (!template) return null;
 
@@ -72,7 +72,7 @@ export function TemplatePreviewModal({ template, isOpen, onClose }: TemplatePrev
 
   const handleUseTemplate = () => {
     trackResumeEvent.selectTemplate(template.name);
-    useTemplate({ templateId: template.id });
+    applyTemplate({ templateId: template.id });
     onClose();
   };
 

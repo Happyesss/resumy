@@ -7,7 +7,7 @@
 export function generateDynamicStructuredData(context: {
   pageType: 'homepage' | 'dashboard' | 'resume-builder' | 'templates' | 'about';
   userType?: 'guest' | 'authenticated' | 'premium';
-  content?: any;
+  content?: unknown;
 }) {
   const baseSchema = {
     "@context": "https://schema.org",

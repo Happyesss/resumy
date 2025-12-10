@@ -52,23 +52,28 @@ interface AnalysisConfig {
 }
 
 /**
+ * Keyword analysis result type
+ */
+interface KeywordAnalysis {
+  existingKeywords: string[];
+  missingKeywords: string[];
+  categoryAnalysis: {
+    programming: string[];
+    frameworks: string[];
+    tools: string[];
+    cloud: string[];
+    databases: string[];
+  };
+  suggestions: string[];
+}
+
+/**
  * Complete analysis result containing all analysis data
  */
 interface FullAnalysisResult {
   score: ResumeScoreMetrics;
   structuredResume: Resume;
-  keywordAnalysis: {
-    existingKeywords: string[];
-    missingKeywords: string[];
-    categoryAnalysis: {
-      programming: string[];
-      frameworks: string[];
-      tools: string[];
-      cloud: string[];
-      databases: string[];
-    };
-    suggestions: string[];
-  };
+  keywordAnalysis: KeywordAnalysis;
   atsDiagnostics?: AtsDiagnostics;
   processingTime: number;
   analysisMetadata: {
@@ -154,7 +159,7 @@ function calculateSectionOrderScore(actual: string[], expected: string[]): numbe
 /**
  * Analyze employment gaps in work experience
  */
-function analyzeEmploymentGaps(workExperience: any[]): number[] {
+function analyzeEmploymentGaps(workExperience: unknown[]): number[] {
   if (!workExperience || workExperience.length < 2) return [];
   
   const gaps: number[] = [];
@@ -280,8 +285,8 @@ async function analyzeResumeWithSingleAIRequest(
   resumeText: string,
   targetRole: string,
   model: string,
-  apiKeys: ApiKey[]
-): Promise<{ structuredResume: Resume; score: ResumeScoreMetrics; keywordAnalysis: any }> {
+  _apiKeys: ApiKey[]
+): Promise<{ structuredResume: Resume; score: ResumeScoreMetrics; keywordAnalysis: KeywordAnalysis }> {
   try {
     // Use GEMINI_API_KEY for resume analysis
     const apiKey = process.env.GEMINI_API_KEY;
@@ -403,7 +408,7 @@ Return the response in this exact structure:
 
 Be thorough, accurate, and provide constructive feedback. Focus on intelligent keyword analysis that considers their current tech stack and career trajectory.
       `
-    })) as any;
+    }));
 
     // Transform the simplified resume to full Resume object
     const fullResume: Resume = {
@@ -411,42 +416,42 @@ Be thorough, accurate, and provide constructive feedback. Focus on intelligent k
       user_id: "temp-ui-session",
       name: "Resume Analysis",
       target_role: targetRole,
-      first_name: object.structuredResume.first_name || "",
-      last_name: object.structuredResume.last_name || "",
-      email: object.structuredResume.email || "",
-      phone_number: object.structuredResume.phone_number || "",
-      location: object.structuredResume.location || "",
-      website: object.structuredResume.website || "",
-      linkedin_url: object.structuredResume.linkedin_url || "",
-      github_url: object.structuredResume.github_url || "",
-      work_experience: (object.structuredResume.work_experience || []).map((exp: any) => ({
-        company: exp.company || "",
-        position: exp.position || "",
-        location: exp.location || "",
-        date: exp.date || "",
-        description: exp.description || [],
-        technologies: exp.technologies || []
+      first_name: (object.structuredResume.first_name as string) || "",
+      last_name: (object.structuredResume.last_name as string) || "",
+      email: (object.structuredResume.email as string) || "",
+      phone_number: (object.structuredResume.phone_number as string) || "",
+      location: (object.structuredResume.location as string) || "",
+      website: (object.structuredResume.website as string) || "",
+      linkedin_url: (object.structuredResume.linkedin_url as string) || "",
+      github_url: (object.structuredResume.github_url as string) || "",
+      work_experience: ((object.structuredResume.work_experience as Record<string, unknown>[]) || []).map((exp: Record<string, unknown>) => ({
+        company: (exp.company as string) || "",
+        position: (exp.position as string) || "",
+        location: (exp.location as string) || "",
+        date: (exp.date as string) || "",
+        description: (exp.description as string[]) || [],
+        technologies: (exp.technologies as string[]) || []
       })),
-      education: (object.structuredResume.education || []).map((edu: any) => ({
-        school: edu.school || "",
-        degree: edu.degree || "",
-        field: edu.field || "",
-        location: edu.location || "",
-        date: edu.date || "",
-        gpa: edu.gpa || "",
-        achievements: edu.achievements || []
+      education: ((object.structuredResume.education as Record<string, unknown>[]) || []).map((edu: Record<string, unknown>) => ({
+        school: (edu.school as string) || "",
+        degree: (edu.degree as string) || "",
+        field: (edu.field as string) || "",
+        location: (edu.location as string) || "",
+        date: (edu.date as string) || "",
+        gpa: (edu.gpa as string) || "",
+        achievements: (edu.achievements as string[]) || []
       })),
-      skills: (object.structuredResume.skills || []).map((skill: any) => ({
-        category: skill.category || "",
-        items: skill.items || []
+      skills: ((object.structuredResume.skills as Record<string, unknown>[]) || []).map((skill: Record<string, unknown>) => ({
+        category: (skill.category as string) || "",
+        items: (skill.items as string[]) || []
       })),
-      projects: (object.structuredResume.projects || []).map((project: any) => ({
-        name: project.name || "",
-        description: project.description || [],
-        technologies: project.technologies || [],
-        github_url: project.github_url || "",
-        url: project.url || "",
-        date: project.date || ""
+      projects: ((object.structuredResume.projects as Record<string, unknown>[]) || []).map((project: Record<string, unknown>) => ({
+        name: (project.name as string) || "",
+        description: (project.description as string[]) || [],
+        technologies: (project.technologies as string[]) || [],
+        github_url: (project.github_url as string) || "",
+        url: (project.url as string) || "",
+        date: (project.date as string) || ""
       })),
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
@@ -507,8 +512,8 @@ export async function analyzeResumeFull(
     atsEnhanced = true,
     apiKeys = [],
     targetRole = "General",
-    baseResumeTemplate = {},
-    includeDetailedFeedback = true
+    baseResumeTemplate: _baseResumeTemplate = {},
+    includeDetailedFeedback: _includeDetailedFeedback = true
   } = config;
 
   // ...existing code...
@@ -592,7 +597,7 @@ export async function analyzeResumeQuick(
     model = "gemini-2.5-flash-lite",
     apiKeys = [],
     targetRole = "General",
-    includeDetailedFeedback = true
+    includeDetailedFeedback: _includeDetailedFeedback2 = true
   } = config;
 
   try {

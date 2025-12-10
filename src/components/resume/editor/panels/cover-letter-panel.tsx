@@ -25,7 +25,6 @@ export function CoverLetterPanel({
   resume,
   job,
   aiConfig,
-  userEmail,
 }: CoverLetterPanelProps) {
   const { dispatch } = useResumeContext();
   const [isGenerating, setIsGenerating] = useState(false);

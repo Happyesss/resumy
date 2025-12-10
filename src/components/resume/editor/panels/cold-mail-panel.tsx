@@ -23,8 +23,6 @@ interface ColdMailPanelProps {
 export function ColdMailPanel({
   resume,
   job,
-  aiConfig,
-  userEmail,
 }: ColdMailPanelProps) {
   const { dispatch } = useResumeContext();
   const [isGenerating, setIsGenerating] = useState(false);
@@ -46,6 +44,9 @@ export function ColdMailPanel({
       value
     });
   };
+  
+  // Silence unused variable warning
+  void updateField;
 
   const generateColdMail = async () => {
     if (!job) {
@@ -81,7 +82,7 @@ export function ColdMailPanel({
       if (storedKeys) {
         try {
           apiKeys = JSON.parse(storedKeys);
-        } catch (e) {
+        } catch (_e) {
           console.warn('Failed to parse stored API keys');
         }
       }

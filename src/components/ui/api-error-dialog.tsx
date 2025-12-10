@@ -14,7 +14,7 @@ interface ApiErrorDialogProps {
   title?: string;
   description?: string;
   actionLabel?: string;
-  actionHref?: string;
+  _actionHref?: string;
 }
 
 export function ApiErrorDialog({
@@ -23,7 +23,7 @@ export function ApiErrorDialog({
   title = "API Key Required",
   description = "To use this feature, you need to add your API key.",
   actionLabel = "Got It",
-  actionHref = "#"
+  _actionHref = "#"
 }: ApiErrorDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

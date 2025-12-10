@@ -243,7 +243,7 @@ interface ModernProfessionalPDFProps {
   variant?: 'base' | 'tailored';
 }
 
-export const ModernProfessionalPDF = memo(function ModernProfessionalPDF({ resume, variant = 'base' }: ModernProfessionalPDFProps) {
+export const ModernProfessionalPDF = memo(function ModernProfessionalPDF({ resume, variant: _variant = 'base' }: ModernProfessionalPDFProps) {
   
   const renderContactInfo = () => {
     const contactItems = [

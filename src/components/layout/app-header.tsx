@@ -20,7 +20,7 @@ export function AppHeader({ children }: AppHeaderProps) {
 
   const pathname = usePathname();
   // Detect if on landing page
-  const isLanding = pathname === "/";
+  const _isLanding = pathname === "/";
 
   return (
     <header className="h-14 border-b backdrop-blur-xl fixed top-0 left-0 right-0 z-40 shadow-md border-gray-200/50">

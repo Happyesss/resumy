@@ -125,7 +125,7 @@ export default function TermsOfService() {
               <h2 className="text-2xl font-semibold text-white mb-4">Disclaimer</h2>
               <div className="text-gray-300 space-y-4">
                 <p>
-                  Resumy is provided "as is" without warranties of any kind. While we strive 
+                  Resumy is provided &quot;as is&quot; without warranties of any kind. While we strive 
                   to provide accurate and helpful tools, we cannot guarantee:
                 </p>
                 <ul className="list-disc list-inside space-y-2 ml-4">

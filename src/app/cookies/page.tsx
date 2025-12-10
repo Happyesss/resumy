@@ -146,7 +146,7 @@ export default function CookiePolicy() {
                   <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-4">
                     <h4 className="font-semibold text-white mb-2">Cookie Banner</h4>
                     <p>
-                      When you first visit our website, you'll see a cookie consent banner 
+                      When you first visit our website, you&apos;ll see a cookie consent banner 
                       where you can choose which types of cookies to accept.
                     </p>
                   </div>

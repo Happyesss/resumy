@@ -5,7 +5,7 @@ import { ArrowRight, ChevronDown, Globe2, Rocket, Sparkles, Star, Trophy } from 
 import { useEffect, useState } from "react";
 
 export function Hero() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [_mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {

@@ -52,11 +52,11 @@ interface ShareManagementContentProps {
 export function ShareManagementContent({
   resumes,
   shares: initialShares,
-  userId,
+  userId: _userId,
   deviceAnalytics,
 }: ShareManagementContentProps) {
   const [shares, setShares] = useState<Share[]>(initialShares);
-  const [selectedResume, setSelectedResume] = useState<Resume | null>(null);
+  const [_selectedResume, _setSelectedResume] = useState<Resume | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [loading, setLoading] = useState<string | null>(null);
   

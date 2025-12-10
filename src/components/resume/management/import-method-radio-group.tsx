@@ -18,9 +18,7 @@ function ImportMethodRadioItem({
   description,
   icon,
   id,
-  gradient,
   iconGradient,
-  hoverGradient,
   ...props
 }: ImportMethodRadioItemProps) {
   return (

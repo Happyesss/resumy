@@ -11,7 +11,7 @@ interface ATSStep {
   id: number;
   title: string;
   description: string;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<{ className?: string }>;
   status: 'passed' | 'warning' | 'failed';
   details: string[];
   duration: string;

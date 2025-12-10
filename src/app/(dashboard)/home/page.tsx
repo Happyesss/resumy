@@ -44,8 +44,8 @@ export default async function Home({
 
   const params = await searchParams;
   const isNewSignup = params?.type === 'signup' && params?.token_hash;
-  const shouldCreateBase = params?.createBase === 'true';
-  const templateId = params?.template;
+  const _shouldCreateBase = params?.createBase === 'true';
+  const _templateId = params?.template;
 
   // Fetch dashboard data and handle authentication
   let data;
@@ -89,8 +89,8 @@ export default async function Home({
   const tailoredResumes = sortResumes(unsortedTailoredResumes, tailoredSort, tailoredDirection);
 
   // Count resumes for base and tailored sections
-  const baseResumesCount = await countResumes('base');
-  const tailoredResumesCount = await countResumes('tailored');
+  const _baseResumesCount = await countResumes('base');
+  const _tailoredResumesCount = await countResumes('tailored');
   const totalResumesCount = await countResumes('all');
 
   // Get the appropriate resume limit based on user's email

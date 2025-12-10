@@ -55,7 +55,7 @@ export default function AtsResumeGuide() {
           <p>
             An Applicant Tracking System (ATS) is software used by 95% of Fortune 500 companies 
             to scan, filter, and rank resumes before human recruiters see them. If your resume 
-            isn't ATS-optimized, it might never reach a hiring manager.
+            isn&apos;t ATS-optimized, it might never reach a hiring manager.
           </p>
 
           <h2>Essential ATS Resume Formatting Rules</h2>
@@ -65,9 +65,9 @@ export default function AtsResumeGuide() {
             ATS systems look for specific section headers. Use these standard titles:
           </p>
           <ul>
-            <li><strong>Work Experience</strong> (not "Professional Experience" or "Career History")</li>
-            <li><strong>Education</strong> (not "Academic Background")</li>
-            <li><strong>Skills</strong> (not "Core Competencies")</li>
+            <li><strong>Work Experience</strong> (not &quot;Professional Experience&quot; or &quot;Career History&quot;)</li>
+            <li><strong>Education</strong> (not &quot;Academic Background&quot;)</li>
+            <li><strong>Skills</strong> (not &quot;Core Competencies&quot;)</li>
             <li><strong>Summary</strong> or <strong>Professional Summary</strong></li>
           </ul>
 
@@ -94,13 +94,13 @@ export default function AtsResumeGuide() {
           <h3>Match Job Description Keywords</h3>
           <p>
             The most critical ATS optimization strategy is including relevant keywords from 
-            the job description. Here's how:
+            the job description. Here&apos;s how:
           </p>
           <ol>
             <li><strong>Analyze the job posting</strong> - Identify key skills, qualifications, and requirements</li>
             <li><strong>Incorporate naturally</strong> - Work these keywords into your experience descriptions</li>
-            <li><strong>Use variations</strong> - Include both abbreviated and full versions (e.g., "AI" and "Artificial Intelligence")</li>
-            <li><strong>Don't keyword stuff</strong> - Maintain natural, readable language</li>
+            <li><strong>Use variations</strong> - Include both abbreviated and full versions (e.g., &quot;AI&quot; and &quot;Artificial Intelligence&quot;)</li>
+            <li><strong>Don&apos;t keyword stuff</strong> - Maintain natural, readable language</li>
           </ol>
 
           <h2>ATS-Friendly Resume Structure</h2>
@@ -161,13 +161,13 @@ export default function AtsResumeGuide() {
           <ol>
             <li><strong>Copy-paste test</strong> - Copy your resume content into a plain text file</li>
             <li><strong>Upload to job boards</strong> - See how sites like LinkedIn parse your information</li>
-            <li><strong>Use ATS checkers</strong> - Try free tools like Resumy's ATS analyzer</li>
+            <li><strong>Use ATS checkers</strong> - Try free tools like Resumy&apos;s ATS analyzer</li>
           </ol>
 
           <h2>Start Building Your ATS-Optimized Resume Today</h2>
           <p>
             Ready to create a resume that passes ATS systems and gets you hired? 
-            Use Resumy's free AI-powered resume builder to create an ATS-optimized 
+            Use Resumy&apos;s free AI-powered resume builder to create an ATS-optimized 
             resume in minutes. Our templates are specifically designed to work with 
             all major ATS systems while looking professional to human recruiters.
           </p>
@@ -180,7 +180,7 @@ export default function AtsResumeGuide() {
             Create Your ATS-Optimized Resume Now
           </h3>
           <p className="text-gray-600 mb-6">
-            Use Resumy's free AI resume builder to create a professional, ATS-friendly resume in minutes.
+            Use Resumy&apos;s free AI resume builder to create a professional, ATS-friendly resume in minutes.
           </p>
           <button className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
             Build My Resume Free
