@@ -214,14 +214,14 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
                 <Label className="text-sm font-medium text-gray-300">
                   What type of feedback is this?
                 </Label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
                   {FEEDBACK_TYPE_OPTIONS.map((option) => (
                     <button
                       key={option.value}
                       type="button"
                       onClick={() => setType(option.value)}
                       className={cn(
-                        'flex items-center gap-3 p-3 rounded-xl border-2 transition-all duration-200',
+                        'flex flex-col sm:flex-row items-center gap-3 p-3 min-h-[84px] rounded-xl border-2 transition-all duration-200 w-full',
                         type === option.value
                           ? `${typeColors[option.value]} border-opacity-100 ring-2 ring-offset-2 ring-offset-gray-900`
                           : 'border-gray-700 bg-gray-800/50 text-gray-400 hover:border-gray-600 hover:bg-gray-800'
@@ -234,9 +234,9 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
                           : 'rgb(59 130 246 / 0.3)'
                           : 'transparent'
                       }}
-                    >
+                      >
                       {typeIcons[option.value]}
-                      <div className="text-left">
+                      <div className="w-full text-center sm:text-left">
                         <div className="font-medium text-sm">{option.label}</div>
                         <div className="text-xs opacity-70 line-clamp-1">{option.description}</div>
                       </div>

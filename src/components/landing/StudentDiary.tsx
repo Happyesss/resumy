@@ -550,7 +550,7 @@ export function StudentDiary() {
               </button>
 
               {/* Mobile Page with Flip Animation */}
-              <div className="relative mx-6" style={{ transformStyle: 'preserve-3d' }}>
+              <div className="relative mx-2 sm:mx-6" style={{ transformStyle: 'preserve-3d' }}>
                 {/* Page shadow layers */}
                 <div className="absolute -bottom-2 -left-1 -right-1 top-2 bg-gray-800/40 rounded-xl" />
                 <div className="absolute -bottom-1 left-0 right-0 top-1 bg-gray-800/60 rounded-xl" />
@@ -613,7 +613,7 @@ export function StudentDiary() {
                 </AnimatePresence>
 
                 {/* Main Mobile Page */}
-                <div className="relative bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 rounded-xl border-2 border-slate-700/50 overflow-hidden shadow-2xl min-h-[420px]">
+                <div className="relative w-[calc(100vw-1rem)] max-w-full mx-auto bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 rounded-xl border-2 border-slate-700/50 overflow-hidden shadow-2xl min-h-[420px]">
                   {/* Paper texture */}
                   <div
                     className="absolute inset-0 opacity-[0.03] rounded-xl"
@@ -630,10 +630,10 @@ export function StudentDiary() {
                   </div>
 
                   {/* Red margin line */}
-                  <div className="absolute left-8 top-0 bottom-0 w-px bg-red-400/20" />
+                  <div className="absolute left-6 top-0 bottom-0 w-px bg-red-400/20" />
 
                   {/* Content */}
-                  <div className="relative z-10 p-5 pl-10 pb-14 h-full">
+                  <div className="relative z-10 p-5 pl-5 sm:pl-10 pb-14 h-full">
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={`mobile-page-${mobileCurrentPage}`}
