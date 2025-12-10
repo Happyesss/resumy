@@ -20,7 +20,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        node-version: '22'
 
     - name: Install pnpm
       uses: pnpm/action-setup@v2
@@ -122,30 +122,16 @@ jobs:
             pnpm install --frozen-lockfile --prod
           fi
           
-          # Create secure .env.local file
+          # Create secure .env.local file using printf to avoid heredoc issues
           echo -e "${GREEN}Creating environment configuration...${NC}"
-          cat > .env.local << 'ENVEOF'
-          NODE_ENV=production
-          NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-          SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
-          UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }}
-          UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
-          NEXT_PUBLIC_SITE_URL=https://resumy.live
-          ENVEOF
+          printf "NODE_ENV=production\nNEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}\nNEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}\nSUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}\nGEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}\nUPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }}\nUPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }}\nNEXT_PUBLIC_SITE_URL=https://resumy.live\n" > .env.local
           
           # Secure permissions
           chmod 600 .env.local
           
-          # Set PM2 home to deployer user and ensure directories exist
-          export HOME=/home/deployer
-          export PM2_HOME=/home/deployer/.pm2
-          mkdir -p "$PM2_HOME"
-          
-          # Create ecosystem.config.js (single-line printf to avoid heredoc injection)
+          # Create ecosystem.config.js with correct next.js path
           echo -e "${GREEN}Creating PM2 config...${NC}"
-          printf "module.exports = {\n  apps: [{\n    name: 'resumy',\n    script: 'pnpm',\n    args: 'start',\n    cwd: '/var/www/resumy',\n    instances: 1,\n    autorestart: true,\n    watch: false,\n    max_memory_restart: '1G',\n    env: {\n      NODE_ENV: 'production',\n      PORT: 3000\n    }\n  }]\n};\n" > ecosystem.config.js
+          printf "module.exports = {\n  apps: [{\n    name: 'resumy',\n    script: 'node_modules/next/dist/bin/next',\n    args: 'start',\n    cwd: '/var/www/resumy',\n    instances: 1,\n    exec_mode: 'fork',\n    autorestart: true,\n    watch: false,\n    max_memory_restart: '1G',\n    env: {\n      NODE_ENV: 'production',\n      PORT: 3000\n    }\n  }]\n};\n" > ecosystem.config.js
           
           # Restart PM2 process
           echo -e "${GREEN}Restarting application...${NC}"
