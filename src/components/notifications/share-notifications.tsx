@@ -327,15 +327,15 @@ export function ShareNotifications() {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="w-[380px] max-h-[480px] overflow-hidden bg-black/95 border border-white/10 rounded-xl shadow-2xl p-0"
+        className="w-[calc(100vw-2rem)] sm:w-[380px] max-h-[480px] overflow-hidden bg-black/95 border border-white/10 rounded-xl shadow-2xl p-0"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-gradient-to-r from-pink-500/10 to-purple-500/10">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-gradient-to-br from-pink-500 to-purple-500">
-              <Eye className="h-3.5 w-3.5 text-white" />
+        <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-b border-white/10 bg-gradient-to-r from-pink-500/10 to-purple-500/10">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="p-1 sm:p-1.5 rounded-lg bg-gradient-to-br from-pink-500 to-purple-500">
+              <Eye className="h-3 sm:h-3.5 w-3 sm:w-3.5 text-white" />
             </div>
-            <h3 className="font-semibold text-white text-sm">Resume Views</h3>
+            <h3 className="font-semibold text-white text-xs sm:text-sm">Resume Views</h3>
           </div>
           {data && (
             <span className="text-xs text-slate-400">
@@ -361,24 +361,24 @@ export function ShareNotifications() {
               {data.notifications.slice(0, 20).map((notification) => (
                 <div
                   key={notification.id}
-                  className="flex items-start gap-3 px-4 py-3 hover:bg-white/5 transition-colors cursor-pointer"
+                  className="flex items-start gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 hover:bg-white/5 transition-colors cursor-pointer"
                 >
                   {/* Device icon */}
-                  <div className="p-2 rounded-lg bg-white/5 flex-shrink-0">
+                  <div className="p-1.5 sm:p-2 rounded-lg bg-white/5 flex-shrink-0">
                     <DeviceIcon 
                       deviceType={notification.deviceType} 
-                      className="h-4 w-4 text-slate-400" 
+                      className="h-3.5 sm:h-4 w-3.5 sm:w-4 text-slate-400" 
                     />
                   </div>
 
                   {/* Content */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <p className="text-sm font-medium text-white truncate">
+                    <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5">
+                      <p className="text-xs sm:text-sm font-medium text-white truncate">
                         {notification.resumeName}
                       </p>
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-slate-400">
+                    <div className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-slate-400">
                       <span className="flex items-center gap-1">
                         <span title={getFullCountryName(notification.country)} className="cursor-help">
                           {getCountryFlag(notification.country)}
@@ -397,7 +397,7 @@ export function ShareNotifications() {
                   </div>
 
                   {/* Time */}
-                  <span className="text-xs text-slate-500 flex-shrink-0">
+                  <span className="text-[10px] sm:text-xs text-slate-500 flex-shrink-0">
                     {timeAgo(notification.viewedAt)}
                   </span>
                 </div>
@@ -408,11 +408,11 @@ export function ShareNotifications() {
 
         {/* Footer */}
         {data && data.notifications.length > 0 && (
-          <div className="px-4 py-3 border-t border-white/10 bg-white/5">
+          <div className="px-3 sm:px-4 py-2.5 sm:py-3 border-t border-white/10 bg-white/5">
             <Link
               href="/resumes/share"
               onClick={() => setIsOpen(false)}
-              className="flex items-center justify-center gap-2 w-full py-2 px-4 text-sm font-medium text-white bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 rounded-lg transition-colors"
+              className="flex items-center justify-center gap-1.5 sm:gap-2 w-full py-2 px-3 sm:px-4 text-xs sm:text-sm font-medium text-white bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 rounded-lg transition-colors"
             >
               View All Analytics
               <Eye className="h-4 w-4" />

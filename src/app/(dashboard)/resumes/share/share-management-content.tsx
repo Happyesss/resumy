@@ -252,30 +252,30 @@ export function ShareManagementContent({
     <div className="min-h-screen pb-20">
       <div className="mx-auto max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8">
         {/* Hero Header */}
-        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-blue-500/10 p-8 md:p-10">
+        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-blue-500/10 p-4 sm:p-6 md:p-10">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-pink-500/20 via-transparent to-transparent opacity-60" />
           <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
           
           <div className="relative">
             <Link
               href="/home"
-              className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-all text-sm text-slate-300 hover:text-white group"
+              className="inline-flex items-center gap-1.5 sm:gap-2 mb-4 sm:mb-6 md:mb-8 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-all text-xs sm:text-sm text-slate-300 hover:text-white group"
             >
               <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
               Back to Dashboard
             </Link>
             
-            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-              <div className="space-y-4">
-                <div className="flex items-center gap-4">
-                  <div className="p-4 rounded-2xl bg-gradient-to-br from-pink-500 to-purple-600 shadow-lg shadow-pink-500/25">
-                    <Share2 className="w-8 h-8 text-white" />
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 sm:gap-6">
+              <div className="space-y-3 sm:space-y-4">
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="p-2.5 sm:p-3 md:p-4 rounded-xl sm:rounded-2xl bg-gradient-to-br from-pink-500 to-purple-600 shadow-lg shadow-pink-500/25">
+                    <Share2 className="w-6 sm:w-7 md:w-8 h-6 sm:h-7 md:h-8 text-white" />
                   </div>
                   <div>
-                    <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-white via-pink-200 to-purple-200 bg-clip-text text-transparent">
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-white via-pink-200 to-purple-200 bg-clip-text text-transparent">
                       Share & Analytics
                     </h1>
-                    <p className="text-slate-400 mt-1">
+                    <p className="text-slate-400 mt-0.5 sm:mt-1 text-xs sm:text-sm">
                       Create shareable links and track who&apos;s viewing your resumes
                     </p>
                   </div>
@@ -283,21 +283,21 @@ export function ShareManagementContent({
               </div>
 
               {/* Quick Stats Pills */}
-              <div className="flex flex-wrap items-center gap-3">
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
-                  <Eye className="w-4 h-4 text-blue-400" />
-                  <span className="text-sm text-white font-medium">{totalViews}</span>
-                  <span className="text-xs text-slate-400">views</span>
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/5 border border-white/10">
+                  <Eye className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-blue-400" />
+                  <span className="text-xs sm:text-sm text-white font-medium">{totalViews}</span>
+                  <span className="text-[10px] sm:text-xs text-slate-400">views</span>
                 </div>
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
-                  <Link2 className="w-4 h-4 text-green-400" />
-                  <span className="text-sm text-white font-medium">{activeShares}</span>
-                  <span className="text-xs text-slate-400">active</span>
+                <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/5 border border-white/10">
+                  <Link2 className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-green-400" />
+                  <span className="text-xs sm:text-sm text-white font-medium">{activeShares}</span>
+                  <span className="text-[10px] sm:text-xs text-slate-400">active</span>
                 </div>
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
-                  <FileText className="w-4 h-4 text-purple-400" />
-                  <span className="text-sm text-white font-medium">{resumes.length}</span>
-                  <span className="text-xs text-slate-400">resumes</span>
+                <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/5 border border-white/10">
+                  <FileText className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-purple-400" />
+                  <span className="text-xs sm:text-sm text-white font-medium">{resumes.length}</span>
+                  <span className="text-[10px] sm:text-xs text-slate-400">resumes</span>
                 </div>
               </div>
             </div>
@@ -309,13 +309,13 @@ export function ShareManagementContent({
           {/* Left Column - Resume List */}
           <div className="lg:col-span-2 space-y-6">
             {/* Tab Filter */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 p-1 bg-white/5 rounded-xl border border-white/10">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+              <div className="flex items-center gap-1.5 sm:gap-2 p-0.5 sm:p-1 bg-white/5 rounded-lg sm:rounded-xl border border-white/10 w-full sm:w-auto">
                 {(['all', 'active', 'inactive'] as const).map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                    className={`flex-1 sm:flex-initial px-3 sm:px-4 py-1.5 sm:py-2 rounded-md sm:rounded-lg text-xs sm:text-sm font-medium transition-all ${
                       activeTab === tab
                         ? 'bg-white/10 text-white shadow-sm'
                         : 'text-slate-400 hover:text-white hover:bg-white/5'
@@ -376,11 +376,11 @@ export function ShareManagementContent({
                       <div className="absolute inset-0 bg-gradient-to-r from-pink-500/0 via-pink-500/5 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       
                       {/* Main Card Content */}
-                      <div className="relative p-5">
-                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div className="relative p-3 sm:p-4 md:p-5">
+                        <div className="flex flex-col gap-3 sm:gap-4">
                           {/* Resume Info */}
-                          <div className="flex items-center gap-4 min-w-0 flex-1">
-                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                          <div className="flex items-center gap-2.5 sm:gap-3 md:gap-4 min-w-0 flex-1">
+                            <div className={`w-10 sm:w-12 h-10 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0 ${
                               share?.is_active
                                 ? 'bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30'
                                 : share
@@ -417,21 +417,21 @@ export function ShareManagementContent({
                           </div>
 
                           {/* Stats & Actions */}
-                          <div className="flex flex-wrap items-center gap-3">
+                          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                             {share && (
                               <>
                                 {/* View Count */}
-                                <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                                  <Eye className="w-4 h-4 text-blue-400" />
-                                  <span className="font-semibold text-blue-400">{share.view_count}</span>
-                                  <span className="text-blue-400/60 text-xs hidden sm:inline">views</span>
+                                <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                                  <Eye className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-blue-400" />
+                                  <span className="font-semibold text-blue-400 text-xs sm:text-sm">{share.view_count}</span>
+                                  <span className="text-blue-400/60 text-[10px] sm:text-xs hidden sm:inline">views</span>
                                 </div>
 
                                 {/* Toggle Status */}
                                 <button
                                   onClick={() => handleToggleStatus(share.id, share.is_active)}
                                   disabled={isLoading}
-                                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                                  className={`flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
                                     share.is_active
                                       ? "bg-green-500/10 border border-green-500/30 text-green-400 hover:bg-green-500/20"
                                       : "bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20"
@@ -439,12 +439,12 @@ export function ShareManagementContent({
                                 >
                                   {share.is_active ? (
                                     <>
-                                      <Globe className="w-4 h-4" />
+                                      <Globe className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
                                       <span className="hidden sm:inline">Active</span>
                                     </>
                                   ) : (
                                     <>
-                                      <Lock className="w-4 h-4" />
+                                      <Lock className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
                                       <span className="hidden sm:inline">Disabled</span>
                                     </>
                                   )}
@@ -455,17 +455,17 @@ export function ShareManagementContent({
                                   onClick={() => copyLink(share.share_id)}
                                   variant="outline"
                                   size="sm"
-                                  className="border-pink-500/30 bg-pink-500/10 text-pink-400 hover:bg-pink-500/20 hover:border-pink-500/50"
+                                  className="border-pink-500/30 bg-pink-500/10 text-pink-400 hover:bg-pink-500/20 hover:border-pink-500/50 h-8 sm:h-9 text-xs sm:text-sm px-2 sm:px-3"
                                 >
                                   {copiedId === share.share_id ? (
                                     <>
-                                      <Check className="w-4 h-4 mr-1.5" />
-                                      Copied
+                                      <Check className="w-3.5 sm:w-4 h-3.5 sm:h-4 sm:mr-1.5" />
+                                      <span className="hidden sm:inline">Copied</span>
                                     </>
                                   ) : (
                                     <>
-                                      <Copy className="w-4 h-4 mr-1.5" />
-                                      Copy
+                                      <Copy className="w-3.5 sm:w-4 h-3.5 sm:h-4 sm:mr-1.5" />
+                                      <span className="hidden sm:inline">Copy</span>
                                     </>
                                   )}
                                 </Button>
@@ -475,15 +475,15 @@ export function ShareManagementContent({
                                   href={`${shareBaseUrl}/r/${share.share_id}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="p-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 text-slate-400 hover:text-white transition-all"
+                                  className="p-1.5 sm:p-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 text-slate-400 hover:text-white transition-all"
                                 >
-                                  <ExternalLink className="w-4 h-4" />
+                                  <ExternalLink className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
                                 </a>
 
                                 {/* Expand/View Logs */}
                                 <button
                                   onClick={() => setExpandedResumeId(isExpanded ? null : resume.id)}
-                                  className={`p-2 rounded-lg transition-all ${
+                                  className={`p-1.5 sm:p-2 rounded-lg transition-all ${
                                     isExpanded
                                       ? 'bg-pink-500/20 border border-pink-500/30 text-pink-400'
                                       : 'bg-white/5 border border-white/10 text-slate-400 hover:bg-white/10 hover:text-white'
@@ -521,15 +521,17 @@ export function ShareManagementContent({
 
                         {/* Share Link URL */}
                         {share && (
-                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-black/30 border border-white/5 text-xs">
-                            <Link2 className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
-                            <span className="text-slate-400 truncate flex-1 font-mono">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 px-2.5 sm:px-3 py-2 rounded-lg bg-black/30 border border-white/5 text-xs">
+                            <Link2 className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-slate-500 flex-shrink-0" />
+                            <span className="text-slate-400 truncate flex-1 font-mono text-[10px] sm:text-xs break-all">
                               {shareBaseUrl}/r/{share.share_id}
                             </span>
                             {share.last_viewed_at && (
-                              <span className="flex items-center gap-1 text-slate-500 flex-shrink-0">
-                                <Clock className="w-3 h-3" />
-                                Last viewed {new Date(share.last_viewed_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                              <span className="flex items-center gap-1 text-slate-500 flex-shrink-0 text-[10px] sm:text-xs">
+                                <Clock className="w-2.5 sm:w-3 h-2.5 sm:h-3" />
+                                <span className="hidden sm:inline">Last viewed</span>
+                                <span className="sm:hidden">Last</span>
+                                {' '}{new Date(share.last_viewed_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                               </span>
                             )}
                           </div>
@@ -538,8 +540,8 @@ export function ShareManagementContent({
 
                       {/* Expanded View Logs Section */}
                       {isExpanded && share && (
-                        <div className="border-t border-white/10 bg-black/20 p-5">
-                          <div className="flex items-center justify-between mb-4">
+                        <div className="border-t border-white/10 bg-black/20 p-3 sm:p-4 md:p-5">
+                          <div className="flex items-center justify-between mb-3 sm:mb-4">
                             <h4 className="text-sm font-medium text-white flex items-center gap-2">
                               <Activity className="w-4 h-4 text-pink-400" />
                               View Activity Log
@@ -569,31 +571,31 @@ export function ShareManagementContent({
           {/* Right Column - Analytics Sidebar */}
           <div className="space-y-6">
             {/* Overview Card */}
-            <Card className="relative overflow-hidden border-white/10 bg-white/5 p-6">
+            <Card className="relative overflow-hidden border-white/10 bg-white/5 p-4 sm:p-5 md:p-6">
               <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 via-transparent to-purple-500/5 opacity-60" />
               
               <div className="relative">
-                <h3 className="text-sm font-medium text-slate-400 mb-4 flex items-center gap-2">
-                  <BarChart3 className="w-4 h-4" />
+                <h3 className="text-xs sm:text-sm font-medium text-slate-400 mb-3 sm:mb-4 flex items-center gap-2">
+                  <BarChart3 className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
                   Overview
                 </h3>
                 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <p className="text-3xl font-bold text-white">{totalViews}</p>
-                    <p className="text-xs text-slate-500">Total Views</p>
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                  <div className="space-y-0.5 sm:space-y-1">
+                    <p className="text-2xl sm:text-3xl font-bold text-white">{totalViews}</p>
+                    <p className="text-[10px] sm:text-xs text-slate-500">Total Views</p>
                   </div>
-                  <div className="space-y-1">
-                    <p className="text-3xl font-bold text-white">{avgViews}</p>
-                    <p className="text-xs text-slate-500">Avg per Resume</p>
+                  <div className="space-y-0.5 sm:space-y-1">
+                    <p className="text-2xl sm:text-3xl font-bold text-white">{avgViews}</p>
+                    <p className="text-[10px] sm:text-xs text-slate-500">Avg per Resume</p>
                   </div>
-                  <div className="space-y-1">
-                    <p className="text-3xl font-bold text-green-400">{activeShares}</p>
-                    <p className="text-xs text-slate-500">Active Links</p>
+                  <div className="space-y-0.5 sm:space-y-1">
+                    <p className="text-2xl sm:text-3xl font-bold text-green-400">{activeShares}</p>
+                    <p className="text-[10px] sm:text-xs text-slate-500">Active Links</p>
                   </div>
-                  <div className="space-y-1">
-                    <p className="text-3xl font-bold text-slate-400">{shares.length - activeShares}</p>
-                    <p className="text-xs text-slate-500">Inactive Links</p>
+                  <div className="space-y-0.5 sm:space-y-1">
+                    <p className="text-2xl sm:text-3xl font-bold text-slate-400">{shares.length - activeShares}</p>
+                    <p className="text-[10px] sm:text-xs text-slate-500">Inactive Links</p>
                   </div>
                 </div>
               </div>
@@ -601,16 +603,16 @@ export function ShareManagementContent({
 
             {/* Device Analytics */}
             {deviceAnalytics.length > 0 && (
-              <Card className="relative overflow-hidden border-white/10 bg-white/5 p-6">
+              <Card className="relative overflow-hidden border-white/10 bg-white/5 p-4 sm:p-5 md:p-6">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-cyan-500/5 opacity-60" />
                 
                 <div className="relative">
-                  <h3 className="text-sm font-medium text-slate-400 mb-4 flex items-center gap-2">
-                    <Monitor className="w-4 h-4" />
+                  <h3 className="text-xs sm:text-sm font-medium text-slate-400 mb-3 sm:mb-4 flex items-center gap-2">
+                    <Monitor className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
                     Devices
                   </h3>
                   
-                  <div className="space-y-4">
+                  <div className="space-y-3 sm:space-y-4">
                     {deviceAnalytics.map((device) => {
                       const Icon = device.device_type === "mobile"
                         ? Smartphone
@@ -620,18 +622,18 @@ export function ShareManagementContent({
                       const label = device.device_type.charAt(0).toUpperCase() + device.device_type.slice(1);
                       
                       return (
-                        <div key={device.device_type} className="space-y-2">
+                        <div key={device.device_type} className="space-y-1.5 sm:space-y-2">
                           <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <Icon className="w-4 h-4 text-slate-400" />
-                              <span className="text-sm text-slate-300">{label}</span>
+                            <div className="flex items-center gap-1.5 sm:gap-2">
+                              <Icon className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-slate-400" />
+                              <span className="text-xs sm:text-sm text-slate-300">{label}</span>
                             </div>
-                            <div className="flex items-center gap-2">
-                              <span className="text-xs text-slate-500">{device.count}</span>
-                              <span className="text-sm font-medium text-white">{device.percentage}%</span>
+                            <div className="flex items-center gap-1.5 sm:gap-2">
+                              <span className="text-[10px] sm:text-xs text-slate-500">{device.count}</span>
+                              <span className="text-xs sm:text-sm font-medium text-white">{device.percentage}%</span>
                             </div>
                           </div>
-                          <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                          <div className="h-1.5 sm:h-2 bg-white/10 rounded-full overflow-hidden">
                             <div
                               className={`h-full rounded-full transition-all duration-500 ${
                                 device.device_type === 'mobile' 
@@ -653,16 +655,16 @@ export function ShareManagementContent({
 
             {/* Top Performing */}
             {shares.length > 0 && (
-              <Card className="relative overflow-hidden border-white/10 bg-white/5 p-6">
+              <Card className="relative overflow-hidden border-white/10 bg-white/5 p-4 sm:p-5 md:p-6">
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-transparent to-orange-500/5 opacity-60" />
                 
                 <div className="relative">
-                  <h3 className="text-sm font-medium text-slate-400 mb-4 flex items-center gap-2">
-                    <TrendingUp className="w-4 h-4" />
+                  <h3 className="text-xs sm:text-sm font-medium text-slate-400 mb-3 sm:mb-4 flex items-center gap-2">
+                    <TrendingUp className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
                     Top Performing
                   </h3>
                   
-                  <div className="space-y-3">
+                  <div className="space-y-2.5 sm:space-y-3">
                     {shares
                       .sort((a, b) => b.view_count - a.view_count)
                       .slice(0, 5)
@@ -672,9 +674,9 @@ export function ShareManagementContent({
                         const percentage = Math.round((share.view_count / maxViews) * 100);
                         
                         return (
-                          <div key={share.id} className="space-y-2">
-                            <div className="flex items-center gap-3">
-                              <div className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
+                          <div key={share.id} className="space-y-1.5 sm:space-y-2">
+                            <div className="flex items-center gap-2 sm:gap-3">
+                              <div className={`flex items-center justify-center w-5 sm:w-6 h-5 sm:h-6 rounded-full text-[10px] sm:text-xs font-bold ${
                                 index === 0 ? "bg-yellow-500/20 text-yellow-400" :
                                 index === 1 ? "bg-slate-400/20 text-slate-400" :
                                 index === 2 ? "bg-orange-500/20 text-orange-400" :
