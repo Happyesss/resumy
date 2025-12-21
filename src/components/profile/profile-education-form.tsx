@@ -52,149 +52,134 @@ export function ProfileEducationForm({ education, onChange }: ProfileEducationFo
           <AccordionItem
             key={index}
             value={`education-${index}`}
-            className="bg-gray-900 border-2 border-gray-800 hover:border-purple-400/40 hover:shadow-lg transition-all duration-300 shadow-sm rounded-md overflow-hidden"
+            className="bg-zinc-900/50 border border-zinc-800 rounded-lg overflow-hidden"
           >
-            <AccordionTrigger className="px-4 py-2 hover:no-underline">
+            <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-zinc-800/30 transition-colors">
               <div className="flex items-center justify-between gap-3 flex-1">
-                <div className="flex-1 text-left text-sm font-medium text-purple-400">
-                  {edu.degree ? `${edu.degree} ` : ''}{edu.field ? `in ${edu.field} ` : ''}{edu.school ? `at ${edu.school}` : 'New Education'}
+                <div className="flex-1 text-left text-sm font-medium text-zinc-200">
+                  {edu.degree ? `${edu.degree} ` : ''}{edu.field ? <span className="text-zinc-400 font-normal">in {edu.field} </span> : ''}{edu.school ? <span className="text-zinc-400 font-normal">at {edu.school}</span> : 'New Education'}
                 </div>
-                <div className="flex items-center gap-2 text-xs text-gray-400">
+                <div className="flex items-center gap-2 text-xs text-zinc-500">
                   {edu.date && <span>{edu.date}</span>}
-                  {edu.gpa && <span>GPA: {edu.gpa}</span>}
                 </div>
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              <div className="px-4 pb-4 pt-2 space-y-4">
+              <div className="px-4 pb-4 pt-2 space-y-4 border-t border-zinc-800">
                 {/* School Name and Delete Button Row */}
-                <div className="flex items-center justify-between gap-3">
-                  <div className="relative group flex-1">
+                <div className="flex items-center justify-between gap-3 pt-2">
+                  <div className="flex-1 space-y-1.5">
+                    <Label className="text-xs font-medium text-zinc-500">Institution</Label>
                     <Input
                       value={edu.school}
                       onChange={(e) => updateEducation(index, 'school', e.target.value)}
-                      className="text-base bg-gray-800 border-gray-700 rounded-md h-8
-                        focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
-                        hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
-                        placeholder:text-gray-500 text-white"
+                      className="h-10 bg-zinc-900/50 border-zinc-800 text-zinc-100
+                        focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20
+                        hover:border-zinc-700 hover:bg-zinc-900/70 focus:bg-zinc-900/70 transition-colors
+                        placeholder:text-zinc-600"
                       placeholder="Institution Name"
                     />
-                    <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[9px] font-medium text-purple-400 border border-gray-700">
-                      INSTITUTION
-                    </div>
                   </div>
                   <Button 
                     variant="ghost" 
                     size="sm"
                     onClick={() => removeEducation(index)}
-                    className="text-gray-400 hover:text-red-500 transition-colors duration-300 h-8 w-8"
+                    className="text-zinc-500 hover:text-red-400 hover:bg-red-500/10 transition-colors mt-6 h-10 w-10"
                   >
-                    <Trash2 className="h-3.5 w-3.5" />
+                    <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
 
                 {/* Location */}
-                <div className="relative group">
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-medium text-zinc-500">Location</Label>
                   <Input
                     value={edu.location}
                     onChange={(e) => updateEducation(index, 'location', e.target.value)}
-                    className="bg-gray-800 border-gray-700 rounded-md h-8
-                      focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
-                      hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
-                      placeholder:text-gray-500 text-sm text-white"
+                    className="h-10 bg-zinc-900/50 border-zinc-800 text-zinc-100
+                      focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 focus:bg-zinc-900/70
+                      hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors
+                      placeholder:text-zinc-600"
                     placeholder="City, Country"
                   />
-                  <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[9px] font-medium text-purple-400 border border-gray-700">
-                    LOCATION
-                  </div>
                 </div>
 
                 {/* Degree and Field Row */}
-                <div className="flex flex-col md:flex-row md:items-start gap-3">
-                  <div className="relative group flex-1">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-medium text-zinc-500">Degree</Label>
                     <Input
                       value={edu.degree}
                       onChange={(e) => updateEducation(index, 'degree', e.target.value)}
-                      className="bg-gray-800 border-gray-700 rounded-md h-8
-                        focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
-                        hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
-                        placeholder:text-gray-500 text-sm text-white"
+                      className="h-10 bg-zinc-900/50 border-zinc-800 text-zinc-100
+                        focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20
+                        hover:border-zinc-700 hover:bg-zinc-900/70 focus:bg-zinc-900/70 transition-colors
+                        placeholder:text-zinc-600"
                       placeholder="Bachelor's, Master's, etc."
                     />
-                    <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[9px] font-medium text-purple-400 border border-gray-700">
-                      DEGREE
-                    </div>
                   </div>
-                  <div className="relative group flex-1">
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-medium text-zinc-500">Field of Study</Label>
                     <Input
                       value={edu.field}
                       onChange={(e) => updateEducation(index, 'field', e.target.value)}
-                      className="bg-gray-800 border-gray-700 rounded-md h-8
-                        focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
-                        hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
-                        placeholder:text-gray-500 text-sm text-white"
+                      className="h-10 bg-zinc-900/50 border-zinc-800 text-zinc-100
+                        focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20
+                        hover:border-zinc-700 hover:bg-zinc-900/70 focus:bg-zinc-900/70 transition-colors
+                        placeholder:text-zinc-600"
                       placeholder="Field of Study"
                     />
-                    <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[9px] font-medium text-purple-400 border border-gray-700">
-                      FIELD OF STUDY
-                    </div>
                   </div>
                 </div>
 
                 {/* Date and GPA Row */}
-                <div className="flex flex-col md:flex-row md:items-start gap-3">
-                  <div className="relative group flex-1">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="md:col-span-2 space-y-1.5">
+                    <Label className="text-xs font-medium text-zinc-500">Date</Label>
                     <Input
                       type="text"
                       value={edu.date}
                       onChange={(e) => updateEducation(index, 'date', e.target.value)}
-                      className="bg-gray-800 border-gray-700 rounded-md h-8
-                        focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
-                        hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
-                        placeholder:text-gray-500 text-sm text-white"
-                      placeholder="e.g., '2019 - 2023' or '2020 - Present'"
+                      className="h-10 bg-zinc-900/50 border-zinc-800 text-zinc-100
+                        focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20
+                        hover:border-zinc-700 hover:bg-zinc-900/70 focus:bg-zinc-900/70 transition-colors
+                        placeholder:text-zinc-600"
+                      placeholder="e.g., 2019 - 2023"
                     />
-                    <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[9px] font-medium text-purple-400 border border-gray-700">
-                      DATE
-                    </div>
                   </div>
-                  <div className="relative group md:w-1/3">
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-medium text-zinc-500">GPA (Optional)</Label>
                     <Input
                       type="text"
                       value={edu.gpa || ''}
                       onChange={(e) => updateEducation(index, 'gpa', e.target.value || undefined)}
-                      className="bg-gray-800 border-gray-700 rounded-md h-8
-                        focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
-                        hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
-                        placeholder:text-gray-500 text-sm text-white"
+                      className="h-10 bg-zinc-900/50 border-zinc-800 text-zinc-100
+                        focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20
+                        hover:border-zinc-700 hover:bg-zinc-900/70 focus:bg-zinc-900/70 transition-colors
+                        placeholder:text-zinc-600"
                       placeholder="0.00"
                     />
-                    <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[9px] font-medium text-purple-400 border border-gray-700">
-                      GPA (OPTIONAL)
-                    </div>
                   </div>
                 </div>
 
                 {/* Achievements */}
                 <div className="space-y-1.5">
                   <div className="flex justify-between items-baseline">
-                    <Label className="text-xs font-medium text-purple-400 rounded-full">Achievements & Activities</Label>
-                    <span className="text-[9px] text-gray-500">One achievement per line</span>
+                    <Label className="text-xs font-medium text-zinc-500">Achievements & Activities</Label>
+                    <span className="text-[10px] text-zinc-600">One per line</span>
                   </div>
                   <Textarea
                     value={edu.achievements?.join('\n') || ''}
                     onChange={(e) => {
-                      // Split on newlines but preserve empty lines for proper formatting
                       const lines = e.target.value.split('\n');
-                      // Only filter out completely empty achievements at the end
                       const achievements = lines.length === 1 && lines[0] === '' ? [] : lines;
                       updateEducation(index, 'achievements', achievements);
                     }}
                     placeholder="• Dean's List 2020-2021&#10;• President of Computer Science Club&#10;• First Place in Hackathon 2022"
-                    className="min-h-[100px] bg-gray-800 border-gray-700 rounded-md
-                      focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
-                      hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
-                      placeholder:text-gray-500 text-sm text-white"
+                    className="min-h-[100px] bg-zinc-900/50 border-zinc-800 text-zinc-100
+                      focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 focus:bg-zinc-900/70
+                      hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors
+                      placeholder:text-zinc-600 resize-none"
                   />
                 </div>
               </div>
@@ -206,9 +191,10 @@ export function ProfileEducationForm({ education, onChange }: ProfileEducationFo
       <Button 
         variant="outline" 
         onClick={addEducation}
-        className="w-full bg-gray-900 hover:bg-gray-800 border-dashed border-gray-800 hover:border-purple-400/40 text-purple-400 hover:text-purple-500 transition-all duration-300 h-8 text-sm"
+        className="w-full bg-zinc-900/30 hover:bg-zinc-800/50 border-dashed border-zinc-700 hover:border-zinc-600 
+          text-zinc-400 hover:text-zinc-200 transition-colors h-10"
       >
-        <Plus className="h-3.5 w-3.5 mr-1.5" />
+        <Plus className="h-4 w-4 mr-2" />
         Add Education
       </Button>
     </div>

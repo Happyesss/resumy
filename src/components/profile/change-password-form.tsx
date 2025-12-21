@@ -94,22 +94,22 @@ export function ChangePasswordForm() {
 
   return (
     <div className="space-y-6">
-      {/* Password Change Section - Green Theme */}
-      <div className="bg-black border border-green-500/30 rounded-xl p-6 shadow-lg hover:shadow-[0_0_15px_rgba(34,197,94,0.15)] transition-all duration-300">
-        <div className="flex items-center gap-2 mb-4">
-          <Lock className="h-5 w-5 text-green-400" />
-          <h3 className="text-lg font-semibold text-white">Change Password</h3>
+      {/* Password Change Section */}
+      <div className="space-y-5">
+        <div className="flex items-center gap-2 pb-2 border-b border-zinc-800">
+          <Lock className="h-4 w-4 text-zinc-400" />
+          <h3 className="text-sm font-medium text-zinc-300 uppercase tracking-wide">Change Password</h3>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {error && (
-            <Alert variant="destructive" className="bg-red-500/10 text-red-400 border-red-500/20 rounded-lg">
+            <Alert variant="destructive" className="bg-red-950/50 text-red-400 border-red-900/50 rounded-lg">
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="currentPassword" className="text-sm font-medium text-white">
+            <Label htmlFor="currentPassword" className="text-sm font-medium text-zinc-400">
               Current Password
             </Label>
             <div className="relative">
@@ -120,12 +120,14 @@ export function ChangePasswordForm() {
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="bg-black border-green-400/30 text-white placeholder:text-gray-400 focus:border-green-400 focus:ring-green-400/20 hover:bg-black hover:border-green-400/50 focus:bg-black pr-10"
+                className="h-11 bg-zinc-900/50 border-zinc-800 text-zinc-100 placeholder:text-zinc-600
+                  focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20
+                  hover:border-zinc-700 hover:bg-zinc-900/70 focus:bg-zinc-900/70 transition-colors pr-10"
               />
               <button
                 type="button"
                 onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-green-400 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors"
               >
                 {showCurrentPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
@@ -133,7 +135,7 @@ export function ChangePasswordForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="newPassword" className="text-sm font-medium text-white">
+            <Label htmlFor="newPassword" className="text-sm font-medium text-zinc-400">
               New Password
             </Label>
             <div className="relative">
@@ -145,23 +147,25 @@ export function ChangePasswordForm() {
                 placeholder="••••••••"
                 required
                 minLength={6}
-                className="bg-black border-green-400/30 text-white placeholder:text-gray-400 focus:border-green-400 focus:ring-green-400/20 hover:bg-black hover:border-green-400/50 focus:bg-black pr-10"
+                className="h-11 bg-zinc-900/50 border-zinc-800 text-zinc-100 placeholder:text-zinc-600
+                  focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20
+                  hover:border-zinc-700 hover:bg-zinc-900/70 focus:bg-zinc-900/70 transition-colors pr-10"
               />
               <button
                 type="button"
                 onClick={() => setShowNewPassword(!showNewPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-green-400 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors"
               >
                 {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-zinc-500">
               Password must be at least 6 characters with uppercase, number, and special character
             </p>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="confirmPassword" className="text-sm font-medium text-white">
+            <Label htmlFor="confirmPassword" className="text-sm font-medium text-zinc-400">
               Confirm New Password
             </Label>
             <div className="relative">
@@ -173,12 +177,14 @@ export function ChangePasswordForm() {
                 placeholder="••••••••"
                 required
                 minLength={6}
-                className="bg-black border-green-400/30 text-white placeholder:text-gray-400 focus:border-green-400 focus:ring-green-400/20 hover:bg-black hover:border-green-400/50 focus:bg-black pr-10"
+                className="h-11 bg-zinc-900/50 border-zinc-800 text-zinc-100 placeholder:text-zinc-600
+                  focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20
+                  hover:border-zinc-700 hover:bg-zinc-900/70 focus:bg-zinc-900/70 transition-colors pr-10"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-green-400 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors"
               >
                 {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
@@ -188,7 +194,8 @@ export function ChangePasswordForm() {
           <Button
             type="submit"
             disabled={isLoading || !currentPassword || !newPassword || !confirmPassword}
-            className="w-full h-10 bg-green-500 hover:bg-green-600 text-white font-medium transition-all duration-200 rounded-lg shadow-lg shadow-green-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full h-10 bg-amber-600 hover:bg-amber-700 text-white font-medium transition-colors rounded-lg 
+              disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <>
@@ -202,19 +209,16 @@ export function ChangePasswordForm() {
         </form>
       </div>
 
-      {/* Logout Section - Red Theme */}
-      <div className="bg-black border border-red-500/30 rounded-xl p-6 shadow-lg hover:shadow-[0_0_15px_rgba(239,68,68,0.15)] transition-all duration-300">
-        <div className="flex items-center gap-2 mb-4">
-          <h4 className="text-lg font-semibold text-white">Account Actions</h4>
-        </div>
-        <div className="space-y-3">
-          <p className="text-sm text-gray-400">
-            Sign out of your account on this device. You will need to log in again to access your account.
-          </p>
-          <LogoutButton 
-            className="w-full h-10 px-4 text-sm font-medium border border-red-500/50 text-red-400 hover:bg-red-900/20 hover:border-red-400 hover:text-red-300 transition-all duration-200 rounded-md bg-transparent"
-          />
-        </div>
+      {/* Logout Section */}
+      <div className="space-y-4 pt-4 border-t border-zinc-800">
+        <h4 className="text-sm font-medium text-zinc-400">Account Actions</h4>
+        <p className="text-xs text-zinc-500">
+          Sign out of your account on this device. You will need to log in again to access your account.
+        </p>
+        <LogoutButton 
+          className="w-full h-10 px-4 text-sm font-medium border border-red-900/50 text-red-400 
+            hover:bg-red-950/50 hover:border-red-800 hover:text-red-300 transition-colors rounded-lg bg-transparent"
+        />
       </div>
     </div>
   );

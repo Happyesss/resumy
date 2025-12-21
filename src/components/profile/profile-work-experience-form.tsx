@@ -61,105 +61,92 @@ export function ProfileWorkExperienceForm({ experiences, onChange }: ProfileWork
           <AccordionItem
             key={index}
             value={`experience-${index}`}
-            className="bg-gray-900 border-2 border-gray-800 hover:border-purple-400/40 hover:shadow-lg transition-all duration-300 shadow-sm rounded-md overflow-hidden"
+            className="bg-zinc-900/50 border border-zinc-800 rounded-lg overflow-hidden"
           >
-            <AccordionTrigger className="px-4 py-2 hover:no-underline">
+            <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-zinc-800/30 transition-colors">
               <div className="flex items-center justify-between gap-3 flex-1">
-                <div className="flex-1 text-left text-sm font-medium text-purple-400">
-                  {exp.position || "Untitled Position"} {exp.company && `at ${exp.company}`}
+                <div className="flex-1 text-left text-sm font-medium text-zinc-200">
+                  {exp.position || "Untitled Position"} {exp.company && <span className="text-zinc-400 font-normal">at {exp.company}</span>}
                 </div>
-                <div className="flex items-center gap-2 text-xs text-gray-400">
+                <div className="flex items-center gap-2 text-xs text-zinc-500">
                   {exp.date && <span>{exp.date}</span>}
-                  {exp.technologies && exp.technologies.length > 0 && (
-                    <span className="max-w-[200px] truncate">
-                      {exp.technologies.join(", ")}
-                    </span>
-                  )}
                 </div>
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              <div className="px-4 pb-4 pt-2 space-y-4">
+              <div className="px-4 pb-4 pt-2 space-y-4 border-t border-zinc-800">
                 {/* Position and Delete Button Row */}
-                <div className="flex items-center justify-between gap-3">
-                  <div className="relative group flex-1">
+                <div className="flex items-center justify-between gap-3 pt-2">
+                  <div className="flex-1 space-y-1.5">
+                    <Label className="text-xs font-medium text-zinc-500">Position</Label>
                     <Input
                       value={exp.position}
                       onChange={(e) => updateExperience(index, 'position', e.target.value)}
-                      className="text-base bg-gray-800 border-gray-700 rounded-md h-8
-                        focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
-                        hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
-                        placeholder:text-gray-500 text-white"
+                      className="h-10 bg-zinc-900/50 border-zinc-800 text-zinc-100
+                        focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20
+                        hover:border-zinc-700 hover:bg-zinc-900/70 focus:bg-zinc-900/70 transition-colors
+                        placeholder:text-zinc-600"
                       placeholder="Position Title"
                     />
-                    <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[9px] font-medium text-purple-400 border border-gray-700">
-                      POSITION
-                    </div>
                   </div>
                   <Button 
                     variant="ghost" 
                     size="sm"
                     onClick={() => removeExperience(index)}
-                    className="text-gray-400 hover:text-red-500 transition-colors duration-300 h-8 w-8"
+                    className="text-zinc-500 hover:text-red-400 hover:bg-red-500/10 transition-colors mt-6 h-10 w-10"
                   >
-                    <Trash2 className="h-3.5 w-3.5" />
+                    <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
 
                 {/* Company */}
-                <div className="relative group">
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-medium text-zinc-500">Company</Label>
                   <Input
                     value={exp.company}
                     onChange={(e) => updateExperience(index, 'company', e.target.value)}
-                    className="bg-gray-800 border-gray-700 rounded-md h-8
-                      focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
-                      hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
-                      placeholder:text-gray-500 text-sm text-white"
+                    className="h-10 bg-zinc-900/50 border-zinc-800 text-zinc-100
+                      focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20
+                      hover:border-zinc-700 hover:bg-zinc-900/70 focus:bg-zinc-900/70 transition-colors
+                      placeholder:text-zinc-600"
                     placeholder="Company Name"
                   />
-                  <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[9px] font-medium text-purple-400 border border-gray-700">
-                    COMPANY
-                  </div>
                 </div>
 
                 {/* Date and Location Row */}
-                <div className="flex flex-col md:flex-row md:items-start gap-3 text-gray-600">
-                  <div className="relative group md:w-1/3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-medium text-zinc-500">Date</Label>
                     <Input
                       type="text"
                       value={exp.date}
                       onChange={(e) => updateExperience(index, 'date', e.target.value)}
-                      className="bg-gray-800 border-gray-700 rounded-md h-8
-                        focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
-                        hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
-                        placeholder:text-gray-500 text-sm text-white"
+                      className="h-10 bg-zinc-900/50 border-zinc-800 text-zinc-100
+                        focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20
+                        hover:border-zinc-700 hover:bg-zinc-900/70 focus:bg-zinc-900/70 transition-colors
+                        placeholder:text-zinc-600"
                       placeholder="e.g., Jan 2023 - Present"
                     />
-                    <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[9px] font-medium text-purple-400 border border-gray-700">
-                      DATE
-                    </div>
                   </div>
-                  <div className="relative group flex-1">
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-medium text-zinc-500">Location</Label>
                     <Input
                       value={exp.location}
                       onChange={(e) => updateExperience(index, 'location', e.target.value)}
-                      className="bg-gray-800 border-gray-700 rounded-md h-8
-                        focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
-                        hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
-                        placeholder:text-gray-500 text-sm text-white"
+                      className="h-10 bg-zinc-900/50 border-zinc-800 text-zinc-100
+                        focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20
+                        hover:border-zinc-700 hover:bg-zinc-900/70 focus:bg-zinc-900/70 transition-colors
+                        placeholder:text-zinc-600"
                       placeholder="e.g., Vancouver, BC"
                     />
-                    <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[9px] font-medium text-purple-400 border border-gray-700">
-                      LOCATION
-                    </div>
                   </div>
                 </div>
 
                 {/* Technologies */}
                 <div className="space-y-1.5">
                   <div className="flex justify-between items-baseline">
-                    <Label className="text-xs font-medium text-purple-400 rounded-full">Technologies & Skills Used</Label>
-                    <span className="text-[9px] text-gray-500">Separate with commas</span>
+                    <Label className="text-xs font-medium text-zinc-500">Technologies & Skills</Label>
+                    <span className="text-[10px] text-zinc-600">Separate with commas</span>
                   </div>
                   <Input
                     value={techInputs[index] || ''}
@@ -193,10 +180,10 @@ export function ProfileWorkExperienceForm({ experiences, onChange }: ProfileWork
                       }));
                     }}
                     placeholder="React, TypeScript, Node.js, etc."
-                    className="bg-gray-800 border-gray-700 rounded-md h-8
-                      focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
-                      hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
-                      placeholder:text-gray-500 text-sm text-white"
+                    className="h-10 bg-zinc-900/50 border-zinc-800 text-zinc-100
+                      focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20
+                      hover:border-zinc-700 hover:bg-zinc-900/70 focus:bg-zinc-900/70 transition-colors
+                      placeholder:text-zinc-600"
                   />
                 </div>
 
@@ -212,7 +199,7 @@ export function ProfileWorkExperienceForm({ experiences, onChange }: ProfileWork
                         updated[index].description = [...updated[index].description, ""];
                         onChange(updated);
                       }}
-                      className="text-cyan-600 hover:text-cyan-700 transition-colors h-7 text-xs"
+                      className="text-emerald-500 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors h-8 text-xs px-3"
                     >
                       <Plus className="h-3.5 w-3.5 mr-1" />
                       Add Point
@@ -230,10 +217,10 @@ export function ProfileWorkExperienceForm({ experiences, onChange }: ProfileWork
                               onChange(updated);
                             }}
                             placeholder="Start with a strong action verb"
-                            className="bg-gray-800 border-gray-700 rounded-md h-8
-                              focus:border-purple-400 focus:ring-1 focus:ring-purple-400/20 focus:bg-gray-800
-                              hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
-                              placeholder:text-gray-500 text-sm text-white"
+                            className="h-10 bg-zinc-900/50 border-zinc-800 text-zinc-100
+                              focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20
+                              hover:border-zinc-700 hover:bg-zinc-900/70 focus:bg-zinc-900/70 transition-colors
+                              placeholder:text-zinc-600"
                           />
                         </div>
                         <Button
@@ -244,14 +231,14 @@ export function ProfileWorkExperienceForm({ experiences, onChange }: ProfileWork
                             updated[index].description = updated[index].description.filter((_, i) => i !== descIndex);
                             onChange(updated);
                           }}
-                          className="text-gray-400 hover:text-red-500 transition-colors duration-300 h-8 w-8"
+                          className="text-zinc-500 hover:text-red-400 hover:bg-red-500/10 transition-colors h-10 w-10"
                         >
-                          <Trash2 className="h-3.5 w-3.5" />
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
                     ))}
                     {exp.description.length === 0 && (
-                      <div className="text-xs text-gray-500 italic">
+                      <div className="text-xs text-zinc-500 italic py-2">
                         Add points to describe your responsibilities and achievements
                       </div>
                     )}
@@ -266,9 +253,10 @@ export function ProfileWorkExperienceForm({ experiences, onChange }: ProfileWork
       <Button 
         variant="outline" 
         onClick={addExperience}
-        className="w-full bg-gray-900 hover:bg-gray-800 border-dashed border-gray-800 hover:border-purple-400/40 text-purple-400 hover:text-purple-500 transition-all duration-300 h-8 text-sm"
+        className="w-full bg-zinc-900/30 hover:bg-zinc-800/50 border-dashed border-zinc-700 hover:border-zinc-600 
+          text-zinc-400 hover:text-zinc-200 transition-colors h-10"
       >
-        <Plus className="h-3.5 w-3.5 mr-1.5" />
+        <Plus className="h-4 w-4 mr-2" />
         Add Work Experience
       </Button>
     </div>

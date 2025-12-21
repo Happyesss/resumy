@@ -17,7 +17,7 @@ import {
 } from '@/lib/feedback-types';
 import { cn } from '@/lib/utils';
 import {
-    AlertCircle, Bug, CheckCircle2, ImageIcon, Lightbulb, Loader2, MessageSquare, Sparkles, Upload,
+    AlertCircle, Bug, CheckCircle2, ImagePlus, Lightbulb, Loader2, MessageSquare, Send, Sparkles,
     X
 } from 'lucide-react';
 import React, { useCallback, useRef, useState } from 'react';
@@ -28,24 +28,48 @@ interface FeedbackDialogProps {
 }
 
 const typeIcons: Record<FeedbackType, React.ReactNode> = {
-  bug: <Bug className="h-5 w-5" />,
-  feature: <Sparkles className="h-5 w-5" />,
-  improvement: <Lightbulb className="h-5 w-5" />,
-  general: <MessageSquare className="h-5 w-5" />,
+  bug: <Bug className="h-4 w-4" />,
+  feature: <Sparkles className="h-4 w-4" />,
+  improvement: <Lightbulb className="h-4 w-4" />,
+  general: <MessageSquare className="h-4 w-4" />,
 };
 
-const typeColors: Record<FeedbackType, string> = {
-  bug: 'border-red-500/50 bg-red-500/10 text-red-400 hover:bg-red-500/20',
-  feature: 'border-purple-500/50 bg-purple-500/10 text-purple-400 hover:bg-purple-500/20',
-  improvement: 'border-amber-500/50 bg-amber-500/10 text-amber-400 hover:bg-amber-500/20',
-  general: 'border-blue-500/50 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20',
+const typeStyles: Record<FeedbackType, { active: string; inactive: string }> = {
+  bug: {
+    active: 'bg-red-500/15 border-red-500/50 text-red-400 ring-red-500/20',
+    inactive: 'hover:bg-red-500/10 hover:border-red-500/30 hover:text-red-400',
+  },
+  feature: {
+    active: 'bg-violet-500/15 border-violet-500/50 text-violet-400 ring-violet-500/20',
+    inactive: 'hover:bg-violet-500/10 hover:border-violet-500/30 hover:text-violet-400',
+  },
+  improvement: {
+    active: 'bg-amber-500/15 border-amber-500/50 text-amber-400 ring-amber-500/20',
+    inactive: 'hover:bg-amber-500/10 hover:border-amber-500/30 hover:text-amber-400',
+  },
+  general: {
+    active: 'bg-sky-500/15 border-sky-500/50 text-sky-400 ring-sky-500/20',
+    inactive: 'hover:bg-sky-500/10 hover:border-sky-500/30 hover:text-sky-400',
+  },
 };
 
-const priorityColors: Record<FeedbackPriority, string> = {
-  low: 'border-gray-500/50 bg-gray-500/10 text-gray-400 hover:bg-gray-500/20',
-  medium: 'border-blue-500/50 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20',
-  high: 'border-orange-500/50 bg-orange-500/10 text-orange-400 hover:bg-orange-500/20',
-  critical: 'border-red-500/50 bg-red-500/10 text-red-400 hover:bg-red-500/20',
+const priorityStyles: Record<FeedbackPriority, { active: string; inactive: string }> = {
+  low: {
+    active: 'bg-zinc-500/15 border-zinc-500/50 text-zinc-300',
+    inactive: 'hover:bg-zinc-500/10 hover:border-zinc-500/30',
+  },
+  medium: {
+    active: 'bg-sky-500/15 border-sky-500/50 text-sky-400',
+    inactive: 'hover:bg-sky-500/10 hover:border-sky-500/30',
+  },
+  high: {
+    active: 'bg-orange-500/15 border-orange-500/50 text-orange-400',
+    inactive: 'hover:bg-orange-500/10 hover:border-orange-500/30',
+  },
+  critical: {
+    active: 'bg-red-500/15 border-red-500/50 text-red-400',
+    inactive: 'hover:bg-red-500/10 hover:border-red-500/30',
+  },
 };
 
 export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
@@ -77,7 +101,6 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
 
   const handleClose = useCallback(() => {
     onOpenChange(false);
-    // Reset form after animation
     setTimeout(resetForm, 300);
   }, [onOpenChange, resetForm]);
 
@@ -85,14 +108,12 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type
     const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
     if (!allowedTypes.includes(file.type)) {
       setErrorMessage('Invalid file type. Only PNG, JPG, GIF, and WebP are allowed.');
       return;
     }
 
-    // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       setErrorMessage('File too large. Maximum size is 5MB.');
       return;
@@ -101,7 +122,6 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
     setScreenshot(file);
     setErrorMessage('');
 
-    // Create preview
     const reader = new FileReader();
     reader.onload = (event) => {
       setScreenshotPreview(event.target?.result as string);
@@ -146,7 +166,6 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
     try {
       let screenshotUrl: string | null = null;
 
-      // Upload screenshot if exists
       if (screenshot) {
         setIsUploading(true);
         const formData = new FormData();
@@ -164,7 +183,6 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
         screenshotUrl = uploadResult.url || null;
       }
 
-      // Submit feedback
       const result = await submitFeedback(
         {
           type,
@@ -192,242 +210,255 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={cn(
-        "bg-gray-900 border-gray-800 text-white max-h-[90vh] overflow-y-auto",
-        "w-[calc(100vw-2rem)] mx-auto",
-        step === 'form' ? 'sm:max-w-[600px]' : 'sm:max-w-[360px]'
+        "bg-zinc-950 border-zinc-800 text-white p-0 gap-0 overflow-hidden",
+        "w-[calc(100vw-2rem)] max-w-[95vw] sm:max-w-[560px]",
+        "max-h-[90vh] flex flex-col"
       )}>
         {step === 'form' && (
           <>
-            <DialogHeader>
-              <DialogTitle className="text-xl font-semibold flex items-center gap-2">
-                <MessageSquare className="h-5 w-5 text-purple-400" />
-                Send Feedback
-              </DialogTitle>
-              <DialogDescription className="text-gray-400">
-                Help us improve by sharing your feedback, reporting bugs, or suggesting new features.
-              </DialogDescription>
+            {/* Header */}
+            <DialogHeader className="px-5 pt-5 pb-4 border-b border-zinc-800/50 shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-purple-500/10 border border-purple-500/20">
+                  <MessageSquare className="h-5 w-5 text-purple-400" />
+                </div>
+                <div>
+                  <DialogTitle className="text-lg font-semibold text-zinc-100">
+                    Send Feedback
+                  </DialogTitle>
+                  <DialogDescription className="text-sm text-zinc-500 mt-0.5">
+                    Help us improve your experience
+                  </DialogDescription>
+                </div>
+              </div>
             </DialogHeader>
 
-            <form onSubmit={handleSubmit} className="space-y-6 mt-4">
-              {/* Feedback Type Selection */}
-              <div className="space-y-3">
-                <Label className="text-sm font-medium text-gray-300">
-                  What type of feedback is this?
-                </Label>
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
-                  {FEEDBACK_TYPE_OPTIONS.map((option) => (
-                    <button
-                      key={option.value}
-                      type="button"
-                      onClick={() => setType(option.value)}
-                      className={cn(
-                        'flex flex-col sm:flex-row items-center gap-3 p-3 min-h-[84px] rounded-xl border-2 transition-all duration-200 w-full',
-                        type === option.value
-                          ? `${typeColors[option.value]} border-opacity-100 ring-2 ring-offset-2 ring-offset-gray-900`
-                          : 'border-gray-700 bg-gray-800/50 text-gray-400 hover:border-gray-600 hover:bg-gray-800'
-                      )}
-                      style={{
-                        ['--tw-ring-color' as string]: type === option.value 
-                          ? option.value === 'bug' ? 'rgb(239 68 68 / 0.3)'
-                          : option.value === 'feature' ? 'rgb(168 85 247 / 0.3)'
-                          : option.value === 'improvement' ? 'rgb(245 158 11 / 0.3)'
-                          : 'rgb(59 130 246 / 0.3)'
-                          : 'transparent'
-                      }}
+            {/* Scrollable Form Content */}
+            <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
+              <div className="p-5 space-y-5">
+                {/* Feedback Type */}
+                <div className="space-y-2.5">
+                  <Label className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
+                    Type
+                  </Label>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    {FEEDBACK_TYPE_OPTIONS.map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        onClick={() => setType(option.value)}
+                        className={cn(
+                          'flex items-center gap-2 px-3 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200',
+                          type === option.value
+                            ? `${typeStyles[option.value].active} ring-2 ring-offset-1 ring-offset-zinc-950`
+                            : `border-zinc-800 bg-zinc-900/50 text-zinc-500 ${typeStyles[option.value].inactive}`
+                        )}
                       >
-                      {typeIcons[option.value]}
-                      <div className="w-full text-center sm:text-left">
-                        <div className="font-medium text-sm">{option.label}</div>
-                        <div className="text-xs opacity-70 line-clamp-1">{option.description}</div>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Priority Selection */}
-              <div className="space-y-3">
-                <Label className="text-sm font-medium text-gray-300">Priority Level</Label>
-                <div className="grid grid-cols-2 sm:flex gap-2">
-                  {FEEDBACK_PRIORITY_OPTIONS.map((option) => (
-                    <button
-                      key={option.value}
-                      type="button"
-                      onClick={() => setPriority(option.value)}
-                      className={cn(
-                        'flex-1 py-2 px-3 rounded-lg border-2 text-sm font-medium transition-all duration-200',
-                        priority === option.value
-                          ? `${priorityColors[option.value]} ring-2 ring-offset-1 ring-offset-gray-900`
-                          : 'border-gray-700 bg-gray-800/50 text-gray-400 hover:border-gray-600'
-                      )}
-                      style={{
-                        ['--tw-ring-color' as string]: priority === option.value 
-                          ? option.value === 'low' ? 'rgb(107 114 128 / 0.3)'
-                          : option.value === 'medium' ? 'rgb(59 130 246 / 0.3)'
-                          : option.value === 'high' ? 'rgb(249 115 22 / 0.3)'
-                          : 'rgb(239 68 68 / 0.3)'
-                          : 'transparent'
-                      }}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Title Input */}
-              <div className="space-y-2">
-                <Label htmlFor="title" className="text-sm font-medium text-gray-300">
-                  Title <span className="text-red-400">*</span>
-                </Label>
-                <input
-                  id="title"
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Brief summary of your feedback..."
-                  className="flex h-10 w-full rounded-lg border-2 px-3 py-2 text-sm bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 focus:outline-none transition-colors"
-                  maxLength={100}
-                />
-                <div className="text-xs text-gray-500 text-right">{title.length}/100</div>
-              </div>
-
-              {/* Description Textarea */}
-              <div className="space-y-2">
-                <Label htmlFor="description" className="text-sm font-medium text-gray-300">
-                  Description <span className="text-red-400">*</span>
-                </Label>
-                <Textarea
-                  id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder={
-                    type === 'bug'
-                      ? "Please describe the issue in detail. What were you trying to do? What happened instead? Steps to reproduce..."
-                      : type === 'feature'
-                      ? "Describe the feature you'd like to see. How would it help you? Any specific requirements..."
-                      : "Share your thoughts, suggestions, or ideas..."
-                  }
-                  className="min-h-[120px] bg-gray-800/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-purple-500/50 focus:ring-purple-500/20"
-                  maxLength={2000}
-                />
-                <div className="text-xs text-gray-500 text-right">{description.length}/2000</div>
-              </div>
-
-              {/* Screenshot Upload */}
-              <div className="space-y-2">
-                <Label className="text-sm font-medium text-gray-300">
-                  Screenshot <span className="text-gray-500">(optional)</span>
-                </Label>
-                
-                {!screenshotPreview ? (
-                  <div
-                    onClick={() => fileInputRef.current?.click()}
-                    onDrop={handleDrop}
-                    onDragOver={handleDragOver}
-                    className="border-2 border-dashed border-gray-700 rounded-xl p-6 text-center cursor-pointer transition-all duration-200 hover:border-purple-500/50 hover:bg-gray-800/30 group"
-                  >
-                    <div className="flex flex-col items-center gap-2">
-                      <div className="p-3 rounded-full bg-gray-800 group-hover:bg-purple-500/10 transition-colors">
-                        <ImageIcon className="h-6 w-6 text-gray-500 group-hover:text-purple-400" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-400">
-                          <span className="text-purple-400 font-medium">Click to upload</span> or drag and drop
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">PNG, JPG, GIF or WebP (max 5MB)</p>
-                      </div>
-                    </div>
+                        {typeIcons[option.value]}
+                        <span>{option.label}</span>
+                      </button>
+                    ))}
                   </div>
-                ) : (
-                  <div className="relative rounded-xl overflow-hidden border-2 border-gray-700 bg-gray-800/30">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={screenshotPreview}
-                      alt="Screenshot preview"
-                      className="w-full h-36 sm:h-48 object-contain bg-gray-900"
-                    />
+                </div>
+
+                {/* Priority */}
+                <div className="space-y-2.5">
+                  <Label className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
+                    Priority
+                  </Label>
+                  <div className="flex flex-wrap gap-2">
+                    {FEEDBACK_PRIORITY_OPTIONS.map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        onClick={() => setPriority(option.value)}
+                        className={cn(
+                          'px-4 py-2 rounded-lg border text-sm font-medium transition-all duration-200',
+                          priority === option.value
+                            ? priorityStyles[option.value].active
+                            : `border-zinc-800 bg-zinc-900/50 text-zinc-500 ${priorityStyles[option.value].inactive}`
+                        )}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Title */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="title" className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
+                      Title <span className="text-red-400">*</span>
+                    </Label>
+                    <span className="text-[10px] text-zinc-600">{title.length}/100</span>
+                  </div>
+                  <input
+                    id="title"
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Brief summary..."
+                    className="flex h-11 w-full rounded-lg border px-4 py-2 text-sm 
+                      bg-zinc-900/50 border-zinc-800 text-zinc-100 
+                      placeholder:text-zinc-600
+                      focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/20 
+                      hover:border-zinc-700 hover:bg-zinc-900/70 focus:bg-zinc-900/70
+                      focus:outline-none transition-colors"
+                    maxLength={100}
+                  />
+                </div>
+
+                {/* Description */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="description" className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
+                      Description <span className="text-red-400">*</span>
+                    </Label>
+                    <span className="text-[10px] text-zinc-600">{description.length}/2000</span>
+                  </div>
+                  <Textarea
+                    id="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder={
+                      type === 'bug'
+                        ? "Describe the issue. What happened? Steps to reproduce..."
+                        : type === 'feature'
+                        ? "Describe the feature and how it would help..."
+                        : "Share your thoughts or suggestions..."
+                    }
+                    className="min-h-[100px] bg-zinc-900/50 border-zinc-800 text-zinc-100 
+                      placeholder:text-zinc-600 resize-none
+                      focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/20 
+                      hover:border-zinc-700 hover:bg-zinc-900/70 focus:bg-zinc-900/70"
+                    maxLength={2000}
+                  />
+                </div>
+
+                {/* Screenshot */}
+                <div className="space-y-2">
+                  <Label className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
+                    Screenshot <span className="text-zinc-600 normal-case">(optional)</span>
+                  </Label>
+                  
+                  {!screenshotPreview ? (
                     <button
                       type="button"
-                      onClick={handleRemoveScreenshot}
-                      className="absolute top-2 right-2 p-1.5 rounded-full bg-gray-900/80 hover:bg-red-500/80 text-white transition-colors"
+                      onClick={() => fileInputRef.current?.click()}
+                      onDrop={handleDrop}
+                      onDragOver={handleDragOver}
+                      className="w-full border border-dashed border-zinc-800 rounded-lg p-4 
+                        text-center cursor-pointer transition-all duration-200 
+                        hover:border-purple-500/40 hover:bg-purple-500/5 group"
                     >
-                      <X className="h-4 w-4" />
+                      <div className="flex items-center justify-center gap-3">
+                        <div className="p-2 rounded-lg bg-zinc-800 group-hover:bg-purple-500/10 transition-colors">
+                          <ImagePlus className="h-4 w-4 text-zinc-500 group-hover:text-purple-400" />
+                        </div>
+                        <div className="text-left">
+                          <p className="text-sm text-zinc-400 group-hover:text-zinc-300">
+                            Click or drag to upload
+                          </p>
+                          <p className="text-[10px] text-zinc-600">PNG, JPG, GIF, WebP (max 5MB)</p>
+                        </div>
+                      </div>
                     </button>
-                    <div className="p-2 bg-gray-800/80 flex items-center gap-2">
-                      <ImageIcon className="h-4 w-4 text-gray-400" />
-                      <span className="text-sm text-gray-400 truncate">{screenshot?.name}</span>
-                      <Badge variant="outline" className="ml-auto text-xs border-gray-600">
-                        {((screenshot?.size || 0) / 1024).toFixed(1)} KB
-                      </Badge>
+                  ) : (
+                    <div className="relative rounded-lg overflow-hidden border border-zinc-800 bg-zinc-900/30">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={screenshotPreview}
+                        alt="Screenshot preview"
+                        className="w-full h-32 object-contain bg-zinc-900"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleRemoveScreenshot}
+                        className="absolute top-2 right-2 p-1.5 rounded-full 
+                          bg-zinc-900/90 hover:bg-red-500/80 text-zinc-400 hover:text-white 
+                          transition-colors"
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </button>
+                      <div className="px-3 py-2 bg-zinc-900/80 flex items-center gap-2 border-t border-zinc-800">
+                        <span className="text-xs text-zinc-500 truncate flex-1">{screenshot?.name}</span>
+                        <Badge variant="outline" className="text-[10px] border-zinc-700 text-zinc-500">
+                          {((screenshot?.size || 0) / 1024).toFixed(0)} KB
+                        </Badge>
+                      </div>
                     </div>
+                  )}
+                  
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                </div>
+
+                {/* Error Message */}
+                {errorMessage && (
+                  <div className="flex items-start gap-2.5 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
+                    <AlertCircle className="h-4 w-4 text-red-400 mt-0.5 shrink-0" />
+                    <span className="text-sm text-red-400">{errorMessage}</span>
                   </div>
                 )}
-                
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
               </div>
 
-              {/* Error Message */}
-              {errorMessage && (
-                <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400">
-                  <AlertCircle className="h-4 w-4 flex-shrink-0" />
-                  <span className="text-sm">{errorMessage}</span>
+              {/* Footer */}
+              <div className="px-5 py-4 border-t border-zinc-800/50 bg-zinc-900/30 shrink-0">
+                <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleClose}
+                    className="flex-1 h-10 border-zinc-800 bg-transparent text-zinc-400 
+                      hover:bg-zinc-800 hover:text-zinc-200 hover:border-zinc-700"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting || !title.trim() || !description.trim()}
+                    className="flex-1 h-10 bg-purple-600 hover:bg-purple-500 text-white border-0
+                      disabled:bg-zinc-800 disabled:text-zinc-500"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                        {isUploading ? 'Uploading...' : 'Sending...'}
+                      </>
+                    ) : (
+                      <>
+                        <Send className="h-4 w-4 mr-2" />
+                        Send Feedback
+                      </>
+                    )}
+                  </Button>
                 </div>
-              )}
-
-              {/* Submit Button */}
-              <div className="flex gap-3 pt-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handleClose}
-                  className="flex-1 border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={isSubmitting || !title.trim() || !description.trim()}
-                  className="flex-1 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 text-white border-0"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                      {isUploading ? 'Uploading...' : 'Submitting...'}
-                    </>
-                  ) : (
-                    <>
-                      <Upload className="h-4 w-4 mr-2" />
-                      Submit Feedback
-                    </>
-                  )}
-                </Button>
               </div>
             </form>
           </>
         )}
 
         {step === 'success' && (
-          <div className="py-2 text-center space-y-2">
-            <div className="mx-auto w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
-              <CheckCircle2 className="h-5 w-5 text-green-500" />
+          <div className="p-8 text-center space-y-4">
+            <div className="mx-auto w-14 h-14 rounded-full bg-purple-500/10 border border-purple-500/20 
+              flex items-center justify-center">
+              <CheckCircle2 className="h-7 w-7 text-purple-400" />
             </div>
-            <div>
-              <h3 className="text-base font-semibold text-white">Thank You!</h3>
-              <p className="text-xs text-gray-400 mt-0.5">
-                Your feedback has been submitted.
+            <div className="space-y-1">
+              <h3 className="text-lg font-semibold text-zinc-100">Thank You!</h3>
+              <p className="text-sm text-zinc-500">
+                Your feedback has been submitted successfully.
               </p>
             </div>
             <Button
               onClick={handleClose}
-              size="sm"
-              className="bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 h-8 px-4 text-xs"
+              className="h-10 px-6 bg-purple-600 hover:bg-purple-500 text-white"
             >
               Close
             </Button>
@@ -435,27 +466,27 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
         )}
 
         {step === 'error' && (
-          <div className="py-2 text-center space-y-2">
-            <div className="mx-auto w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
-              <AlertCircle className="h-5 w-5 text-red-500" />
+          <div className="p-8 text-center space-y-4">
+            <div className="mx-auto w-14 h-14 rounded-full bg-red-500/10 border border-red-500/20 
+              flex items-center justify-center">
+              <AlertCircle className="h-7 w-7 text-red-400" />
             </div>
-            <div>
-              <h3 className="text-base font-semibold text-white">Submission Failed</h3>
-              <p className="text-xs text-gray-400 mt-0.5">{errorMessage || 'Something went wrong.'}</p>
+            <div className="space-y-1">
+              <h3 className="text-lg font-semibold text-zinc-100">Something went wrong</h3>
+              <p className="text-sm text-zinc-500">{errorMessage || 'Please try again.'}</p>
             </div>
-            <div className="flex gap-2 justify-center">
+            <div className="flex gap-3 justify-center">
               <Button
                 onClick={() => setStep('form')}
                 variant="outline"
-                size="sm"
-                className="border-gray-700 text-gray-300 hover:bg-gray-800 h-8 px-3 text-xs"
+                className="h-10 px-5 border-zinc-800 bg-transparent text-zinc-400 
+                  hover:bg-zinc-800 hover:text-zinc-200"
               >
                 Try Again
               </Button>
               <Button
                 onClick={handleClose}
-                size="sm"
-                className="bg-gradient-to-r from-purple-600 to-purple-500 h-8 px-3 text-xs"
+                className="h-10 px-5 bg-purple-600 hover:bg-purple-500 text-white"
               >
                 Close
               </Button>

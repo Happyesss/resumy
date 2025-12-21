@@ -1,9 +1,9 @@
 'use client';
 
-import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Profile } from "@/lib/types";
-import { Github, Globe, Mail, MapPin, Phone, User } from "lucide-react";
+import { Github, Globe, Linkedin, Mail, MapPin, Phone, User } from "lucide-react";
 
 interface ProfileBasicInfoFormProps {
   profile: Profile;
@@ -12,193 +12,169 @@ interface ProfileBasicInfoFormProps {
 
 export function ProfileBasicInfoForm({ profile, onChange }: ProfileBasicInfoFormProps) {
   return (
-    <div className="space-y-6">
-      {/* Personal Details */}
-      <Card className="relative group bg-gray-900 border-2 border-gray-800 hover:border-purple-400/40 hover:shadow-lg transition-all duration-300 shadow-sm">
-        <CardContent className="p-6">
-          <div className="space-y-6">
-            {/* Name Row */}
-            <div className="flex flex-col md:flex-row md:items-start gap-4">
-              <div className="relative group flex-1">
-                <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                  <div className="p-1.5 rounded-full bg-purple-400/20 transition-transform duration-300 group-focus-within:scale-110">
-                    <User className="h-4 w-4 text-purple-400" />
-                  </div>
-                </div>
-                <Input
-                  value={profile.first_name || ''}
-                  onChange={(e) => onChange('first_name', e.target.value)}
-                  className="pr-12 text-lg font-medium bg-gray-800 border-gray-700 rounded-lg
-                    focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20
-                    hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
-                    placeholder:text-gray-500 text-white focus:bg-gray-800"
-                  placeholder="First Name"
-                />
-                <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[10px] font-medium text-purple-400 border border-gray-700">
-                  FIRST NAME
-                </div>
-              </div>
-              <div className="relative group flex-1">
-                <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                  <div className="p-1.5 rounded-full bg-purple-400/20 transition-transform duration-300 group-focus-within:scale-110">
-                    <User className="h-4 w-4 text-purple-400" />
-                  </div>
-                </div>
-                <Input
-                  value={profile.last_name || ''}
-                  onChange={(e) => onChange('last_name', e.target.value)}
-                  className="pr-12 text-lg font-medium bg-gray-800 border-gray-700 rounded-lg
-                    focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20
-                    hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
-                    placeholder:text-gray-500 text-white focus:bg-gray-800"
-                  placeholder="Last Name"
-                />
-                <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[10px] font-medium text-purple-400 border border-gray-700">
-                  LAST NAME
-                </div>
-              </div>
-            </div>
-
-            {/* Contact Info */}
-            <div className="flex flex-col md:flex-row md:items-start gap-4">
-              <div className="relative group flex-1">
-                <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                  <div className="p-1.5 rounded-full bg-purple-400/20 transition-transform duration-300 group-focus-within:scale-110">
-                    <Mail className="h-4 w-4 text-purple-400" />
-                  </div>
-                </div>
-                <Input
-                  type="email"
-                  value={profile.email || ''}
-                  onChange={(e) => onChange('email', e.target.value)}
-                  disabled
-                  className="pr-12 bg-gray-700 border-gray-600 rounded-lg
-                    text-gray-400 cursor-not-allowed
-                    placeholder:text-gray-500"
-                  placeholder="email@example.com"
-                />
-                <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[10px] font-medium text-purple-400 border border-gray-700">
-                  EMAIL
-                </div>
-              </div>
-              <div className="relative group flex-1">
-                <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                  <div className="p-1.5 rounded-full bg-purple-400/20 transition-transform duration-300 group-focus-within:scale-110">
-                    <Phone className="h-4 w-4 text-purple-400" />
-                  </div>
-                </div>
-                <Input
-                  type="tel"
-                  value={profile.phone_number || ''}
-                  onChange={(e) => onChange('phone_number', e.target.value)}
-                  className="pr-12 bg-gray-800 border-gray-700 rounded-lg
-                    focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20
-                    hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
-                    placeholder:text-gray-500 text-white focus:bg-gray-800"
-                  placeholder="+1 (555) 000-0000"
-                />
-                <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[10px] font-medium text-purple-400 border border-gray-700">
-                  PHONE
-                </div>
-              </div>
-            </div>
-
-            {/* Location */}
-            <div className="relative group">
-              <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                <div className="p-1.5 rounded-full bg-purple-400/20 transition-transform duration-300 group-focus-within:scale-110">
-                  <MapPin className="h-4 w-4 text-purple-400" />
-                </div>
-              </div>
-              <Input
-                value={profile.location || ''}
-                onChange={(e) => onChange('location', e.target.value)}
-                className="pr-12 bg-gray-800 border-gray-700 rounded-lg
-                  focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20
-                  hover:border-purple-400/50 hover:bg-gray-800/90 transition-colors
-                  placeholder:text-gray-500 text-white focus:bg-gray-800"
-                placeholder="City, State, Country"
-              />
-              <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[10px] font-medium text-purple-400 border border-gray-700">
-                LOCATION
-              </div>
-            </div>
+    <div className="space-y-8">
+      {/* Personal Details Section */}
+      <div className="space-y-5">
+        <div className="flex items-center gap-2 pb-2 border-b border-zinc-800">
+          <User className="h-4 w-4 text-zinc-400" />
+          <h3 className="text-sm font-medium text-zinc-300 uppercase tracking-wide">Contact Details</h3>
+        </div>
+        
+        {/* Name Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="space-y-2">
+            <Label htmlFor="first_name" className="text-sm font-medium text-zinc-400">
+              First Name
+            </Label>
+            <Input
+              id="first_name"
+              value={profile.first_name || ''}
+              onChange={(e) => onChange('first_name', e.target.value)}
+              className="h-11 bg-zinc-900/50 border-zinc-800 text-zinc-100 
+                focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 focus:bg-zinc-900/70
+                hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors
+                placeholder:text-zinc-600"
+              placeholder="Enter your first name"
+            />
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Online Presence */}
-      <Card className="relative group bg-gray-900 border-2 border-gray-800 hover:border-purple-400/40 hover:shadow-lg transition-all duration-300 shadow-sm">
-        <CardContent className="p-6">
-          <div className="space-y-6">
-            {/* Website and LinkedIn */}
-            <div className="flex flex-col md:flex-row md:items-start gap-4">
-              <div className="relative group flex-1">
-                <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                  <div className="p-1.5 rounded-full bg-teal-400/20 transition-transform duration-300 group-focus-within:scale-110">
-                    <Globe className="h-4 w-4 text-teal-400" />
-                  </div>
-                </div>
-                <Input
-                  type="url"
-                  value={profile.website || ''}
-                  onChange={(e) => onChange('website', e.target.value)}
-                  className="pr-12 bg-gray-800 border-gray-700 rounded-lg
-                    focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20
-                    hover:border-teal-400/50 hover:bg-gray-800/90 transition-colors
-                    placeholder:text-gray-500 text-white focus:bg-gray-800"
-                  placeholder="https://your-website.com"
-                />
-                <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[10px] font-medium text-teal-400 border border-gray-700">
-                  WEBSITE
-                </div>
-              </div>
-              <div className="relative group flex-1">
-                <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                  <div className="p-1.5 rounded-full bg-blue-400/20 transition-transform duration-300 group-focus-within:scale-110">
-                    {/* Linkedin icon removed */}
-                  </div>
-                </div>
-                <Input
-                  type="url"
-                  value={profile.linkedin_url || ''}
-                  onChange={(e) => onChange('linkedin_url', e.target.value)}
-                  className="pr-12 bg-gray-800 border-gray-700 rounded-lg
-                    focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20
-                    hover:border-blue-400/50 hover:bg-gray-800/90 transition-colors
-                    placeholder:text-gray-500 text-white focus:bg-gray-800"
-                  placeholder="https://linkedin.com/in/username"
-                />
-                <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[10px] font-medium text-blue-400 border border-gray-700">
-                  LINKEDIN
-                </div>
-              </div>
-            </div>
-
-            {/* GitHub */}
-            <div className="relative group">
-              <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                <div className="p-1.5 rounded-full bg-white/20 transition-transform duration-300 group-focus-within:scale-110">
-                  <Github className="h-4 w-4 text-white" />
-                </div>
-              </div>
-              <Input
-                type="url"
-                value={profile.github_url || ''}
-                onChange={(e) => onChange('github_url', e.target.value)}
-                className="pr-12 bg-gray-800 border-gray-700 rounded-lg
-                  focus:border-gray-400 focus:ring-2 focus:ring-gray-400/20
-                  hover:border-gray-400/50 hover:bg-gray-800/90 transition-colors
-                  placeholder:text-gray-500 text-white focus:bg-gray-800"
-                placeholder="https://github.com/username"
-              />
-              <div className="absolute -top-2.5 left-2 px-1 bg-gray-900 rounded-full text-[10px] font-medium text-white border border-gray-700">
-                GITHUB
-              </div>
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="last_name" className="text-sm font-medium text-zinc-400">
+              Last Name
+            </Label>
+            <Input
+              id="last_name"
+              value={profile.last_name || ''}
+              onChange={(e) => onChange('last_name', e.target.value)}
+              className="h-11 bg-zinc-900/50 border-zinc-800 text-zinc-100 
+                focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 focus:bg-zinc-900/70
+                hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors
+                placeholder:text-zinc-600"
+              placeholder="Enter your last name"
+            />
           </div>
-        </CardContent>
-      </Card>
+        </div>
+
+        {/* Email & Phone Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="space-y-2">
+            <Label htmlFor="email" className="text-sm font-medium text-zinc-400 flex items-center gap-2">
+              <Mail className="h-3.5 w-3.5" />
+              Email Address
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              value={profile.email || ''}
+              onChange={(e) => onChange('email', e.target.value)}
+              disabled
+              className="h-11 bg-zinc-900/30 border-zinc-800/50 text-zinc-500 
+                cursor-not-allowed placeholder:text-zinc-600"
+              placeholder="email@example.com"
+            />
+            <p className="text-xs text-zinc-600">Email cannot be changed</p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="phone" className="text-sm font-medium text-zinc-400 flex items-center gap-2">
+              <Phone className="h-3.5 w-3.5" />
+              Phone Number
+            </Label>
+            <Input
+              id="phone"
+              type="tel"
+              value={profile.phone_number || ''}
+              onChange={(e) => onChange('phone_number', e.target.value)}
+              className="h-11 bg-zinc-900/50 border-zinc-800 text-zinc-100 
+                focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 focus:bg-zinc-900/70
+                hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors
+                placeholder:text-zinc-600"
+              placeholder="+1 (555) 000-0000"
+            />
+          </div>
+        </div>
+
+        {/* Location */}
+        <div className="space-y-2">
+          <Label htmlFor="location" className="text-sm font-medium text-zinc-400 flex items-center gap-2">
+            <MapPin className="h-3.5 w-3.5" />
+            Location
+          </Label>
+          <Input
+            id="location"
+            value={profile.location || ''}
+            onChange={(e) => onChange('location', e.target.value)}
+            className="h-11 bg-zinc-900/50 border-zinc-800 text-zinc-100 
+              focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 focus:bg-zinc-900/70
+              hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors
+              placeholder:text-zinc-600"
+            placeholder="City, State, Country"
+          />
+        </div>
+      </div>
+
+      {/* Online Presence Section */}
+      <div className="space-y-5">
+        <div className="flex items-center gap-2 pb-2 border-b border-zinc-800">
+          <Globe className="h-4 w-4 text-zinc-400" />
+          <h3 className="text-sm font-medium text-zinc-300 uppercase tracking-wide">Online Presence</h3>
+        </div>
+
+        {/* Website & LinkedIn Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="space-y-2">
+            <Label htmlFor="website" className="text-sm font-medium text-zinc-400 flex items-center gap-2">
+              <Globe className="h-3.5 w-3.5" />
+              Website
+            </Label>
+            <Input
+              id="website"
+              type="url"
+              value={profile.website || ''}
+              onChange={(e) => onChange('website', e.target.value)}
+              className="h-11 bg-zinc-900/50 border-zinc-800 text-zinc-100 
+                focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 focus:bg-zinc-900/70
+                hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors
+                placeholder:text-zinc-600"
+              placeholder="https://your-website.com"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="linkedin" className="text-sm font-medium text-zinc-400 flex items-center gap-2">
+              <Linkedin className="h-3.5 w-3.5" />
+              LinkedIn
+            </Label>
+            <Input
+              id="linkedin"
+              type="url"
+              value={profile.linkedin_url || ''}
+              onChange={(e) => onChange('linkedin_url', e.target.value)}
+              className="h-11 bg-zinc-900/50 border-zinc-800 text-zinc-100 
+                focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 focus:bg-zinc-900/70
+                hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors
+                placeholder:text-zinc-600"
+              placeholder="https://linkedin.com/in/username"
+            />
+          </div>
+        </div>
+
+        {/* GitHub */}
+        <div className="space-y-2">
+          <Label htmlFor="github" className="text-sm font-medium text-zinc-400 flex items-center gap-2">
+            <Github className="h-3.5 w-3.5" />
+            GitHub
+          </Label>
+          <Input
+            id="github"
+            type="url"
+            value={profile.github_url || ''}
+            onChange={(e) => onChange('github_url', e.target.value)}
+            className="h-11 bg-zinc-900/50 border-zinc-800 text-zinc-100 
+              focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 focus:bg-zinc-900/70
+              hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors
+              placeholder:text-zinc-600"
+            placeholder="https://github.com/username"
+          />
+        </div>
+      </div>
     </div>
   );
 }

@@ -2,9 +2,28 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { ViewLogs } from "@/components/share/view-logs";
 import {
-    ArrowLeft, BarChart3, Calendar, Check, Clock, Copy, ExternalLink, Eye, FileText, Globe, Link2, Lock, Monitor, RefreshCw, Share2, Smartphone,
-    Tablet
+  ArrowLeft,
+  BarChart3,
+  Check,
+  Clock,
+  Copy,
+  ExternalLink,
+  Eye,
+  FileText,
+  Globe,
+  Link2,
+  Lock,
+  Monitor,
+  RefreshCw,
+  Share2,
+  Smartphone,
+  Tablet,
+  TrendingUp,
+  Zap,
+  Activity,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -49,6 +68,86 @@ interface ShareManagementContentProps {
   deviceAnalytics: DeviceAnalytics[];
 }
 
+function _getCountryFlag(country: string): string {
+  const countryFlags: Record<string, string> = {
+    'United States': '🇺🇸',
+    'USA': '🇺🇸',
+    'US': '🇺🇸',
+    'United Kingdom': '🇬🇧',
+    'UK': '🇬🇧',
+    'GB': '🇬🇧',
+    'Canada': '🇨🇦',
+    'CA': '🇨🇦',
+    'Australia': '🇦🇺',
+    'AU': '🇦🇺',
+    'Germany': '🇩🇪',
+    'DE': '🇩🇪',
+    'France': '🇫🇷',
+    'FR': '🇫🇷',
+    'India': '🇮🇳',
+    'IN': '🇮🇳',
+    'Japan': '🇯🇵',
+    'JP': '🇯🇵',
+    'China': '🇨🇳',
+    'CN': '🇨🇳',
+    'Brazil': '🇧🇷',
+    'BR': '🇧🇷',
+    'Netherlands': '🇳🇱',
+    'NL': '🇳🇱',
+    'Singapore': '🇸🇬',
+    'SG': '🇸🇬',
+    'Spain': '🇪🇸',
+    'ES': '🇪🇸',
+    'Italy': '🇮🇹',
+    'IT': '🇮🇹',
+    'Mexico': '🇲🇽',
+    'MX': '🇲🇽',
+    'South Korea': '🇰🇷',
+    'Korea': '🇰🇷',
+    'KR': '🇰🇷',
+    'Russia': '🇷🇺',
+    'RU': '🇷🇺',
+    'Poland': '🇵🇱',
+    'PL': '🇵🇱',
+    'Sweden': '🇸🇪',
+    'SE': '🇸🇪',
+    'Switzerland': '🇨🇭',
+    'CH': '🇨🇭',
+    'Belgium': '🇧🇪',
+    'BE': '🇧🇪',
+    'Austria': '🇦🇹',
+    'AT': '🇦🇹',
+    'Norway': '🇳🇴',
+    'NO': '🇳🇴',
+    'Denmark': '🇩🇰',
+    'DK': '🇩🇰',
+    'Finland': '🇫🇮',
+    'FI': '🇫🇮',
+    'Ireland': '🇮🇪',
+    'IE': '🇮🇪',
+    'New Zealand': '🇳🇿',
+    'NZ': '🇳🇿',
+    'South Africa': '🇿🇦',
+    'ZA': '🇿🇦',
+    'Unknown': '🌐',
+  };
+  
+  // Try exact match first
+  if (countryFlags[country]) {
+    return countryFlags[country];
+  }
+  
+  // Try case-insensitive match
+  const lowerCountry = country.toLowerCase();
+  for (const [key, flag] of Object.entries(countryFlags)) {
+    if (key.toLowerCase() === lowerCountry) {
+      return flag;
+    }
+  }
+  
+  return '🌐';
+}
+
 export function ShareManagementContent({
   resumes,
   shares: initialShares,
@@ -56,9 +155,10 @@ export function ShareManagementContent({
   deviceAnalytics,
 }: ShareManagementContentProps) {
   const [shares, setShares] = useState<Share[]>(initialShares);
-  const [_selectedResume, _setSelectedResume] = useState<Resume | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [loading, setLoading] = useState<string | null>(null);
+  const [expandedResumeId, setExpandedResumeId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'all' | 'active' | 'inactive'>('all');
   
   // Use environment variable or fallback for development
   const shareBaseUrl = process.env.NEXT_PUBLIC_SHARE_URL || "https://share.resumy.live";
@@ -115,6 +215,12 @@ export function ShareManagementContent({
       const result = await deleteShare(shareId);
       if (result.success) {
         setShares(shares.filter((s) => s.id !== shareId));
+        if (expandedResumeId) {
+          const deletedShare = shares.find(s => s.id === shareId);
+          if (deletedShare?.resume_id === expandedResumeId) {
+            setExpandedResumeId(null);
+          }
+        }
       }
     } catch (error) {
       console.error("Failed to delete share:", error);
@@ -122,356 +228,518 @@ export function ShareManagementContent({
     setLoading(null);
   };
 
+  // Filter resumes based on active tab
+  const filteredResumes = resumes.filter(resume => {
+    const share = getShareForResume(resume.id);
+    if (activeTab === 'all') return true;
+    if (activeTab === 'active') return share?.is_active;
+    if (activeTab === 'inactive') return share && !share.is_active;
+    return true;
+  });
+
   // Calculate total stats
   const totalViews = shares.reduce((sum, s) => sum + s.view_count, 0);
   const activeShares = shares.filter((s) => s.is_active).length;
+  const avgViews = shares.length > 0 ? Math.round(totalViews / shares.length) : 0;
+
+  // Get recent activity
+  const recentViews = shares
+    .filter(s => s.last_viewed_at)
+    .sort((a, b) => new Date(b.last_viewed_at!).getTime() - new Date(a.last_viewed_at!).getTime())
+    .slice(0, 3);
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link
-            href="/home"
-            className="p-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5 text-slate-300" />
-          </Link>
-          <div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Share Your Resumes
-            </h1>
-            <p className="text-sm text-slate-400 mt-0.5">
-              Create public links to share your resumes with anyone
-            </p>
+    <div className="min-h-screen pb-20">
+      <div className="mx-auto max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8">
+        {/* Hero Header */}
+        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-blue-500/10 p-8 md:p-10">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-pink-500/20 via-transparent to-transparent opacity-60" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+          
+          <div className="relative">
+            <Link
+              href="/home"
+              className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-all text-sm text-slate-300 hover:text-white group"
+            >
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+              Back to Dashboard
+            </Link>
+            
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <div className="p-4 rounded-2xl bg-gradient-to-br from-pink-500 to-purple-600 shadow-lg shadow-pink-500/25">
+                    <Share2 className="w-8 h-8 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-white via-pink-200 to-purple-200 bg-clip-text text-transparent">
+                      Share & Analytics
+                    </h1>
+                    <p className="text-slate-400 mt-1">
+                      Create shareable links and track who&apos;s viewing your resumes
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Stats Pills */}
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+                  <Eye className="w-4 h-4 text-blue-400" />
+                  <span className="text-sm text-white font-medium">{totalViews}</span>
+                  <span className="text-xs text-slate-400">views</span>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+                  <Link2 className="w-4 h-4 text-green-400" />
+                  <span className="text-sm text-white font-medium">{activeShares}</span>
+                  <span className="text-xs text-slate-400">active</span>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+                  <FileText className="w-4 h-4 text-purple-400" />
+                  <span className="text-sm text-white font-medium">{resumes.length}</span>
+                  <span className="text-xs text-slate-400">resumes</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <StatsCard
-          icon={Eye}
-          label="Total Views"
-          value={totalViews}
-          gradient="from-blue-500 to-cyan-500"
-        />
-        <StatsCard
-          icon={Link2}
-          label="Active Links"
-          value={activeShares}
-          gradient="from-purple-500 to-pink-500"
-        />
-        <StatsCard
-          icon={FileText}
-          label="Total Resumes"
-          value={resumes.length}
-          gradient="from-orange-500 to-red-500"
-        />
-      </div>
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Column - Resume List */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Tab Filter */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 p-1 bg-white/5 rounded-xl border border-white/10">
+                {(['all', 'active', 'inactive'] as const).map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                      activeTab === tab
+                        ? 'bg-white/10 text-white shadow-sm'
+                        : 'text-slate-400 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                    {tab === 'active' && activeShares > 0 && (
+                      <span className="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-green-500/20 text-green-400">
+                        {activeShares}
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+              <span className="text-sm text-slate-500">
+                {filteredResumes.length} {filteredResumes.length === 1 ? 'resume' : 'resumes'}
+              </span>
+            </div>
 
-      {/* Resume List */}
-      <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-white">Your Resumes</h2>
+            {/* Resume Cards */}
+            {resumes.length === 0 ? (
+              <Card className="relative overflow-hidden border-white/10 bg-white/5 p-12 text-center">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-500/5 via-transparent to-transparent opacity-60" />
+                
+                <div className="relative space-y-4">
+                  <div className="mx-auto w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+                    <FileText className="w-10 h-10 text-purple-400" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-semibold text-white">No resumes yet</h3>
+                    <p className="text-slate-400 max-w-md mx-auto">
+                      Create your first resume to start sharing it with the world
+                    </p>
+                  </div>
+                  <Link href="/home">
+                    <Button className="mt-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
+                      <Zap className="w-4 h-4 mr-2" />
+                      Create Your First Resume
+                    </Button>
+                  </Link>
+                </div>
+              </Card>
+            ) : (
+              <div className="space-y-4">
+                {filteredResumes.map((resume) => {
+                  const share = getShareForResume(resume.id);
+                  const isLoading = loading === resume.id || loading === share?.id;
+                  const isExpanded = expandedResumeId === resume.id;
 
-        {resumes.length === 0 ? (
-          <Card className="p-8 bg-white/5 border-white/10 text-center">
-            <FileText className="w-12 h-12 text-slate-500 mx-auto mb-3" />
-            <p className="text-slate-400">No resumes yet. Create one to start sharing!</p>
-            <Link href="/home">
-              <Button className="mt-4">Create Resume</Button>
-            </Link>
-          </Card>
-        ) : (
-          <div className="grid gap-4">
-            {resumes.map((resume) => {
-              const share = getShareForResume(resume.id);
-              const isLoading = loading === resume.id || loading === share?.id;
-
-              return (
-                <Card
-                  key={resume.id}
-                  className="p-5 bg-white/5 border-white/10 hover:bg-white/[0.07] transition-colors"
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    {/* Resume Info */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
-                          <FileText className="w-5 h-5 text-purple-400" />
-                        </div>
-                        <div className="min-w-0">
-                          <h3 className="font-medium text-white truncate">
-                            {resume.name}
-                          </h3>
-                          <p className="text-sm text-slate-400 truncate">
-                            {resume.first_name} {resume.last_name}
-                            {resume.target_role && ` • ${resume.target_role}`}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Share Status & Actions */}
-                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                      {share ? (
-                        <>
-                          {/* View Count */}
-                          <div className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg bg-white/5 text-sm">
-                            <Eye className="w-4 h-4 text-slate-400" />
-                            <span className="text-slate-300">{share.view_count}</span>
+                  return (
+                    <Card
+                      key={resume.id}
+                      className={`group relative overflow-hidden border-white/10 bg-white/5 transition-all duration-300 ${
+                        isExpanded ? 'ring-1 ring-pink-500/30' : 'hover:bg-white/[0.07] hover:border-white/20'
+                      }`}
+                    >
+                      {/* Background gradient effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-pink-500/0 via-pink-500/5 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      
+                      {/* Main Card Content */}
+                      <div className="relative p-5">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                          {/* Resume Info */}
+                          <div className="flex items-center gap-4 min-w-0 flex-1">
+                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                              share?.is_active
+                                ? 'bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30'
+                                : share
+                                  ? 'bg-gradient-to-br from-red-500/20 to-orange-500/20 border border-red-500/30'
+                                  : 'bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/20'
+                            }`}>
+                              <FileText className={`w-6 h-6 ${
+                                share?.is_active ? 'text-green-400' : share ? 'text-red-400' : 'text-purple-400'
+                              }`} />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-2">
+                                <h3 className="text-lg font-semibold text-white truncate">
+                                  {resume.name}
+                                </h3>
+                                {share?.is_active && (
+                                  <span className="flex-shrink-0 px-2 py-0.5 text-[10px] font-medium rounded-full bg-green-500/20 text-green-400 border border-green-500/30">
+                                    LIVE
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex flex-wrap items-center gap-2 mt-1 text-sm text-slate-400">
+                                <span className="truncate">
+                                  {resume.first_name} {resume.last_name}
+                                </span>
+                                {resume.target_role && (
+                                  <>
+                                    <span className="text-slate-600">•</span>
+                                    <span className="truncate text-pink-400">{resume.target_role}</span>
+                                  </>
+                                )}
+                              </div>
+                            </div>
                           </div>
 
-                          {/* Status Badge */}
-                          <button
-                            onClick={() => handleToggleStatus(share.id, share.is_active)}
-                            disabled={isLoading}
-                            className={`flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${share.is_active
-                                ? "bg-green-500/20 text-green-400 hover:bg-green-500/30"
-                                : "bg-red-500/20 text-red-400 hover:bg-red-500/30"
-                              }`}
-                          >
-                            {share.is_active ? (
+                          {/* Stats & Actions */}
+                          <div className="flex flex-wrap items-center gap-3">
+                            {share && (
                               <>
-                                <Globe className="w-4 h-4" />
-                                <span className="hidden sm:inline">Active</span>
-                              </>
-                            ) : (
-                              <>
-                                <Lock className="w-4 h-4" />
-                                <span className="hidden sm:inline">Disabled</span>
+                                {/* View Count */}
+                                <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                                  <Eye className="w-4 h-4 text-blue-400" />
+                                  <span className="font-semibold text-blue-400">{share.view_count}</span>
+                                  <span className="text-blue-400/60 text-xs hidden sm:inline">views</span>
+                                </div>
+
+                                {/* Toggle Status */}
+                                <button
+                                  onClick={() => handleToggleStatus(share.id, share.is_active)}
+                                  disabled={isLoading}
+                                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                                    share.is_active
+                                      ? "bg-green-500/10 border border-green-500/30 text-green-400 hover:bg-green-500/20"
+                                      : "bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20"
+                                  }`}
+                                >
+                                  {share.is_active ? (
+                                    <>
+                                      <Globe className="w-4 h-4" />
+                                      <span className="hidden sm:inline">Active</span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Lock className="w-4 h-4" />
+                                      <span className="hidden sm:inline">Disabled</span>
+                                    </>
+                                  )}
+                                </button>
+
+                                {/* Copy Link */}
+                                <Button
+                                  onClick={() => copyLink(share.share_id)}
+                                  variant="outline"
+                                  size="sm"
+                                  className="border-pink-500/30 bg-pink-500/10 text-pink-400 hover:bg-pink-500/20 hover:border-pink-500/50"
+                                >
+                                  {copiedId === share.share_id ? (
+                                    <>
+                                      <Check className="w-4 h-4 mr-1.5" />
+                                      Copied
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Copy className="w-4 h-4 mr-1.5" />
+                                      Copy
+                                    </>
+                                  )}
+                                </Button>
+
+                                {/* Open Link */}
+                                <a
+                                  href={`${shareBaseUrl}/r/${share.share_id}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="p-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 text-slate-400 hover:text-white transition-all"
+                                >
+                                  <ExternalLink className="w-4 h-4" />
+                                </a>
+
+                                {/* Expand/View Logs */}
+                                <button
+                                  onClick={() => setExpandedResumeId(isExpanded ? null : resume.id)}
+                                  className={`p-2 rounded-lg transition-all ${
+                                    isExpanded
+                                      ? 'bg-pink-500/20 border border-pink-500/30 text-pink-400'
+                                      : 'bg-white/5 border border-white/10 text-slate-400 hover:bg-white/10 hover:text-white'
+                                  }`}
+                                >
+                                  <Activity className="w-4 h-4" />
+                                </button>
+
+                                {/* Delete */}
+                                <DeleteShareDialog
+                                  shareId={share.id}
+                                  resumeName={resume.name || `${resume.first_name} ${resume.last_name}`}
+                                  onConfirm={handleDeleteShare}
+                                  isLoading={isLoading}
+                                />
                               </>
                             )}
-                          </button>
 
-                          {/* Copy Link */}
-                          <button
-                            onClick={() => copyLink(share.share_id)}
-                            className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 text-sm font-medium transition-colors"
-                          >
-                            {copiedId === share.share_id ? (
-                              <>
-                                <Check className="w-4 h-4" />
-                                <span className="hidden sm:inline">Copied!</span>
-                              </>
-                            ) : (
-                              <>
-                                <Copy className="w-4 h-4" />
-                                <span className="hidden sm:inline">Copy Link</span>
-                              </>
+                            {!share && (
+                              <Button
+                                onClick={() => handleCreateShare(resume.id)}
+                                disabled={isLoading}
+                                className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 shadow-lg shadow-pink-500/25"
+                              >
+                                {isLoading ? (
+                                  <RefreshCw className="w-4 h-4 animate-spin mr-2" />
+                                ) : (
+                                  <Share2 className="w-4 h-4 mr-2" />
+                                )}
+                                Create Link
+                              </Button>
                             )}
-                          </button>
+                          </div>
+                        </div>
 
-                          {/* Open Link */}
-                          <a
-                            href={`${shareBaseUrl}/r/${share.share_id}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors"
-                          >
-                            <ExternalLink className="w-4 h-4" />
-                          </a>
-
-                          {/* Delete */}
-                          <DeleteShareDialog
-                            shareId={share.id}
-                            resumeName={resume.name || `${resume.first_name} ${resume.last_name}`}
-                            onConfirm={handleDeleteShare}
-                            isLoading={isLoading}
-                          />
-                        </>
-                      ) : (
-                        <Button
-                          onClick={() => handleCreateShare(resume.id)}
-                          disabled={isLoading}
-                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
-                        >
-                          {isLoading ? (
-                            <RefreshCw className="w-4 h-4 animate-spin mr-2" />
-                          ) : (
-                            <Share2 className="w-4 h-4 mr-2" />
-                          )}
-                          Create Share Link
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Share Details (if exists) */}
-                  {share && (
-                    <div className="mt-4 pt-4 border-t border-white/5">
-                      <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-4 text-xs text-slate-500">
-                        <span className="flex items-center gap-1 truncate max-w-full">
-                          <Link2 className="w-3.5 h-3.5 flex-shrink-0" />
-                          <span className="truncate">{shareBaseUrl}/r/{share.share_id}</span>
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-3.5 h-3.5 flex-shrink-0" />
-                          Created {new Date(share.created_at).toLocaleDateString('en-US')}
-                        </span>
-                        {share.last_viewed_at && (
-                          <span className="flex items-center gap-1">
-                            <Clock className="w-3.5 h-3.5 flex-shrink-0" />
-                            Last viewed {new Date(share.last_viewed_at).toLocaleDateString('en-US')}
-                          </span>
+                        {/* Share Link URL */}
+                        {share && (
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-black/30 border border-white/5 text-xs">
+                            <Link2 className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
+                            <span className="text-slate-400 truncate flex-1 font-mono">
+                              {shareBaseUrl}/r/{share.share_id}
+                            </span>
+                            {share.last_viewed_at && (
+                              <span className="flex items-center gap-1 text-slate-500 flex-shrink-0">
+                                <Clock className="w-3 h-3" />
+                                Last viewed {new Date(share.last_viewed_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                              </span>
+                            )}
+                          </div>
                         )}
                       </div>
-                    </div>
-                  )}
-                </Card>
-              );
-            })}
+
+                      {/* Expanded View Logs Section */}
+                      {isExpanded && share && (
+                        <div className="border-t border-white/10 bg-black/20 p-5">
+                          <div className="flex items-center justify-between mb-4">
+                            <h4 className="text-sm font-medium text-white flex items-center gap-2">
+                              <Activity className="w-4 h-4 text-pink-400" />
+                              View Activity Log
+                            </h4>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setExpandedResumeId(null);
+                              }}
+                              className="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer relative z-20"
+                            >
+                              <X className="w-4 h-4 pointer-events-none" />
+                            </button>
+                          </div>
+                          <ViewLogs shareId={share.share_id} resumeName={resume.name} />
+                        </div>
+                      )}
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
           </div>
-        )}
-      </div>
 
-      {/* Analytics Section (if has shares) */}
-      {shares.length > 0 && (
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-            <BarChart3 className="w-5 h-5 text-purple-400" />
-            Analytics Overview
-          </h2>
+          {/* Right Column - Analytics Sidebar */}
+          <div className="space-y-6">
+            {/* Overview Card */}
+            <Card className="relative overflow-hidden border-white/10 bg-white/5 p-6">
+              <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 via-transparent to-purple-500/5 opacity-60" />
+              
+              <div className="relative">
+                <h3 className="text-sm font-medium text-slate-400 mb-4 flex items-center gap-2">
+                  <BarChart3 className="w-4 h-4" />
+                  Overview
+                </h3>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <p className="text-3xl font-bold text-white">{totalViews}</p>
+                    <p className="text-xs text-slate-500">Total Views</p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-3xl font-bold text-white">{avgViews}</p>
+                    <p className="text-xs text-slate-500">Avg per Resume</p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-3xl font-bold text-green-400">{activeShares}</p>
+                    <p className="text-xs text-slate-500">Active Links</p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-3xl font-bold text-slate-400">{shares.length - activeShares}</p>
+                    <p className="text-xs text-slate-500">Inactive Links</p>
+                  </div>
+                </div>
+              </div>
+            </Card>
 
-          <Card className="p-6 bg-white/5 border-white/10">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Device Breakdown - Real Data */}
-              <div>
-                <h3 className="text-sm font-medium text-slate-400 mb-3">Device Types</h3>
-                <div className="space-y-2">
-                  {deviceAnalytics.length > 0 ? (
-                    deviceAnalytics.map((device) => {
-                      const icon = device.device_type === "mobile"
+            {/* Device Analytics */}
+            {deviceAnalytics.length > 0 && (
+              <Card className="relative overflow-hidden border-white/10 bg-white/5 p-6">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-cyan-500/5 opacity-60" />
+                
+                <div className="relative">
+                  <h3 className="text-sm font-medium text-slate-400 mb-4 flex items-center gap-2">
+                    <Monitor className="w-4 h-4" />
+                    Devices
+                  </h3>
+                  
+                  <div className="space-y-4">
+                    {deviceAnalytics.map((device) => {
+                      const Icon = device.device_type === "mobile"
                         ? Smartphone
                         : device.device_type === "tablet"
                           ? Tablet
                           : Monitor;
                       const label = device.device_type.charAt(0).toUpperCase() + device.device_type.slice(1);
+                      
                       return (
-                        <DeviceRow
-                          key={device.device_type}
-                          icon={icon}
-                          label={label}
-                          percentage={device.percentage}
-                        />
-                      );
-                    })
-                  ) : (
-                    <p className="text-sm text-slate-500">No data yet</p>
-                  )}
-                </div>
-              </div>
-
-              {/* Top Resumes */}
-              <div>
-                <h3 className="text-sm font-medium text-slate-400 mb-3">Top Viewed</h3>
-                <div className="space-y-2">
-                  {shares
-                    .sort((a, b) => b.view_count - a.view_count)
-                    .slice(0, 3)
-                    .map((share) => {
-                      const resume = resumes.find((r) => r.id === share.resume_id);
-                      return (
-                        <div
-                          key={share.id}
-                          className="flex items-center justify-between text-sm"
-                        >
-                          <span className="text-slate-300 truncate">
-                            {resume?.name || "Unknown"}
-                          </span>
-                          <span className="text-slate-500">{share.view_count} views</span>
+                        <div key={device.device_type} className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <Icon className="w-4 h-4 text-slate-400" />
+                              <span className="text-sm text-slate-300">{label}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-slate-500">{device.count}</span>
+                              <span className="text-sm font-medium text-white">{device.percentage}%</span>
+                            </div>
+                          </div>
+                          <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div
+                              className={`h-full rounded-full transition-all duration-500 ${
+                                device.device_type === 'mobile' 
+                                  ? 'bg-gradient-to-r from-blue-500 to-cyan-500'
+                                  : device.device_type === 'tablet'
+                                    ? 'bg-gradient-to-r from-purple-500 to-pink-500'
+                                    : 'bg-gradient-to-r from-slate-400 to-slate-500'
+                              }`}
+                              style={{ width: `${device.percentage}%` }}
+                            />
+                          </div>
                         </div>
                       );
                     })}
-                </div>
-              </div>
-
-              {/* Quick Stats */}
-              <div>
-                <h3 className="text-sm font-medium text-slate-400 mb-3">Quick Stats</h3>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Avg views per resume</span>
-                    <span className="text-white">
-                      {shares.length > 0
-                        ? Math.round(totalViews / shares.length)
-                        : 0}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Most recent view</span>
-                    <span className="text-white">
-                      {shares.some((s) => s.last_viewed_at)
-                        ? new Date(
-                          Math.max(
-                            ...shares
-                              .filter((s) => s.last_viewed_at)
-                              .map((s) => new Date(s.last_viewed_at!).getTime())
-                          )
-                        ).toLocaleDateString('en-US')
-                        : "Never"}
-                    </span>
                   </div>
                 </div>
-              </div>
-            </div>
-          </Card>
-        </div>
-      )}
-    </div>
-  );
-}
+              </Card>
+            )}
 
-// Stats Card Component
-function StatsCard({
-  icon: Icon,
-  label,
-  value,
-  gradient,
-}: {
-  icon: React.ElementType;
-  label: string;
-  value: number;
-  gradient: string;
-}) {
-  return (
-    <Card className="p-4 bg-white/5 border-white/10">
-      <div className="flex items-center gap-3">
-        <div
-          className={`w-10 h-10 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center`}
-        >
-          <Icon className="w-5 h-5 text-white" />
-        </div>
-        <div>
-          <p className="text-2xl font-bold text-white">{value.toLocaleString()}</p>
-          <p className="text-sm text-slate-400">{label}</p>
+            {/* Top Performing */}
+            {shares.length > 0 && (
+              <Card className="relative overflow-hidden border-white/10 bg-white/5 p-6">
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-transparent to-orange-500/5 opacity-60" />
+                
+                <div className="relative">
+                  <h3 className="text-sm font-medium text-slate-400 mb-4 flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4" />
+                    Top Performing
+                  </h3>
+                  
+                  <div className="space-y-3">
+                    {shares
+                      .sort((a, b) => b.view_count - a.view_count)
+                      .slice(0, 5)
+                      .map((share, index) => {
+                        const resume = resumes.find((r) => r.id === share.resume_id);
+                        const maxViews = shares[0]?.view_count || 1;
+                        const percentage = Math.round((share.view_count / maxViews) * 100);
+                        
+                        return (
+                          <div key={share.id} className="space-y-2">
+                            <div className="flex items-center gap-3">
+                              <div className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
+                                index === 0 ? "bg-yellow-500/20 text-yellow-400" :
+                                index === 1 ? "bg-slate-400/20 text-slate-400" :
+                                index === 2 ? "bg-orange-500/20 text-orange-400" :
+                                "bg-white/10 text-slate-500"
+                              }`}>
+                                {index + 1}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm text-white truncate">{resume?.name || "Unknown"}</p>
+                              </div>
+                              <span className="text-sm font-medium text-slate-400">{share.view_count}</span>
+                            </div>
+                            <div className="h-1.5 bg-white/10 rounded-full overflow-hidden ml-9">
+                              <div
+                                className="h-full bg-gradient-to-r from-amber-500/50 to-orange-500/50 rounded-full"
+                                style={{ width: `${percentage}%` }}
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
+              </Card>
+            )}
+
+            {/* Recent Activity */}
+            {recentViews.length > 0 && (
+              <Card className="relative overflow-hidden border-white/10 bg-white/5 p-6">
+                <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-transparent to-emerald-500/5 opacity-60" />
+                
+                <div className="relative">
+                  <h3 className="text-sm font-medium text-slate-400 mb-4 flex items-center gap-2">
+                    <Activity className="w-4 h-4" />
+                    Recent Activity
+                  </h3>
+                  
+                  <div className="space-y-3">
+                    {recentViews.map((share) => {
+                      const resume = resumes.find((r) => r.id === share.resume_id);
+                      return (
+                        <div key={share.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors">
+                          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm text-white truncate">{resume?.name || "Unknown"}</p>
+                            <p className="text-xs text-slate-500">
+                              {new Date(share.last_viewed_at!).toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                hour: 'numeric',
+                                minute: '2-digit',
+                              })}
+                            </p>
+                          </div>
+                          <Eye className="w-4 h-4 text-slate-500" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </Card>
+            )}
+          </div>
         </div>
       </div>
-    </Card>
-  );
-}
-
-// Device Row Component
-function DeviceRow({
-  icon: Icon,
-  label,
-  percentage,
-}: {
-  icon: React.ElementType;
-  label: string;
-  percentage: number;
-}) {
-  return (
-    <div className="flex items-center gap-2">
-      <Icon className="w-4 h-4 text-slate-500" />
-      <span className="text-sm text-slate-300 flex-1">{label}</span>
-      <div className="w-20 h-1.5 bg-white/10 rounded-full overflow-hidden">
-        <div
-          className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
-          style={{ width: `${percentage}%` }}
-        />
-      </div>
-      <span className="text-xs text-slate-500 w-8 text-right">{percentage}%</span>
     </div>
   );
 }

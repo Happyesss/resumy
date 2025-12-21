@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { Layout, Menu, Sparkles, User } from "lucide-react";
+import { Layout, Menu, Sparkles, Share2, User } from "lucide-react";
 import Link from "next/link";
 import { PageTitle } from "./page-title";
+import { ShareNotifications } from "@/components/notifications/share-notifications";
 
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -17,10 +18,16 @@ interface AppHeaderProps {
 
 export function AppHeader({ children }: AppHeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
-
   const pathname = usePathname();
+  
   // Detect if on landing page
   const _isLanding = pathname === "/";
+
+  // Check which tab is active
+  const isAnalyzeActive = pathname?.startsWith("/analyze-resume");
+  const isTemplatesActive = pathname?.startsWith("/templates");
+  const isSharesActive = pathname?.startsWith("/resumes/share");
+  const isProfileActive = pathname?.startsWith("/profile");
 
   return (
     <header className="h-14 border-b backdrop-blur-xl fixed top-0 left-0 right-0 z-40 shadow-md border-gray-200/50">
@@ -40,52 +47,75 @@ export function AppHeader({ children }: AppHeaderProps) {
           </div>
         </div>
 
-        {/* Right Section - Navigation Items */}
+        {/* Right Section - Tab Navigation */}
         <div className="flex items-center flex-shrink-0">
           {children ? (
             children
           ) : (
             <>
-              {/* Desktop Navigation */}
-              <nav className="hidden md:flex items-center gap-1 lg:gap-2">
-                <div className="flex items-center px-2 lg:px-3 py-1">
-                  <Link
-                    href="/analyze-resume"
-                    className={cn(
-                      "flex items-center gap-1.5 px-2 lg:px-3 py-1 text-teal-400 hover:text-teal-300",
-                      "text-sm font-medium transition-colors duration-200"
-                    )}
-                  >
-                    <Sparkles className="h-4 w-4" />
-                    <span className="hidden lg:inline">Analyze Resume</span>
-                  </Link>
-                  <div className="mx-1 lg:mx-2 h-4 w-px bg-gray-200/50" />
-                  <Link
-                    href="/templates"
-                    className={cn(
-                      "flex items-center gap-1.5 px-2 lg:px-3 py-1 text-indigo-400 hover:text-indigo-300",
-                      "text-sm font-medium transition-colors duration-200"
-                    )}
-                  >
-                    <Layout className="h-4 w-4" />
-                    <span className="hidden lg:inline">Templates</span>
-                  </Link>
-                  <div className="mx-1 lg:mx-2 h-4 w-px bg-gray-200/50" />
-                  <Link
-                    href="/profile"
-                    className={cn(
-                      "flex items-center gap-1.5 px-2 lg:px-3 py-1 text-purple-400 hover:text-purple-300",
-                      "text-sm font-medium transition-colors duration-200"
-                    )}
-                  >
-                    <User className="h-4 w-4" />
-                    <span className="hidden lg:inline">Profile</span>
-                  </Link>
-                </div>
+              {/* Desktop Tab Navigation */}
+              <nav className="hidden md:flex items-center gap-1 bg-white/5 rounded-lg p-1 border border-white/10">
+                {/* Notifications */}
+                <ShareNotifications />
+                
+                <Link
+                  href="/analyze-resume"
+                  className={cn(
+                    "flex items-center gap-1.5 px-3 lg:px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200",
+                    isAnalyzeActive
+                      ? "bg-teal-500/20 text-teal-300 shadow-lg shadow-teal-500/10"
+                      : "text-teal-400 hover:bg-teal-500/10 hover:text-teal-300"
+                  )}
+                >
+                  <Sparkles className="h-4 w-4" />
+                  <span className="hidden lg:inline">Analyze</span>
+                </Link>
+                <Link
+                  href="/templates"
+                  className={cn(
+                    "flex items-center gap-1.5 px-3 lg:px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200",
+                    isTemplatesActive
+                      ? "bg-indigo-500/20 text-indigo-300 shadow-lg shadow-indigo-500/10"
+                      : "text-indigo-400 hover:bg-indigo-500/10 hover:text-indigo-300"
+                  )}
+                >
+                  <Layout className="h-4 w-4" />
+                  <span className="hidden lg:inline">Templates</span>
+                </Link>
+
+                <Link
+                  href="/resumes/share"
+                  className={cn(
+                    "relative flex items-center gap-1.5 px-3 lg:px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200",
+                    isSharesActive
+                      ? "bg-pink-500/20 text-pink-300 shadow-lg shadow-pink-500/10"
+                      : "text-pink-400 hover:bg-pink-500/10 hover:text-pink-300"
+                  )}
+                >
+                  <Share2 className="h-4 w-4" />
+                  <span className="hidden lg:inline">Shares</span>
+                </Link>
+
+                <Link
+                  href="/profile"
+                  className={cn(
+                    "flex items-center gap-1.5 px-3 lg:px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200",
+                    isProfileActive
+                      ? "bg-purple-500/20 text-purple-300 shadow-lg shadow-purple-500/10"
+                      : "text-purple-400 hover:bg-purple-500/10 hover:text-purple-300"
+                  )}
+                >
+                  <User className="h-4 w-4" />
+                  <span className="hidden lg:inline">Profile</span>
+                </Link>
               </nav>
 
               {/* Mobile Menu */}
-              <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <div className="flex items-center gap-1 md:hidden">
+                {/* Mobile Notifications */}
+                <ShareNotifications />
+                
+                <Sheet open={isOpen} onOpenChange={setIsOpen}>
                 <SheetTrigger asChild className="md:hidden">
                   <Button variant="ghost" size="icon" className="h-9 w-9">
                     <Menu className="h-5 w-5 text-white" />
@@ -104,8 +134,10 @@ export function AppHeader({ children }: AppHeaderProps) {
                       href="/analyze-resume"
                       onClick={() => setIsOpen(false)}
                       className={cn(
-                        "flex items-center gap-2 px-4 py-2 rounded-md text-teal-400 hover:text-teal-300",
-                        "text-sm font-medium transition-colors duration-200"
+                        "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200",
+                        isAnalyzeActive
+                          ? "bg-teal-500/20 text-teal-300"
+                          : "text-teal-400 hover:bg-teal-500/10 hover:text-teal-300"
                       )}
                     >
                       <Sparkles className="h-4 w-4" />
@@ -115,19 +147,38 @@ export function AppHeader({ children }: AppHeaderProps) {
                       href="/templates"
                       onClick={() => setIsOpen(false)}
                       className={cn(
-                        "flex items-center gap-2 px-4 py-2 rounded-md text-indigo-400 hover:text-indigo-300",
-                        "text-sm font-medium transition-colors duration-200"
+                        "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200",
+                        isTemplatesActive
+                          ? "bg-indigo-500/20 text-indigo-300"
+                          : "text-indigo-400 hover:bg-indigo-500/10 hover:text-indigo-300"
                       )}
                     >
                       <Layout className="h-4 w-4" />
                       Templates
                     </Link>
+
+                    <Link
+                      href="/resumes/share"
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200",
+                        isSharesActive
+                          ? "bg-purple-500/20 text-purple-300"
+                          : "text-purple-400 hover:bg-purple-500/10 hover:text-purple-300"
+                      )}
+                    >
+                      <Share2 className="h-4 w-4" />
+                      Shares
+                    </Link>
+
                     <Link
                       href="/profile"
                       onClick={() => setIsOpen(false)}
                       className={cn(
-                        "flex items-center gap-2 px-4 py-2 rounded-md text-purple-400 hover:text-purple-300",
-                        "text-sm font-medium transition-colors duration-200"
+                        "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200",
+                        isProfileActive
+                          ? "bg-purple-500/20 text-purple-300"
+                          : "text-purple-400 hover:bg-purple-500/10 hover:text-purple-300"
                       )}
                     >
                       <User className="h-4 w-4" />
@@ -136,6 +187,7 @@ export function AppHeader({ children }: AppHeaderProps) {
                   </div>
                 </SheetContent>
               </Sheet>
+              </div>
             </>
           )}
         </div>

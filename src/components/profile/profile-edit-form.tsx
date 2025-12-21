@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Education, Profile, Project, WorkExperience } from "@/lib/types";
@@ -364,17 +364,17 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
       {/* Main content container with consistent styling */}
       <div className="relative px-4 sm:px-6 md:px-8 lg:px-10 pb-10">
         {/* Mobile Navigation Toggle Button */}
-        <div className="md:hidden sticky top-16 z-30 flex justify-between items-center bg-black/80 backdrop-blur-md py-3 px-2 border-b border-gray-700 mb-4">
+        <div className="md:hidden sticky top-16 z-30 flex justify-between items-center bg-zinc-950/95 backdrop-blur-md py-3 px-4 border-b border-zinc-800 mb-4 -mx-4 sm:-mx-6">
           <Button 
-            variant="outline" 
+            variant="ghost" 
             size="sm" 
             onClick={() => setIsNavOpen(true)}
-            className="flex items-center gap-2 border-gray-600 text-gray-300 hover:text-white"
+            className="flex items-center gap-2 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50"
           >
             <PanelLeft className="h-5 w-5" />
-            <span>Navigation</span>
+            <span>Menu</span>
           </Button>
-          <div className="text-white font-medium">Profile Editor</div>
+          <span className="text-sm font-medium text-zinc-300">Profile Settings</span>
         </div>
 
         {/* Tabs layout with vertical navbar and content side by side */}
@@ -382,48 +382,47 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full h-full">
             <div className="flex flex-col md:flex-row gap-6 h-full min-h-[600px]">
               {/* Left Navbar - Desktop view */}
-              <div className="hidden md:flex min-w-[220px] w-[240px] lg:w-[260px] shrink-0 h-full flex-col">
+              <div className="hidden md:flex min-w-[220px] w-[240px] lg:w-[260px] shrink-0 flex-col sticky top-20 self-start max-h-[calc(100vh-6rem)] overflow-y-auto">
                 {/* Import Options at the top */}
-                <div className="bg-black/70 backdrop-blur-md rounded-lg border border-gray-500 shadow-sm mt-4 mb-4 px-4 py-3 flex flex-col gap-3">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="inline-block w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 shadow-sm shadow-purple-500/20" />
-                    <span className="font-semibold text-sm text-gray-200">Import From Resume</span>
+                <div className="bg-zinc-900/80 rounded-xl border border-zinc-800 mt-4 mb-6 p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">Quick Import</span>
                   </div>
                   <Dialog open={isResumeDialogOpen} onOpenChange={setIsResumeDialogOpen}>
                     <DialogTrigger asChild>
                       <Button
                         variant="outline"
-                        className="w-full flex items-center gap-2 bg-white text-black border-gray-300 hover:bg-gray-100 hover:border-gray-400 py-2 px-3 text-sm font-medium rounded-md transition-all"
+                        className="w-full flex items-center justify-center gap-2 bg-zinc-800/50 text-zinc-300 border-zinc-700 
+                          hover:bg-zinc-800 hover:border-zinc-600 hover:text-white
+                          py-2.5 px-4 text-sm font-medium rounded-lg transition-all duration-200"
                       >
-                        <Upload className="h-4 w-4 text-black" />
-                        Resume Upload
+                        <Upload className="h-4 w-4" />
+                        Upload Resume
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[500px] bg-gray-900/95 backdrop-blur-xl border-gray-800/60 shadow-2xl">
-                      <DialogHeader className="pb-4">
-                        <DialogTitle className="text-xl bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent">
-                          Upload Resume Content
+                    <DialogContent className="sm:max-w-[520px] bg-zinc-950 border-zinc-800 shadow-2xl">
+                      <DialogHeader className="pb-4 border-b border-zinc-800">
+                        <DialogTitle className="text-lg font-semibold text-zinc-100">
+                          Import Resume Content
                         </DialogTitle>
                         <DialogDescription asChild>
-                          <div className="space-y-3 text-sm text-gray-400">
-                            <p className="text-gray-300 font-medium">Let our AI analyze and enhance your profile</p>
-                            <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3 space-y-2">
+                          <div className="space-y-3 text-sm text-zinc-400 mt-2">
+                            <p className="text-zinc-300">Let AI analyze and enhance your profile automatically.</p>
+                            <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-3 space-y-2">
                               <div className="flex items-center gap-2">
-                                <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                                <span className="text-blue-300 font-medium text-xs">Smart Integration</span>
+                                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
+                                <span className="text-emerald-400 font-medium text-xs">Smart Integration</span>
                               </div>
-                              <p className="text-gray-300 text-xs leading-relaxed">
+                              <p className="text-zinc-400 text-xs leading-relaxed">
                                 Your existing profile information will be preserved. New entries will be intelligently added 
-                                alongside your current data, avoiding duplicates and enhancing missing details.
-                              </p>
-                              <p className="text-gray-400 text-xs">
-                                💡 <span className="text-amber-400">Pro tip:</span> Want to start fresh? Use the &quot;Reset Profile&quot; option before uploading.
+                                alongside your current data.
                               </p>
                             </div>
                           </div>
                         </DialogDescription>
                       </DialogHeader>
-                      <div className="space-y-4">
+                      <div className="space-y-4 py-4">
                         <div className="space-y-4">
                           <label
                             onDragEnter={(e) => handleDrag(e, setIsResumeDragging)}
@@ -431,11 +430,10 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                             onDragOver={(e) => handleDrag(e, setIsResumeDragging)}
                             onDrop={(e) => handleDrop(e, setResumeContent)}
                             className={cn(
-                              "border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center gap-3 transition-all duration-300 cursor-pointer group",
-                              "bg-gray-800/30 backdrop-blur-sm",
+                              "border border-dashed rounded-lg p-8 flex flex-col items-center justify-center gap-3 transition-all duration-200 cursor-pointer",
                               isResumeDragging
-                                ? "border-violet-400 bg-violet-500/10"
-                                : "border-gray-700/60 hover:border-violet-400/60 hover:bg-violet-500/5"
+                                ? "border-emerald-500 bg-emerald-500/5"
+                                : "border-zinc-700 hover:border-zinc-600 hover:bg-zinc-900/50"
                             )}
                           >
                             <input
@@ -444,58 +442,57 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                               accept="application/pdf"
                               onChange={(e) => handleFileInput(e, setResumeContent)}
                             />
-                            <div className="p-2 rounded-full bg-violet-500/20 group-hover:bg-violet-500/30 transition-colors">
-                              <Upload className="w-6 h-6 text-violet-400" />
+                            <div className="p-3 rounded-full bg-zinc-800">
+                              <Upload className="w-5 h-5 text-zinc-400" />
                             </div>
                             <div className="text-center">
-                              <p className="text-sm font-medium text-white">
+                              <p className="text-sm font-medium text-zinc-300">
                                 Drop PDF here or click to browse
                               </p>
+                              <p className="text-xs text-zinc-500 mt-1">PDF files only</p>
                             </div>
                           </label>
                           <div className="relative">
-                            <div className="absolute -top-2.5 left-3 bg-gray-900 px-2 text-xs text-violet-400 font-medium">
-                              Or paste text here
-                            </div>
+                            <Label className="text-xs font-medium text-zinc-500 mb-2 block">
+                              Or paste text content
+                            </Label>
                             <Textarea
                               value={resumeContent}
                               onChange={(e) => setResumeContent(e.target.value)}
                               placeholder="Paste your resume content here..."
                               className={cn(
-                                "min-h-[100px] bg-gray-800/50 border-gray-700/60 rounded-lg pt-4",
-                                "focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/20 focus:bg-gray-800/70",
-                                "hover:border-gray-600/80 hover:bg-gray-800/60",
-                                "text-white placeholder:text-gray-500 text-sm",
-                                "transition-all duration-300 resize-none"
+                                "min-h-[100px] bg-zinc-900 border-zinc-800 rounded-lg",
+                                "focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 focus:bg-zinc-900",
+                                "hover:border-zinc-700 hover:bg-zinc-900",
+                                "text-zinc-100 placeholder:text-zinc-600 text-sm",
+                                "transition-colors resize-none"
                               )}
                             />
                           </div>
                         </div>
                       </div>
                       {apiKeyError && (
-                        <div className="px-3 py-2 bg-red-900/20 border border-red-800/40 rounded-lg flex items-start gap-2 text-red-400 text-xs">
+                        <div className="px-3 py-2.5 bg-red-950/50 border border-red-900/50 rounded-lg flex items-start gap-2.5">
                           <AlertTriangle className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
                           <div className="flex-1">
-                            <p className="font-medium text-red-300">API Key Required</p>
-                            <p className="text-red-400/90">{apiKeyError}</p>
-                            <div className="mt-2">
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="text-red-400 border-red-800/40 hover:bg-red-900/30 bg-transparent text-xs"
-                                onClick={() => handleApiKeyClick()}
-                              >
-                                Set API Keys
-                              </Button>
-                            </div>
+                            <p className="font-medium text-red-300 text-sm">API Key Required</p>
+                            <p className="text-red-400/80 text-xs mt-0.5">{apiKeyError}</p>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="mt-2 text-red-400 border-red-800/50 hover:bg-red-900/30 bg-transparent text-xs h-7"
+                              onClick={() => handleApiKeyClick()}
+                            >
+                              Set API Keys
+                            </Button>
                           </div>
                         </div>
                       )}
-                      <DialogFooter className="gap-2 pt-4">
+                      <DialogFooter className="gap-2 pt-4 border-t border-zinc-800">
                         <Button
                           variant="outline"
                           onClick={() => setIsResumeDialogOpen(false)}
-                          className="border-gray-700/60 bg-gray-800/30 text-gray-300 hover:bg-gray-800/50 hover:border-gray-600/80 hover:text-gray-200"
+                          className="border-zinc-700 bg-transparent text-zinc-400 hover:bg-zinc-900 hover:text-zinc-300"
                         >
                           Cancel
                         </Button>
@@ -503,10 +500,9 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                           onClick={() => handleResumeUpload(resumeContent)}
                           disabled={isProcessingResume || !resumeContent.trim()}
                           className={cn(
-                            "bg-gradient-to-r from-violet-600 to-indigo-600 text-white",
-                            "hover:from-violet-700 hover:to-indigo-700",
-                            "disabled:from-gray-700 disabled:to-gray-800 disabled:text-gray-400",
-                            "transition-all duration-300"
+                            "bg-emerald-600 text-white hover:bg-emerald-700",
+                            "disabled:bg-zinc-800 disabled:text-zinc-500",
+                            "transition-colors"
                           )}
                         >
                           {isProcessingResume ? (
@@ -526,94 +522,83 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                   </Dialog>
                 </div>
 
-                {/* Divider before tabs */}
-                <div className="my-2 border-t border-gray-400 w-full" />
-
-                {/* Tab List and rest of sidebar... */}
-                <TabsList className="flex flex-col w-full h-full bg-black text-white border border-gray-500 rounded-xl shadow-lg overflow-hidden min-h-[500px] justify-start">
+                {/* Tab List */}
+                <TabsList className="flex flex-col w-full h-auto bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden p-0">
                   <TabsTrigger 
                     value="basic" 
-                    className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
-                      data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-900 data-[state=active]:to-black
-                      data-[state=active]:border-l-purple-400 data-[state=active]:text-white
-                      data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 hover:bg-purple-900/20"
+                    className="w-full group flex items-center gap-3 px-4 py-3.5 text-left justify-start transition-all duration-200
+                      data-[state=active]:bg-zinc-800 data-[state=active]:text-white
+                      data-[state=inactive]:text-zinc-400 data-[state=inactive]:hover:text-zinc-200 data-[state=inactive]:hover:bg-zinc-800/50"
                   >
-                    <div className="p-2 rounded-full bg-purple-400/10 transition-transform duration-300 group-data-[state=active]:scale-110 group-data-[state=active]:bg-purple-400/20">
-                      <User className="h-5 w-5 text-purple-400 transition-colors" />
+                    <div className="p-1.5 rounded-md bg-zinc-800 group-data-[state=active]:bg-emerald-500/20">
+                      <User className="h-4 w-4 text-zinc-400 group-data-[state=active]:text-emerald-400" />
                     </div>
-                    <span className="font-medium">Basic Info</span>
+                    <span className="text-sm font-medium">Basic Info</span>
                   </TabsTrigger>
                   <TabsTrigger 
                     value="experience" 
-                    className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
-                      data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-900 data-[state=active]:to-black
-                      data-[state=active]:border-l-purple-400 data-[state=active]:text-white
-                      data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 hover:bg-purple-900/20"
+                    className="w-full group flex items-center gap-3 px-4 py-3.5 text-left justify-start transition-all duration-200
+                      data-[state=active]:bg-zinc-800 data-[state=active]:text-white
+                      data-[state=inactive]:text-zinc-400 data-[state=inactive]:hover:text-zinc-200 data-[state=inactive]:hover:bg-zinc-800/50"
                   >
-                    <div className="p-2 rounded-full bg-purple-400/10 transition-transform duration-300 group-data-[state=active]:scale-110 group-data-[state=active]:bg-purple-400/20">
-                      <Briefcase className="h-5 w-5 text-purple-400 transition-colors" />
+                    <div className="p-1.5 rounded-md bg-zinc-800 group-data-[state=active]:bg-emerald-500/20">
+                      <Briefcase className="h-4 w-4 text-zinc-400 group-data-[state=active]:text-emerald-400" />
                     </div>
-                    <span className="font-medium">Work Experience</span>
+                    <span className="text-sm font-medium">Work Experience</span>
                   </TabsTrigger>
                   <TabsTrigger 
                     value="projects" 
-                    className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
-                      data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-900 data-[state=active]:to-black
-                      data-[state=active]:border-l-purple-400 data-[state=active]:text-white
-                      data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 hover:bg-purple-900/20"
+                    className="w-full group flex items-center gap-3 px-4 py-3.5 text-left justify-start transition-all duration-200
+                      data-[state=active]:bg-zinc-800 data-[state=active]:text-white
+                      data-[state=inactive]:text-zinc-400 data-[state=inactive]:hover:text-zinc-200 data-[state=inactive]:hover:bg-zinc-800/50"
                   >
-                    <div className="p-2 rounded-full bg-purple-400/10 transition-transform duration-300 group-data-[state=active]:scale-110 group-data-[state=active]:bg-purple-400/20">
-                      <FolderGit2 className="h-5 w-5 text-purple-400 transition-colors" />
+                    <div className="p-1.5 rounded-md bg-zinc-800 group-data-[state=active]:bg-emerald-500/20">
+                      <FolderGit2 className="h-4 w-4 text-zinc-400 group-data-[state=active]:text-emerald-400" />
                     </div>
-                    <span className="font-medium">Projects</span>
+                    <span className="text-sm font-medium">Projects</span>
                   </TabsTrigger>
                   <TabsTrigger 
                     value="education" 
-                    className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
-                      data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-900 data-[state=active]:to-black
-                      data-[state=active]:border-l-purple-400 data-[state=active]:text-white
-                      data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 hover:bg-purple-900/20"
+                    className="w-full group flex items-center gap-3 px-4 py-3.5 text-left justify-start transition-all duration-200
+                      data-[state=active]:bg-zinc-800 data-[state=active]:text-white
+                      data-[state=inactive]:text-zinc-400 data-[state=inactive]:hover:text-zinc-200 data-[state=inactive]:hover:bg-zinc-800/50"
                   >
-                    <div className="p-2 rounded-full bg-purple-400/10 transition-transform duration-300 group-data-[state=active]:scale-110 group-data-[state=active]:bg-purple-400/20">
-                      <GraduationCap className="h-5 w-5 text-purple-400 transition-colors" />
+                    <div className="p-1.5 rounded-md bg-zinc-800 group-data-[state=active]:bg-emerald-500/20">
+                      <GraduationCap className="h-4 w-4 text-zinc-400 group-data-[state=active]:text-emerald-400" />
                     </div>
-                    <span className="font-medium">Education</span>
+                    <span className="text-sm font-medium">Education</span>
                   </TabsTrigger>
                   <TabsTrigger 
                     value="skills" 
-                    className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
-                      data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-900 data-[state=active]:to-black
-                      data-[state=active]:border-l-purple-400 data-[state=active]:text-white
-                      data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 hover:bg-purple-900/20"
+                    className="w-full group flex items-center gap-3 px-4 py-3.5 text-left justify-start transition-all duration-200
+                      data-[state=active]:bg-zinc-800 data-[state=active]:text-white
+                      data-[state=inactive]:text-zinc-400 data-[state=inactive]:hover:text-zinc-200 data-[state=inactive]:hover:bg-zinc-800/50"
                   >
-                    <div className="p-2 rounded-full bg-purple-400/10 transition-transform duration-300 group-data-[state=active]:scale-110 group-data-[state=active]:bg-purple-400/20">
-                      <Wrench className="h-5 w-5 text-purple-400 transition-colors" />
+                    <div className="p-1.5 rounded-md bg-zinc-800 group-data-[state=active]:bg-emerald-500/20">
+                      <Wrench className="h-4 w-4 text-zinc-400 group-data-[state=active]:text-emerald-400" />
                     </div>
-                    <span className="font-medium">Skills</span>
+                    <span className="text-sm font-medium">Skills</span>
                   </TabsTrigger>
                   <TabsTrigger 
                     value="security" 
-                    className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
-                      data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-900 data-[state=active]:to-black
-                      data-[state=active]:border-l-green-400 data-[state=active]:text-white
-                      data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 hover:bg-green-900/20"
+                    className="w-full group flex items-center gap-3 px-4 py-3.5 text-left justify-start transition-all duration-200
+                      data-[state=active]:bg-zinc-800 data-[state=active]:text-white
+                      data-[state=inactive]:text-zinc-400 data-[state=inactive]:hover:text-zinc-200 data-[state=inactive]:hover:bg-zinc-800/50"
                   >
-                    <div className="p-2 rounded-full bg-green-400/10 transition-transform duration-300 group-data-[state=active]:scale-110 group-data-[state=active]:bg-green-400/20">
-                      <Lock className="h-5 w-5 text-green-400 transition-colors" />
+                    <div className="p-1.5 rounded-md bg-zinc-800 group-data-[state=active]:bg-amber-500/20">
+                      <Lock className="h-4 w-4 text-zinc-400 group-data-[state=active]:text-amber-400" />
                     </div>
-                    <span className="font-medium">Security</span>
+                    <span className="text-sm font-medium">Security</span>
                   </TabsTrigger>
+                </TabsList>
 
-                  {/* Divider after last tab */}
-                  <div className="my-3 border-t border-gray-500 w-full" />
-
-                  {/* Save and Reset buttons in navbar */}
-                  <div className="flex flex-col gap-2 px-4 pb-4">
+                {/* Save and Reset buttons */}
+                <div className="flex flex-col gap-2 mt-6">
                   <Button 
                     onClick={handleSubmit} 
                     disabled={isSubmitting}
-                    size="sm"
-                    className="w-full bg-gradient-to-r from-teal-500 to-green-500 text-white font-semibold rounded-md shadow-sm hover:from-teal-600 hover:to-green-600 hover:shadow-md transition-all duration-200 h-9 px-3 flex items-center justify-center gap-2 text-sm"
+                    className="w-full bg-emerald-600 text-white font-medium rounded-lg 
+                      hover:bg-emerald-700 transition-colors h-10 flex items-center justify-center gap-2"
                   >
                     {isSubmitting ? (
                       <><Loader2 className="h-4 w-4 animate-spin" />Saving...</>
@@ -624,49 +609,46 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button
-                        size="sm"
                         variant="outline"
-                        className="w-full border border-rose-500 text-rose-600 font-medium rounded-md hover:bg-rose-50 hover:border-rose-600 hover:text-rose-700 transition-all duration-200 h-9 px-3 flex items-center justify-center gap-2 text-sm"
+                        className="w-full border-zinc-700 text-zinc-400 font-medium rounded-lg 
+                          hover:bg-zinc-900 hover:text-zinc-300 hover:border-zinc-600 
+                          transition-colors h-10 flex items-center justify-center gap-2"
                         disabled={isResetting}
                       >
                         {isResetting ? (
                           <><Loader2 className="h-4 w-4 animate-spin" />Resetting...</>
                         ) : (
-                          <><Trash2 className="h-4 w-4" />Reset</>
+                          <><Trash2 className="h-4 w-4" />Reset Profile</>
                         )}
                       </Button>
                     </AlertDialogTrigger>
-                    <AlertDialogContent className="sm:max-w-[425px]">
+                    <AlertDialogContent className="bg-zinc-950 border-zinc-800">
                       <AlertDialogHeader>
-                        <AlertDialogTitle className="text-white">Reset Profile</AlertDialogTitle>
-                        <AlertDialogDescription>
+                        <AlertDialogTitle className="text-zinc-100">Reset Profile</AlertDialogTitle>
+                        <AlertDialogDescription className="text-zinc-400">
                           Are you sure you want to reset your profile? This action cannot be undone.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel disabled={isResetting} className="text-gray-100">Cancel</AlertDialogCancel>
+                        <AlertDialogCancel disabled={isResetting} className="bg-transparent border-zinc-700 text-zinc-300 hover:bg-zinc-900">Cancel</AlertDialogCancel>
                         <AlertDialogAction
                           onClick={handleReset}
                           disabled={isResetting}
-                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          className="bg-red-600 text-white hover:bg-red-700"
                         >
                           {isResetting ? "Resetting..." : "Reset Profile"}
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
-                  
                 </div>
-                </TabsList>
               </div>
               {/* Content area on the right */}
-              <div className="flex-1 relative w-full">
-                <div className="absolute inset-0 pointer-events-none rounded-xl"></div>
-                <div className="relative space-y-6 px-1 sm:px-2 md:px-4">
-                  <TabsContent value="basic" className="animate-in fade-in-50 slide-in-from-left-2 duration-300">
-                    <Card className="bg-black text-white border-gray-500 shadow-xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] rounded-xl overflow-hidden w-full">
-                      <div className="p-3 sm:p-4 md:p-6">
-                        <h2 className="text-lg font-semibold mb-4 md:mb-6 text-purple-400">Personal Information</h2>
+              <div className="flex-1 relative w-full min-w-0">
+                <div className="space-y-6">
+                  <TabsContent value="basic" className="mt-0 animate-in fade-in-50 duration-200">
+                    <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+                      <h2 className="text-base font-semibold text-zinc-100 mb-6">Personal Information</h2>
                         <ProfileBasicInfoForm
                           profile={profile}
                           onChange={(field, value) => {
@@ -675,61 +657,52 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                             }
                           }}
                         />
-                      </div>
-                    </Card>
+                    </div>
                   </TabsContent>
 
-                  <TabsContent value="experience" className="animate-in fade-in-50 slide-in-from-left-2 duration-300">
-                    <Card className="bg-black text-white border-gray-500 shadow-xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] rounded-xl overflow-hidden w-full">
-                      <div className="p-3 sm:p-4 md:p-6">
-                        <h2 className="text-lg font-semibold mb-4 md:mb-6 text-purple-400">Work Experience</h2>
+                  <TabsContent value="experience" className="mt-0 animate-in fade-in-50 duration-200">
+                    <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+                      <h2 className="text-base font-semibold text-zinc-100 mb-6">Work Experience</h2>
                         <ProfileWorkExperienceForm
                           experiences={profile.work_experience}
                           onChange={(experiences) => updateField('work_experience', experiences)}
                         />
-                      </div>
-                    </Card>
+                    </div>
                   </TabsContent>
 
-                  <TabsContent value="projects" className="animate-in fade-in-50 slide-in-from-left-2 duration-300">
-                    <Card className="bg-black text-white border-gray-500 shadow-xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] rounded-xl overflow-hidden w-full">
-                      <div className="p-3 sm:p-4 md:p-6">
-                        <h2 className="text-lg font-semibold mb-4 md:mb-6 text-purple-400">Projects</h2>
+                  <TabsContent value="projects" className="mt-0 animate-in fade-in-50 duration-200">
+                    <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+                      <h2 className="text-base font-semibold text-zinc-100 mb-6">Projects</h2>
                         <ProfileProjectsForm
                           projects={profile.projects}
                           onChange={(projects) => updateField('projects', projects)}
                         />
-                      </div>
-                    </Card>
+                    </div>
                   </TabsContent>
 
-                  <TabsContent value="education" className="animate-in fade-in-50 slide-in-from-left-2 duration-300">
-                    <Card className="bg-black text-white border-gray-500 shadow-xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] rounded-xl overflow-hidden w-full">
-                      <div className="p-3 sm:p-4 md:p-6">
-                        <h2 className="text-lg font-semibold mb-4 md:mb-6 text-purple-400">Education</h2>
+                  <TabsContent value="education" className="mt-0 animate-in fade-in-50 duration-200">
+                    <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+                      <h2 className="text-base font-semibold text-zinc-100 mb-6">Education</h2>
                         <ProfileEducationForm
                           education={profile.education}
                           onChange={(education) => updateField('education', education)}
                         />
-                      </div>
-                    </Card>
+                    </div>
                   </TabsContent>
 
-                  <TabsContent value="skills" className="animate-in fade-in-50 slide-in-from-left-2 duration-300">
-                    <Card className="bg-black text-white border-gray-500 shadow-xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] rounded-xl overflow-hidden w-full">
-                      <div className="p-3 sm:p-4 md:p-6">
-                        <h2 className="text-lg font-semibold mb-4 md:mb-6 text-purple-400">Skills</h2>
+                  <TabsContent value="skills" className="mt-0 animate-in fade-in-50 duration-200">
+                    <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+                      <h2 className="text-base font-semibold text-zinc-100 mb-6">Skills</h2>
                         <ProfileSkillsForm
                           skills={profile.skills}
                           onChange={(skills) => updateField('skills', skills)}
                         />
-                      </div>
-                    </Card>
+                    </div>
                   </TabsContent>
 
-                  <TabsContent value="security" className="animate-in fade-in-50 slide-in-from-left-2 duration-300">
-                    <div className="space-y-4">
-                      <h2 className="text-lg font-semibold mb-4 md:mb-6 text-green-400">Security Settings</h2>
+                  <TabsContent value="security" className="mt-0 animate-in fade-in-50 duration-200">
+                    <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+                      <h2 className="text-base font-semibold text-zinc-100 mb-6">Security Settings</h2>
                       <ChangePasswordForm />
                     </div>
                   </TabsContent>
@@ -738,16 +711,29 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
               </div>
             </div>
             {/* Mobile Nav Buttons OUTSIDE the card */}
-            <div className="flex md:hidden justify-between gap-2 mt-4 px-1 sm:px-2 md:px-4 text-gray-200">
-              <Button variant="outline" onClick={goToPrev} disabled={isFirstTab} className="flex-1">
+            <div className="flex md:hidden justify-between gap-3 mt-6">
+              <Button 
+                variant="outline" 
+                onClick={goToPrev} 
+                disabled={isFirstTab} 
+                className="flex-1 border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-zinc-100 disabled:opacity-40"
+              >
                 Previous
               </Button>
               {isLastTab ? (
-                <Button variant="default" onClick={handleSubmit} disabled={isSubmitting} className="flex-1">
-                  {isSubmitting ? "Saving..." : "Save"}
+                <Button 
+                  onClick={handleSubmit} 
+                  disabled={isSubmitting} 
+                  className="flex-1 bg-emerald-600 text-white hover:bg-emerald-700"
+                >
+                  {isSubmitting ? "Saving..." : "Save Changes"}
                 </Button>
               ) : (
-                <Button variant="default" onClick={goToNext} disabled={isLastTab} className="flex-1">
+                <Button 
+                  onClick={goToNext} 
+                  disabled={isLastTab} 
+                  className="flex-1 bg-zinc-800 text-zinc-100 hover:bg-zinc-700"
+                >
                   Next
                 </Button>
               )}
@@ -758,17 +744,17 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
 
       {/* Mobile Navigation Slide-out */}
       <Sheet open={isNavOpen} onOpenChange={setIsNavOpen}>
-        <SheetContent side="left" className="w-[280px] sm:w-[320px] bg-black border-r border-gray-600 p-0">
+        <SheetContent side="left" className="w-[280px] sm:w-[320px] bg-zinc-950 border-r border-zinc-800 p-0">
           <SheetHeader className="sr-only">
             <SheetTitle>Profile Navigation</SheetTitle>
             <SheetDescription>Navigate between different sections of your profile</SheetDescription>
           </SheetHeader>
           <div className="flex flex-col h-full">
             {/* Import Options - Mobile */}
-            <div className="bg-black/70 backdrop-blur-md border-b border-gray-500 shadow-sm px-4 py-3 flex flex-col gap-3 mt-8 mb-4">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="inline-block w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 shadow-sm shadow-purple-500/20" />
-                <span className="font-semibold text-sm text-white">Import From Resume</span>
+            <div className="border-b border-zinc-800 px-4 py-4 mt-12">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">Quick Import</span>
               </div>
               
               <Button
@@ -777,110 +763,105 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                   setIsResumeDialogOpen(true);
                   setIsNavOpen(false);
                 }}
-                className="w-full flex items-center gap-2 text-violet-400 border-violet-400/30 hover:bg-violet-400/10 hover:border-violet-500/50 py-2 px-3 text-sm font-medium rounded-md transition-all"
+                className="w-full flex items-center justify-center gap-2 bg-zinc-900 text-zinc-300 border-zinc-800 
+                  hover:bg-zinc-800 hover:text-zinc-100 py-2.5 text-sm font-medium rounded-lg transition-colors"
               >
                 <Upload className="h-4 w-4" />
-                Resume Upload
+                Upload Resume
               </Button>
             </div>
 
             {/* Mobile Tab Navigation */}
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto py-2">
               <Tabs value={activeTab} onValueChange={(value) => {
                 setActiveTab(value);
                 setIsNavOpen(false);
               }} className="w-full h-full">
-                <TabsList className="flex flex-col w-full h-full bg-black text-white border-none shadow-none overflow-hidden justify-start">
+                <TabsList className="flex flex-col w-full h-auto bg-transparent border-none p-0">
                 <TabsTrigger 
                   value="basic" 
-                  className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
-                    data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-900 data-[state=active]:to-black
-                    data-[state=active]:border-l-purple-400 data-[state=active]:text-white
-                    data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 hover:bg-purple-900/20"
+                  className="w-full group flex items-center gap-3 px-4 py-3.5 text-left justify-start transition-all duration-200
+                    data-[state=active]:bg-zinc-800 data-[state=active]:text-white
+                    data-[state=inactive]:text-zinc-400 data-[state=inactive]:hover:text-zinc-200 data-[state=inactive]:hover:bg-zinc-800/50"
                 >
-                  <div className="p-2 rounded-full bg-purple-400/10 transition-transform duration-300 group-data-[state=active]:scale-110 group-data-[state=active]:bg-purple-400/20">
-                    <User className="h-5 w-5 text-purple-400 transition-colors" />
+                  <div className="p-1.5 rounded-md bg-zinc-800 group-data-[state=active]:bg-emerald-500/20">
+                    <User className="h-4 w-4 text-zinc-400 group-data-[state=active]:text-emerald-400" />
                   </div>
-                  <span className="font-medium">Basic Info</span>
+                  <span className="text-sm font-medium">Basic Info</span>
                 </TabsTrigger>
                 
                 <TabsTrigger 
                   value="experience" 
-                  className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
-                    data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-900 data-[state=active]:to-black
-                    data-[state=active]:border-l-purple-400 data-[state=active]:text-white
-                    data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 hover:bg-purple-900/20"
+                  className="w-full group flex items-center gap-3 px-4 py-3.5 text-left justify-start transition-all duration-200
+                    data-[state=active]:bg-zinc-800 data-[state=active]:text-white
+                    data-[state=inactive]:text-zinc-400 data-[state=inactive]:hover:text-zinc-200 data-[state=inactive]:hover:bg-zinc-800/50"
                 >
-                  <div className="p-2 rounded-full bg-purple-400/10 transition-transform duration-300 group-data-[state=active]:scale-110 group-data-[state=active]:bg-purple-400/20">
-                    <Briefcase className="h-5 w-5 text-purple-400 transition-colors" />
+                  <div className="p-1.5 rounded-md bg-zinc-800 group-data-[state=active]:bg-emerald-500/20">
+                    <Briefcase className="h-4 w-4 text-zinc-400 group-data-[state=active]:text-emerald-400" />
                   </div>
-                  <span className="font-medium">Work Experience</span>
+                  <span className="text-sm font-medium">Work Experience</span>
                 </TabsTrigger>
                 
                 <TabsTrigger 
                   value="projects" 
-                  className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
-                    data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-900 data-[state=active]:to-black
-                    data-[state=active]:border-l-purple-400 data-[state=active]:text-white
-                    data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 hover:bg-purple-900/20"
+                  className="w-full group flex items-center gap-3 px-4 py-3.5 text-left justify-start transition-all duration-200
+                    data-[state=active]:bg-zinc-800 data-[state=active]:text-white
+                    data-[state=inactive]:text-zinc-400 data-[state=inactive]:hover:text-zinc-200 data-[state=inactive]:hover:bg-zinc-800/50"
                 >
-                  <div className="p-2 rounded-full bg-purple-400/10 transition-transform duration-300 group-data-[state=active]:scale-110 group-data-[state=active]:bg-purple-400/20">
-                    <FolderGit2 className="h-5 w-5 text-purple-400 transition-colors" />
+                  <div className="p-1.5 rounded-md bg-zinc-800 group-data-[state=active]:bg-emerald-500/20">
+                    <FolderGit2 className="h-4 w-4 text-zinc-400 group-data-[state=active]:text-emerald-400" />
                   </div>
-                  <span className="font-medium">Projects</span>
+                  <span className="text-sm font-medium">Projects</span>
                 </TabsTrigger>
                 
                 <TabsTrigger 
                   value="education" 
-                  className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
-                    data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-900 data-[state=active]:to-black
-                    data-[state=active]:border-l-purple-400 data-[state=active]:text-white
-                    data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 hover:bg-purple-900/20"
+                  className="w-full group flex items-center gap-3 px-4 py-3.5 text-left justify-start transition-all duration-200
+                    data-[state=active]:bg-zinc-800 data-[state=active]:text-white
+                    data-[state=inactive]:text-zinc-400 data-[state=inactive]:hover:text-zinc-200 data-[state=inactive]:hover:bg-zinc-800/50"
                 >
-                  <div className="p-2 rounded-full bg-purple-400/10 transition-transform duration-300 group-data-[state=active]:scale-110 group-data-[state=active]:bg-purple-400/20">
-                    <GraduationCap className="h-5 w-5 text-purple-400 transition-colors" />
+                  <div className="p-1.5 rounded-md bg-zinc-800 group-data-[state=active]:bg-emerald-500/20">
+                    <GraduationCap className="h-4 w-4 text-zinc-400 group-data-[state=active]:text-emerald-400" />
                   </div>
-                  <span className="font-medium">Education</span>
+                  <span className="text-sm font-medium">Education</span>
                 </TabsTrigger>
                 
                 <TabsTrigger 
                   value="skills" 
-                  className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
-                    data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-900 data-[state=active]:to-black
-                    data-[state=active]:border-l-purple-400 data-[state=active]:text-white
-                    data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 hover:bg-purple-900/20"
+                  className="w-full group flex items-center gap-3 px-4 py-3.5 text-left justify-start transition-all duration-200
+                    data-[state=active]:bg-zinc-800 data-[state=active]:text-white
+                    data-[state=inactive]:text-zinc-400 data-[state=inactive]:hover:text-zinc-200 data-[state=inactive]:hover:bg-zinc-800/50"
                 >
-                  <div className="p-2 rounded-full bg-purple-400/10 transition-transform duration-300 group-data-[state=active]:scale-110 group-data-[state=active]:bg-purple-400/20">
-                    <Wrench className="h-5 w-5 text-purple-400 transition-colors" />
+                  <div className="p-1.5 rounded-md bg-zinc-800 group-data-[state=active]:bg-emerald-500/20">
+                    <Wrench className="h-4 w-4 text-zinc-400 group-data-[state=active]:text-emerald-400" />
                   </div>
-                  <span className="font-medium">Skills</span>
+                  <span className="text-sm font-medium">Skills</span>
                 </TabsTrigger>
 
                 <TabsTrigger 
                   value="security" 
-                  className="w-full group flex items-center gap-3 px-5 py-4 border-l-4 border-transparent text-left font-medium justify-start transition-all duration-300
-                    data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-900 data-[state=active]:to-black
-                    data-[state=active]:border-l-green-400 data-[state=active]:text-white
-                    data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200 hover:bg-green-900/20"
+                  className="w-full group flex items-center gap-3 px-4 py-3.5 text-left justify-start transition-all duration-200
+                    data-[state=active]:bg-zinc-800 data-[state=active]:text-white
+                    data-[state=inactive]:text-zinc-400 data-[state=inactive]:hover:text-zinc-200 data-[state=inactive]:hover:bg-zinc-800/50"
                 >
-                  <div className="p-2 rounded-full bg-green-400/10 transition-transform duration-300 group-data-[state=active]:scale-110 group-data-[state=active]:bg-green-400/20">
-                    <Lock className="h-5 w-5 text-green-400 transition-colors" />
+                  <div className="p-1.5 rounded-md bg-zinc-800 group-data-[state=active]:bg-amber-500/20">
+                    <Lock className="h-4 w-4 text-zinc-400 group-data-[state=active]:text-amber-400" />
                   </div>
-                  <span className="font-medium">Security</span>
+                  <span className="text-sm font-medium">Security</span>
                 </TabsTrigger>
               </TabsList>
               </Tabs>
             </div>
             {/* Mobile Save/Reset Buttons */}
-            <div className="flex flex-col gap-2 p-4 border-t border-gray-600">
+            <div className="flex flex-col gap-2 p-4 border-t border-zinc-800">
               <Button 
                 onClick={() => {
                   handleSubmit();
                   setIsNavOpen(false);
                 }}
                 disabled={isSubmitting}
-                size="sm"
-                className="w-full bg-gradient-to-r from-teal-500 to-green-500 text-white font-semibold rounded-md shadow-sm hover:from-teal-600 hover:to-green-600 hover:shadow-md transition-all duration-200 h-9 px-3 flex items-center justify-center gap-2 text-sm"
+                className="w-full bg-emerald-600 text-white font-medium rounded-lg 
+                  hover:bg-emerald-700 transition-colors h-10 flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   <><Loader2 className="h-4 w-4 animate-spin" />Saving...</>
@@ -891,9 +872,9 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button
-                    size="sm"
                     variant="outline"
-                    className="w-full border border-rose-500 text-rose-400 font-medium rounded-md hover:bg-rose-900/20 hover:border-rose-400 transition-all duration-200 h-9 px-3 flex items-center justify-center gap-2 text-sm"
+                    className="w-full border-zinc-700 text-zinc-400 font-medium rounded-lg 
+                      hover:bg-zinc-900 hover:text-zinc-300 transition-colors h-10 flex items-center justify-center gap-2"
                     disabled={isResetting}
                   >
                     {isResetting ? (
@@ -903,19 +884,19 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                     )}
                   </Button>
                 </AlertDialogTrigger>
-                <AlertDialogContent>
+                <AlertDialogContent className="bg-zinc-950 border-zinc-800">
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Reset Profile</AlertDialogTitle>
-                    <AlertDialogDescription>
+                    <AlertDialogTitle className="text-zinc-100">Reset Profile</AlertDialogTitle>
+                    <AlertDialogDescription className="text-zinc-400">
                       This will reset your entire profile and remove all your information. This action cannot be undone.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel disabled={isResetting}>Cancel</AlertDialogCancel>
+                    <AlertDialogCancel disabled={isResetting} className="bg-transparent border-zinc-700 text-zinc-300 hover:bg-zinc-900">Cancel</AlertDialogCancel>
                     <AlertDialogAction
                       onClick={handleReset}
                       disabled={isResetting}
-                      className="bg-rose-500 hover:bg-rose-600"
+                      className="bg-red-600 text-white hover:bg-red-700"
                     >
                       {isResetting ? (
                         <><Loader2 className="h-4 w-4 animate-spin mr-2" />Resetting...</>
