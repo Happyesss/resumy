@@ -3,14 +3,11 @@ name: Deploy to DigitalOcean
 on:
   push:
     branches: [ main ]
-  # Remove pull_request trigger - only deploy on push to main
-  workflow_dispatch: # Allow manual deployment
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
-    # Security: Only deploy from main branch
     if: github.ref == 'refs/heads/main'
     
     steps:
@@ -30,16 +27,14 @@ jobs:
     - name: Get pnpm store directory
       id: pnpm-cache
       shell: bash
-      run: |
-        echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
 
     - name: Setup pnpm cache
       uses: actions/cache@v3
       with:
         path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
         key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-        restore-keys: |
-          ${{ runner.os }}-pnpm-store-
+        restore-keys: ${{ runner.os }}-pnpm-store-
 
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
@@ -57,114 +52,80 @@ jobs:
 
     - name: Create deployment package
       run: |
-        # Create a clean deployment package with only necessary files
         mkdir -p deploy-package
-        
-        # Copy built files
         cp -r .next deploy-package/
         cp -r public deploy-package/
-        cp -r node_modules deploy-package/ 2>/dev/null || echo "Skipping node_modules copy"
-        
-        # Copy config files
+        cp -r node_modules deploy-package/ 2>/dev/null || true
         cp package.json deploy-package/
         cp pnpm-lock.yaml deploy-package/
-        cp next.config.ts deploy-package/ 2>/dev/null || cp next.config.js deploy-package/ 2>/dev/null || true
-        cp ecosystem.config.js deploy-package/ 2>/dev/null || true
-        
-        # Create a tarball
+        cp next.config.ts deploy-package/ 2>/dev/null || true
         tar -czf deploy.tar.gz -C deploy-package .
 
-    - name: Transfer deployment package to server
+    - name: Transfer to server
       uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.DO_HOST }}
         username: ${{ secrets.DO_USERNAME }}
         key: ${{ secrets.DO_SSH_KEY }}
-        port: ${{ secrets.DO_SSH_PORT || 22 }}
+        port: 22
         source: "deploy.tar.gz"
         target: "/tmp/"
 
-    - name: Deploy to DigitalOcean
+    - name: Deploy and restart
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.DO_HOST }}
         username: ${{ secrets.DO_USERNAME }}
         key: ${{ secrets.DO_SSH_KEY }}
-        port: ${{ secrets.DO_SSH_PORT || 22 }}
-        script_stop: true # Stop on first error
+        port: 22
         script: |
-          set -e # Exit on any error
+          set -e
+          echo "=== Starting Deployment ==="
           
-          # Define colors for output
-          GREEN='\033[0;32m'
-          YELLOW='\033[1;33m'
-          NC='\033[0m' # No Color
-          
-          echo -e "${GREEN}Starting deployment...${NC}"
-          
-          # Navigate to app directory
           cd /var/www/resumy
           
-          # Backup current deployment
-          if [ -d ".next" ]; then
-            echo -e "${YELLOW}Backing up current deployment...${NC}"
-            tar -czf ../resumy-backup-$(date +%Y%m%d-%H%M%S).tar.gz .next public node_modules 2>/dev/null || true
-          fi
-          
-          # Extract new deployment
-          echo -e "${GREEN}Extracting new deployment...${NC}"
+          echo "Extracting deployment package..."
           tar -xzf /tmp/deploy.tar.gz -C /var/www/resumy/
-          rm /tmp/deploy.tar.gz
+          rm -f /tmp/deploy.tar.gz
           
-          # Install/update dependencies if needed
-          if [ ! -d "node_modules" ] || [ pnpm-lock.yaml -nt node_modules ]; then
-            echo -e "${GREEN}Installing dependencies...${NC}"
-            pnpm install --frozen-lockfile --prod
-          fi
-          
-          # Create secure .env.local file using printf to avoid heredoc issues
-          echo -e "${GREEN}Creating environment configuration...${NC}"
-          printf "NODE_ENV=production\nNEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}\nNEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}\nSUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}\nGEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}\nUPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }}\nUPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }}\nNEXT_PUBLIC_SITE_URL=https://resumy.live\n" > .env.local
-          
-          # Secure permissions
+          echo "Creating environment configuration..."
+          printf '%s\n' \
+            "NODE_ENV=production" \
+            "NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" \
+            "NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}" \
+            "SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+            "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" \
+            "UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }}" \
+            "UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }}" \
+            "NEXT_PUBLIC_SITE_URL=https://resumy.live" \
+            > .env.local
           chmod 600 .env.local
           
-          # Create ecosystem.config.js with correct next.js path
-          echo -e "${GREEN}Creating PM2 config...${NC}"
+          echo "Creating PM2 config..."
           printf "module.exports = {\n  apps: [{\n    name: 'resumy',\n    script: 'node_modules/next/dist/bin/next',\n    args: 'start',\n    cwd: '/var/www/resumy',\n    instances: 1,\n    exec_mode: 'fork',\n    autorestart: true,\n    watch: false,\n    max_memory_restart: '1G',\n    env: {\n      NODE_ENV: 'production',\n      PORT: 3000\n    }\n  }]\n};\n" > ecosystem.config.js
           
-          # Restart PM2 process (ensure it works regardless of current state)
-          echo -e "${GREEN}Restarting application...${NC}"
-          if pm2 describe resumy > /dev/null 2>&1; then
-            echo "App exists, restarting..."
-            pm2 restart resumy --update-env
+          echo "Restarting PM2..."
+          if PM2_HOME=/root/.pm2 sudo pm2 describe resumy > /dev/null 2>&1; then
+            PM2_HOME=/root/.pm2 sudo pm2 restart resumy --update-env
+            echo "??? PM2 restarted"
           else
-            echo "App not found, starting fresh..."
-            pm2 start ecosystem.config.js
+            PM2_HOME=/root/.pm2 sudo pm2 start ecosystem.config.js
+            echo "??? PM2 started"
           fi
           
-          # Wait for the application to start
+          echo "Health check..."
           sleep 5
-          
-          # Check if the application is running
-          pm2 list
-          
-          # Health check
-          echo -e "${GREEN}Running health check...${NC}"
-          for i in {1..10}; do
-            if curl -f http://localhost:3000 > /dev/null 2>&1; then
-              echo -e "${GREEN}✓ Application is healthy${NC}"
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            if curl -sf http://localhost:3000 > /dev/null 2>&1; then
+              echo "??? App is healthy!"
               break
             fi
-            echo "Waiting for application to start... ($i/10)"
+            echo "Waiting... ($i/10)"
             sleep 2
           done
           
-          # Save PM2 configuration
-          pm2 save
+          PM2_HOME=/root/.pm2 sudo pm2 list
+          PM2_HOME=/root/.pm2 sudo pm2 save || true
           
-          # Cleanup old backups (keep last 5)
-          cd /var/www
-          ls -t resumy-backup-*.tar.gz 2>/dev/null | tail -n +6 | xargs -r rm
-          
-          echo -e "${GREEN}✓ Deployment completed successfully!${NC}"
+          echo "=== Deployment Complete ==="
+          echo "Build: $(cat .next/BUILD_ID)"
