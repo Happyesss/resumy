@@ -49,6 +49,8 @@ jobs:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
         UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+        NEXT_PUBLIC_VAPID_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_VAPID_PUBLIC_KEY }}
+        VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
 
     - name: Create deployment package
       run: |
@@ -97,6 +99,8 @@ jobs:
             "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" \
             "UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }}" \
             "UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }}" \
+            "NEXT_PUBLIC_VAPID_PUBLIC_KEY=${{ secrets.NEXT_PUBLIC_VAPID_PUBLIC_KEY }}" \
+            "VAPID_PRIVATE_KEY=${{ secrets.VAPID_PRIVATE_KEY }}" \
             "NEXT_PUBLIC_SITE_URL=https://resumy.live" \
             > .env.local
           chmod 600 .env.local
