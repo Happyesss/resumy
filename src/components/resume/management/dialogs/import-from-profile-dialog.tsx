@@ -114,28 +114,29 @@ export function ImportFromProfileDialog<T extends ImportItem>({
         <Button 
           variant="outline" 
           className={cn(
-            "mb-6 w-full h-16",
-            "bg-gradient-to-r from-purple-500/5 via-purple-500/10 to-teal-500/5",
-            "hover:from-purple-500/10 hover:via-purple-500/15 hover:to-teal-500/10",
-            "border-2 border-dashed border-purple-500/30 hover:border-purple-500/40",
-            "text-purple-400 hover:text-purple-300",
-            "transition-all duration-300",
+            "h-9",
+            "bg-emerald-500/10 border border-dashed border-emerald-500/30",
+            "hover:bg-emerald-500/20 hover:border-emerald-500/40",
+            "text-emerald-400 hover:text-emerald-300",
+            "transition-all duration-200",
             "rounded-xl",
-            "shadow-sm hover:shadow-lg hover:shadow-purple-500/10",
+            "text-[11px] sm:text-xs font-medium",
+            "hover:shadow-lg hover:shadow-emerald-500/10",
             buttonClassName
           )}
         >
-          <Import className="h-5 w-5 mr-2" />
-          Import from Profile
+          <Import className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2 shrink-0" />
+          <span className="hidden xs:inline">Import</span>
+          <span className="xs:hidden">Import</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[700px] bg-gray-900 border-gray-800">
+      <DialogContent className="sm:max-w-[700px] bg-zinc-950 border-zinc-800">
         <DialogHeader className="pb-4">
           <DialogTitle className="text-xl font-semibold text-white">
             Select the {title.toLowerCase()} you want to import from your profile
           </DialogTitle>
           <div className="flex items-center justify-between pt-2">
-            <div className="text-sm text-gray-400">
+            <div className="text-sm text-zinc-400">
               {items.length} {title.toLowerCase()} available
             </div>
             <Button
@@ -148,7 +149,7 @@ export function ImportFromProfileDialog<T extends ImportItem>({
                   setSelectedItems(items.map(item => getItemId(item)));
                 }
               }}
-              className="text-purple-400 hover:text-purple-300 hover:bg-purple-500/10 text-xs"
+              className="text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 text-xs"
             >
               {selectedItems.length === items.length ? 'Deselect All' : 'Select All'}
             </Button>
@@ -157,11 +158,11 @@ export function ImportFromProfileDialog<T extends ImportItem>({
         <ScrollArea className="max-h-[500px] mt-4 pr-2">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
-              <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mb-4">
-                <Import className="h-8 w-8 text-gray-600" />
+              <div className="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mb-4">
+                <Import className="h-8 w-8 text-zinc-600" />
               </div>
-              <div className="text-gray-400 mb-2">No {title.toLowerCase()} found</div>
-              <div className="text-sm text-gray-500">
+              <div className="text-zinc-400 mb-2">No {title.toLowerCase()} found</div>
+              <div className="text-sm text-zinc-500">
                 Add some {title.toLowerCase()} to your profile first to import them here.
               </div>
             </div>
@@ -174,11 +175,11 @@ export function ImportFromProfileDialog<T extends ImportItem>({
                   <div
                     key={id}
                     className={cn(
-                      "flex items-start space-x-4 p-4 rounded-lg border-2 transition-all duration-200 cursor-pointer group",
-                      "hover:shadow-lg hover:shadow-purple-500/10",
+                      "flex items-start space-x-4 p-4 rounded-lg border transition-all duration-200 cursor-pointer group",
+                      "hover:shadow-lg hover:shadow-emerald-500/10",
                       isSelected 
-                        ? "border-purple-400 bg-purple-500/10 shadow-md shadow-purple-500/20" 
-                        : "border-gray-700 bg-gray-800/50 hover:border-purple-400/50 hover:bg-gray-800/80"
+                        ? "border-emerald-500 bg-emerald-500/10 shadow-md shadow-emerald-500/20" 
+                        : "border-zinc-800 bg-zinc-900/50 hover:border-emerald-500/50 hover:bg-zinc-900/80"
                     )}
                     onClick={() => {
                       setSelectedItems(prev =>
@@ -199,30 +200,30 @@ export function ImportFromProfileDialog<T extends ImportItem>({
                         );
                       }}
                       className={cn(
-                        "mt-1 data-[state=checked]:bg-purple-500 data-[state=checked]:border-purple-500",
-                        "border-gray-600 hover:border-purple-400"
+                        "mt-1 data-[state=checked]:bg-emerald-500 data-[state=checked]:border-emerald-500",
+                        "border-zinc-600 hover:border-emerald-400"
                       )}
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex-1 min-w-0">
-                          <div className="font-semibold text-white text-base mb-1 group-hover:text-purple-300 transition-colors">
+                          <div className="font-semibold text-white text-base mb-1 group-hover:text-emerald-300 transition-colors">
                             {getItemTitle(item)}
                           </div>
                           {getItemSubtitle(item) && (
-                            <div className="text-sm text-blue-400 mb-1">
+                            <div className="text-sm text-emerald-400 mb-1">
                               {getItemSubtitle(item)}
                             </div>
                           )}
                           {getItemDate(item) && (
-                            <div className="text-xs text-gray-400 font-mono">
+                            <div className="text-xs text-zinc-400 font-mono">
                               {getItemDate(item)}
                             </div>
                           )}
                         </div>
                         {isSelected && (
                           <div className="flex-shrink-0">
-                            <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                            <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
                           </div>
                         )}
                       </div>
@@ -232,13 +233,13 @@ export function ImportFromProfileDialog<T extends ImportItem>({
                             <Badge
                               key={index}
                               variant="secondary"
-                              className="bg-gray-700 text-gray-300 border border-gray-600 text-xs px-2 py-1"
+                              className="bg-zinc-800 text-zinc-300 border border-zinc-700 text-xs px-2 py-1"
                             >
                               {skill}
                             </Badge>
                           ))}
                           {(item as Skill).items.length > 6 && (
-                            <Badge variant="secondary" className="bg-gray-700 text-gray-400 border border-gray-600 text-xs px-2 py-1">
+                            <Badge variant="secondary" className="bg-zinc-800 text-zinc-400 border border-zinc-700 text-xs px-2 py-1">
                               +{(item as Skill).items.length - 6} more
                             </Badge>
                           )}
@@ -287,9 +288,9 @@ export function ImportFromProfileDialog<T extends ImportItem>({
             </div>
           )}
         </ScrollArea>
-        <DialogFooter className="mt-6 pt-4 border-t border-gray-800">
+        <DialogFooter className="mt-6 pt-4 border-t border-zinc-800">
           <div className="flex items-center justify-between w-full">
-            <div className="text-sm text-gray-400">
+            <div className="text-sm text-zinc-400">
               {selectedItems.length > 0 && (
                 <span>{selectedItems.length} item{selectedItems.length === 1 ? '' : 's'} selected</span>
               )}
@@ -298,7 +299,7 @@ export function ImportFromProfileDialog<T extends ImportItem>({
               <Button
                 variant="outline"
                 onClick={() => setOpen(false)}
-                className="text-gray-300 border-gray-600 hover:bg-gray-800 hover:text-white hover:border-gray-500"
+                className="text-zinc-300 border-zinc-600 hover:bg-zinc-800 hover:text-white hover:border-zinc-500"
               >
                 Cancel
               </Button>
@@ -308,8 +309,8 @@ export function ImportFromProfileDialog<T extends ImportItem>({
                 className={cn(
                   "transition-all duration-200",
                   selectedItems.length === 0 || items.length === 0
-                    ? "bg-gray-700 text-gray-500 cursor-not-allowed"
-                    : "bg-purple-600 text-white hover:bg-purple-700 shadow-lg hover:shadow-purple-500/25"
+                    ? "bg-zinc-700 text-zinc-500 cursor-not-allowed"
+                    : "bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg hover:shadow-emerald-500/25"
                 )}
               >
                 <Import className="h-4 w-4 mr-2" />

@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
 import { hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
 import { Job, Resume } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { generate } from "@/utils/actions/cold-mail/actions";
 import type { AIConfig } from "@/utils/ai-tools";
 import { readStreamableValue } from 'ai/rsc';
@@ -173,35 +174,56 @@ export function ColdMailPanel({
   // Show "tailor resume" message for base resumes
   if (resume.is_base_resume) {
     return (
-      <div className="space-y-6">
+      <div className="p-6 space-y-6">
         {/* Header */}
-        <div className="text-center space-y-3 pt-8">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <div className="p-3 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg">
-              <Mail className="h-8 w-8 text-white" />
-            </div>
-            <h2 className="text-2xl font-bold text-white">Cold Mail Generator</h2>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center border border-blue-500/20">
+            <Mail className="h-5 w-5 text-blue-400" />
           </div>
-          <p className="text-gray-300 max-w-md mx-auto">
-            Generate professional cold emails to companies using your resume and job information.
-          </p>
+          <div>
+            <h3 className="text-lg font-semibold text-white">Cold Mail Generator</h3>
+            <p className="text-xs text-zinc-500">Professional cold emails for job outreach</p>
+          </div>
         </div>
 
         {/* Base Resume Notice */}
-        <div className="bg-gradient-to-r from-purple-900/50 to-indigo-900/50 rounded-xl p-8 border border-purple-500/30 text-center space-y-4">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Sparkles className="h-6 w-6 text-purple-400" />
-            <h3 className="text-xl font-semibold text-white">Tailor Your Resume First</h3>
+        <div className={cn(
+          "p-6 rounded-2xl",
+          "bg-zinc-900/50 border border-zinc-800/80",
+          "space-y-4 text-center"
+        )}>
+          <div className="space-y-4">
+            <div className="w-16 h-16 mx-auto bg-violet-500/10 rounded-2xl flex items-center justify-center border border-violet-500/20">
+              <Sparkles className="h-8 w-8 text-violet-400" />
+            </div>
+            
+            <div className="space-y-2">
+              <h3 className="text-xl font-semibold text-white">
+                Tailor Your Resume First
+              </h3>
+              <p className="text-zinc-400 leading-relaxed max-w-sm mx-auto text-sm">
+                Cold mail generation is available for tailored resumes only. Create a tailored version of your resume to unlock this feature.
+              </p>
+            </div>
+            
+            <CreateTailoredResumeDialog baseResumes={[resume]}>
+              <Button
+                size="lg"
+                className={cn(
+                  "mt-6 h-12",
+                  "bg-gradient-to-r from-violet-500/10 to-purple-500/10",
+                  "border border-violet-500/30 hover:border-violet-500/50",
+                  "text-violet-400 hover:text-violet-300",
+                  "hover:from-violet-500/20 hover:to-purple-500/20",
+                  "transition-all duration-200",
+                  "shadow-lg hover:shadow-violet-500/20"
+                )}
+              >
+                <Plus className="h-5 w-5 mr-2" />
+                Tailor This Resume
+              </Button>
+            </CreateTailoredResumeDialog>
           </div>
-          <p className="text-gray-300 mb-6">
-            Cold mail generation is available for tailored resumes only. Create a tailored version of your resume to unlock this feature.
-          </p>
-          <CreateTailoredResumeDialog baseResumes={[resume]}>
-            <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-              <Plus className="h-5 w-5 mr-2" />
-              Tailor This Resume
-            </Button>
-          </CreateTailoredResumeDialog>
         </div>
       </div>
     );
@@ -210,124 +232,217 @@ export function ColdMailPanel({
   // Show "no job" message for tailored resumes without job context
   if (!job) {
     return (
-      <div className="space-y-6 p-6">
+      <div className="p-6 space-y-6">
         {/* Header */}
-        <div className="text-center space-y-3">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <div className="p-2 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg">
-              <Mail className="h-6 w-6 text-white" />
-            </div>
-            <h2 className="text-2xl font-bold text-white">Cold Mail Generator</h2>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center border border-blue-500/20">
+            <Mail className="h-5 w-5 text-blue-400" />
           </div>
-          <p className="text-gray-300">
-            Generate professional cold emails to companies based on your resume and target company information.
-          </p>
+          <div>
+            <h3 className="text-lg font-semibold text-white">Cold Mail Generator</h3>
+            <p className="text-xs text-zinc-500">Professional cold emails based on your resume</p>
+          </div>
         </div>
 
         {/* No Job Notice */}
-        <div className="bg-gradient-to-r from-orange-900/50 to-red-900/50 rounded-xl p-8 border border-orange-500/30 text-center space-y-4">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Building className="h-6 w-6 text-orange-400" />
-            <h3 className="text-xl font-semibold text-white">No Target Job Found</h3>
+        <div className={cn(
+          "p-6 rounded-2xl",
+          "bg-zinc-900/50 border border-zinc-800/80",
+          "space-y-4 text-center"
+        )}>
+          <div className="space-y-4">
+            <div className="w-16 h-16 mx-auto bg-amber-500/10 rounded-2xl flex items-center justify-center border border-amber-500/20">
+              <Building className="h-8 w-8 text-amber-400" />
+            </div>
+            
+            <div className="space-y-2">
+              <h3 className="text-xl font-semibold text-white">
+                No Target Job Found
+              </h3>
+              <p className="text-zinc-400 leading-relaxed max-w-sm mx-auto text-sm">
+                Cold mail generation requires target job information. Please add a job to this resume to generate personalized cold emails.
+              </p>
+            </div>
           </div>
-          <p className="text-gray-300 mb-6">
-            Cold mail generation requires target job information. Please add a job to this resume to generate personalized cold emails.
-          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-3 p-3">
-      {/* Compact Header */}
-      <div className="flex items-center gap-2 mb-1">
-        <Mail className="h-5 w-5 text-blue-400" />
-        <h2 className="text-lg font-bold text-white">Cold Outreach Email</h2>
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center border border-blue-500/20">
+          <Mail className="h-5 w-5 text-blue-400" />
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-white">Cold Outreach Email</h3>
+          <p className="text-xs text-zinc-500">Reach out directly to hiring managers</p>
+        </div>
       </div>
-      <p className="text-gray-400 text-sm mb-2">Reach out directly to hiring managers or recruiters. Use this email to introduce yourself and express interest in opportunities at your target company.</p>
-      <div className="bg-yellow-900/20 border border-yellow-600/30 rounded p-2 text-xs text-yellow-300 mb-2">
-        Tip: Cold emails work best when you personalize your message and show genuine interest. Mention something unique about the company or role.
+
+      {/* Info Card */}
+      <div className={cn(
+        "p-4 rounded-xl",
+        "bg-amber-500/10 border border-amber-500/30"
+      )}>
+        <p className="text-amber-300 text-xs leading-relaxed">
+          <span className="font-semibold">Tip:</span> Cold emails work best when you personalize your message and show genuine interest. Mention something unique about the company or role.
+        </p>
       </div>
 
       {/* Company Info */}
       {job && (
-        <div className="bg-blue-950/30 rounded-lg p-2 border border-blue-500/20 mb-2 flex flex-col gap-1">
-          <span className="text-white text-sm">
-            <Building className="inline h-4 w-4 mr-1 text-blue-400" />
-            Target: <b>{job.company_name && job.company_name.trim() !== ''
-              ? job.company_name
-              : (resume.name.includes(' at ') ? resume.name.split(' at ')[1] : 'Company')}</b>
-            {' | '}
-            <span className="text-blue-400">
-              Role: <b>{job.position_title && job.position_title.trim() !== ''
-                ? job.position_title
-                : (resume.target_role || 'Position')}</b>
+        <div className={cn(
+          "p-4 rounded-xl",
+          "bg-zinc-900/50 border border-zinc-800/80",
+          "flex items-center gap-3"
+        )}>
+          <div className="w-8 h-8 bg-blue-500/10 rounded-lg flex items-center justify-center border border-blue-500/20">
+            <Building className="h-4 w-4 text-blue-400" />
+          </div>
+          <div className="flex-1 text-sm">
+            <span className="text-zinc-300">
+              Target: <span className="font-semibold text-white">{job.company_name && job.company_name.trim() !== ''
+                ? job.company_name
+                : (resume.name.includes(' at ') ? resume.name.split(' at ')[1] : 'Company')}</span>
             </span>
-          </span>
+            <span className="text-zinc-500 mx-2">|</span>
+            <span className="text-blue-400">
+              Role: <span className="font-semibold text-blue-300">{job.position_title && job.position_title.trim() !== ''
+                ? job.position_title
+                : (resume.target_role || 'Position')}</span>
+            </span>
+          </div>
         </div>
       )}
 
-      {/* Email Address Input */}
-      <div className="bg-gray-900/70 rounded-lg p-2 border border-gray-700/50 mb-2">
-        <Input
-          id="to"
-          value={mailData.to}
-          onChange={(e) => setMailData(prev => ({ ...prev, to: e.target.value }))}
-          placeholder="To (e.g. hiring@google.com)"
-          className="bg-gray-800/90 border-gray-600/50 text-white text-xs mb-1 placeholder:text-gray-400/70 focus:bg-gray-800 focus:border-gray-500"
-        />
-        <Textarea
-          id="customPrompt"
-          value={mailData.customPrompt}
-          onChange={(e) => setMailData(prev => ({ ...prev, customPrompt: e.target.value }))}
-          placeholder="What makes you interested in this company? (optional)"
-          className="bg-gray-800/90 border-gray-600/50 text-white text-xs min-h-[40px] placeholder:text-gray-400/70 focus:bg-gray-800 focus:border-gray-500"
-        />
+      {/* Email Generation Form */}
+      <div className={cn(
+        "p-4 rounded-2xl",
+        "bg-zinc-900/50 border border-zinc-800/80",
+        "space-y-3"
+      )}>
+        <div className="space-y-3">
+          <div>
+            <label htmlFor="to" className="text-xs text-zinc-400 mb-1.5 block">Recipient Email</label>
+            <Input
+              id="to"
+              value={mailData.to}
+              onChange={(e) => setMailData(prev => ({ ...prev, to: e.target.value }))}
+              placeholder="hiring@company.com"
+              className={cn(
+                "h-12 bg-zinc-900/50 border-zinc-800",
+                "text-zinc-200 placeholder:text-zinc-500",
+                "focus:border-blue-500/50 focus:bg-zinc-900",
+                "transition-all duration-200"
+              )}
+            />
+          </div>
+          
+          <div>
+            <label htmlFor="customPrompt" className="text-xs text-zinc-400 mb-1.5 block">Personalization (Optional)</label>
+            <Textarea
+              id="customPrompt"
+              value={mailData.customPrompt}
+              onChange={(e) => setMailData(prev => ({ ...prev, customPrompt: e.target.value }))}
+              placeholder="What makes you interested in this company?"
+              className={cn(
+                "min-h-[80px] bg-zinc-900/50 border-zinc-800",
+                "text-zinc-200 placeholder:text-zinc-500",
+                "focus:border-blue-500/50 focus:bg-zinc-900",
+                "transition-all duration-200",
+                "resize-none"
+              )}
+            />
+          </div>
+        </div>
+        
         <Button
           onClick={generateColdMail}
           disabled={isGenerating || !job}
-          className="w-full mt-2 bg-blue-600 text-white text-xs py-1 transition-colors duration-200 hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg"
+          className={cn(
+            "w-full h-12",
+            "bg-gradient-to-r from-blue-500/10 to-cyan-500/10",
+            "border border-blue-500/30 hover:border-blue-500/50",
+            "text-blue-400 hover:text-blue-300",
+            "hover:from-blue-500/20 hover:to-cyan-500/20",
+            "transition-all duration-200",
+            "disabled:opacity-50 disabled:cursor-not-allowed"
+          )}
         >
-          {isGenerating ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <Sparkles className="h-4 w-4 mr-1" />}
-          {isGenerating ? "Generating..." : "Generate Cold Email"}
+          {isGenerating ? (
+            <>
+              <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+              Generating...
+            </>
+          ) : (
+            <>
+              <Sparkles className="h-5 w-5 mr-2" />
+              Generate Cold Email
+            </>
+          )}
         </Button>
       </div>
 
       {/* Generated Email Display */}
       {(mailData.subject || mailData.body) && (
-        <div className="bg-gray-900/70 rounded-lg border border-gray-700/50 p-2 mt-2">
+        <div className={cn(
+          "p-4 rounded-2xl",
+          "bg-zinc-900/50 border border-zinc-800/80",
+          "space-y-4"
+        )}>
           {mailData.subject && (
-            <div className="mb-1">
-              <span className="text-blue-300 text-xs">Email Subject</span>
-              <div className="bg-gray-800/90 border border-gray-600/50 rounded p-1 text-white text-xs">{mailData.subject}</div>
+            <div>
+              <label className="text-xs text-blue-400 mb-2 block font-semibold">Email Subject</label>
+              <div className="p-3 bg-zinc-900/50 border border-zinc-800 rounded-xl text-zinc-200 text-sm">
+                {mailData.subject}
+              </div>
             </div>
           )}
           {mailData.body && (
             <div>
-              <span className="text-blue-300 text-xs">Message</span>
-              <div className="bg-gray-800/90 border border-gray-600/50 rounded p-2 text-white whitespace-pre-wrap font-mono text-xs max-h-[250px] overflow-y-auto">{mailData.body}</div>
+              <label className="text-xs text-blue-400 mb-2 block font-semibold">Message</label>
+              <div className={cn(
+                "p-3 bg-zinc-900/50 border border-zinc-800 rounded-xl",
+                "text-zinc-200 whitespace-pre-wrap text-sm leading-relaxed",
+                "max-h-[300px] overflow-y-auto"
+              )}>
+                {mailData.body}
+              </div>
             </div>
           )}
+          
           {/* Action Buttons */}
           <div className="flex gap-2 pt-2">
             <Button
               onClick={() => copyToClipboard(`Subject: ${mailData.subject}\n\n${mailData.body}`)}
               variant="outline"
-              className="border-gray-600 text-gray-300 hover:text-white hover:bg-gray-800 text-xs px-2 py-1"
+              size="sm"
+              className={cn(
+                "flex-1 h-10",
+                "border-blue-500/30 hover:border-blue-500/50",
+                "text-blue-400 hover:text-blue-300",
+                "bg-blue-500/5 hover:bg-blue-500/10"
+              )}
             >
-              <Mail className="h-3 w-3 mr-1" /> Copy Email
+              <Mail className="h-4 w-4 mr-2" />
+              Copy Email
             </Button>
-            <Button
-              onClick={() => copyToClipboard(mailData.body)}
-              variant="outline"
-              className="border-gray-600 text-gray-300 hover:text-white hover:bg-gray-800 text-xs px-2 py-1"
-            >Copy Message</Button>
             <Button
               onClick={clearMail}
               variant="outline"
-              className="border-red-600 text-red-400 hover:text-white hover:bg-red-600 text-xs px-2 py-1"
-            ><Trash2 className="h-3 w-3 mr-1" />Clear</Button>
+              size="sm"
+              className={cn(
+                "h-10",
+                "border-rose-500/30 hover:border-rose-500/50",
+                "text-rose-400 hover:text-rose-300",
+                "bg-rose-500/5 hover:bg-rose-500/10"
+              )}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
           </div>
         </div>
       )}

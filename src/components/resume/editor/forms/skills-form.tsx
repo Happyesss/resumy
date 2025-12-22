@@ -4,11 +4,28 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Profile, Skill } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import { Plus, Trash2 } from "lucide-react";
-import { KeyboardEvent, useState } from 'react';
+import { KeyboardEvent, useMemo, useState } from 'react';
 import { ImportFromProfileDialog } from "../../management/dialogs/import-from-profile-dialog";
+import { SortableItem } from "../components/sortable-item";
 
 interface SkillsFormProps {
   skills: Skill[];
@@ -22,6 +39,37 @@ export function SkillsForm({
   profile
 }: SkillsFormProps) {
   const [newSkills, setNewSkills] = useState<{ [key: number]: string }>({});
+
+  // Create stable IDs for drag and drop
+  const skillIds = useMemo(() => 
+    skills.map((_, index) => `skill-${index}`),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [skills.length]
+  );
+
+  // Sensors for drag and drop
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  // Handle drag end
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    
+    if (over && active.id !== over.id) {
+      const oldIndex = skillIds.indexOf(active.id as string);
+      const newIndex = skillIds.indexOf(over.id as string);
+      const reordered = arrayMove(skills, oldIndex, newIndex);
+      onChange(reordered);
+    }
+  };
 
   const addSkillCategory = () => {
     onChange([{
@@ -82,95 +130,98 @@ export function SkillsForm({
 
   return (
     <div className="space-y-2 sm:space-y-3">
-      <div className="@container">
-        <div className={cn(
-          "flex flex-col @[400px]:flex-row gap-2",
-          "transition-all duration-300 ease-in-out"
-        )}>
-          <Button 
-            variant="outline" 
-            className={cn(
-              "flex-1 h-9 min-w-[120px]",
-              "bg-gray-900 border-2 border-gray-800",
-              "hover:from-rose-500/10 hover:via-rose-500/15 hover:to-pink-500/10",
-              "border-2 border-dashed border-rose-400/30 hover:border-rose-400/40",
-              "text-rose-400 hover:text-rose-300",
-              "transition-all duration-300",
-              "rounded-xl",
-              "whitespace-nowrap text-[11px] @[300px]:text-sm"
-            )}
-            onClick={addSkillCategory}
-          >
-            <Plus className="h-4 w-4 mr-2 shrink-0" />
-            Add Skill Category
-          </Button>
+      <div className="flex gap-2">
+        <Button 
+          variant="outline" 
+          className={cn(
+            "flex-1 h-9",
+            "bg-gradient-to-r from-rose-500/5 to-pink-500/5",
+            "border border-dashed border-rose-500/30 hover:border-rose-500/50",
+            "hover:from-rose-500/10 hover:to-pink-500/10",
+            "text-rose-400 hover:text-rose-300",
+            "transition-all duration-200",
+            "rounded-xl",
+            "text-[11px] sm:text-xs font-medium",
+            "hover:shadow-lg hover:shadow-rose-500/10"
+          )}
+          onClick={addSkillCategory}
+        >
+          <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2 shrink-0" />
+          <span className="hidden xs:inline">Add Category</span>
+          <span className="xs:hidden">Add</span>
+        </Button>
 
-          <ImportFromProfileDialog<Skill>
-            profile={profile}
-            onImport={handleImportFromProfile}
-            type="skills"
-            buttonClassName={cn(
-              "flex-1 mb-0 h-9 min-w-[120px]",
-              "whitespace-nowrap text-[11px] @[300px]:text-sm",
-              "bg-gray-900 border-2 border-gray-800",
-              "hover:from-rose-500/10 hover:via-rose-500/15 hover:to-pink-500/10",
-              "border-2 border-dashed border-rose-400/30 hover:border-rose-400/40",
-              "text-rose-400 hover:text-rose-300"
-            )}
-          />
-        </div>
+        <ImportFromProfileDialog<Skill>
+          profile={profile}
+          onImport={handleImportFromProfile}
+          type="skills"
+          buttonClassName={cn(
+            "flex-1 h-9",
+            "text-[11px] sm:text-xs font-medium"
+          )}
+        />
       </div>
 
-      {skills.map((skill, index) => (
-        <Card 
-          key={index} 
-          className={cn(
-            "relative group transition-all duration-300",
-            "bg-gray-900 border-2 border-gray-800",
-            "hover:border-rose-400/40 hover:shadow-lg hover:shadow-rose-400/10",
-            "shadow-sm"
-          )}
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={skillIds}
+          strategy={verticalListSortingStrategy}
         >
-          <CardContent className="p-3 sm:p-4 space-y-3 sm:space-y-4">
-            <div className="space-y-2 sm:space-y-3">
-              {/* Category Name and Delete Button Row */}
-              <div className="flex items-center justify-between gap-2 sm:gap-3">
-                <div className="relative group flex-1">
-                  <Input
-                    value={skill.category}
-                    onChange={(e) => updateSkillCategory(index, 'category', e.target.value)}
-                    className={cn(
-                      "text-sm font-medium h-9",
-                      "bg-gray-800 border-gray-700 rounded-lg",
-                      "focus:border-rose-400 focus:ring-2 focus:ring-rose-400/20",
-                      "hover:border-rose-400/50 hover:bg-gray-800/90 transition-colors",
-                      "placeholder:text-gray-400 border border-gray-700 text-white focus:bg-gray-800"
-                    )}
-                    placeholder="Category Name"
-                  />
-                  <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-rose-400 border border-gray-700">
-                    CATEGORY
-                  </div>
-                </div>
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  onClick={() => removeSkillCategory(index)}
-                  className="text-gray-400 hover:text-red-500 transition-colors duration-300"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
+          {skills.map((skill, index) => (
+            <SortableItem key={skillIds[index]} id={skillIds[index]} accentColor="rose">
+              <Card 
+                className={cn(
+                  "relative transition-all duration-200",
+                  "bg-zinc-900/50 border border-zinc-800/80",
+                  "hover:border-rose-500/30 hover:shadow-lg hover:shadow-rose-500/5",
+                  "rounded-2xl"
+                )}
+              >
+                <CardContent className="p-4 sm:p-5 space-y-4">
+                  <div className="space-y-4">
+                    {/* Category Name and Delete Button Row */}
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="relative group flex-1">
+                        <Input
+                          value={skill.category}
+                          onChange={(e) => updateSkillCategory(index, 'category', e.target.value)}
+                          className={cn(
+                            "text-sm font-medium h-12 pl-4 pr-4",
+                            "bg-zinc-900/50 border-zinc-800 rounded-xl",
+                            "focus:border-rose-500/50 focus:ring-2 focus:ring-rose-500/20",
+                            "hover:border-zinc-700 hover:bg-zinc-900/70",
+                            "transition-all duration-200",
+                            "placeholder:text-zinc-600 text-white"
+                          )}
+                          placeholder="Category Name"
+                        />
+                        <Label className="absolute -top-2.5 left-3 px-2 py-0.5 bg-zinc-900 rounded-md text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+                          Category
+                        </Label>
+                      </div>
+                      <Button 
+                        variant="ghost" 
+                        size="icon"
+                        onClick={() => removeSkillCategory(index)}
+                        className="text-gray-400 hover:text-red-500 transition-colors duration-300"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
 
               {/* Skills Display */}
-              <div className="space-y-2 sm:space-y-3">
+              <div className="space-y-3">
                 <div className="flex flex-wrap gap-1.5">
                   {skill.items.map((item, skillIndex) => (
                     <Badge
                       key={skillIndex}
                       variant="secondary"
                       className={cn(
-                        "bg-gray-800 hover:bg-gray-700 text-rose-400 border border-gray-600 py-0.5",
+                        "bg-zinc-900 hover:bg-zinc-800 text-rose-400 border border-rose-500/30 py-0.5",
                         "transition-all duration-300 group/badge cursor-default text-[10px] sm:text-xs"
                       )}
                     >
@@ -192,11 +243,11 @@ export function SkillsForm({
                     onChange={(e) => setNewSkills({ ...newSkills, [index]: e.target.value })}
                     onKeyPress={(e) => handleKeyPress(e, index)}
                     className={cn(
-                      "h-9 bg-gray-800 border-gray-700 rounded-lg",
-                      "focus:border-rose-400 focus:ring-2 focus:ring-rose-400/20",
-                      "hover:border-rose-400/50 hover:bg-gray-800/90 transition-colors",
-                      "placeholder:text-gray-400 border border-gray-700 text-white focus:bg-gray-800",
-                      "text-[10px] sm:text-xs"
+                      "h-12 bg-zinc-900/50 border-zinc-800 rounded-xl",
+                      "focus:border-rose-500/50 focus:ring-2 focus:ring-rose-500/20",
+                      "hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors",
+                      "placeholder:text-zinc-600 border border-zinc-800 text-white focus:bg-zinc-900/70",
+                      "text-sm"
                     )}
                     placeholder="Type a skill and press Enter or click +"
                   />
@@ -204,19 +255,22 @@ export function SkillsForm({
                     variant="outline"
                     size="sm"
                     onClick={() => addSkill(index)}
-                    className="h-9 px-2 bg-gray-800 hover:bg-gray-700 border-gray-600"
+                    className="h-12 px-3 bg-zinc-900/50 hover:bg-zinc-900/90 border-rose-500/40 hover:border-rose-500/60"
                   >
-                    <Plus className="h-4 w-4 text-white" />
+                    <Plus className="h-4 w-4 text-rose-400" />
                   </Button>
-                  <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-rose-400 border border-gray-700">
-                    ADD SKILL
-                  </div>
+                  <Label className="absolute -top-2.5 left-3 px-2 py-0.5 bg-zinc-900 rounded-md text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+                    Add Skill
+                  </Label>
                 </div>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      ))}
+                </CardContent>
+              </Card>
+            </SortableItem>
+          ))}
+        </SortableContext>
+      </DndContext>
     </div>
   );
 } 

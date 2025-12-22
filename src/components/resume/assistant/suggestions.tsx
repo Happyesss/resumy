@@ -35,20 +35,20 @@ function WorkExperienceSuggestion({ content: work, currentContent: currentWork }
       <div className="flex justify-between items-start">
         <div>
           <h3 className={cn(
-            "text-base font-bold text-gray-100",
+            "text-base font-bold text-zinc-100",
             !currentWork || currentWork.position !== work.position && DIFF_HIGHLIGHT_CLASSES
           )}>
             {work.position.replace(/\*\*/g, '')}
           </h3>
           <p className={cn(
-            "text-xs text-gray-300",
+            "text-xs text-zinc-300",
             !currentWork || currentWork.company !== work.company && DIFF_HIGHLIGHT_CLASSES
           )}>
             {work.company}
           </p>
         </div>
         <span className={cn(
-          "text-[10px] text-gray-400",
+          "text-[10px] text-zinc-400",
           !currentWork || currentWork.date !== work.date && DIFF_HIGHLIGHT_CLASSES
         )}>
           {work.date}
@@ -63,8 +63,8 @@ function WorkExperienceSuggestion({ content: work, currentContent: currentWork }
 
           return (
             <div key={index} className="flex items-start gap-1.5">
-              <span className="text-gray-200 mt-0.5 text-xs">•</span>
-              <p className="text-sm text-gray-200 flex-1 flex flex-wrap">
+              <span className="text-zinc-200 mt-0.5 text-xs">•</span>
+              <p className="text-sm text-zinc-200 flex-1 flex flex-wrap">
                 {comparedWords.map((word, wordIndex) => (
                   <span
                     key={wordIndex}
@@ -102,14 +102,14 @@ function ProjectSuggestion({ content: project, currentContent: currentProject }:
     <div className="space-y-3">
       <div className="flex justify-between items-start">
         <h3 className={cn(
-          "text-lg font-bold text-gray-100",
+          "text-lg font-bold text-zinc-100",
           !currentProject || currentProject.name !== project.name && DIFF_HIGHLIGHT_CLASSES
         )}>
           {project.name}
         </h3>
         {project.date && (
           <span className={cn(
-            "text-xs text-gray-400",
+            "text-xs text-zinc-400",
             !currentProject || currentProject.date !== project.date && DIFF_HIGHLIGHT_CLASSES
           )}>
             {project.date}
@@ -125,8 +125,8 @@ function ProjectSuggestion({ content: project, currentContent: currentProject }:
 
           return (
             <div key={index} className="flex items-start gap-1.5">
-              <span className="text-gray-200 mt-0.5 text-xs">•</span>
-              <p className="text-xs text-gray-200 flex-1 flex flex-wrap">
+              <span className="text-zinc-200 mt-0.5 text-xs">•</span>
+              <p className="text-xs text-zinc-200 flex-1 flex flex-wrap">
                 {comparedWords.map((word, wordIndex) => (
                   <span
                     key={wordIndex}
@@ -156,10 +156,10 @@ function ProjectSuggestion({ content: project, currentContent: currentProject }:
             <span
               key={index}
               className={cn(
-                "px-2 py-0.5 text-xs rounded-full border text-gray-200",
+                "px-2 py-0.5 text-xs rounded-full border text-zinc-200",
                 !currentProject || isNewItem(currentProject.technologies, project.technologies, tech)
                   ? DIFF_HIGHLIGHT_CLASSES
-                  : "bg-gray-800/80 border-gray-600/60"
+                  : "bg-zinc-800/80 border-zinc-600/60"
               )}
             >
               {tech.replace(/\*\*/g, '')}
@@ -272,7 +272,7 @@ function EducationSuggestion({ content: education, currentContent: currentEducat
       <div className="flex justify-between items-start">
         <div>
           <h3 className={cn(
-            "font-medium text-gray-100",
+            "font-medium text-zinc-100",
             !currentEducation || (currentEducation.degree !== education.degree || currentEducation.field !== education.field) && DIFF_HIGHLIGHT_CLASSES
           )}>
             <span>
@@ -292,14 +292,14 @@ function EducationSuggestion({ content: education, currentContent: currentEducat
             </span>
           </h3>
           <p className={cn(
-            "text-sm text-gray-300",
+            "text-sm text-zinc-300",
             !currentEducation || currentEducation.school !== education.school && DIFF_HIGHLIGHT_CLASSES
           )}>
             {education.school.replace(/\*\*/g, '')}
           </p>
         </div>
         <span className={cn(
-          "text-xs text-gray-400",
+          "text-xs text-zinc-400",
           !currentEducation || currentEducation.date !== education.date && DIFF_HIGHLIGHT_CLASSES
         )}>
           {education.date.replace(/\*\*/g, '')}
@@ -315,8 +315,8 @@ function EducationSuggestion({ content: education, currentContent: currentEducat
 
             return (
               <div key={index} className="flex items-start gap-1.5">
-                <span className="text-gray-200 mt-0.5 text-xs">•</span>
-                <p className="text-xs text-gray-200 flex-1 flex flex-wrap">
+                <span className="text-zinc-200 mt-0.5 text-xs">•</span>
+                <p className="text-xs text-zinc-200 flex-1 flex flex-wrap">
                   {comparedWords.map((word, wordIndex) => (
                     <span
                       key={wordIndex}
@@ -454,10 +454,10 @@ export function Suggestion({ type, content, currentContent, onAccept, onReject }
         };
       default:
         return {
-          card: "bg-gradient-to-br from-gray-900/95 via-slate-800/95 to-gray-900/95 border-gray-700/60",
-          icon: "from-purple-900/80 to-indigo-900/80",
-          iconColor: "text-purple-300",
-          label: "text-gray-100",
+          card: "bg-gradient-to-br from-zinc-900/95 via-zinc-800/95 to-zinc-900/95 border-zinc-700/60",
+          icon: "from-violet-900/80 to-violet-800/80",
+          iconColor: "text-violet-300",
+          label: "text-zinc-100",
           text: "AI Suggestion"
         };
     }
@@ -507,7 +507,7 @@ export function Suggestion({ type, content, currentContent, onAccept, onReject }
         </div>
 
         {/* Main Content */}
-        <div className="bg-gradient-to-br from-gray-900/90 via-slate-800/90 to-gray-900/90 rounded-lg p-3 backdrop-blur-md border border-gray-700/60 shadow-sm">
+        <div className="bg-gradient-to-br from-zinc-900/90 via-zinc-800/90 to-zinc-900/90 rounded-lg p-3 backdrop-blur-md border border-zinc-700/60 shadow-sm">
           {renderContent()}
         </div>
 
@@ -591,10 +591,10 @@ export function WholeResumeSuggestion({ onReject }: WholeResumeSuggestionProps) 
 
   const statusStyles = {
     pending: {
-      card: "bg-gradient-to-br from-gray-900/95 via-slate-800/95 to-gray-900/95 border-gray-700/60",
-      icon: "from-purple-900/80 to-indigo-900/80",
-      iconColor: "text-purple-300",
-      label: "text-gray-100",
+      card: "bg-gradient-to-br from-zinc-900/95 via-zinc-800/95 to-zinc-900/95 border-zinc-700/60",
+      icon: "from-violet-900/80 to-violet-800/80",
+      iconColor: "text-violet-300",
+      label: "text-zinc-100",
       text: "Modified Resume"
     },
     accepted: {

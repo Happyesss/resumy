@@ -1,115 +1,134 @@
 'use client';
 
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Briefcase, FileText, FolderGit2, GraduationCap, User, Wrench } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { 
+  Briefcase, 
+  FileText, 
+  FolderGit2, 
+  GraduationCap, 
+  User, 
+  Wrench,
+  LucideIcon
+} from "lucide-react";
+
+interface TabConfig {
+  value: string;
+  label: string;
+  icon: LucideIcon;
+  color: string;
+  bgColor: string;
+  activeGradient: string;
+}
+
+const tabs: TabConfig[] = [
+  {
+    value: "basic",
+    label: "Basic Info",
+    icon: User,
+    color: "text-emerald-400",
+    bgColor: "bg-emerald-500/10",
+    activeGradient: "from-emerald-500/20 to-teal-500/10"
+  },
+  {
+    value: "summary",
+    label: "Summary",
+    icon: FileText,
+    color: "text-violet-400",
+    bgColor: "bg-violet-500/10",
+    activeGradient: "from-violet-500/20 to-purple-500/10"
+  },
+  {
+    value: "work",
+    label: "Work",
+    icon: Briefcase,
+    color: "text-blue-400",
+    bgColor: "bg-blue-500/10",
+    activeGradient: "from-blue-500/20 to-cyan-500/10"
+  },
+  {
+    value: "projects",
+    label: "Projects",
+    icon: FolderGit2,
+    color: "text-amber-400",
+    bgColor: "bg-amber-500/10",
+    activeGradient: "from-amber-500/20 to-orange-500/10"
+  },
+  {
+    value: "education",
+    label: "Education",
+    icon: GraduationCap,
+    color: "text-cyan-400",
+    bgColor: "bg-cyan-500/10",
+    activeGradient: "from-cyan-500/20 to-sky-500/10"
+  },
+  {
+    value: "skills",
+    label: "Skills",
+    icon: Wrench,
+    color: "text-rose-400",
+    bgColor: "bg-rose-500/10",
+    activeGradient: "from-rose-500/20 to-pink-500/10"
+  }
+];
 
 export function ResumeEditorTabs() {
   return (
-    <>
-
-      <TabsList className="h-full w-full relative bg-gray-900/90 backdrop-blur-xl border border-gray-800 rounded-lg overflow-hidden grid grid-cols-3 @[500px]:grid-cols-8 gap-0.5 p-0.5 shadow-lg">
-        {/* Basic Info Tab */}
-        <TabsTrigger 
-          value="basic" 
-          className="group flex items-center gap-1.5 px-2 py-1 rounded-md font-medium relative transition-all duration-300
-            data-[state=active]:bg-gradient-to-r data-[state=active]:from-teal-500/20 data-[state=active]:to-cyan-500/20
-            data-[state=active]:border-teal-500/30 data-[state=active]:shadow-md hover:bg-gray-800/80
-            data-[state=active]:text-white data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200"
-        >
-          <div className="p-1 rounded-md bg-teal-900/80 transition-transform duration-300 group-data-[state=active]:scale-105 group-data-[state=active]:bg-teal-900">
-            <User className="h-3.5 w-3.5 text-teal-400 transition-colors group-data-[state=inactive]:text-teal-500/70" />
-          </div>
-          <span className="relative text-xs whitespace-nowrap">
-            Basic Info
-            <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full bg-teal-400 scale-x-0 transition-transform duration-300 group-data-[state=active]:scale-x-100"></div>
-          </span>
-        </TabsTrigger>
-
-        {/* Summary Tab */}
-        <TabsTrigger 
-          value="summary" 
-          className="group flex items-center gap-1.5 px-2 py-1 rounded-md font-medium relative transition-all duration-300
-            data-[state=active]:bg-gradient-to-r data-[state=active]:from-fuchsia-500/20 data-[state=active]:to-pink-500/20
-            data-[state=active]:border-fuchsia-500/30 data-[state=active]:shadow-md hover:bg-gray-800/80
-            data-[state=active]:text-white data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200"
-        >
-          <div className="p-1 rounded-md bg-fuchsia-900/80 transition-transform duration-300 group-data-[state=active]:scale-105 group-data-[state=active]:bg-fuchsia-900">
-            <FileText className="h-3.5 w-3.5 text-fuchsia-400 transition-colors group-data-[state=inactive]:text-fuchsia-500/70" />
-          </div>
-          <span className="relative text-xs whitespace-nowrap">
-            Summary
-            <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full bg-fuchsia-400 scale-x-0 transition-transform duration-300 group-data-[state=active]:scale-x-100"></div>
-          </span>
-        </TabsTrigger>
-
-        {/* Work Tab */}
-        <TabsTrigger 
-          value="work" 
-          className="group flex items-center gap-1.5 px-2 py-1 rounded-md font-medium relative transition-all duration-300
-            data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-500/20 data-[state=active]:to-blue-500/20
-            data-[state=active]:border-cyan-500/30 data-[state=active]:shadow-md hover:bg-gray-800/80
-            data-[state=active]:text-white data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200"
-        >
-          <div className="p-1 rounded-md bg-cyan-900/80 transition-transform duration-300 group-data-[state=active]:scale-105 group-data-[state=active]:bg-cyan-900">
-            <Briefcase className="h-3.5 w-3.5 text-cyan-400 transition-colors group-data-[state=inactive]:text-cyan-500/70" />
-          </div>
-          <span className="relative text-xs whitespace-nowrap">
-            Work
-            <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full bg-cyan-400 scale-x-0 transition-transform duration-300 group-data-[state=active]:scale-x-100"></div>
-          </span>
-        </TabsTrigger>
-
-        {/* Projects Tab */}
-        <TabsTrigger 
-          value="projects" 
-          className="group flex items-center gap-1.5 px-2 py-1 rounded-md font-medium relative transition-all duration-300
-            data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500/20 data-[state=active]:to-purple-500/20
-            data-[state=active]:border-violet-500/30 data-[state=active]:shadow-md hover:bg-gray-800/80
-            data-[state=active]:text-white data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200"
-        >
-          <div className="p-1 rounded-md bg-violet-900/80 transition-transform duration-300 group-data-[state=active]:scale-105 group-data-[state=active]:bg-violet-900">
-            <FolderGit2 className="h-3.5 w-3.5 text-violet-400 transition-colors group-data-[state=inactive]:text-violet-500/70" />
-          </div>
-          <span className="relative text-xs whitespace-nowrap">
-            Projects
-            <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full bg-violet-400 scale-x-0 transition-transform duration-300 group-data-[state=active]:scale-x-100"></div>
-          </span>
-        </TabsTrigger>
-
-        {/* Education Tab */}
-        <TabsTrigger 
-          value="education" 
-          className="group flex items-center gap-1.5 px-2 py-1 rounded-md font-medium relative transition-all duration-300
-            data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500/20 data-[state=active]:to-blue-500/20
-            data-[state=active]:border-indigo-500/30 data-[state=active]:shadow-md hover:bg-gray-800/80
-            data-[state=active]:text-white data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200"
-        >
-          <div className="p-1 rounded-md bg-indigo-900/80 transition-transform duration-300 group-data-[state=active]:scale-105 group-data-[state=active]:bg-indigo-900">
-            <GraduationCap className="h-3.5 w-3.5 text-indigo-400 transition-colors group-data-[state=inactive]:text-indigo-500/70" />
-          </div>
-          <span className="relative text-xs whitespace-nowrap">
-            Education
-            <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full bg-indigo-400 scale-x-0 transition-transform duration-300 group-data-[state=active]:scale-x-100"></div>
-          </span>
-        </TabsTrigger>
-
-        {/* Skills Tab */}
-        <TabsTrigger 
-          value="skills" 
-          className="group flex items-center gap-1.5 px-2 py-1 rounded-md font-medium relative transition-all duration-300
-            data-[state=active]:bg-gradient-to-r data-[state=active]:from-rose-500/20 data-[state=active]:to-pink-500/20
-            data-[state=active]:border-rose-500/30 data-[state=active]:shadow-md hover:bg-gray-800/80
-            data-[state=active]:text-white data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200"
-        >
-          <div className="p-1 rounded-md bg-rose-900/80 transition-transform duration-300 group-data-[state=active]:scale-105 group-data-[state=active]:bg-rose-900">
-            <Wrench className="h-3.5 w-3.5 text-rose-400 transition-colors group-data-[state=inactive]:text-rose-500/70" />
-          </div>
-          <span className="relative text-xs whitespace-nowrap">
-            Skills
-            <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full bg-rose-400 scale-x-0 transition-transform duration-300 group-data-[state=active]:scale-x-100"></div>
-          </span>
-        </TabsTrigger>
+    <div className="w-full py-2">
+      <TabsList className={cn(
+        "w-full h-auto p-0.5 sm:p-1",
+        "bg-zinc-900/80 backdrop-blur-xl",
+        "border border-zinc-800/80",
+        "rounded-xl shadow-lg shadow-black/20",
+        "flex flex-row gap-0.5 sm:gap-1",
+        "overflow-x-auto scrollbar-hide"
+      )}>
+        {tabs.map((tab) => {
+          const Icon = tab.icon;
+          return (
+            <TabsTrigger
+              key={tab.value}
+              value={tab.value}
+              className={cn(
+                "group relative flex items-center justify-center",
+                "flex-1 min-w-0",
+                "px-1.5 sm:px-3 py-2 sm:py-2.5 rounded-lg",
+                "font-medium text-[10px] sm:text-xs",
+                "transition-all duration-200 ease-out",
+                // Inactive state
+                "text-zinc-500 hover:text-zinc-300",
+                "hover:bg-zinc-800/60",
+                // Active state
+                "data-[state=active]:text-white",
+                `data-[state=active]:bg-gradient-to-br data-[state=active]:${tab.activeGradient}`,
+                "data-[state=active]:shadow-md",
+                "data-[state=active]:border data-[state=active]:border-zinc-700/50"
+              )}
+            >
+              {/* Icon container */}
+              <div className={cn(
+                "flex items-center justify-center",
+                "w-6 h-6 sm:w-7 sm:h-7 rounded-lg",
+                "transition-all duration-200",
+                tab.bgColor,
+                "group-data-[state=active]:scale-110",
+                "group-hover:scale-105"
+              )}>
+                <Icon className={cn(
+                  "h-3 w-3 sm:h-3.5 sm:w-3.5 transition-colors duration-200",
+                  "text-zinc-500 group-hover:text-zinc-400",
+                  `group-data-[state=active]:${tab.color}`
+                )} />
+              </div>
+              
+              {/* Label - hidden on mobile */}
+              <span className="hidden sm:inline-block whitespace-nowrap ml-1.5">
+                {tab.label}
+              </span>
+            </TabsTrigger>
+          );
+        })}
       </TabsList>
-    </>
+    </div>
   );
 }

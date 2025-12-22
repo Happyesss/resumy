@@ -19,7 +19,20 @@ import { CoverLetterPanel } from "./cover-letter-panel";
 import ResumeScorePanel from "./resume-score-panel";
 import { TemplatesPanel } from "./templates-panel";
 
-
+// Loading skeleton component for consistent loading states
+const FormSkeleton = () => (
+  <div className="space-y-4 animate-pulse p-4">
+    <div className="h-5 bg-zinc-800 rounded-lg w-1/4" />
+    <div className="space-y-3">
+      <div className="h-12 bg-zinc-800/80 rounded-xl" />
+      <div className="h-12 bg-zinc-800/80 rounded-xl" />
+      <div className="grid grid-cols-2 gap-3">
+        <div className="h-12 bg-zinc-800/80 rounded-xl" />
+        <div className="h-12 bg-zinc-800/80 rounded-xl" />
+      </div>
+    </div>
+  </div>
+);
 
 interface EditorPanelProps {
   resume: Resume;
@@ -37,183 +50,152 @@ export function EditorPanel({
   onResumeChange,
 }: EditorPanelProps) {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-
   const [activeTab, setActiveTab] = useState("basic");
 
   return (
-    <div className="flex flex-col sm:mr-4 relative h-full max-h-full  ">
-      <div className="flex-1 flex flex-col overflow-scroll">
-        <ScrollArea className="flex-1 sm:pr-2" ref={scrollAreaRef}>
-          <div className="relative pb-12">
+    <div className="flex flex-col sm:mr-4 relative h-full max-h-full @container">
+      {/* Main content area */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <ScrollArea className="flex-1" ref={scrollAreaRef}>
+          <div className="relative pb-20">
+            {/* Sticky header with actions */}
             <div className={cn(
-              "sticky top-0 z-20 backdrop-blur-sm",
-              resume.is_base_resume
-                ? "bg-purple-50/80"
-                : "bg-pink-100/90 shadow-sm shadow-pink-200/50"
+              "sticky top-0 z-20",
+              "bg-zinc-950/95 backdrop-blur-xl",
+              "border-b border-zinc-800/50"
             )}>
-              <div className="flex flex-col gap-4">
-                <ResumeEditorActions
-                  onResumeChange={onResumeChange}
-                  setActiveTab={setActiveTab}
-                />
-              </div>
+              <ResumeEditorActions
+                onResumeChange={onResumeChange}
+                setActiveTab={setActiveTab}
+              />
             </div>
 
-
-            {/* Tailored Job Accordion */}
-            <Accordion type="single" collapsible defaultValue="basic" className="mt-6">
-              <TailoredJobAccordion
-                resume={resume}
-                job={job}
-                isLoading={isLoadingJob}
-              />
-            </Accordion>
-
-            {/* Tabs */}  
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-4">
-              <ResumeEditorTabs />
-
-              {/* Basic Info Form */}
-              <TabsContent value="basic">
-                <BasicInfoForm
-                  profile={profile}
-                />
-              </TabsContent>
-
-              {/* Summary Form */}
-              <TabsContent value="summary">
-                <Suspense fallback={
-                  <div className="space-y-4 animate-pulse">
-                    <div className="h-8 bg-muted rounded-md w-1/3" />
-                    <div className="h-24 bg-muted rounded-md" />
-                  </div>
-                }>
-                  <SummaryForm
-                    summary={resume.professional_summary || ''}
-                    onChange={(value: string) => onResumeChange('professional_summary', value)}
-                    userEmail={profile.email}
-                  />
-                </Suspense>
-              </TabsContent>
-
-              {/* Work Experience Form */}
-              <TabsContent value="work">
-                <Suspense fallback={
-                  <div className="space-y-4 animate-pulse">
-                    <div className="h-8 bg-muted rounded-md w-1/3" />
-                    <div className="h-24 bg-muted rounded-md" />
-                    <div className="h-24 bg-muted rounded-md" />
-                  </div>
-                }>
-                  <WorkExperienceForm
-                    experiences={resume.work_experience}
-                    onChange={(experiences) => onResumeChange('work_experience', experiences)}
-                    profile={profile}
-                    targetRole={resume.target_role}
-                  />
-                </Suspense>
-              </TabsContent>
-
-              {/* Projects Form */}
-              <TabsContent value="projects">
-                <Suspense fallback={
-                  <div className="space-y-4 animate-pulse">
-                    <div className="h-8 bg-muted rounded-md w-1/3" />
-                    <div className="h-24 bg-muted rounded-md" />
-                  </div>
-                }>
-                  <ProjectsForm
-                    projects={resume.projects}
-                    onChange={(projects) => onResumeChange('projects', projects)}
-                    profile={profile}
-                  />
-                </Suspense>
-              </TabsContent>
-
-              {/* Education Form */}
-              <TabsContent value="education">
-                <Suspense fallback={
-                  <div className="space-y-4 animate-pulse">
-                    <div className="h-8 bg-muted rounded-md w-1/3" />
-                    <div className="h-24 bg-muted rounded-md" />
-                  </div>
-                }>
-                  <EducationForm
-                    education={resume.education}
-                    onChange={(education) => onResumeChange('education', education)}
-                    profile={profile}
-                  />
-                </Suspense>
-              </TabsContent>
-
-              {/* Skills Form */}
-              <TabsContent value="skills">
-                <Suspense fallback={
-                  <div className="space-y-4 animate-pulse">
-                    <div className="h-8 bg-muted rounded-md w-1/3" />
-                    <div className="h-24 bg-muted rounded-md" />
-                  </div>
-                }>
-                  <SkillsForm
-                    skills={resume.skills}
-                    onChange={(skills) => onResumeChange('skills', skills)}
-                    profile={profile}
-                  />
-                </Suspense>
-              </TabsContent>
-
-              {/* Cold Mail Form */}
-              <TabsContent value="cold-mail">
-                <ColdMailPanel
+            {/* Content container with padding */}
+            <div className="px-2 sm:px-3 py-3 sm:py-4 space-y-3 sm:space-y-4">
+              {/* Tailored Job Accordion */}
+              <Accordion type="single" collapsible defaultValue="basic">
+                <TailoredJobAccordion
                   resume={resume}
                   job={job}
-                  userEmail={profile.email}
+                  isLoading={isLoadingJob}
                 />
-              </TabsContent>
+              </Accordion>
 
-              {/* Templates Form */}
-              <TabsContent value="templates">
-                <TemplatesPanel
-                  resume={resume}
-                  onTemplateSelect={(templateId) => {
-                    // Handle template selection logic here
-                    console.log('Selected template:', templateId);
-                    // Update the resume template field
-                    onResumeChange('template', templateId as Resume['template']);
-                  }}
-                />
-              </TabsContent>
+              {/* Tabs container */}
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <ResumeEditorTabs />
 
-              {/* Document Settings removed */}
+                {/* Tab content with smooth transitions */}
+                <div className="mt-4">
+                  {/* Basic Info Form */}
+                  <TabsContent value="basic" className="m-0 focus-visible:outline-none focus-visible:ring-0">
+                    <BasicInfoForm profile={profile} />
+                  </TabsContent>
 
-              {/* Cover Letter Form */}
-              <TabsContent value="cover-letter">
-                <CoverLetterPanel
-                  resume={resume}
-                  job={job}
-                  userEmail={profile.email}
-                />
-              </TabsContent>
+                  {/* Summary Form */}
+                  <TabsContent value="summary" className="m-0 focus-visible:outline-none focus-visible:ring-0">
+                    <Suspense fallback={<FormSkeleton />}>
+                      <SummaryForm
+                        summary={resume.professional_summary || ''}
+                        onChange={(value: string) => onResumeChange('professional_summary', value)}
+                        userEmail={profile.email}
+                      />
+                    </Suspense>
+                  </TabsContent>
 
+                  {/* Work Experience Form */}
+                  <TabsContent value="work" className="m-0 focus-visible:outline-none focus-visible:ring-0">
+                    <Suspense fallback={<FormSkeleton />}>
+                      <WorkExperienceForm
+                        experiences={resume.work_experience}
+                        onChange={(experiences) => onResumeChange('work_experience', experiences)}
+                        profile={profile}
+                        targetRole={resume.target_role}
+                      />
+                    </Suspense>
+                  </TabsContent>
 
-              {/* Resume Score Form */}
-              <TabsContent value="resume-score">
-                <ResumeScorePanel
-                  resume={resume}
-                  userEmail={profile.email}
-                  // job={job}
-                />
-              </TabsContent>
-            </Tabs>
+                  {/* Projects Form */}
+                  <TabsContent value="projects" className="m-0 focus-visible:outline-none focus-visible:ring-0">
+                    <Suspense fallback={<FormSkeleton />}>
+                      <ProjectsForm
+                        projects={resume.projects}
+                        onChange={(projects) => onResumeChange('projects', projects)}
+                        profile={profile}
+                      />
+                    </Suspense>
+                  </TabsContent>
+
+                  {/* Education Form */}
+                  <TabsContent value="education" className="m-0 focus-visible:outline-none focus-visible:ring-0">
+                    <Suspense fallback={<FormSkeleton />}>
+                      <EducationForm
+                        education={resume.education}
+                        onChange={(education) => onResumeChange('education', education)}
+                        profile={profile}
+                      />
+                    </Suspense>
+                  </TabsContent>
+
+                  {/* Skills Form */}
+                  <TabsContent value="skills" className="m-0 focus-visible:outline-none focus-visible:ring-0">
+                    <Suspense fallback={<FormSkeleton />}>
+                      <SkillsForm
+                        skills={resume.skills}
+                        onChange={(skills) => onResumeChange('skills', skills)}
+                        profile={profile}
+                      />
+                    </Suspense>
+                  </TabsContent>
+
+                  {/* Cold Mail Form */}
+                  <TabsContent value="cold-mail" className="m-0 focus-visible:outline-none focus-visible:ring-0">
+                    <ColdMailPanel
+                      resume={resume}
+                      job={job}
+                      userEmail={profile.email}
+                    />
+                  </TabsContent>
+
+                  {/* Templates Panel */}
+                  <TabsContent value="templates" className="m-0 focus-visible:outline-none focus-visible:ring-0">
+                    <TemplatesPanel
+                      resume={resume}
+                      onTemplateSelect={(templateId) => {
+                        onResumeChange('template', templateId as Resume['template']);
+                      }}
+                    />
+                  </TabsContent>
+
+                  {/* Cover Letter Panel */}
+                  <TabsContent value="cover-letter" className="m-0 focus-visible:outline-none focus-visible:ring-0">
+                    <CoverLetterPanel
+                      resume={resume}
+                      job={job}
+                      userEmail={profile.email}
+                    />
+                  </TabsContent>
+
+                  {/* Resume Score Panel */}
+                  <TabsContent value="resume-score" className="m-0 focus-visible:outline-none focus-visible:ring-0">
+                    <ResumeScorePanel
+                      resume={resume}
+                      userEmail={profile.email}
+                    />
+                  </TabsContent>
+                </div>
+              </Tabs>
+            </div>
           </div>
         </ScrollArea>
       </div>
 
+      {/* Fixed chatbot at bottom */}
       <div className={cn(
-        "absolute w-full bottom-0 rounded-lg border`", 
-        resume.is_base_resume
-          ? "bg-purple-50/50 border-purple-200/40"
-          : "bg-pink-50/80 border-pink-300/50 shadow-sm shadow-pink-200/20"
+        "absolute w-full bottom-0 left-0 right-0",
+        "bg-zinc-950/95 backdrop-blur-xl",
+        "border-t border-zinc-800/50",
+        "rounded-t-xl shadow-2xl shadow-black/50"
       )}>
         <ChatBot 
           resume={resume} 

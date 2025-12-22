@@ -51,16 +51,17 @@ function ScrollToBottom() {
     !isAtBottom && (
       <button
         className={cn(
-          "absolute z-50 rounded-full p-2",
-          "bg-gray-800/90 hover:bg-gray-700",
-          "border border-gray-600/60 hover:border-gray-500/60",
-          "shadow-lg shadow-black/20 hover:shadow-black/30",
-          "transition-all duration-300",
-          "left-[50%] translate-x-[-50%] bottom-4"
+          "absolute z-50 rounded-full p-2.5",
+          "bg-zinc-900/95 hover:bg-zinc-800",
+          "border border-zinc-700/80 hover:border-violet-500/50",
+          "shadow-xl shadow-black/30",
+          "transition-all duration-200",
+          "left-[50%] translate-x-[-50%] bottom-4",
+          "hover:scale-105"
         )}
         onClick={() => scrollToBottom()}
       >
-        <ChevronDown className="h-4 w-4 text-gray-300" />
+        <ChevronDown className="h-4 w-4 text-violet-400" />
       </button>
     )
   );
@@ -281,7 +282,7 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
     <>
       {/* Floating Chat Button */}
       <div className={cn(
-        "fixed left-6 bottom-6 z-[9999]",
+        "fixed left-4 sm:left-6 bottom-20 sm:bottom-24 z-[10000]",
         "transition-all duration-300 ease-in-out"
       )}>
         {accordionValue !== "chat" ? (
@@ -289,50 +290,54 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
           <button
             onClick={() => setAccordionValue("chat")}
             className={cn(
-              "w-16 h-16 rounded-full",
-              "bg-gradient-to-br from-purple-500 to-indigo-500",
-              "shadow-xl shadow-purple-500/25",
-              "hover:shadow-2xl hover:shadow-purple-500/40",
-              "hover:scale-110",
+              "w-12 h-12 sm:w-14 sm:h-14 rounded-2xl",
+              "bg-gradient-to-br from-violet-600 to-purple-600",
+              "shadow-xl shadow-violet-500/30",
+              "hover:shadow-2xl hover:shadow-violet-500/40",
+              "hover:scale-105",
               "transition-all duration-300",
               "flex items-center justify-center",
-              "border-2 border-white/20",
-              "backdrop-blur-sm",
+              "border border-violet-400/20",
               "group"
             )}
           >
-            <Bot className="h-7 w-7 text-white group-hover:scale-110 transition-transform duration-300" />
+            <Bot className="h-5 w-5 sm:h-6 sm:w-6 text-white group-hover:scale-110 transition-transform duration-300" />
           </button>
         ) : (
           // Expanded chat interface
           <Card className={cn(
-            "w-96 h-[80vh]",
-            "bg-gradient-to-br from-gray-900/95 via-slate-800/95 to-gray-900/95",
-            "border-2 border-gray-700/60",
-            "shadow-2xl shadow-black/40",
-            "backdrop-blur-xl",
+            "w-[calc(100vw-2rem)] sm:w-[380px] h-[calc(100vh-8rem)] sm:h-[70vh] max-h-[600px]",
+            "bg-zinc-950",
+            "border border-zinc-800/80",
+            "shadow-2xl shadow-black/50",
             "overflow-hidden",
             "flex flex-col",
-            "animate-in slide-in-from-left-2 fade-in-0 duration-300"
+            "rounded-2xl",
+            "animate-in slide-in-from-bottom-4 fade-in-0 duration-300"
           )}>
             {/* Header with close button */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-700/60">
-              <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-800/80 bg-zinc-900/50">
+              <div className="flex items-center gap-3">
                 <button
                   onClick={() => setAccordionValue("")}
                   className={cn(
-                    "p-2 rounded-lg mr-2",
-                    "hover:bg-gray-700/60",
-                    "text-gray-300 hover:text-white",
-                    "transition-colors duration-200"
+                    "p-2 rounded-xl",
+                    "hover:bg-zinc-800",
+                    "text-zinc-400 hover:text-white",
+                    "transition-all duration-200"
                   )}
-                  style={{ alignSelf: 'flex-start' }}
                   aria-label="Close chat"
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </button>
-                <div className="p-2 rounded-lg bg-purple-600/80 text-white">
-                  <Bot className="h-4 w-4" />
+                <div className="flex items-center gap-2">
+                  <div className="p-2 rounded-xl bg-violet-500/20 border border-violet-500/30">
+                    <Bot className="h-4 w-4 text-violet-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold text-white">AI Assistant</h3>
+                    <p className="text-[10px] text-zinc-500">Resume optimization</p>
+                  </div>
                 </div>
               </div>
 
@@ -340,13 +345,12 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
                 <AlertDialogTrigger asChild>
                   <Button
                     className={cn(
-                      "px-3 py-1 rounded-lg",
-                      "bg-gray-700/60 text-gray-300 border border-gray-600",
-                      "hover:bg-gray-600/60 hover:text-white",
-                      "transition-all duration-300",
-                      "focus:outline-none focus:ring-2 focus:ring-purple-400/40",
+                      "px-3 py-1.5 rounded-xl h-8",
+                      "bg-zinc-800/80 text-zinc-400 border border-zinc-700/80",
+                      "hover:bg-zinc-700 hover:text-white hover:border-zinc-600",
+                      "transition-all duration-200",
                       "disabled:opacity-50",
-                      "flex items-center gap-2"
+                      "flex items-center gap-1.5"
                     )}
                     disabled={messages.length === 0}
                     aria-label="Clear chat history"
@@ -358,31 +362,32 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent className={cn(
-                  "bg-gray-900/95 backdrop-blur-xl",
-                  "border-gray-700/60",
-                  "shadow-lg shadow-black/20",
-                  "text-white"
+                  "bg-zinc-950/98 backdrop-blur-xl",
+                  "border border-zinc-800/80",
+                  "shadow-2xl shadow-black/50",
+                  "text-white",
+                  "rounded-2xl"
                 )}>
                   <AlertDialogHeader>
                     <AlertDialogTitle className="text-white">Clear Chat History</AlertDialogTitle>
-                    <AlertDialogDescription className="text-gray-300">
+                    <AlertDialogDescription className="text-zinc-400">
                       This will remove all messages and reset the chat. This action can&apos;t be undone.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel className={cn(
-                      "border-gray-600/60 bg-gray-800/60 text-gray-300",
-                      "hover:bg-gray-700/60",
-                      "hover:text-white"
+                      "border-zinc-700 bg-zinc-800/80 text-zinc-300",
+                      "hover:bg-zinc-700 hover:text-white",
+                      "rounded-xl"
                     )}>
                       Cancel
                     </AlertDialogCancel>
                     <AlertDialogAction
                       onClick={handleClearChat}
                       className={cn(
-                        "bg-purple-600 text-white",
-                        "hover:bg-purple-700",
-                        "focus:ring-purple-400"
+                        "bg-violet-600 text-white",
+                        "hover:bg-violet-700",
+                        "rounded-xl"
                       )}
                     >
                       Clear Chat
@@ -393,9 +398,9 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
             </div>
 
             {/* Chat Content */}
-            <div className="flex-1 flex flex-col overflow-hidden min-h-0">
+            <div className="flex-1 flex flex-col overflow-hidden min-h-0 bg-zinc-900">
               <StickToBottom className="flex-1 px-4 relative overflow-y-auto custom-scrollbar" resize="smooth" initial="smooth">
-                <StickToBottom.Content className="flex flex-col space-y-4 py-4 pb-8">
+                <StickToBottom.Content className="flex flex-col space-y-3 py-4 pb-8">
                   {messages.length === 0 ? (
                     <QuickSuggestions onSuggestionClick={handleSubmit} />
                   ) : (
@@ -406,21 +411,20 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
 
                           {/* Regular Message Content */}
                           {m.content && (
-                            <div className="mb-4">
+                            <div className="mb-3">
                               <div className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                 <div className={cn(
-                                  "rounded-2xl px-4 py-2 max-w-[90%] text-sm relative group items-center mb-6",
+                                  "rounded-2xl px-4 py-2.5 max-w-[85%] text-sm relative group",
                                   m.role === 'user' ? [
-                                    "bg-gradient-to-br from-purple-600 to-indigo-600",
+                                    "bg-gradient-to-br from-violet-600 to-purple-600",
                                     "text-white",
-                                    "shadow-md shadow-purple-500/20",
-                                    "ml-auto pb-0"
+                                    "shadow-lg shadow-violet-500/20",
+                                    "ml-auto"
                                   ] : [
-                                    "bg-gray-800/80",
-                                    "border border-gray-700/60",
+                                    "bg-zinc-900/80",
+                                    "border border-zinc-800/80",
                                     "shadow-sm",
-                                    "backdrop-blur-sm pb-0",
-                                    "text-gray-100"
+                                    "text-zinc-100"
                                   ]
                                 )}>
 
@@ -431,19 +435,19 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
                                         value={editContent}
                                         onChange={(e) => setEditContent(e.target.value)}
                                         className={cn(
-                                          "w-full min-h-[100px] p-2 rounded-lg",
-                                          "bg-gray-900/80 backdrop-blur-sm",
-                                          "text-gray-100 placeholder-gray-400",
-                                          "border border-gray-600/60 focus:border-purple-400/60",
-                                          "focus:outline-none focus:ring-1 focus:ring-purple-400/60"
+                                          "w-full min-h-[100px] p-3 rounded-xl",
+                                          "bg-zinc-900/80",
+                                          "text-zinc-100 placeholder-zinc-500",
+                                          "border border-zinc-700 focus:border-violet-500/50",
+                                          "focus:outline-none focus:ring-2 focus:ring-violet-500/20"
                                         )}
                                       />
                                       <button
                                         onClick={() => handleSaveEdit(m.id)}
                                         className={cn(
-                                          "self-end px-3 py-1 rounded-lg text-xs",
-                                          "bg-purple-600 text-white",
-                                          "hover:bg-purple-700",
+                                          "self-end px-4 py-1.5 rounded-xl text-xs font-medium",
+                                          "bg-violet-600 text-white",
+                                          "hover:bg-violet-700",
                                           "transition-colors duration-200"
                                         )}
                                       >
@@ -466,21 +470,21 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
                               case 'partial-call':
                               case 'call':
                                 return (
-                                  <div key={toolCallId} className="mt-2 max-w-[90%]">
-                                    <div className="flex justify-start max-w-[90%]">
+                                  <div key={toolCallId} className="mt-2 max-w-[85%]">
+                                    <div className="flex justify-start max-w-[85%]">
                                       {toolName === 'getResume' ? (
                                         <div className={cn(
-                                          "rounded-2xl px-4 py-2 max-w-[90%] text-sm",
-                                          "bg-gray-800/80 border border-gray-700/60",
-                                          "shadow-sm backdrop-blur-sm text-gray-200"
+                                          "rounded-2xl px-4 py-2.5 max-w-[85%] text-sm",
+                                          "bg-zinc-900/80 border border-zinc-800/80",
+                                          "text-zinc-300"
                                         )}>
                                           Reading Resume...
                                         </div>
                                       ) : toolName === 'modifyWholeResume' ? (
                                         <div className={cn(
-                                          "w-full rounded-2xl px-4 py-2",
-                                          "bg-gray-800/80 border border-gray-700/60",
-                                          "shadow-sm backdrop-blur-sm text-gray-200"
+                                          "w-full rounded-2xl px-4 py-2.5",
+                                          "bg-zinc-900/80 border border-zinc-800/80",
+                                          "text-zinc-300"
                                         )}>
                                           Preparing resume modifications...
                                         </div>
@@ -530,12 +534,12 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
                                 // Handle specific tool results
                                 if (toolName === 'getResume') {
                                   return (
-                                    <div key={toolCallId} className="mt-2 w-[90%]">
+                                    <div key={toolCallId} className="mt-2 w-[85%]">
                                       <div className="flex justify-start">
                                         <div className={cn(
-                                          "rounded-2xl px-4 py-2 max-w-[90%] text-sm",
-                                          "bg-gray-800/80 border border-gray-700/60",
-                                          "shadow-sm backdrop-blur-sm text-gray-200"
+                                          "rounded-2xl px-4 py-2.5 max-w-[85%] text-sm",
+                                          "bg-zinc-900/80 border border-zinc-800/80",
+                                          "text-zinc-300"
                                         )}>
                                           <p>Read Resume ({args.sections?.join(', ') || 'all'}) ✅</p>
                                         </div>
@@ -546,7 +550,7 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
 
                                 if (config.type === 'whole_resume') {
                                   return (
-                                    <div key={toolCallId} className="mt-2 w-[90%]">
+                                    <div key={toolCallId} className="mt-2 w-[85%]">
                                       <WholeResumeSuggestion
                                         onReject={() => {
                                           if (originalResume) {
@@ -590,16 +594,14 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
                           {/* Loading Dots Message - Modified condition */}
                           {((isInitialLoading && index === messages.length - 1 && m.role === 'user') ||
                             (isLoading && index === messages.length - 1 && m.role === 'assistant')) && (
-                              <div className="mb-4">
+                              <div className="mb-3">
                                 <div className="flex justify-start">
                                   <div className={cn(
-                                    "rounded-2xl px-4 py-2.5 min-w-[60px]",
-                                    "bg-gray-800/80",
-                                    "border border-gray-700/60",
-                                    "shadow-sm",
-                                    "backdrop-blur-sm"
+                                    "rounded-2xl px-4 py-3 min-w-[60px]",
+                                    "bg-zinc-900/80",
+                                    "border border-zinc-800/80"
                                   )}>
-                                    <LoadingDots className="text-purple-400" />
+                                    <LoadingDots className="text-violet-400" />
                                   </div>
                                 </div>
                               </div>
@@ -612,9 +614,9 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
                   {error && (
                     error.message === "Rate limit exceeded. Try again later." ? (
                       <div className={cn(
-                        "rounded-lg p-4 text-sm",
-                        "bg-red-900/50 border border-red-800/60",
-                        "text-red-200"
+                        "rounded-xl p-4 text-sm",
+                        "bg-rose-500/10 border border-rose-500/30",
+                        "text-rose-300"
                       )}>
                         <p>You&apos;ve used all your available messages. Please try again after:</p>
                         <p className="font-medium mt-2">
@@ -634,7 +636,7 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
               </StickToBottom>
 
               {/* Input Bar */}
-              <div className="border-t border-gray-700/60 bg-gray-900/60 backdrop-blur-sm">
+              <div className="border-t border-zinc-800/80 bg-zinc-900/80">
                 <ChatInput
                   isLoading={isLoading}
                   onSubmit={handleSubmit}

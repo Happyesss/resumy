@@ -1,10 +1,12 @@
 'use client';
 
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
+import { toast } from "@/hooks/use-toast";
 import { Job, Profile, Resume } from "@/lib/types";
+import { updateResume } from "@/utils/actions/resumes/actions";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { UnsavedChangesDialog } from './dialogs/unsaved-changes-dialog';
 import { EditorLayout } from "./layout/EditorLayout";
 import { EditorPanel } from './panels/editor-panel';
@@ -33,6 +35,45 @@ export function ResumeEditorClient({
   const debouncedResume = useDebouncedValue(state.resume, 100);
   const [job, setJob] = useState<Job | null>(null);
   const [isLoadingJob, setIsLoadingJob] = useState(false);
+  const autoSaveTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Auto-save every 20 seconds if there are unsaved changes
+  useEffect(() => {
+    const autoSave = async () => {
+      if (state.hasUnsavedChanges && !state.isSaving) {
+        try {
+          dispatch({ type: 'SET_SAVING', value: true });
+          await updateResume(state.resume.id, state.resume);
+          dispatch({ type: 'SET_HAS_CHANGES', value: false });
+          toast({
+            title: "Auto-saved",
+            description: "Your changes have been automatically saved.",
+            duration: 2000,
+          });
+        } catch (error) {
+          console.error('Auto-save failed:', error);
+          // Don't show error toast for auto-save to avoid interrupting user
+        } finally {
+          dispatch({ type: 'SET_SAVING', value: false });
+        }
+      }
+    };
+
+    // Clear any existing timer
+    if (autoSaveTimerRef.current) {
+      clearInterval(autoSaveTimerRef.current);
+    }
+
+    // Set up new timer (20 seconds)
+    autoSaveTimerRef.current = setInterval(autoSave, 20000);
+
+    // Cleanup on unmount
+    return () => {
+      if (autoSaveTimerRef.current) {
+        clearInterval(autoSaveTimerRef.current);
+      }
+    };
+  }, [state.hasUnsavedChanges, state.isSaving, state.resume]);
 
   // Single job fetching effect
   useEffect(() => {

@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { hasReachedAILimit, incrementAIUsage } from "@/lib/ai-request-limit";
 import { Resume } from "@/lib/types";
@@ -182,36 +181,38 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
   // If no score data is available, show the empty state
   if (!scoreData) {
     return (
-      <div className="max-w-4xl mx-auto space-y-6 p-8">
+      <div className="space-y-6 p-6">
         {error && (
-          <Card className="border-red-200 bg-gradient-to-r from-red-50 to-rose-50 shadow-lg">
-            <div className="p-6 flex items-center gap-4">
-              <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
-                <AlertCircle className="h-6 w-6 text-red-500" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-red-800">Error generating score</h3>
-                <p className="text-red-600 mt-1">{error}</p>
-              </div>
+          <div className={cn(
+            "p-4 rounded-xl",
+            "bg-rose-500/10 border border-rose-500/30",
+            "flex items-center gap-3"
+          )}>
+            <div className="w-10 h-10 bg-rose-500/20 rounded-xl flex items-center justify-center border border-rose-500/30">
+              <AlertCircle className="h-5 w-5 text-rose-400" />
             </div>
-          </Card>
+            <div className="flex-1">
+              <h3 className="text-sm font-semibold text-rose-300">Error generating score</h3>
+              <p className="text-rose-400/80 text-xs mt-0.5">{error}</p>
+            </div>
+          </div>
         )}
         
-        <Card className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50 border-slate-200 shadow-xl">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-transparent to-indigo-500/5" />
-          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-200/20 to-indigo-200/20 rounded-full -translate-y-16 translate-x-16" />
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-indigo-200/20 to-blue-200/20 rounded-full translate-y-12 -translate-x-12" />
-          
-          <div className="relative p-8 flex flex-col items-center gap-8 text-center">
-            <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl flex items-center justify-center shadow-lg border border-blue-200/50">
-              <FileText className="h-10 w-10 text-blue-600" />
+        <div className={cn(
+          "p-6 rounded-2xl",
+          "bg-zinc-900/50 border border-zinc-800/80",
+          "space-y-6 text-center"
+        )}>
+          <div className="space-y-4">
+            <div className="w-16 h-16 mx-auto bg-amber-500/10 rounded-2xl flex items-center justify-center border border-amber-500/20">
+              <FileText className="h-8 w-8 text-amber-400" />
             </div>
             
-            <div className="space-y-3">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent">
+            <div className="space-y-2">
+              <h3 className="text-xl font-semibold text-white">
                 Resume Score Analysis
-              </h1>
-              <p className="text-slate-600 text-lg max-w-md mx-auto leading-relaxed">
+              </h3>
+              <p className="text-zinc-400 leading-relaxed max-w-sm mx-auto text-sm">
                 No score analysis available yet. Generate one to see how your resume measures up!
               </p>
             </div>
@@ -220,37 +221,48 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
               onClick={handleRecalculate}
               disabled={isCalculating}
               size="lg"
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 h-12 px-8"
+              className={cn(
+                "mt-6 h-12",
+                "bg-gradient-to-r from-amber-500/10 to-orange-500/10",
+                "border border-amber-500/30 hover:border-amber-500/50",
+                "text-amber-400 hover:text-amber-300",
+                "hover:from-amber-500/20 hover:to-orange-500/20",
+                "transition-all duration-200",
+                "shadow-lg hover:shadow-amber-500/20",
+                "disabled:opacity-50 disabled:cursor-not-allowed"
+              )}
             >
               <RefreshCw 
                 className={cn(
-                  "mr-3 h-5 w-5",
+                  "mr-2 h-5 w-5",
                   isCalculating && "animate-spin"
                 )} 
               />
               {isCalculating ? "Analyzing Resume..." : "Generate Score Analysis"}
             </Button>
           </div>
-        </Card>
+        </div>
       </div>
     );
   }
 
   // When we have score data, show the full analysis
   return (
-    <div className="max-w-4xl mx-auto space-y-6 p-8">
+    <div className="space-y-6 p-6">
       {error && (
-        <Card className="border-red-200 bg-gradient-to-r from-red-50 to-rose-50 shadow-lg">
-          <div className="p-6 flex items-center gap-4">
-            <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
-              <AlertCircle className="h-6 w-6 text-red-500" />
-            </div>
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold text-red-800">Error generating score</h3>
-              <p className="text-red-600 mt-1">{error}</p>
-            </div>
+        <div className={cn(
+          "p-4 rounded-xl",
+          "bg-rose-500/10 border border-rose-500/30",
+          "flex items-center gap-3"
+        )}>
+          <div className="w-10 h-10 bg-rose-500/20 rounded-xl flex items-center justify-center border border-rose-500/30">
+            <AlertCircle className="h-5 w-5 text-rose-400" />
           </div>
-        </Card>
+          <div className="flex-1">
+            <h3 className="text-sm font-semibold text-rose-300">Error generating score</h3>
+            <p className="text-rose-400/80 text-xs mt-0.5">{error}</p>
+          </div>
+        </div>
       )}
       
       {/* Recalculate Button */}
@@ -259,7 +271,14 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
           onClick={handleRecalculate}
           disabled={isCalculating}
           variant="outline"
-          className="bg-white/80 hover:bg-white border-slate-300 text-slate-700 hover:text-slate-900 shadow-md hover:shadow-lg transition-all duration-300"
+          size="sm"
+          className={cn(
+            "h-10",
+            "border-zinc-700 hover:border-amber-500/50",
+            "text-zinc-400 hover:text-amber-400",
+            "bg-zinc-900/50 hover:bg-amber-500/10",
+            "transition-all duration-200"
+          )}
         >
           <RefreshCw 
             className={cn(
@@ -272,62 +291,67 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
       </div>
 
       {/* Main Score Card */}
-      <Card className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50 border-slate-200 shadow-xl">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-transparent to-indigo-500/5" />
-        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-200/20 to-indigo-200/20 rounded-full -translate-y-16 translate-x-16" />
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-indigo-200/20 to-blue-200/20 rounded-full translate-y-12 -translate-x-12" />
-        
-        <div className="relative p-8 flex flex-col items-center gap-6 text-center">
-          {/* Title and Description First */}
+      <div className={cn(
+        "p-6 rounded-2xl",
+        "bg-zinc-900/50 border border-zinc-800/80"
+      )}>
+        <div className="flex flex-col items-center gap-6 text-center">
+          {/* Title and Description */}
           <div className="space-y-3">
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent">
-              Resume Score Analysis
-            </h1>
-            <p className="text-slate-700 text-lg leading-relaxed max-w-2xl mx-auto">{scoreData.overallScore.reason}</p>
+            <div className="flex items-center justify-center gap-3">
+              <div className="w-10 h-10 bg-amber-500/10 rounded-xl flex items-center justify-center border border-amber-500/20">
+                <FileText className="h-5 w-5 text-amber-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-white">
+                Resume Score Analysis
+              </h3>
+            </div>
+            <p className="text-zinc-400 leading-relaxed max-w-2xl mx-auto text-sm">{scoreData.overallScore.reason}</p>
           </div>
           
-          {/* Score Circle Below */}
-          <div className="w-44 h-44">
+          {/* Score Circle */}
+          <div className="w-40 h-40">
             <CircularProgressbar
               value={scoreData.overallScore.score}
               text={`${scoreData.overallScore.score}%`}
               styles={buildStyles({
-                pathColor: `rgba(59, 130, 246, ${scoreData.overallScore.score / 100})`,
-                textColor: '#1e40af',
-                trailColor: '#e2e8f0',
+                pathColor: `rgba(245, 158, 11, ${scoreData.overallScore.score / 100})`,
+                textColor: '#fbbf24',
+                trailColor: '#27272a',
                 pathTransitionDuration: 1.5,
                 textSize: '16px'
               })}
             />
           </div>
         </div>
-      </Card>
+      </div>
 
       {/* Key Improvements Card */}
-      <Card className="bg-gradient-to-br from-amber-50 to-orange-50 border-amber-200 shadow-lg">
-        <div className="p-6">
-          <h2 className="text-xl font-bold text-amber-800 mb-6 flex items-center gap-2">
-            <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
-              <Sparkles className="h-5 w-5 text-amber-600" />
-            </div>
-            Key Improvements
-          </h2>
-          <div className="space-y-4">
-            {scoreData.overallImprovements.map((improvement, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="flex items-start gap-3 p-3 bg-white/60 rounded-lg border border-amber-200/50"
-              >
-                <div className="mt-1.5 h-2 w-2 rounded-full bg-amber-500 flex-shrink-0" />
-                <p className="text-amber-800 font-medium leading-relaxed">{improvement}</p>
-              </motion.div>
-            ))}
+      <div className={cn(
+        "p-6 rounded-2xl",
+        "bg-zinc-900/50 border border-zinc-800/80"
+      )}>
+        <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+          <div className="w-8 h-8 bg-amber-500/10 rounded-lg flex items-center justify-center border border-amber-500/20">
+            <Sparkles className="h-4 w-4 text-amber-400" />
           </div>
+          Key Improvements
+        </h2>
+        <div className="space-y-3">
+          {scoreData.overallImprovements.map((improvement, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="flex items-start gap-3 p-3 bg-zinc-900/30 rounded-xl border border-zinc-800/50"
+            >
+              <div className="mt-1.5 h-2 w-2 rounded-full bg-amber-500 flex-shrink-0" />
+              <p className="text-zinc-300 text-sm leading-relaxed">{improvement}</p>
+            </motion.div>
+          ))}
         </div>
-      </Card>
+      </div>
 
       {/* Metrics Cards */}
       {Object.entries({
@@ -350,94 +374,91 @@ function MetricsCard({ title, metrics }: { title: string; metrics: Record<string
     return null;
   }
 
-  const getCardColor = (title: string) => {
+  const getIconColor = (title: string) => {
     switch (title) {
       case 'Completeness':
-        return 'from-blue-50 to-indigo-50 border-blue-200';
+        return { bg: 'bg-blue-500/10', border: 'border-blue-500/20', text: 'text-blue-400' };
       case 'Impact Score':
-        return 'from-purple-50 to-violet-50 border-purple-200';
+        return { bg: 'bg-violet-500/10', border: 'border-violet-500/20', text: 'text-violet-400' };
       case 'Role Match':
-        return 'from-cyan-50 to-teal-50 border-cyan-200';
+        return { bg: 'bg-cyan-500/10', border: 'border-cyan-500/20', text: 'text-cyan-400' };
       default:
-        return 'from-gray-50 to-slate-50 border-gray-200';
+        return { bg: 'bg-zinc-800/50', border: 'border-zinc-700/50', text: 'text-zinc-400' };
     }
   };
 
-  const getTitleColor = (title: string) => {
-    switch (title) {
-      case 'Completeness':
-        return 'from-blue-700 to-indigo-700';
-      case 'Impact Score':
-        return 'from-purple-700 to-violet-700';
-      case 'Role Match':
-        return 'from-cyan-700 to-teal-700';
-      default:
-        return 'from-gray-700 to-slate-700';
-    }
-  };
+  const colors = getIconColor(title);
 
   return (
-    <Card className={cn("bg-gradient-to-br", getCardColor(title), "shadow-lg")}>
-      <div className="p-6">
-        <h2 className={cn("text-xl font-bold mb-6 bg-gradient-to-r bg-clip-text text-transparent", getTitleColor(title))}>
-          {title}
-        </h2>
-        <div className="grid gap-6">
-          {Object.entries(metrics).map(([label, data]) => {
-            // Additional safety check for each metric
-            if (!data || typeof data !== 'object' || typeof data.score !== 'number' || typeof data.reason !== 'string') {
-              return null;
-            }
-            return (
-              <ScoreItem key={label} label={label} {...data} />
-            );
-          })}
+    <div className={cn(
+      "p-6 rounded-2xl",
+      "bg-zinc-900/50 border border-zinc-800/80"
+    )}>
+      <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+        <div className={cn(
+          "w-8 h-8 rounded-lg flex items-center justify-center border",
+          colors.bg,
+          colors.border
+        )}>
+          <Sparkles className={cn("h-4 w-4", colors.text)} />
         </div>
+        {title}
+      </h2>
+      <div className="space-y-4">
+        {Object.entries(metrics).map(([label, data]) => {
+          // Additional safety check for each metric
+          if (!data || typeof data !== 'object' || typeof data.score !== 'number' || typeof data.reason !== 'string') {
+            return null;
+          }
+          return (
+            <ScoreItem key={label} label={label} {...data} />
+          );
+        })}
       </div>
-    </Card>
+    </div>
   );
 }
 
 function ScoreItem({ label, score, reason }: { label: string; score: number; reason: string }) {
   const getScoreColor = (score: number) => {
-    if (score >= 90) return "bg-gradient-to-r from-blue-500 to-indigo-500";
-    if (score >= 80) return "bg-gradient-to-r from-cyan-500 to-blue-500";
-    if (score >= 70) return "bg-gradient-to-r from-yellow-500 to-orange-500";
-    if (score >= 60) return "bg-gradient-to-r from-orange-500 to-red-500";
-    return "bg-gradient-to-r from-red-500 to-rose-500";
+    if (score >= 90) return "bg-gradient-to-r from-emerald-500 to-green-500";
+    if (score >= 80) return "bg-gradient-to-r from-blue-500 to-cyan-500";
+    if (score >= 70) return "bg-gradient-to-r from-amber-500 to-yellow-500";
+    if (score >= 60) return "bg-gradient-to-r from-orange-500 to-amber-600";
+    return "bg-gradient-to-r from-rose-500 to-red-500";
   };
 
   const getBadgeColor = (score: number) => {
-    if (score >= 80) return "bg-blue-100 text-blue-800 border-blue-200";
-    if (score >= 70) return "bg-cyan-100 text-cyan-800 border-cyan-200";
-    if (score >= 60) return "bg-yellow-100 text-yellow-800 border-yellow-200";
-    return "bg-red-100 text-red-800 border-red-200";
+    if (score >= 80) return "bg-emerald-500/10 text-emerald-400 border-emerald-500/30";
+    if (score >= 70) return "bg-blue-500/10 text-blue-400 border-blue-500/30";
+    if (score >= 60) return "bg-amber-500/10 text-amber-400 border-amber-500/30";
+    return "bg-rose-500/10 text-rose-400 border-rose-500/30";
   };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-3 p-4 bg-white/60 rounded-xl border border-gray-200/50 shadow-sm"
+      className="space-y-3 p-4 bg-zinc-900/30 rounded-xl border border-zinc-800/50"
     >
       <div className="flex justify-between items-center">
-        <span className="text-base font-semibold text-gray-800">{label}</span>
+        <span className="text-sm font-semibold text-zinc-200">{label}</span>
         <span className={cn(
-          "px-3 py-1.5 rounded-full text-sm font-bold border",
+          "px-2.5 py-1 rounded-lg text-xs font-semibold border",
           getBadgeColor(score)
         )}>
           {score}/100
         </span>
       </div>
-      <div className="h-3 bg-gray-100 rounded-full overflow-hidden shadow-inner">
+      <div className="h-2.5 bg-zinc-800 rounded-full overflow-hidden">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${score}%` }}
           transition={{ duration: 1.5, ease: "easeOut" }}
-          className={cn("h-full rounded-full shadow-sm", getScoreColor(score))}
+          className={cn("h-full rounded-full", getScoreColor(score))}
         />
       </div>
-      <p className="text-sm text-gray-700 leading-relaxed bg-gray-50/50 p-3 rounded-lg border border-gray-100">
+      <p className="text-xs text-zinc-400 leading-relaxed bg-zinc-900/50 p-3 rounded-lg border border-zinc-800/50">
         {reason}
       </p>
     </motion.div>

@@ -7,9 +7,25 @@ import { Label } from "@/components/ui/label";
 import Tiptap from "@/components/ui/tiptap";
 import { Education, Profile } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import { Plus, Trash2 } from "lucide-react";
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { ImportFromProfileDialog } from "../../management/dialogs/import-from-profile-dialog";
+import { SortableItem } from "../components/sortable-item";
 
 
 interface EducationFormProps {
@@ -33,6 +49,37 @@ export const EducationForm = memo(function EducationFormComponent({
   onChange,
   profile
 }: EducationFormProps) {
+  // Create stable IDs for drag and drop
+  const educationIds = useMemo(() => 
+    education.map((_, index) => `education-${index}`),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [education.length]
+  );
+
+  // Sensors for drag and drop
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  // Handle drag end
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    
+    if (over && active.id !== over.id) {
+      const oldIndex = educationIds.indexOf(active.id as string);
+      const newIndex = educationIds.indexOf(over.id as string);
+      const reordered = arrayMove(education, oldIndex, newIndex);
+      onChange(reordered);
+    }
+  };
+
   const addEducation = () => {
     onChange([{
       school: "",
@@ -72,140 +119,143 @@ export const EducationForm = memo(function EducationFormComponent({
 
   return (
     <div className="space-y-2 sm:space-y-3">
-      <div className="@container">
-        <div className={cn(
-          "flex flex-col @[400px]:flex-row gap-2",
-          "transition-all duration-300 ease-in-out"
-        )}>
-          <Button 
-            variant="outline" 
-            className={cn(
-              "flex-1 h-9 min-w-[120px]",
-              "bg-gray-900 border-2 border-gray-800",
-              "hover:from-indigo-400/10 hover:via-indigo-400/15 hover:to-blue-400/10",
-              "border-2 border-dashed border-indigo-400/30 hover:border-indigo-400/40",
-              "text-indigo-400 hover:text-indigo-300",
-              "transition-all duration-300",
-              "rounded-xl",
-              "whitespace-nowrap text-[11px] @[300px]:text-sm"
-            )}
-            onClick={addEducation}
-          >
-            <Plus className="h-4 w-4 mr-2 shrink-0" />
-            Add Education
-          </Button>
+      <div className="flex gap-2">
+        <Button 
+          variant="outline" 
+          className={cn(
+            "flex-1 h-9",
+            "bg-gradient-to-r from-cyan-500/5 to-sky-500/5",
+            "border border-dashed border-cyan-500/30 hover:border-cyan-500/50",
+            "hover:from-cyan-500/10 hover:to-sky-500/10",
+            "text-cyan-400 hover:text-cyan-300",
+            "transition-all duration-200",
+            "rounded-xl",
+            "text-[11px] sm:text-xs font-medium",
+            "hover:shadow-lg hover:shadow-cyan-500/10"
+          )}
+          onClick={addEducation}
+        >
+          <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2 shrink-0" />
+          <span className="hidden xs:inline">Add Education</span>
+          <span className="xs:hidden">Add</span>
+        </Button>
 
-          <ImportFromProfileDialog<Education>
-            profile={profile}
-            onImport={handleImportFromProfile}
-            type="education"
-            buttonClassName={cn(
-              "flex-1 mb-0 h-9 min-w-[120px]",
-              "whitespace-nowrap text-[11px] @[300px]:text-sm",
-              "bg-gray-900 border-2 border-gray-800",
-              "hover:from-indigo-400/10 hover:via-indigo-400/15 hover:to-blue-400/10",
-              "border-2 border-dashed border-indigo-400/30 hover:border-indigo-400/40",
-              "text-indigo-400 hover:text-indigo-300"
-            )}
-          />
-        </div>
+        <ImportFromProfileDialog<Education>
+          profile={profile}
+          onImport={handleImportFromProfile}
+          type="education"
+          buttonClassName={cn(
+            "flex-1 h-9",
+            "text-[11px] sm:text-xs font-medium"
+          )}
+        />
       </div>
 
-      {(education || []).map((edu, index) => (
-        <Card 
-          key={index} 
-          className={cn(
-            "relative group transition-all duration-300",
-            "bg-gray-900 border-2 border-gray-800",
-            "hover:border-indigo-400/40 hover:shadow-lg hover:shadow-indigo-400/10",
-            "shadow-sm"
-          )}
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={educationIds}
+          strategy={verticalListSortingStrategy}
         >
-          <CardContent className="p-3 sm:p-4 space-y-3 sm:space-y-4">
-            <div className="space-y-2 sm:space-y-3">
-              {/* School Name and Delete Button Row */}
-              <div className="flex items-center justify-between gap-2 sm:gap-3">
-                <div className="relative group flex-1 min-w-0">
-                  <Input
-                    value={edu.school || ''}
-                    onChange={(e) => updateEducation(index, 'school', e.target.value)}
-                    className={cn(
-                      "text-sm font-semibold h-9",
-                      "bg-gray-800 border-gray-700 rounded-lg",
-                      "focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20",
-                      "hover:border-indigo-400/50 hover:bg-gray-800/90 transition-colors",
-                      "placeholder:text-gray-500 text-white focus:bg-gray-800"
-                    )}
-                    placeholder="Institution Name"
-                  />
-                  <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-indigo-400 border border-gray-700">
-                    INSTITUTION
-                  </div>
-                </div>
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  onClick={() => removeEducation(index)}
-                  className="text-gray-400 hover:text-red-500 transition-colors duration-300"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
+          {(education || []).map((edu, index) => (
+            <SortableItem key={educationIds[index]} id={educationIds[index]} accentColor="cyan">
+              <Card 
+                className={cn(
+                  "relative transition-all duration-200",
+                  "bg-zinc-900/50 border border-zinc-800/80",
+                  "hover:border-cyan-500/30 hover:shadow-lg hover:shadow-cyan-500/5",
+                  "rounded-2xl"
+                )}
+              >
+                <CardContent className="p-4 sm:p-5 space-y-4">
+                  <div className="space-y-4">
+                    {/* School Name and Delete Button Row */}
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="relative group flex-1 min-w-0">
+                        <Input
+                          value={edu.school || ''}
+                          onChange={(e) => updateEducation(index, 'school', e.target.value)}
+                          className={cn(
+                            "text-sm font-semibold h-12 pl-4 pr-4",
+                            "bg-zinc-900/50 border-zinc-800 rounded-xl",
+                            "focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20",
+                            "hover:border-zinc-700 hover:bg-zinc-900/70",
+                            "transition-all duration-200",
+                            "placeholder:text-zinc-600 text-white"
+                          )}
+                          placeholder="Institution Name"
+                        />
+                        <Label className="absolute -top-2.5 left-3 px-2 py-0.5 bg-zinc-900 rounded-md text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+                          Institution
+                        </Label>
+                      </div>
+                      <Button 
+                        variant="ghost" 
+                        size="icon"
+                        onClick={() => removeEducation(index)}
+                        className="text-gray-400 hover:text-red-500 transition-colors duration-300"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
 
-              {/* Location */}
-              <div className="relative group">
-                <Input
+                    {/* Location */}
+                    <div className="relative group">
+                      <Input
                   value={edu.location || ''}
                   onChange={(e) => updateEducation(index, 'location', e.target.value)}
                   className={cn(
-                    "h-9 bg-gray-800 border-gray-700 rounded-lg",
-                    "focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/20",
-                    "hover:border-indigo-500/30 hover:bg-gray-800/90 transition-colors",
-                    "placeholder:text-gray-400 border border-gray-700 text-white focus:bg-gray-800",
-                    "text-[10px] sm:text-xs"
+                    "h-12 bg-zinc-900/50 border-zinc-800 rounded-xl",
+                    "focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20",
+                    "hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors",
+                    "placeholder:text-zinc-600 border border-zinc-800 text-white focus:bg-zinc-900/70",
+                    "text-sm"
                   )}
                   placeholder="City, Country"
                 />
-                <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-indigo-400 border border-gray-700">
-                    LOCATION
-                </div>
+                <Label className="absolute -top-2.5 left-3 px-2 py-0.5 bg-zinc-900 rounded-md text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+                  Location
+                </Label>
               </div>
 
               {/* Degree and Field Row */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="relative group">
                   <Input
                     value={edu.degree || ''}
                     onChange={(e) => updateEducation(index, 'degree', e.target.value)}
                     className={cn(
-                      "h-9 bg-gray-800 border-gray-700 rounded-lg",
-                      "focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20",
-                      "hover:border-indigo-400/50 hover:bg-gray-800/90 transition-colors",
-                      "placeholder:text-gray-500 text-white focus:bg-gray-800",
-                      "text-[10px] sm:text-xs"
+                      "h-12 bg-zinc-900/50 border-zinc-800 rounded-xl",
+                      "focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20",
+                      "hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors",
+                      "placeholder:text-zinc-600 text-white focus:bg-zinc-900/70",
+                      "text-sm"
                     )}
                     placeholder="Bachelor's, Master's, etc."
                   />
-                  <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-indigo-400 border border-gray-700">
-                    DEGREE
-                  </div>
+                  <Label className="absolute -top-2.5 left-3 px-2 py-0.5 bg-zinc-900 rounded-md text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+                    Degree
+                  </Label>
                 </div>
                 <div className="relative group">
                   <Input
                     value={edu.field || ''}
                     onChange={(e) => updateEducation(index, 'field', e.target.value)}
                     className={cn(
-                      "h-9 bg-gray-800 border-gray-700 rounded-lg",
-                      "focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20",
-                      "hover:border-indigo-400/50 hover:bg-gray-800/90 transition-colors",
-                      "placeholder:text-gray-500 text-white focus:bg-gray-800",
-                      "text-[10px] sm:text-xs"
+                      "h-12 bg-zinc-900/50 border-zinc-800 rounded-xl",
+                      "focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20",
+                      "hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors",
+                      "placeholder:text-zinc-600 text-white focus:bg-zinc-900/70",
+                      "text-sm"
                     )}
                     placeholder="Field of Study"
                   />
-                  <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-indigo-400 border border-gray-700">
-                    FIELD OF STUDY
-                  </div>
+                  <Label className="absolute -top-2.5 left-3 px-2 py-0.5 bg-zinc-900 rounded-md text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+                    Field of Study
+                  </Label>
                 </div>
               </div>
 
@@ -216,22 +266,22 @@ export const EducationForm = memo(function EducationFormComponent({
                   value={edu.date || ''}
                   onChange={(e) => updateEducation(index, 'date', e.target.value)}
                   className={cn(
-                    "w-full h-9 bg-gray-800 border-gray-700 rounded-lg",
-                    "focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20",
-                    "hover:border-indigo-400/50 hover:bg-gray-800/90 transition-colors",
-                    "placeholder:text-gray-500 text-white focus:bg-gray-800",
-                    "text-[10px] sm:text-xs"
+                    "w-full h-12 bg-zinc-900/50 border-zinc-800 rounded-xl",
+                    "focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20",
+                    "hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors",
+                    "placeholder:text-zinc-600 text-white focus:bg-zinc-900/70",
+                    "text-sm"
                   )}
                   placeholder="e.g., '2019 - 2023' or '2020 - Present'"
                 />
-                <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-indigo-400 border border-gray-700">
-                  DATE
-                </div>
+                <Label className="absolute -top-2.5 left-3 px-2 py-0.5 bg-zinc-900 rounded-md text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+                  Date
+                </Label>
               </div>
 
               {/* Current Status Note */}
               <div className="flex items-center space-x-2 -mt-1">
-                <span className="text-[8px] sm:text-[10px] text-gray-400">Use &apos;Present&apos; in the date field for current education</span>
+                <span className="text-[10px] text-zinc-500">Use &apos;Present&apos; in the date field for current education</span>
               </div>
 
               {/* GPA */}
@@ -244,24 +294,27 @@ export const EducationForm = memo(function EducationFormComponent({
                   value={edu.gpa || ''}
                   onChange={(e) => updateEducation(index, 'gpa', e.target.value ? parseFloat(e.target.value) : undefined)}
                   className={cn(
-                    "h-9 bg-gray-800 border-gray-700 rounded-lg",
-                    "focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/20",
-                    "hover:border-indigo-500/30 hover:bg-gray-800/90 transition-colors",
-                    "placeholder:text-gray-400 border border-gray-700 text-white focus:bg-gray-800",
-                    "text-[10px] sm:text-xs"
+                    "h-12 bg-zinc-900/50 border-zinc-800 rounded-xl",
+                    "focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20",
+                    "hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors",
+                    "placeholder:text-zinc-600 border border-zinc-800 text-white focus:bg-zinc-900/70",
+                    "text-sm"
                   )}
                   placeholder="0.00"
                 />
-                <div className="absolute -top-2 left-2 px-1 bg-gray-900 rounded-full text-[7px] sm:text-[9px] font-medium text-indigo-400 border border-gray-700">
-                  GPA (OPTIONAL)
-                </div>
+                <Label className="absolute -top-2.5 left-3 px-2 py-0.5 bg-zinc-900 rounded-md text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+                  GPA (Optional)
+                </Label>
               </div>
 
               {/* Achievements */}
-              <div className="space-y-1.5">
+              <div className="space-y-3">
                 <div className="flex justify-between items-baseline">
-                  <Label className="text-[10px] sm:text-xs font-medium text-indigo-400">Achievements & Activities</Label>
-                  <span className="text-[8px] sm:text-[10px] text-gray-400">One achievement per line</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-1 h-4 bg-cyan-500 rounded-full" />
+                    <Label className="text-xs font-semibold text-cyan-400">Achievements & Activities</Label>
+                  </div>
+                  <span className="text-[10px] text-zinc-500">One achievement per line</span>
                 </div>
                 <Tiptap
                   content={(edu.achievements || []).join('\n\n') || ''}
@@ -280,18 +333,21 @@ export const EducationForm = memo(function EducationFormComponent({
                     }
                   }}
                   className={cn(
-                    "min-h-[120px] bg-gray-800 border-gray-700 rounded-lg",
-                    "focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20",
-                    "hover:border-indigo-400/50 hover:bg-gray-800/90 transition-colors",
-                    "placeholder:text-gray-500 text-white focus:bg-gray-800",
-                    "text-[10px] sm:text-xs"
+                    "min-h-[120px] bg-zinc-900/50 border-zinc-800 rounded-xl",
+                    "focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20",
+                    "hover:border-zinc-700 hover:bg-zinc-900/70 transition-colors",
+                    "placeholder:text-zinc-600 text-white focus:bg-zinc-900/70",
+                    "text-sm"
                   )}
                 />
               </div>
             </div>
-          </CardContent>
-        </Card>
-      ))}
+                </CardContent>
+              </Card>
+            </SortableItem>
+          ))}
+        </SortableContext>
+      </DndContext>
     </div>
   );
 }, areEducationPropsEqual);

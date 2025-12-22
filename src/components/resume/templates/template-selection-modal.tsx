@@ -112,10 +112,10 @@ const _categoryIcons = {
 };
 
 const categoryColors = {
-  modern: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-  classic: 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30',
-  creative: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
-  minimal: 'bg-gray-500/20 text-gray-400 border-gray-500/30'
+  modern: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+  classic: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30',
+  creative: 'bg-violet-500/20 text-violet-300 border-violet-500/30',
+  minimal: 'bg-zinc-500/20 text-zinc-300 border-zinc-500/30'
 };
 
 export function TemplateSelectionModal({ 
@@ -152,21 +152,21 @@ export function TemplateSelectionModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[95vw] sm:max-w-5xl h-[90vh] sm:h-[80vh] p-0 bg-gray-900 border-gray-800 m-2 sm:m-0">
-        <DialogHeader className="px-3 sm:px-6 py-3 sm:py-4 border-b border-gray-800">
-          <DialogTitle className="text-lg sm:text-2xl font-semibold text-white flex items-center gap-2">
-            <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-purple-400" />
+      <DialogContent className="max-w-[95vw] sm:max-w-5xl h-[90vh] sm:h-[80vh] p-0 bg-zinc-950 border-2 border-zinc-800/80 m-2 sm:m-0">
+        <DialogHeader className="px-3 sm:px-6 py-3 sm:py-4 border-b border-zinc-800/80">
+          <DialogTitle className="text-lg sm:text-2xl font-semibold text-zinc-100 flex items-center gap-2">
+            <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-violet-400" />
             Choose a Resume Template
           </DialogTitle>
-          <p className="text-gray-400 mt-1 text-sm sm:text-base">
+          <p className="text-zinc-400 mt-1 text-sm sm:text-base">
             Select a professional template that matches your style and industry
           </p>
         </DialogHeader>
 
         <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
           {/* Category Sidebar - Mobile: Horizontal scroll, Desktop: Vertical sidebar */}
-          <div className="lg:w-64 bg-gray-950 border-b lg:border-b-0 lg:border-r border-gray-800 p-2 sm:p-4">
-            <h3 className="text-sm font-medium text-gray-300 mb-2 sm:mb-3 hidden lg:block">Categories</h3>
+          <div className="lg:w-64 bg-zinc-900/50 border-b lg:border-b-0 lg:border-r border-zinc-800/80 p-2 sm:p-4">
+            <h3 className="text-sm font-medium text-zinc-300 mb-2 sm:mb-3 hidden lg:block">Categories</h3>
             <div className="flex lg:flex-col gap-1 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0">
               {categories.map((category) => {
                 const Icon = category.icon;
@@ -175,10 +175,10 @@ export function TemplateSelectionModal({
                     key={category.id}
                     onClick={() => setSelectedCategory(category.id)}
                     className={cn(
-                      "flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-1.5 lg:py-2 rounded-md text-xs lg:text-sm transition-colors whitespace-nowrap lg:w-full",
+                      "flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-1.5 lg:py-2 rounded-lg text-xs lg:text-sm transition-all duration-200 whitespace-nowrap lg:w-full",
                       selectedCategory === category.id
-                        ? "bg-purple-500/20 text-purple-400 border border-purple-500/30"
-                        : "text-gray-400 hover:text-gray-300 hover:bg-gray-800"
+                        ? "bg-violet-500/20 text-violet-300 border border-violet-500/30"
+                        : "text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800/60"
                     )}
                   >
                     <Icon className="h-3 w-3 lg:h-4 lg:w-4" />
@@ -200,17 +200,17 @@ export function TemplateSelectionModal({
                     <div
                       key={template.id}
                       className={cn(
-                        "group relative bg-gray-800 rounded-lg border transition-all duration-300 cursor-pointer",
+                        "group relative bg-zinc-900/50 rounded-2xl border-2 transition-all duration-200 cursor-pointer",
                         selectedTemplate === template.id
-                          ? "border-purple-500 ring-2 ring-purple-500/20 shadow-lg shadow-purple-500/10"
-                          : "border-gray-700 hover:border-gray-600 hover:shadow-lg"
+                          ? "border-violet-500 ring-2 ring-violet-500/20 shadow-lg shadow-violet-500/10"
+                          : "border-zinc-800/80 hover:border-zinc-700 hover:shadow-lg"
                       )}
                       onClick={() => handleTemplateSelect(template.id)}
                       role="button"
                       aria-label={`Select template ${template.name}`}
                     >
                       {/* Template Preview */}
-                      <div className="aspect-[3/4] bg-gray-700 rounded-t-lg overflow-hidden relative group">
+                      <div className="aspect-[3/4] bg-zinc-800/60 rounded-t-2xl overflow-hidden relative group">
                         <TemplatePreview 
                           templateId={template.id}
                           className="w-full h-full border-none"
@@ -219,7 +219,7 @@ export function TemplateSelectionModal({
                         
                         {/* Selected Indicator */}
                         {selectedTemplate === template.id && (
-                          <div className="absolute top-1 sm:top-2 right-1 sm:right-2 bg-purple-500 rounded-full p-0.5 sm:p-1 z-10">
+                          <div className="absolute top-1 sm:top-2 right-1 sm:right-2 bg-violet-500 rounded-full p-0.5 sm:p-1 z-10">
                             <Check className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
                           </div>
                         )}
@@ -227,7 +227,7 @@ export function TemplateSelectionModal({
                         {/* Premium Badge */}
                         {template.premium && (
                           <div className="absolute top-1 sm:top-2 left-1 sm:left-2 z-10">
-                            <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white border-none text-xs">
+                            <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-none text-xs">
                               <Sparkles className="h-2 w-2 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" />
                               Premium
                             </Badge>
@@ -238,13 +238,13 @@ export function TemplateSelectionModal({
                       {/* Template Info */}
                       <div className="p-2 sm:p-3 lg:p-4">
                         <div className="flex items-center justify-between mb-1 sm:mb-2">
-                          <h3 className="font-semibold text-white text-sm sm:text-base">{template.name}</h3>
+                          <h3 className="font-semibold text-zinc-100 text-sm sm:text-base">{template.name}</h3>
                           <Badge className={cn(categoryColors[template.category], "text-xs")}>
                             {template.category}
                           </Badge>
                         </div>
                         
-                        <p className="text-xs sm:text-sm text-gray-400 mb-2 sm:mb-3 line-clamp-2">
+                        <p className="text-xs sm:text-sm text-zinc-400 mb-2 sm:mb-3 line-clamp-2">
                           {template.description}
                         </p>
 
@@ -254,7 +254,7 @@ export function TemplateSelectionModal({
                             <Badge
                               key={feature}
                               variant="outline"
-                              className="text-xs border-gray-600 text-gray-300"
+                              className="text-xs border-zinc-700 text-zinc-300 bg-zinc-800/50"
                             >
                               {feature}
                             </Badge>
@@ -262,7 +262,7 @@ export function TemplateSelectionModal({
                           {template.features.length > 3 && (
                             <Badge
                               variant="outline"
-                              className="text-xs border-gray-600 text-gray-300"
+                              className="text-xs border-zinc-700 text-zinc-300 bg-zinc-800/50"
                             >
                               +{template.features.length - 3}
                             </Badge>
@@ -276,12 +276,12 @@ export function TemplateSelectionModal({
             </ScrollArea>
 
             {/* Footer Actions */}
-            <div className="border-t border-gray-800 p-2 sm:p-3 lg:p-4 bg-gray-950">
+            <div className="border-t border-zinc-800/80 p-2 sm:p-3 lg:p-4 bg-zinc-900/50">
               <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-0 sm:justify-between">
-                <div className="text-xs sm:text-sm text-gray-400 text-center sm:text-left">
+                <div className="text-xs sm:text-sm text-zinc-400 text-center sm:text-left">
                   {selectedTemplate ? (
                     <span>
-                      Template selected: <span className="text-purple-400">
+                      Template selected: <span className="text-violet-400 font-medium">
                         {templates.find(t => t.id === selectedTemplate)?.name}
                       </span>
                     </span>
@@ -294,14 +294,14 @@ export function TemplateSelectionModal({
                   <Button
                     variant="outline"
                     onClick={() => onOpenChange(false)}
-                    className="border-gray-600 text-gray-300 hover:bg-gray-800 flex-1 sm:flex-none text-sm"
+                    className="border-zinc-700 text-zinc-300 hover:bg-zinc-800/60 flex-1 sm:flex-none text-sm rounded-xl"
                   >
                     Cancel
                   </Button>
                   <Button
                     onClick={handleApplyTemplate}
                     disabled={!selectedTemplate}
-                    className="bg-purple-600 hover:bg-purple-700 text-white flex-1 sm:flex-none text-sm"
+                    className="bg-violet-500 hover:bg-violet-600 text-white flex-1 sm:flex-none text-sm rounded-xl"
                   >
                     Apply Template
                   </Button>

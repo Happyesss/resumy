@@ -5,7 +5,16 @@ import { toast } from "@/hooks/use-toast";
 import { Resume } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { pdf } from '@react-pdf/renderer';
-import { Download, Loader2, Palette, Save } from "lucide-react";
+import { 
+  CheckCircle, 
+  Download, 
+  FileText, 
+  Loader2, 
+  Mail, 
+  Palette, 
+  Save, 
+  Upload 
+} from "lucide-react";
 import { TextImportDialog } from "../../management/dialogs/text-import-dialog";
 import { ResumePDFDocument } from "../preview/resume-pdf-document";
 import { useResumeContext } from "../resume-editor-context";
@@ -21,6 +30,102 @@ interface ResumeEditorActionsProps {
   onResumeChange: (field: keyof Resume, value: Resume[keyof Resume]) => void;
   setActiveTab: Dispatch<SetStateAction<string>>;
 }
+
+// Action button component for consistency
+const ActionButton = ({ 
+  onClick, 
+  icon: Icon, 
+  label, 
+  variant = 'default',
+  disabled = false,
+  isLoading = false 
+}: { 
+  onClick: () => void; 
+  icon: React.ElementType; 
+  label: string;
+  variant?: 'default' | 'primary' | 'success' | 'warning';
+  disabled?: boolean;
+  isLoading?: boolean;
+}) => {
+  const variantStyles = {
+    default: "text-zinc-400 hover:text-white hover:bg-zinc-800",
+    primary: "text-blue-400 hover:text-blue-300 hover:bg-blue-500/10",
+    success: "text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10",
+    warning: "text-amber-400 hover:text-amber-300 hover:bg-amber-500/10"
+  };
+
+  return (
+    <TooltipProvider delayDuration={0}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={onClick}
+            disabled={disabled || isLoading}
+            className={cn(
+              "w-9 h-9 flex items-center justify-center",
+              "rounded-lg",
+              "transition-all duration-200",
+              "disabled:opacity-50 disabled:cursor-not-allowed",
+              variantStyles[variant]
+            )}
+          >
+            {isLoading ? (
+              <Loader2 className="h-4.5 w-4.5 animate-spin" />
+            ) : (
+              <Icon className="h-4.5 w-4.5" />
+            )}
+          </button>
+        </TooltipTrigger>
+        <TooltipContent 
+          side="bottom" 
+          className="bg-zinc-900 border-zinc-800 text-zinc-300 text-xs"
+        >
+          {label}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+};
+
+// Quick access tab button
+const QuickTabButton = ({ 
+  onClick, 
+  icon: Icon, 
+  label,
+  color 
+}: { 
+  onClick: () => void; 
+  icon: React.ElementType; 
+  label: string;
+  color: string;
+}) => (
+  <TooltipProvider delayDuration={0}>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          onClick={onClick}
+          className={cn(
+            "flex items-center justify-center",
+            "w-8 h-8 sm:w-auto sm:h-auto sm:px-3 sm:py-2 rounded-lg",
+            "text-xs font-medium",
+            "transition-all duration-200",
+            "hover:scale-105",
+            color
+          )}
+        >
+          <Icon className="h-4 w-4" />
+          <span className="hidden sm:inline ml-2">{label}</span>
+        </button>
+      </TooltipTrigger>
+      <TooltipContent 
+        side="bottom" 
+        className="bg-zinc-900 border-zinc-800 text-zinc-300 text-xs sm:hidden"
+      >
+        {label}
+      </TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+);
 
 export function ResumeEditorActions({
   onResumeChange,
@@ -53,234 +158,126 @@ export function ResumeEditorActions({
     }
   };
 
+  // Download handler
+  const handleDownload = async () => {
+    try {
+      if (downloadOptions.resume) {
+        trackResumeEvent.downloadResume('PDF');
+        const blob = await pdf(<ResumePDFDocument resume={resume} />).toBlob();
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${resume.first_name}_${resume.last_name}_Resume.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
 
-  // Dynamic color classes based on resume type
-  const colors = resume.is_base_resume ? {
-    // Import button colors
-    importBg: "bg-indigo-600",
-    importHover: "hover:bg-indigo-700",
-    importShadow: "shadow-indigo-400/20",
-    // Action buttons colors (download & save)
-    actionBg: "bg-purple-600",
-    actionHover: "hover:bg-purple-700",
-    actionShadow: "shadow-purple-400/20"
-  } : {
-    // Import button colors
-    importBg: "bg-rose-600",
-    importHover: "hover:bg-rose-700",
-    importShadow: "shadow-rose-400/20",
-    // Action buttons colors (download & save)
-    actionBg: "bg-pink-600",
-    actionHover: "hover:bg-pink-700",
-    actionShadow: "shadow-pink-400/20"
+      if (downloadOptions.coverLetter && resume.has_cover_letter) {
+        trackResumeEvent.createCoverLetter();
+        const blob = await pdf(<CoverLetterPDFDocument resume={resume} />).toBlob();
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${resume.first_name}_${resume.last_name}_Cover_Letter.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
+
+      toast({
+        title: "Download started",
+        description: "Your documents are being downloaded.",
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Download failed",
+        description: error instanceof Error ? error.message : "Unable to download your documents. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
-  
-  const buttonBaseStyle = cn(
-    "transition-all duration-300",
-    "relative overflow-hidden",
-    "h-8 px-3 text-[11px] font-medium",
-    "rounded-md border-none",
-    "text-white shadow-sm",
-    "hover:shadow-md hover:-translate-y-[1px]",
-    "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0"
-  );
-
-  const _importButtonClasses = cn(
-    buttonBaseStyle,
-    colors.importBg,
-    colors.importHover,
-    colors.importShadow
-  );
-
-  const _actionButtonClasses = cn(
-    buttonBaseStyle,
-    colors.actionBg,
-    colors.actionHover,
-    colors.actionShadow
-  );
-
   return (
-    <div className="px-1 py-2 @container bg-black flex items-center justify-between">
-      {/* Left side: Cover Letter, Resume Score, and Templates tabs */}
-      <div className="flex items-center gap-4 pl-2">
-        {/* Cover Letter Icon */}
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                className="hover:opacity-80 transition-opacity"
-                type="button"
-                onClick={() => setActiveTab("cover-letter")}
-              >
-                <svg className="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                  <line x1="16" y1="13" x2="8" y2="13"/>
-                  <line x1="16" y1="17" x2="8" y2="17"/>
-                  <line x1="10" y1="9" x2="8" y2="9"/>
-                </svg>
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">Cover Letter</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-
-        {/* Resume Score Icon */}
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                className="hover:opacity-80 transition-opacity"
-                type="button"
-                onClick={() => setActiveTab("resume-score")}
-              >
-                <svg className="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                  <polyline points="22 4 12 14.01 9 11.01"/>
-                </svg>
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">Resume Score</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-
-        {/* Cold Mail Icon */}
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                className="hover:opacity-80 transition-opacity"
-                type="button"
-                onClick={() => setActiveTab("cold-mail")}
-              >
-                <svg className="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                  <polyline points="22,6 12,13 2,6"/>
-                </svg>
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">Cold Mail</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-
-        {/* Templates Tab */}
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                type="button"
-                onClick={() => setActiveTab("templates")}
-                className="group flex items-center gap-1.5 px-2 py-1 rounded-md font-medium relative transition-all duration-300
-                  data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500/20 data-[state=active]:to-orange-500/20
-                  data-[state=active]:border-amber-500/30 data-[state=active]:shadow-md hover:bg-gray-800/80
-                  data-[state=active]:text-white data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-gray-200"
-              >
-                {/* Palette icon from lucide-react, no background */}
-                <Palette className="h-5 w-5 text-orange-400 transition-colors group-data-[state=inactive]:text-amber-500/70" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">Templates</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+    <div className={cn(
+      "px-2 py-2 sm:px-3 sm:py-2.5 @container",
+      "flex items-center justify-between gap-2 sm:gap-4",
+      "bg-zinc-950"
+    )}>
+      {/* Left side: Quick access tabs */}
+      <div className="flex items-center gap-0.5 sm:gap-1">
+        <QuickTabButton
+          onClick={() => setActiveTab("cover-letter")}
+          icon={FileText}
+          label="Cover Letter"
+          color="text-violet-400 bg-violet-500/10 hover:bg-violet-500/20"
+        />
+        <QuickTabButton
+          onClick={() => setActiveTab("resume-score")}
+          icon={CheckCircle}
+          label="Score"
+          color="text-amber-400 bg-amber-500/10 hover:bg-amber-500/20"
+        />
+        <QuickTabButton
+          onClick={() => setActiveTab("cold-mail")}
+          icon={Mail}
+          label="Cold Email"
+          color="text-blue-400 bg-blue-500/10 hover:bg-blue-500/20"
+        />
+        <QuickTabButton
+          onClick={() => setActiveTab("templates")}
+          icon={Palette}
+          label="Templates"
+          color="text-rose-400 bg-rose-500/10 hover:bg-rose-500/20"
+        />
       </div>
 
-      {/* Right side: Import, Download, Save icons */}
-      <div className="flex items-center gap-3 pr-2">
-        {/* Import Icon */}
+      {/* Right side: Action buttons */}
+      <div className="flex items-center gap-0.5 sm:gap-1">
+        {/* Import */}
         <TextImportDialog
           resume={resume}
           onResumeChange={onResumeChange}
           trigger={
             <button
-              className="px-3 py-1 text-sm font-medium text-indigo-400 hover:text-indigo-500 bg-transparent border border-indigo-500 rounded-md focus:outline-none transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-md"
-              style={{ minWidth: 0 }}
+              className={cn(
+                "flex items-center justify-center",
+                "w-8 h-8 sm:w-auto sm:h-auto sm:px-3 sm:py-2 rounded-lg",
+                "text-xs font-medium",
+                "text-indigo-400 bg-indigo-500/10",
+                "hover:bg-indigo-500/20",
+                "transition-all duration-200"
+              )}
             >
-              Import
+              <Upload className="h-4 w-4" />
+              <span className="hidden sm:inline ml-2">Import</span>
             </button>
           }
         />
 
-        {/* Download Icon */}
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button 
-                onClick={async () => {
-                  try {
-                    // Download Resume if selected
-                    if (downloadOptions.resume) {
-                      // Track resume download event
-                      trackResumeEvent.downloadResume('PDF');
-                      
-                      const blob = await pdf(<ResumePDFDocument resume={resume} />).toBlob();
-                      const url = URL.createObjectURL(blob);
-                      const link = document.createElement('a');
-                      link.href = url;
-                      link.download = `${resume.first_name}_${resume.last_name}_Resume.pdf`;
-                      document.body.appendChild(link);
-                      link.click();
-                      document.body.removeChild(link);
-                      URL.revokeObjectURL(url);
-                    }
+        {/* Divider */}
+        <div className="w-px h-5 sm:h-6 bg-zinc-800 mx-1 sm:mx-2" />
 
-                    // Download Cover Letter if selected and exists
-                    if (downloadOptions.coverLetter && resume.has_cover_letter) {
-                      // Track cover letter download event
-                      trackResumeEvent.createCoverLetter();
-                      
-                      const blob = await pdf(<CoverLetterPDFDocument resume={resume} />).toBlob();
-                      const url = URL.createObjectURL(blob);
-                      const link = document.createElement('a');
-                      link.href = url;
-                      link.download = `${resume.first_name}_${resume.last_name}_Cover_Letter.pdf`;
-                      document.body.appendChild(link);
-                      link.click();
-                      document.body.removeChild(link);
-                      URL.revokeObjectURL(url);
-                    }
+        {/* Download */}
+        <ActionButton
+          onClick={handleDownload}
+          icon={Download}
+          label="Download PDF"
+          variant="primary"
+        />
 
-                    toast({
-                      title: "Download started",
-                      description: "Your documents are being downloaded.",
-                    });
-                  } catch (error) {
-                    console.error(error);
-                    toast({
-                      title: "Download failed",
-                      description: error instanceof Error ? error.message : "Unable to download your documents. Please try again.",
-                      variant: "destructive",
-                    });
-                  }
-                }}
-                className="w-8 h-8 flex items-center justify-center bg-transparent border-none shadow-none focus:outline-none group"
-              >
-                <Download className="h-5 w-5 text-blue-400 group-hover:text-blue-500 transition-colors" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">Download</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-
-        {/* Save Icon */}
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button 
-                onClick={handleSave}
-                disabled={isSaving}
-                className="w-8 h-8 flex items-center justify-center bg-transparent border-none shadow-none focus:outline-none group"
-              >
-                {isSaving ? (
-                  <Loader2 className="h-5 w-5 text-green-500 animate-spin" />
-                ) : (
-                  <Save className="h-5 w-5 text-green-500 group-hover:text-green-600 transition-colors" />
-                )}
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">Save</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        {/* Save */}
+        <ActionButton
+          onClick={handleSave}
+          icon={Save}
+          label="Save Changes"
+          variant="success"
+          disabled={isSaving}
+          isLoading={isSaving}
+        />
       </div>
     </div>
   );

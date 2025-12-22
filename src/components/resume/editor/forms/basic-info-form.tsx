@@ -1,11 +1,22 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Profile, Resume } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { Github, Globe, Linkedin, LucideIcon, Mail, MapPin, Phone, User, UserCircle2 } from "lucide-react";
+import { 
+  Github, 
+  Globe, 
+  Linkedin, 
+  LucideIcon, 
+  Mail, 
+  MapPin, 
+  Phone, 
+  Sparkles, 
+  User, 
+  UserCircle2 
+} from "lucide-react";
 import { memo, useCallback } from 'react';
 import { useResumeContext } from '../resume-editor-context';
 
@@ -20,7 +31,7 @@ function areBasicInfoPropsEqual(
   return prevProps.profile.id === nextProps.profile.id;
 }
 
-// Create memoized field component
+// Enhanced field component with modern styling
 const BasicInfoField = memo(function BasicInfoField({ 
   field, 
   value, 
@@ -45,35 +56,56 @@ const BasicInfoField = memo(function BasicInfoField({
   }, [dispatch, field]);
 
   return (
-    <div className={cn("relative group", className)}>
-      <div className="absolute right-3 top-1/2 -translate-y-1/2 z-10">
-        <div className={cn(
-          "p-1.5 rounded-full transition-all duration-300",
-          "bg-indigo-400/10 group-focus-within:bg-indigo-400/20",
-          "group-focus-within:scale-110"
-        )}>
-          <Icon className="h-3.5 w-3.5 text-indigo-400" />
-        </div>
-      </div>
-      <Input
-        type={type}
-        value={value || ''}
-        onChange={handleChange}
+    <div className={cn("group relative", className)}>
+      <Label 
+        htmlFor={String(field)}
         className={cn(
-          "pr-12 h-10 text-sm transition-all duration-300",
-          "bg-gray-800 border-gray-700 rounded-lg",
-          "focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20",
-          "hover:border-indigo-400/50 hover:bg-gray-800/90",
-          "placeholder:text-gray-500 text-white focus:bg-gray-800"
+          "absolute -top-2.5 left-3 z-10",
+          "px-2 py-0.5",
+          "text-[10px] font-semibold uppercase tracking-wider",
+          "bg-zinc-900 text-zinc-400",
+          "rounded-md",
+          "transition-colors duration-200",
+          "group-focus-within:text-emerald-400"
         )}
-        placeholder={placeholder}
-      />
-      <div className={cn(
-        "absolute -top-2 left-3 px-2 bg-gray-900 rounded-full",
-        "text-[9px] font-medium text-indigo-400 border border-gray-700",
-        "transition-colors duration-300"
-      )}>
+      >
         {label}
+      </Label>
+      <div className="relative">
+        <Input
+          id={String(field)}
+          type={type}
+          value={value || ''}
+          onChange={handleChange}
+          className={cn(
+            "h-12 pl-4 pr-12",
+            "bg-zinc-900/50 border-zinc-800",
+            "text-white text-sm",
+            "rounded-xl",
+            "transition-all duration-200",
+            "hover:border-zinc-700 hover:bg-zinc-900/70",
+            "focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20",
+            "focus:bg-zinc-900",
+            "placeholder:text-zinc-600"
+          )}
+          placeholder={placeholder}
+        />
+        <div className={cn(
+          "absolute right-3 top-1/2 -translate-y-1/2",
+          "w-8 h-8 flex items-center justify-center",
+          "rounded-lg",
+          "bg-zinc-800/80",
+          "transition-all duration-200",
+          "group-focus-within:bg-emerald-500/20",
+          "group-focus-within:scale-105"
+        )}>
+          <Icon className={cn(
+            "h-4 w-4",
+            "text-zinc-500",
+            "transition-colors duration-200",
+            "group-focus-within:text-emerald-400"
+          )} />
+        </div>
       </div>
     </div>
   );
@@ -92,7 +124,6 @@ export const BasicInfoForm = memo(function BasicInfoFormComponent({
   const handleFillFromProfile = () => {
     if (!profile) return;
     
-    // List of fields to copy from profile
     const fieldsToFill: (keyof Profile)[] = [
       'first_name',
       'last_name',
@@ -104,7 +135,6 @@ export const BasicInfoForm = memo(function BasicInfoFormComponent({
       'github_url'
     ];
 
-    // Copy each field if it exists in the profile
     fieldsToFill.forEach((field) => {
       if (profile[field]) {
         updateField(field, profile[field] as string);
@@ -113,146 +143,187 @@ export const BasicInfoForm = memo(function BasicInfoFormComponent({
   };
 
   return (
-    <div className="space-y-4">
-
+    <div className="space-y-6">
       {/* Fill from Profile Button */}
       {profile && (
-        <div className="@container">
-          <Button
-            onClick={handleFillFromProfile}
-            className={cn(
-              "w-full h-10 transition-all duration-300",
-              "bg-gray-900 border-2 border-gray-800",
-              "hover:from-indigo-400/10 hover:via-indigo-400/15 hover:to-blue-400/10",
-              "border-2 border-dashed border-indigo-400/30 hover:border-indigo-400/40",
-              "text-indigo-400 hover:text-indigo-300",
-              "rounded-xl text-sm font-medium",
-              "hover:shadow-lg hover:shadow-indigo-400/10 hover:-translate-y-0.5"
-            )}
-          >
-            <UserCircle2 className="mr-2 h-4 w-4" />
-            Fill from Profile
-          </Button>
-        </div>
+        <Button
+          onClick={handleFillFromProfile}
+          variant="outline"
+          className={cn(
+            "w-full h-12",
+            "bg-gradient-to-r from-emerald-500/5 to-teal-500/5",
+            "border border-dashed border-emerald-500/30",
+            "hover:border-emerald-500/50 hover:from-emerald-500/10 hover:to-teal-500/10",
+            "text-emerald-400 hover:text-emerald-300",
+            "rounded-xl",
+            "font-medium text-sm",
+            "transition-all duration-200",
+            "hover:shadow-lg hover:shadow-emerald-500/10",
+            "group"
+          )}
+        >
+          <UserCircle2 className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
+          Fill from Profile
+          <Sparkles className="ml-2 h-3 w-3 opacity-60" />
+        </Button>
       )}
 
-      {/* Main Form Card */}
-      <Card className={cn(
-        "relative group transition-all duration-300",
-        "bg-gray-900 border-2 border-gray-800",
-        "hover:border-indigo-400/40 hover:shadow-lg hover:shadow-indigo-400/10",
-        "shadow-sm"
+      {/* Personal Details Section */}
+      <div className={cn(
+        "rounded-2xl",
+        "bg-zinc-900/50",
+        "border border-zinc-800/80",
+        "p-5",
+        "space-y-5"
       )}>
-        <CardContent className="p-4 space-y-4">
-          {/* Personal Information Section */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2 mb-3">
-              <div className="w-2 h-2 bg-indigo-400 rounded-full"></div>
-              <h3 className="text-sm font-semibold text-indigo-400">Personal Details</h3>
-            </div>
-
-            {/* Name Row */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <BasicInfoField
-                field="first_name"
-                value={resume.first_name}
-                label="FIRST NAME"
-                icon={User}
-                placeholder="Enter first name"
-              />
-              <BasicInfoField
-                field="last_name"
-                value={resume.last_name}
-                label="LAST NAME"
-                icon={User}
-                placeholder="Enter last name"
-              />
-            </div>
-
-            {/* Contact Information */}
-            <div className="space-y-3">
-              <BasicInfoField
-                field="email"
-                value={resume.email}
-                label="EMAIL ADDRESS"
-                icon={Mail}
-                placeholder="your.email@example.com"
-                type="email"
-              />
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <BasicInfoField
-                  field="phone_number"
-                  value={resume.phone_number || ''}
-                  label="PHONE NUMBER"
-                  icon={Phone}
-                  placeholder="+1 (555) 000-0000"
-                  type="tel"
-                />
-                <BasicInfoField
-                  field="location"
-                  value={resume.location || ''}
-                  label="LOCATION"
-                  icon={MapPin}
-                  placeholder="City, State, Country"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Online Presence Section */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2 mb-3">
-              <div className="w-2 h-2 bg-indigo-400 rounded-full"></div>
-              <h3 className="text-sm font-semibold text-indigo-400">Online Presence</h3>
-              <span className="text-xs text-gray-500">(Optional)</span>
-            </div>
-
-            <div className="space-y-3">
-              <BasicInfoField
-                field="website"
-                value={resume.website || ''}
-                label="PERSONAL WEBSITE"
-                icon={Globe}
-                placeholder="https://your-portfolio.com"
-                type="url"
-              />
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <BasicInfoField
-                  field="linkedin_url"
-                  value={resume.linkedin_url || ''}
-                  label="LINKEDIN PROFILE"
-                  icon={Linkedin}
-                  placeholder="https://linkedin.com/in/username"
-                  type="url"
-                />
-                <BasicInfoField
-                  field="github_url"
-                  value={resume.github_url || ''}
-                  label="GITHUB PROFILE"
-                  icon={Github}
-                  placeholder="https://github.com/username"
-                  type="url"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Tips Section */}
+        {/* Section Header */}
+        <div className="flex items-center gap-3">
           <div className={cn(
-            "mt-6 p-3 rounded-lg",
-            "bg-indigo-400/5 border border-indigo-400/20"
+            "w-8 h-8 rounded-lg",
+            "bg-emerald-500/10",
+            "flex items-center justify-center"
           )}>
-            <div className="flex items-start space-x-2">
-              <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full mt-1.5 flex-shrink-0"></div>
-              <div className="text-xs text-gray-400 leading-relaxed">
-                <span className="text-indigo-400 font-medium">Pro tip:</span> Include your professional email and ensure all URLs are complete and working. Your online presence helps recruiters learn more about your work.
-              </div>
+            <User className="h-4 w-4 text-emerald-400" />
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-white">Personal Details</h3>
+            <p className="text-xs text-zinc-500">Your basic contact information</p>
+          </div>
+        </div>
+
+        {/* Name Fields */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <BasicInfoField
+            field="first_name"
+            value={resume.first_name}
+            label="First Name"
+            icon={User}
+            placeholder="John"
+          />
+          <BasicInfoField
+            field="last_name"
+            value={resume.last_name}
+            label="Last Name"
+            icon={User}
+            placeholder="Doe"
+          />
+        </div>
+
+        {/* Email */}
+        <BasicInfoField
+          field="email"
+          value={resume.email}
+          label="Email Address"
+          icon={Mail}
+          placeholder="john.doe@example.com"
+          type="email"
+        />
+
+        {/* Phone & Location */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <BasicInfoField
+            field="phone_number"
+            value={resume.phone_number || ''}
+            label="Phone Number"
+            icon={Phone}
+            placeholder="+1 (555) 000-0000"
+            type="tel"
+          />
+          <BasicInfoField
+            field="location"
+            value={resume.location || ''}
+            label="Location"
+            icon={MapPin}
+            placeholder="San Francisco, CA"
+          />
+        </div>
+      </div>
+
+      {/* Online Presence Section */}
+      <div className={cn(
+        "rounded-2xl",
+        "bg-zinc-900/50",
+        "border border-zinc-800/80",
+        "p-5",
+        "space-y-5"
+      )}>
+        {/* Section Header */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className={cn(
+              "w-8 h-8 rounded-lg",
+              "bg-violet-500/10",
+              "flex items-center justify-center"
+            )}>
+              <Globe className="h-4 w-4 text-violet-400" />
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-white">Online Presence</h3>
+              <p className="text-xs text-zinc-500">Your professional profiles</p>
             </div>
           </div>
-        </CardContent>
-      </Card>
+          <span className={cn(
+            "text-[10px] font-medium uppercase tracking-wider",
+            "text-zinc-600 bg-zinc-800/80",
+            "px-2 py-1 rounded-md"
+          )}>
+            Optional
+          </span>
+        </div>
+
+        {/* Website */}
+        <BasicInfoField
+          field="website"
+          value={resume.website || ''}
+          label="Personal Website"
+          icon={Globe}
+          placeholder="https://yourportfolio.com"
+          type="url"
+        />
+
+        {/* LinkedIn & GitHub */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <BasicInfoField
+            field="linkedin_url"
+            value={resume.linkedin_url || ''}
+            label="LinkedIn Profile"
+            icon={Linkedin}
+            placeholder="linkedin.com/in/username"
+            type="url"
+          />
+          <BasicInfoField
+            field="github_url"
+            value={resume.github_url || ''}
+            label="GitHub Profile"
+            icon={Github}
+            placeholder="github.com/username"
+            type="url"
+          />
+        </div>
+      </div>
+
+      {/* Pro Tip Card */}
+      <div className={cn(
+        "rounded-xl",
+        "bg-gradient-to-br from-emerald-500/5 to-teal-500/5",
+        "border border-emerald-500/20",
+        "p-4"
+      )}>
+        <div className="flex gap-3">
+          <div className={cn(
+            "w-6 h-6 rounded-lg shrink-0",
+            "bg-emerald-500/20",
+            "flex items-center justify-center"
+          )}>
+            <Sparkles className="h-3 w-3 text-emerald-400" />
+          </div>
+          <p className="text-xs text-zinc-400 leading-relaxed">
+            <span className="text-emerald-400 font-medium">Pro tip:</span>{' '}
+            Include your professional email and ensure all URLs are complete and working. 
+            Your online presence helps recruiters learn more about your work.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }, areBasicInfoPropsEqual);

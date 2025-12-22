@@ -47,9 +47,9 @@ export default function ChatInput({
     return (
       <form onSubmit={handleSubmit} className={cn(
         "relative z-10",
-        "p-3 border-t border-gray-600/50",
-        "bg-gray-800/80 backdrop-blur-sm",
-        "flex gap-2 items-end"
+        "p-3",
+        "bg-zinc-900/80",
+        "flex gap-3 items-end"
       )}>
         <Textarea
           ref={textareaRef}
@@ -70,17 +70,17 @@ export default function ChatInput({
           rows={1}
           className={cn(
             "flex-1",
-            "bg-gray-700/80 border-gray-600/50",
-            "text-white placeholder:text-gray-400",
-            "focus:border-purple-400/60 focus:ring-2 focus:ring-purple-400/20",
-            "hover:border-gray-500/60",
+            "bg-zinc-800/80 border-zinc-700/60",
+            "text-zinc-100 placeholder:text-zinc-500",
+            "focus:border-violet-500/60 focus:ring-2 focus:ring-violet-500/20",
+            "hover:border-zinc-600/60",
             "text-sm",
-            "min-h-[40px]",
+            "min-h-[44px]",
             "max-h-[144px]", // Approximately 6 lines
             "resize-none",
             "overflow-y-auto",
-            "px-3 py-2",
-            "rounded-lg",
+            "px-4 py-3",
+            "rounded-xl",
             "transition-all duration-200"
           )}
         />
@@ -90,19 +90,19 @@ export default function ChatInput({
           size="sm"
           className={cn(
             isLoading ? [
-              "bg-gradient-to-br from-rose-500 to-pink-500",
-              "hover:from-rose-600 hover:to-pink-600",
+              "bg-rose-500/90",
+              "hover:bg-rose-600",
             ] : [
-              "bg-gradient-to-br from-purple-500 to-indigo-500",
-              "hover:from-purple-600 hover:to-indigo-600",
+              "bg-violet-500",
+              "hover:bg-violet-600",
             ],
             "text-white",
             "border-none",
-            "shadow-md shadow-purple-500/10",
-            "transition-all duration-300",
-            "hover:scale-105 hover:shadow-lg",
-            "hover:-translate-y-0.5",
-            "px-3 h-10 min-w-[40px]",
+            "shadow-lg shadow-violet-500/20",
+            "transition-all duration-200",
+            "hover:scale-105",
+            "px-3 h-11 min-w-[44px]",
+            "rounded-xl",
             "self-end"
           )}
         >

@@ -139,24 +139,20 @@ export function CoverLetterPanel({
   if (resume.is_base_resume) {
     return (
       <div className={cn(
-        "p-6 backdrop-blur-sm rounded-xl shadow-lg bg-gray-900 border border-gray-700",
-        "space-y-6 text-center relative overflow-hidden"
+        "p-6 rounded-2xl",
+        "bg-zinc-900/50 border border-zinc-800/80",
+        "space-y-6 text-center"
       )}>
-        {/* Background decoration */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-xl" />
-        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-600/20 to-cyan-600/20 rounded-full -translate-y-16 translate-x-16" />
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-cyan-600/20 to-blue-600/20 rounded-full translate-y-12 -translate-x-12" />
-        
-        <div className="relative z-10 space-y-4">
-          <div className="w-16 h-16 mx-auto bg-gradient-to-br from-blue-600 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg border border-blue-500/50">
-            <FileText className="h-8 w-8 text-white" />
+        <div className="space-y-4">
+          <div className="w-16 h-16 mx-auto bg-violet-500/10 rounded-2xl flex items-center justify-center border border-violet-500/20">
+            <FileText className="h-8 w-8 text-violet-400" />
           </div>
           
           <div className="space-y-2">
-            <h3 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+            <h3 className="text-xl font-semibold text-white">
               Cover Letter
             </h3>
-            <p className="text-blue-300/80 leading-relaxed max-w-sm mx-auto">
+            <p className="text-zinc-400 leading-relaxed max-w-sm mx-auto text-sm">
               To generate a cover letter, please first tailor this base resume to a specific job.
             </p>
           </div>
@@ -167,7 +163,15 @@ export function CoverLetterPanel({
             <Button
               variant="outline"
               size="lg"
-              className="mt-6 bg-gradient-to-r from-blue-600 to-cyan-600 border-blue-500 text-white hover:from-blue-700 hover:to-cyan-700 hover:border-blue-400 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
+              className={cn(
+                "mt-6",
+                "bg-gradient-to-r from-violet-500/10 to-purple-500/10",
+                "border border-violet-500/30 hover:border-violet-500/50",
+                "text-violet-400 hover:text-violet-300",
+                "hover:from-violet-500/20 hover:to-purple-500/20",
+                "transition-all duration-200",
+                "shadow-lg hover:shadow-violet-500/20"
+              )}
             >
               <Plus className="h-5 w-5 mr-2" />
               Tailor This Resume
@@ -180,105 +184,112 @@ export function CoverLetterPanel({
 
   return (
     <div className={cn(
-      "p-6 backdrop-blur-sm rounded-xl shadow-lg bg-gray-900 border border-gray-700",
-      "space-y-6 relative overflow-hidden"
+      "p-6 rounded-2xl",
+      "bg-zinc-900/50 border border-zinc-800/80",
+      "space-y-6"
     )}>
-      {/* Background decoration */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-violet-500/10 rounded-xl" />
-      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-600/20 to-violet-600/20 rounded-full -translate-y-16 translate-x-16" />
-      <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-violet-600/20 to-purple-600/20 rounded-full translate-y-12 -translate-x-12" />
-      
-      <div className="relative z-10">
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-violet-600 rounded-xl flex items-center justify-center shadow-md border border-purple-500/50">
-            <FileText className="h-6 w-6 text-white" />
-          </div>
-          <h3 className="text-xl font-bold bg-gradient-to-r from-purple-400 to-violet-400 bg-clip-text text-transparent">
-            Cover Letter
-          </h3>
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 bg-violet-500/10 rounded-xl flex items-center justify-center border border-violet-500/20">
+          <FileText className="h-5 w-5 text-violet-400" />
         </div>
+        <div>
+          <h3 className="text-lg font-semibold text-white">Cover Letter</h3>
+          <p className="text-xs text-zinc-500">AI-powered personalized cover letter</p>
+        </div>
+      </div>
 
-        {resume.has_cover_letter ? (
-          <div className="space-y-6">
-            {/* AI Improvement Prompt */}
-            <div className={cn(
-              "p-4 bg-gradient-to-br from-gray-800/80 to-purple-900/60 backdrop-blur-sm",
-              "border border-purple-600/60 shadow-sm rounded-xl"
-            )}>
-              <AIImprovementPrompt
-                value={customPrompt}
-                onChange={setCustomPrompt}
-                isLoading={isGenerating}
-                placeholder="e.g., Focus on leadership experience and technical skills"
-                hideSubmitButton
-              />
-            </div>
-
-            {/* Action Buttons - Side by Side */}
-            <div className="grid grid-cols-2 gap-3">
-              <Button
-                variant="default"
-                size="lg"
-                className={cn(
-                  "h-12",
-                  "bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700",
-                  "text-white font-semibold",
-                  "border-0 shadow-lg hover:shadow-xl",
-                  "transition-all duration-300",
-                  "hover:scale-[1.02] hover:-translate-y-0.5",
-                  "disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                )}
-                onClick={generateCoverLetter}
-                disabled={isGenerating || !job}
-              >
-                {isGenerating ? (
-                  <>
-                    <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                    Generating...
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="h-5 w-5 mr-2" />
-                    Generate with AI
-                  </>
-                )}
-              </Button>
-
-              <Button
-                variant="outline"
-                size="lg"
-                className="h-12 border-red-500 text-red-400 hover:bg-red-900/20 hover:border-red-400 bg-gray-800/50 transition-all duration-300"
-                onClick={() => updateField('has_cover_letter', false)}
-              >
-                <Trash2 className="h-5 w-5 mr-2" />
-                Delete Cover Letter
-              </Button>
-            </div>
+      {resume.has_cover_letter ? (
+        <div className="space-y-4">
+          {/* AI Improvement Prompt */}
+          <div className={cn(
+            "p-4 rounded-xl",
+            "bg-zinc-900/50 border border-zinc-800"
+          )}>
+            <AIImprovementPrompt
+              value={customPrompt}
+              onChange={setCustomPrompt}
+              isLoading={isGenerating}
+              placeholder="e.g., Focus on leadership experience and technical skills"
+              hideSubmitButton
+            />
           </div>
-        ) : (
-          <div className="space-y-6">
-            {/* Empty State */}
-            <div className="p-6 rounded-xl bg-gradient-to-br from-gray-800/60 to-gray-700/60 border border-gray-600/60 text-center">
-              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-gray-700 to-gray-600 rounded-2xl flex items-center justify-center">
-                <FileText className="h-8 w-8 text-gray-400" />
-              </div>
-              <p className="text-gray-300 font-medium">No cover letter has been created for this resume yet.</p>
-            </div>
-            
-            {/* Create Button */}
+
+          {/* Action Buttons */}
+          <div className="grid grid-cols-2 gap-3">
+            <Button
+              variant="default"
+              size="lg"
+              className={cn(
+                "h-12",
+                "bg-violet-500/10 hover:bg-violet-500/20",
+                "text-violet-400 hover:text-violet-300",
+                "border border-violet-500/30 hover:border-violet-500/50",
+                "transition-all duration-200",
+                "disabled:opacity-50 disabled:cursor-not-allowed"
+              )}
+              onClick={generateCoverLetter}
+              disabled={isGenerating || !job}
+            >
+              {isGenerating ? (
+                <>
+                  <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="h-5 w-5 mr-2" />
+                  Generate with AI
+                </>
+              )}
+            </Button>
+
             <Button
               variant="outline"
               size="lg"
-              className="w-full h-12 bg-gradient-to-r from-purple-600 to-violet-600 border-purple-500 text-white hover:from-purple-700 hover:to-violet-700 hover:border-purple-400 transition-all duration-300 shadow-md hover:shadow-lg"
-              onClick={() => updateField('has_cover_letter', true)}
+              className={cn(
+                "h-12",
+                "border-rose-500/30 hover:border-rose-500/50",
+                "text-rose-400 hover:text-rose-300",
+                "bg-rose-500/5 hover:bg-rose-500/10",
+                "transition-all duration-200"
+              )}
+              onClick={() => updateField('has_cover_letter', false)}
             >
-              <Plus className="h-5 w-5 mr-2" />
-              Create Cover Letter
+              <Trash2 className="h-5 w-5 mr-2" />
+              Delete
             </Button>
           </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {/* Empty State */}
+          <div className="p-6 rounded-xl bg-zinc-900/30 border border-zinc-800/50 text-center">
+            <div className="w-16 h-16 mx-auto mb-4 bg-zinc-800/50 rounded-2xl flex items-center justify-center border border-zinc-700/50">
+              <FileText className="h-8 w-8 text-zinc-500" />
+            </div>
+            <p className="text-zinc-400 text-sm">No cover letter has been created for this resume yet.</p>
+          </div>
+          
+          {/* Create Button */}
+          <Button
+            variant="outline"
+            size="lg"
+            className={cn(
+              "w-full h-12",
+              "bg-gradient-to-r from-violet-500/10 to-purple-500/10",
+              "border border-violet-500/30 hover:border-violet-500/50",
+              "text-violet-400 hover:text-violet-300",
+              "hover:from-violet-500/20 hover:to-purple-500/20",
+              "transition-all duration-200"
+            )}
+            onClick={() => updateField('has_cover_letter', true)}
+          >
+            <Plus className="h-5 w-5 mr-2" />
+            Create Cover Letter
+          </Button>
+        </div>
+      )}
 
       <ApiErrorDialog
         open={showErrorDialog}
