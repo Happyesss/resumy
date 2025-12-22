@@ -126,12 +126,12 @@ export function TextImportDialog({
       <DialogTrigger asChild>
         {trigger}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] bg-gray-900/95 backdrop-blur-xl border-gray-800/60 shadow-2xl">
+      <DialogContent className="sm:max-w-[500px] bg-zinc-950 backdrop-blur-xl border-zinc-800/60 shadow-2xl">
         <DialogHeader className="pb-4">
-          <DialogTitle className="text-xl bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent">
+          <DialogTitle className="text-xl text-white">
             Import Resume Content
           </DialogTitle>
-          <DialogDescription className="text-sm text-gray-400">
+          <DialogDescription className="text-sm text-zinc-400">
             Upload a PDF or paste your resume text below
           </DialogDescription>
         </DialogHeader>
@@ -143,10 +143,10 @@ export function TextImportDialog({
             onDrop={handleDrop}
             className={cn(
               "border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center gap-3 transition-all duration-300 cursor-pointer group",
-              "bg-gray-800/30 backdrop-blur-sm",
+              "bg-zinc-900/30 backdrop-blur-sm",
               isDragging
                 ? "border-violet-400 bg-violet-500/10"
-                : "border-gray-700/60 hover:border-violet-400/60 hover:bg-violet-500/5"
+                : "border-zinc-700/60 hover:border-violet-400/60 hover:bg-violet-500/5"
             )}
           >
             <input
@@ -166,7 +166,7 @@ export function TextImportDialog({
           </label>
           
           <div className="relative">
-            <div className="absolute -top-2.5 left-3 bg-gray-900 px-2 text-xs text-violet-400 font-medium">
+            <div className="absolute -top-2.5 left-3 bg-zinc-950 px-2 text-xs text-violet-400 font-medium">
               Or paste text here
             </div>
             <Textarea
@@ -174,10 +174,10 @@ export function TextImportDialog({
               onChange={(e) => setContent(e.target.value)}
               placeholder="Paste your resume content here..."
               className={cn(
-                "min-h-[100px] bg-gray-800/50 border-gray-700/60 rounded-lg pt-4",
-                "focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/20 focus:bg-gray-800/70",
-                "hover:border-gray-600/80 hover:bg-gray-800/60",
-                "text-white placeholder:text-gray-500 text-sm",
+                "min-h-[100px] bg-zinc-900/50 border-zinc-700/60 rounded-lg pt-4",
+                "focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/20 focus:bg-zinc-900/70",
+                "hover:border-zinc-600/80 hover:bg-zinc-900/60",
+                "text-white placeholder:text-zinc-500 text-sm",
                 "transition-all duration-300 resize-none"
               )}
             />
@@ -196,7 +196,7 @@ export function TextImportDialog({
           <Button
             variant="outline"
             onClick={() => setOpen(false)}
-            className="border-gray-700/60 bg-gray-800/30 text-gray-300 hover:bg-gray-800/50 hover:border-gray-600/80 hover:text-gray-200"
+            className="border-zinc-700/60 bg-zinc-800/30 text-zinc-300 hover:bg-zinc-800/50 hover:border-zinc-600/80 hover:text-zinc-200"
           >
             Cancel
           </Button>
@@ -204,9 +204,9 @@ export function TextImportDialog({
             onClick={handleImport}
             disabled={isProcessing || !content.trim()}
             className={cn(
-              "bg-gradient-to-r from-violet-600 to-indigo-600 text-white",
-              "hover:from-violet-700 hover:to-indigo-700",
-              "disabled:from-gray-700 disabled:to-gray-800 disabled:text-gray-400",
+              "bg-violet-600 text-white",
+              "hover:bg-violet-700",
+              "disabled:bg-zinc-700 disabled:text-zinc-400",
               "transition-all duration-300"
             )}
           >
