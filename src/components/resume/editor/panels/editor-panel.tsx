@@ -190,19 +190,12 @@ export function EditorPanel({
         </ScrollArea>
       </div>
 
-      {/* Fixed chatbot at bottom */}
-      <div className={cn(
-        "absolute w-full bottom-0 left-0 right-0",
-        "bg-zinc-950/95 backdrop-blur-xl",
-        "border-t border-zinc-800/50",
-        "rounded-t-xl shadow-2xl shadow-black/50"
-      )}>
-        <ChatBot 
-          resume={resume} 
-          onResumeChange={onResumeChange}
-          job={job}
-        />
-      </div>
+      {/* Fixed chatbot at bottom - removed wrapper, chatbot renders its own floating button */}
+      <ChatBot 
+        resume={resume} 
+        onResumeChange={onResumeChange}
+        job={job}
+      />
     </div>
   );
 } 

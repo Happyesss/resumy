@@ -278,13 +278,29 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
     setEditContent("");
   }, [setMessages]);
 
+  // Hide feedback button when chat is open
+  useEffect(() => {
+    const feedbackButton = document.querySelector('[aria-label="Send feedback"]');
+    if (feedbackButton) {
+      if (accordionValue === "chat") {
+        (feedbackButton as HTMLElement).style.display = 'none';
+      } else {
+        (feedbackButton as HTMLElement).style.display = '';
+      }
+    }
+  }, [accordionValue]);
+
   return (
     <>
       {/* Floating Chat Button */}
       <div className={cn(
-        "fixed left-4 sm:left-6 bottom-20 sm:bottom-24 z-[10000]",
+        "fixed left-6 bottom-6 z-[10000]",
         "transition-all duration-300 ease-in-out"
-      )}>
+      )}
+        style={{
+          bottom: 'calc(env(safe-area-inset-bottom, 0px) + 1.5rem)'
+        }}
+      >
         {accordionValue !== "chat" ? (
           // Collapsed circular button
           <button
