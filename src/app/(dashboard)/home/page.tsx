@@ -104,15 +104,17 @@ export default async function Home({
   // Display a friendly message if no profile exists
   if (!profile) {
     return (
-      <main className="min-h-screen p-6 md:p-8 lg:p-10 relative flex items-center justify-center">
-        <Card className="max-w-md w-full p-8 bg-white/80 backdrop-blur-xl border-white/40 shadow-2xl">
+      <main className="min-h-screen bg-neutral-950 flex items-center justify-center p-6">
+        <Card className="max-w-md w-full p-8 bg-neutral-900 border-neutral-800">
           <div className="text-center space-y-4">
-            <User className="w-12 h-12 text-muted-foreground mx-auto" />
-            <h2 className="text-2xl font-semibold text-gray-800">Profile Not Found</h2>
-            <p className="text-muted-foreground">
+            <div className="w-12 h-12 rounded-xl bg-neutral-800 flex items-center justify-center mx-auto">
+              <User className="w-6 h-6 text-neutral-400" />
+            </div>
+            <h2 className="text-xl font-semibold text-white">Profile Not Found</h2>
+            <p className="text-sm text-neutral-400">
               We couldn&apos;t find your profile information. Please contact support for assistance.
             </p>
-            <Button className="w-full bg-gradient-to-r from-teal-600 to-cyan-600 text-white">
+            <Button className="w-full bg-white text-neutral-900 hover:bg-neutral-100">
               Contact Support
             </Button>
           </div>
@@ -122,9 +124,8 @@ export default async function Home({
   }
 
   return (
-
     <main
-      className="min-h-screen relative sm:pb-12 pb-40 bg-black"
+      className="min-h-screen relative pb-16 sm:pb-12 bg-black"
       style={{
         backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.4) 1.5px, transparent 1.5px)`,
         backgroundSize: '40px 40px',
@@ -132,86 +133,121 @@ export default async function Home({
         backgroundAttachment: 'fixed'
       }}
     >
-
       {/* Welcome Dialog for New Signups */}
       <WelcomeDialog isOpen={!!isNewSignup} />
       
       {/* Template Handler for Template-based Resume Creation */}
       <TemplateHandler profile={profile} />
+      
       <div className="relative z-10">
-        <div className="pl-2 sm:pl-0 sm:container sm:max-none  max-w-7xl mx-auto  lg:px-8 md:px-8 sm:px-6 pt-4 ">
-          <div className="mb-6 space-y-4">
-            <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8">
+          {/* Header Section */}
+          <div className="mb-8 sm:mb-10">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              {/* Welcome Message */}
               <div
-                className="p-3 sm:p-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-[0_8px_24px_rgba(0,0,0,0.2)]"
+                className="p-4 sm:p-5 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md"
                 style={{
                   WebkitBackdropFilter: 'blur(12px)',
                   backdropFilter: 'blur(12px)',
                 }}
               >
-                <h1 className="text-lg sm:text-2xl font-semibold bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
-                  Hi there, {displayName || profile.first_name || 'User'}
+                <h1 className="text-xl sm:text-2xl font-semibold text-white tracking-tight">
+                  Welcome back, <span className="bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">{displayName || profile.first_name || 'User'}</span>
                 </h1>
-                <p className="text-xs sm:text-sm text-slate-300 mt-0.5">
-                  Welcome to your resume dashboard
+                <p className="text-sm text-neutral-400 mt-1">
+                  Manage and create your professional resumes
                 </p>
               </div>
 
-              {/* Share Management Button */}
+              {/* Quick Actions */}
+              <div className="flex items-center gap-3">
+                {/* Resume Count Badge - Desktop */}
+                <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md">
+                  <span className="text-xs text-neutral-400">Resumes</span>
+                  <span className="text-sm font-medium text-white">{totalResumesCount}/{userResumeLimit}</span>
+                </div>
+                
+                {/* Share Button - Desktop Only */}
+                <Link
+                  href="/resumes/share"
+                  className="hidden sm:flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 transition-all duration-200 group"
+                  style={{
+                    WebkitBackdropFilter: 'blur(12px)',
+                    backdropFilter: 'blur(12px)',
+                  }}
+                  title="Share Resumes"
+                >
+                  <Share2 className="w-4 h-4 text-purple-400 group-hover:text-purple-300 transition-colors" />
+                  <span className="text-sm font-medium text-neutral-300 group-hover:text-white transition-colors">
+                    Share
+                  </span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Mobile Resume Count and Share Row */}
+            <div className="flex sm:hidden items-center justify-between gap-3 mt-3">
+              {/* Share Button with Text - Mobile */}
               <Link
                 href="/resumes/share"
-                className="flex items-center gap-2 p-2.5 sm:px-4 sm:py-2.5 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md hover:bg-white/10 transition-all group"
+                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 transition-all duration-200 group"
                 style={{
                   WebkitBackdropFilter: 'blur(12px)',
                   backdropFilter: 'blur(12px)',
                 }}
-                title="Share Resumes"
               >
-                <Share2 className="w-5 h-5 text-purple-400 group-hover:text-purple-300 transition-colors" />
-                <span className="hidden sm:inline text-sm font-medium text-slate-200 group-hover:text-white transition-colors">
-                  Share Resumes
+                <Share2 className="w-4 h-4 text-purple-400 group-hover:text-purple-300 transition-colors" />
+                <span className="text-sm font-medium text-neutral-300 group-hover:text-white transition-colors">
+                  Share Your Resume
                 </span>
               </Link>
-            </div>
 
-            {/* Resume Bookshelf */}
-            <div className="">
-
-
-              {/* Base Resumes Section */}
-              <ResumesSection
-                type="base"
-                resumes={baseResumes}
-                profile={profile}
-                sortParam="baseSort"
-                directionParam="baseDirection"
-                currentSort={baseSort}
-                currentDirection={baseDirection}
-                canCreateMore={canCreateBase}
-                totalResumesCount={totalResumesCount}
-                resumeLimit={userResumeLimit}
-              />
-
-              {/* Thin Divider */}
-              <div className="relative py-2">
-                <div className="h-px bg-gradient-to-r from-transparent via-purple-300/30 to-transparent" />
+              {/* Resume Count - Mobile */}
+              <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md whitespace-nowrap">
+                <span className="text-xs text-neutral-400">Total Resumes:</span>
+                <span className="text-sm font-medium text-white">{totalResumesCount}/{userResumeLimit}</span>
               </div>
-
-              {/* Tailored Resumes Section */}
-              <ResumesSection
-                type="tailored"
-                resumes={tailoredResumes}
-                profile={profile}
-                sortParam="tailoredSort"
-                directionParam="tailoredDirection"
-                currentSort={tailoredSort}
-                currentDirection={tailoredDirection}
-                baseResumes={baseResumes}
-                canCreateMore={canCreateTailored}
-                totalResumesCount={totalResumesCount}
-                resumeLimit={userResumeLimit}
-              />
             </div>
+          </div>
+
+          {/* Resume Sections */}
+          <div className="space-y-8 sm:space-y-10">
+            {/* Base Resumes Section */}
+            <ResumesSection
+              type="base"
+              resumes={baseResumes}
+              profile={profile}
+              sortParam="baseSort"
+              directionParam="baseDirection"
+              currentSort={baseSort}
+              currentDirection={baseDirection}
+              canCreateMore={canCreateBase}
+              totalResumesCount={totalResumesCount}
+              resumeLimit={userResumeLimit}
+            />
+
+            {/* Section Divider */}
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-neutral-800/50" />
+              </div>
+            </div>
+
+            {/* Tailored Resumes Section */}
+            <ResumesSection
+              type="tailored"
+              resumes={tailoredResumes}
+              profile={profile}
+              sortParam="tailoredSort"
+              directionParam="tailoredDirection"
+              currentSort={tailoredSort}
+              currentDirection={tailoredDirection}
+              baseResumes={baseResumes}
+              canCreateMore={canCreateTailored}
+              totalResumesCount={totalResumesCount}
+              resumeLimit={userResumeLimit}
+            />
           </div>
         </div>
       </div>

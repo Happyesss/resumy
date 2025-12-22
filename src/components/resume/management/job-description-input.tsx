@@ -12,9 +12,9 @@ export function JobDescriptionInput({ value, onChange, isInvalid }: JobDescripti
     <div className="space-y-3">
       <Label 
         htmlFor="job-description"
-        className="text-base font-medium text-gray-200"
+        className="text-base font-medium text-neutral-200"
       >
-        Job Description <span className="text-red-500">*</span>
+        Job Description <span className="text-red-400">*</span>
       </Label>
       <textarea
         id="job-description"
@@ -22,9 +22,9 @@ export function JobDescriptionInput({ value, onChange, isInvalid }: JobDescripti
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={cn(
-          "w-full min-h-[120px] rounded-md bg-gray-800/80 text-gray-200",
-          "focus:border-blue-500 focus:ring-blue-500/20 placeholder:text-gray-400",
-          "resize-y p-4",
+          "w-full min-h-[120px] rounded-lg bg-neutral-800/80 text-neutral-200 border border-neutral-700/50",
+          "focus:border-purple-500 focus:ring-purple-500/20 focus:outline-none placeholder:text-neutral-500",
+          "resize-y p-4 transition-colors",
           isInvalid && "border-red-500 shake"
         )}
         required

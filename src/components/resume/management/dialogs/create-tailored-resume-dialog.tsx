@@ -16,7 +16,6 @@ import { countResumes, createTailoredResume } from "@/utils/actions/resumes/acti
 import { ArrowRight, Loader2, Plus, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { MiniResumePreview } from "../../shared/mini-resume-preview";
 import { BaseResumeSelector } from "../base-resume-selector";
 import { ImportMethodRadioGroup } from "../import-method-radio-group";
 import { JobDescriptionInput } from "../job-description-input";
@@ -356,27 +355,27 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
         <DialogTrigger asChild>
           {children}
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[500px] bg-white border border-gray-200 shadow-lg rounded-lg">
-          <div className="flex flex-col items-center justify-center p-8 space-y-4">
-            <div className="p-3 rounded-lg bg-purple-50 border border-purple-100">
+        <DialogContent className="sm:max-w-[420px] bg-neutral-900 border border-neutral-800 rounded-xl">
+          <div className="flex flex-col items-center justify-center p-6 space-y-4">
+            <div className="p-3 rounded-xl bg-purple-500/10 border border-purple-500/30">
               <Sparkles className="w-6 h-6 text-purple-400" />
             </div>
             <div className="text-center space-y-2 max-w-sm">
-              <h3 className="font-semibold text-lg text-gray-900">No Base Resumes Found</h3>
-              <p className="text-sm text-gray-600">
+              <h3 className="font-semibold text-lg text-white">No Base Resumes Found</h3>
+              <p className="text-sm text-neutral-400">
                 You need to create a base resume first before you can create a tailored version.
               </p>
             </div>
             {profile ? (
               <CreateBaseResumeDialog profile={profile}>
-                <Button className="mt-2 bg-purple-600 hover:bg-purple-700 text-white">
+                <Button className="mt-2 bg-purple-600 hover:bg-purple-700 text-white font-medium">
                   <Plus className="w-4 h-4 mr-2" />
                   Create Base Resume
                 </Button>
               </CreateBaseResumeDialog>
             ) : (
-              <Button disabled className="mt-2">
-                No profile available to create base resume
+              <Button disabled className="mt-2 bg-neutral-700 text-neutral-400">
+                No profile available
               </Button>
             )}
           </div>
@@ -391,196 +390,199 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
         <DialogTrigger asChild>
           {children}
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[700px] p-0 max-h-[85vh] overflow-y-auto bg-black border border-gray-800 shadow-lg rounded-lg">
-          <style jsx global>{`
-            @keyframes shake {
-              0%, 100% { transform: translateX(0); }
-              10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
-              20%, 40%, 60%, 80% { transform: translateX(2px); }
-            }
-            .shake {
-              animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both;
-            }
-          `}</style>
+        <DialogContent className="sm:max-w-[700px] p-0 max-h-[85vh] overflow-y-auto bg-neutral-900 border border-neutral-800 shadow-2xl rounded-2xl">
           
           {/* Header */}
-          <div className="relative px-6 py-6 border-b border-gray-800 bg-gradient-to-r from-neutral-900 via-black to-neutral-900">
+          <div className="relative px-6 py-5 border-b border-neutral-800">
             <div className="flex items-center gap-4">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl opacity-20 blur-sm"></div>
-                <div className="relative p-3 rounded-xl bg-gradient-to-br  from-purple-400 to-blue-500 shadow-lg">
-                  <Sparkles className="w-6 h-6 text-white" />
-                </div>
+              <div className="p-2.5 rounded-xl bg-gradient-to-br from-purple-500/20 to-indigo-500/20 border border-purple-500/30">
+                <Sparkles className="w-5 h-5 text-purple-400" />
               </div>
               <div className="flex-1">
-                <DialogTitle className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
+                <DialogTitle className="text-lg font-semibold text-white">
                   Create Tailored Resume
                 </DialogTitle>
-                <DialogDescription className="text-sm text-gray-600 mt-1">
+                <DialogDescription className="text-sm text-neutral-400 mt-0.5">
                   {dialogStep === 1 
                     ? "Choose a base resume to start with"
                     : "Configure job details and tailoring method"
                   }
                 </DialogDescription>
               </div>
-              {/* Enhanced Step indicator */}
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2">
-                  <div className={cn(
-                    "relative w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300",
-                    dialogStep >= 1 
-                      ? "bg-gradient-to-r from-purple-500 to-blue-600 text-white shadow-lg" 
-                      : "bg-gray-200 text-gray-600"
-                  )}>
-                    1
-                    {dialogStep >= 1 && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-600 rounded-full animate-pulse opacity-30"></div>
-                    )}
-                  </div>
-                  <div className={cn(
-                    "w-6 h-1 rounded-full transition-all duration-300",
-                    dialogStep >= 2 ? "bg-gradient-to-r from-purple-500 to-blue-600" : "bg-gray-200"
-                  )} />
-                  <div className={cn(
-                    "relative w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300",
-                    dialogStep >= 2 
-                      ? "bg-gradient-to-r from-purple-500 to-blue-600 text-white shadow-lg" 
-                      : "bg-gray-200 text-gray-600"
-                  )}>
-                    2
-                    {dialogStep >= 2 && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-600 rounded-full animate-pulse opacity-30"></div>
-                    )}
-                  </div>
+              {/* Step indicator */}
+              <div className="flex items-center gap-2">
+                <div className={cn(
+                  "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-200",
+                  dialogStep >= 1 
+                    ? "bg-purple-500/20 text-purple-400 border border-purple-500/50" 
+                    : "bg-neutral-800 text-neutral-500 border border-neutral-700"
+                )}>
+                  1
+                </div>
+                <div className={cn(
+                  "w-8 h-0.5 rounded-full transition-all duration-200",
+                  dialogStep >= 2 ? "bg-purple-500/50" : "bg-neutral-700"
+                )} />
+                <div className={cn(
+                  "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-200",
+                  dialogStep >= 2 
+                    ? "bg-purple-500/20 text-purple-400 border border-purple-500/50" 
+                    : "bg-neutral-800 text-neutral-500 border border-neutral-700"
+                )}>
+                  2
                 </div>
               </div>
             </div>
           </div>
 
           {/* Content */}
-          <div className="px-6 py-8 min-h-[300px] relative bg-black">
+          <div className="px-6 py-8 min-h-[300px] relative">
             {isCreating && <LoadingOverlay currentStep={currentStep} />}
             
             {dialogStep === 1 && (
               <div className="space-y-8">
                 {/* Hero Section */}
-                <div className="text-center space-y-4">
-                  <div className="relative mx-auto w-20 h-20 mb-4">
-                    <div className="absolute inset-0 bg-gradient-to-br from-purple-400 to-blue-500 rounded-full animate-pulse opacity-20"></div>
-                    <div className="relative w-full h-full bg-gradient-to-br from-purple-400 to-blue-500 rounded-full flex items-center justify-center shadow-lg">
-                      <Sparkles className="w-8 h-8 text-white" />
-                    </div>
+                <div className="text-center space-y-3">
+                  <div className="w-14 h-14 mx-auto rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center">
+                    <Sparkles className="w-7 h-7 text-purple-400" />
                   </div>
-                  <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
+                  <h3 className="text-lg font-semibold text-neutral-100 mb-2">
                     Select Your Base Resume
                   </h3>
-                  <p className="text-gray-400 max-w-lg mx-auto leading-relaxed">
-                    Choose which resume you&apos;d like to tailor for this specific job opportunity
+                  <p className="text-sm text-neutral-400 max-w-md mx-auto">
+                    Choose which resume you&apos;d like to tailor for this job opportunity
                   </p>
                 </div>
                 
                 {/* Form Section */}
                 <div className="max-w-lg mx-auto">
-                  <div className="bg-neutral-900 rounded-2xl p-6 shadow-xl border border-gray-800 backdrop-blur-sm">
-                    <div className="space-y-6">
+                  <div className="bg-neutral-900 rounded-xl p-5 border border-neutral-800">
+                    <div className="space-y-5">
                       {/* Base Resume Selector */}
-                      <div className="space-y-3">
-                        <Label className="text-sm font-semibold text-gray-200 flex items-center gap-2">
-                          <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-neutral-300">
                           Choose Base Resume
                         </Label>
-                        <div className="relative group">
-                          <BaseResumeSelector
-                            baseResumes={baseResumes}
-                            selectedResumeId={selectedBaseResume}
-                            onResumeSelect={setSelectedBaseResume}
-                            isInvalid={isBaseResumeInvalid}
-                          />
-                          <div className="absolute right-4 top-1/2 -translate-y-1/2 text-purple-400 opacity-0 group-focus-within:opacity-100 transition-opacity">
-                            <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
-                          </div>
-                        </div>
+                        <BaseResumeSelector
+                          baseResumes={baseResumes}
+                          selectedResumeId={selectedBaseResume}
+                          onResumeSelect={setSelectedBaseResume}
+                          isInvalid={isBaseResumeInvalid}
+                        />
                       </div>
                       
-                      {/* Enhanced Resume Flow Visualization */}
+                      {/* Resume Transformation Visualization */}
                       {selectedBaseResume ? (
-                        <div className="relative">
-                          <div className="bg-gradient-to-r from-purple-900/40 to-blue-900/40 rounded-2xl p-8 border border-purple-800/40 flex flex-col items-center">
-                            <div className="flex items-center justify-center gap-12">
-                              {/* Base Resume */}
-                              <div className="flex flex-col items-center space-y-2">
-                                <div className="relative">
-                                  <MiniResumePreview
-                                    name={baseResumes.find(r => r.id === selectedBaseResume)?.name || ''}
-                                    type="base"
-                                    className="w-20 h-28 hover:scale-105 transition-all duration-300 shadow-xl"
-                                  />
-                                  <div className="absolute -top-2 -right-2 w-5 h-5 bg-white rounded-full border-2 border-green-400 flex items-center justify-center shadow">
-                                    <div className="w-2.5 h-2.5 bg-green-400 rounded-full"></div>
+                        <div className="relative bg-gradient-to-br from-neutral-800/80 to-neutral-900/80 rounded-2xl p-6 border border-neutral-700/50 overflow-hidden">
+                          {/* Background decoration */}
+                          <div className="absolute inset-0 overflow-hidden">
+                            <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-purple-500/5 blur-2xl" />
+                            <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-indigo-500/5 blur-2xl" />
+                          </div>
+                          
+                          <div className="relative flex items-center justify-between gap-4">
+                            {/* Base Resume Card */}
+                            <div className="flex-1 flex flex-col items-center">
+                              <div className="relative group">
+                                <div className="w-20 h-28 bg-white rounded-lg shadow-lg border border-neutral-200 overflow-hidden transition-transform duration-300 group-hover:scale-105">
+                                  {/* Mini resume mockup */}
+                                  <div className="p-2 space-y-2">
+                                    <div className="h-1.5 w-10 mx-auto bg-neutral-300 rounded-full" />
+                                    <div className="space-y-1">
+                                      <div className="h-1 w-full bg-neutral-200 rounded-full" />
+                                      <div className="h-1 w-4/5 bg-neutral-200 rounded-full" />
+                                      <div className="h-1 w-3/4 bg-neutral-200 rounded-full" />
+                                    </div>
+                                    <div className="pt-1 space-y-1">
+                                      <div className="h-1 w-8 bg-neutral-300 rounded-full" />
+                                      <div className="h-1 w-full bg-neutral-200 rounded-full" />
+                                      <div className="h-1 w-5/6 bg-neutral-200 rounded-full" />
+                                    </div>
                                   </div>
                                 </div>
-                                <span className="text-xs font-semibold text-gray-300 mt-1 tracking-wide">Base Resume</span>
+                                {/* Glow effect */}
+                                <div className="absolute -inset-1 bg-neutral-400/20 rounded-lg blur-md -z-10" />
                               </div>
+                              <div className="mt-3 text-center">
+                                <span className="text-xs font-medium text-neutral-400 uppercase tracking-wide">Base</span>
+                              </div>
+                            </div>
 
-                              {/* Arrow and Label */}
-                              <div className="flex flex-col items-center">
-                                <div className="flex items-center justify-center mb-2">
-                                  <svg width="48" height="24" viewBox="0 0 48 24" fill="none">
-                                    <defs>
-                                      <linearGradient id="arrow-gradient" x1="0" y1="0" x2="48" y2="0" gradientUnits="userSpaceOnUse">
-                                        <stop stopColor="#a78bfa"/>
-                                        <stop offset="1" stopColor="#60a5fa"/>
-                                      </linearGradient>
-                                    </defs>
-                                    <path d="M4 12h36" stroke="url(#arrow-gradient)" strokeWidth="2" strokeDasharray="4 4" strokeLinecap="round"/>
-                                    <polygon points="44,8 48,12 44,16" fill="url(#arrow-gradient)" />
-                                  </svg>
+                            {/* Transformation Arrow */}
+                            <div className="flex flex-col items-center gap-2 px-2">
+                              <div className="relative">
+                                {/* Animated dots */}
+                                <div className="flex items-center gap-1">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-purple-400/60 animate-pulse" style={{ animationDelay: '0ms' }} />
+                                  <div className="w-1.5 h-1.5 rounded-full bg-purple-400/80 animate-pulse" style={{ animationDelay: '150ms' }} />
+                                  <div className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" style={{ animationDelay: '300ms' }} />
                                 </div>
-                                <span className="text-xs font-semibold text-purple-200 bg-gradient-to-r from-purple-600/80 to-blue-600/80 px-3 py-1 rounded-full shadow border border-purple-400/30">
-                                  Will Become
-                                </span>
+                                {/* Arrow icon */}
+                                <div className="absolute -right-4 top-1/2 -translate-y-1/2">
+                                  <ArrowRight className="w-4 h-4 text-purple-400" />
+                                </div>
                               </div>
+                              <span className="text-[10px] text-purple-400/70 font-medium">AI Tailor</span>
+                            </div>
 
-                              {/* Tailored Resume */}
-                              <div className="flex flex-col items-center space-y-2">
-                                <div className="relative">
-                                  <MiniResumePreview
-                                    name="Tailored Resume"
-                                    type="tailored"
-                                    className="w-20 h-28 hover:scale-105 transition-all duration-300 shadow-xl"
-                                  />
-                                  <div className="absolute -top-2 -right-2 w-5 h-5 bg-gradient-to-br from-purple-400 to-blue-500 rounded-full border-2 border-white flex items-center justify-center shadow">
+                            {/* Tailored Resume Card */}
+                            <div className="flex-1 flex flex-col items-center">
+                              <div className="relative group">
+                                <div className="w-20 h-28 bg-gradient-to-br from-white to-purple-50 rounded-lg shadow-lg border border-purple-200/50 overflow-hidden transition-transform duration-300 group-hover:scale-105">
+                                  {/* Mini resume mockup with purple accents */}
+                                  <div className="p-2 space-y-2">
+                                    <div className="h-1.5 w-10 mx-auto bg-purple-400 rounded-full" />
+                                    <div className="space-y-1">
+                                      <div className="h-1 w-full bg-purple-200 rounded-full" />
+                                      <div className="h-1 w-4/5 bg-purple-100 rounded-full" />
+                                      <div className="h-1 w-3/4 bg-purple-100 rounded-full" />
+                                    </div>
+                                    <div className="pt-1 space-y-1">
+                                      <div className="h-1 w-8 bg-purple-300 rounded-full" />
+                                      <div className="h-1 w-full bg-purple-100 rounded-full" />
+                                      <div className="h-1 w-5/6 bg-purple-100 rounded-full" />
+                                    </div>
+                                  </div>
+                                  {/* Sparkle badge */}
+                                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center shadow-md">
                                     <Sparkles className="w-3 h-3 text-white" />
                                   </div>
                                 </div>
-                                <span className="text-xs font-semibold text-gray-300 mt-1 tracking-wide">Tailored Resume</span>
+                                {/* Purple glow effect */}
+                                <div className="absolute -inset-1 bg-purple-400/20 rounded-lg blur-md -z-10" />
+                              </div>
+                              <div className="mt-3 text-center">
+                                <span className="text-xs font-medium text-purple-400 uppercase tracking-wide">Tailored</span>
                               </div>
                             </div>
                           </div>
                           
                           {/* Selected Resume Info */}
-                          <div className="mt-5 p-4 bg-gradient-to-r from-purple-900/40 to-blue-900/40 rounded-xl border border-purple-800/30 flex items-center gap-3 shadow">
-                            <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-blue-500 rounded-lg flex items-center justify-center shadow">
-                              <span className="text-white text-lg font-bold">✓</span>
-                            </div>
-                            <div className="flex-1">
-                              <div className="text-sm font-semibold text-purple-200">
-                                Selected: {baseResumes.find(r => r.id === selectedBaseResume)?.name}
-                              </div>
-                              <div className="text-xs text-purple-300 mt-1">
-                                This resume will be used as the foundation for your tailored version.
-                              </div>
+                          <div className="relative mt-5 pt-4 border-t border-neutral-700/50">
+                            <div className="flex items-center justify-center gap-2 bg-green-500/10 border border-green-500/30 rounded-lg px-4 py-2">
+                              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                              <span className="text-sm font-medium text-green-400">
+                                {baseResumes.find(r => r.id === selectedBaseResume)?.name}
+                              </span>
+                              <span className="text-xs text-neutral-500">selected</span>
                             </div>
                           </div>
                         </div>
                       ) : (
-                        <div className="border-2 border-dashed border-gray-700 rounded-xl p-8 text-center">
-                          <div className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <ArrowRight className="w-5 h-5 text-gray-500" />
+                        <div className="relative bg-neutral-800/30 border-2 border-dashed border-neutral-700/50 rounded-2xl p-8 text-center overflow-hidden">
+                          {/* Background pattern */}
+                          <div className="absolute inset-0 opacity-30">
+                            <div className="absolute top-4 left-4 w-8 h-10 rounded bg-neutral-700/50" />
+                            <div className="absolute top-4 right-4 w-8 h-10 rounded bg-neutral-700/50" />
                           </div>
-                          <p className="text-sm font-medium text-gray-500">
-                            Select a base resume to see preview
-                          </p>
+                          <div className="relative">
+                            <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-neutral-800 border border-neutral-700 flex items-center justify-center">
+                              <ArrowRight className="w-5 h-5 text-neutral-600" />
+                            </div>
+                            <p className="text-sm text-neutral-500 font-medium">
+                              Select a base resume to see the transformation preview
+                            </p>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -592,9 +594,9 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
             {dialogStep === 2 && (
               <div className="space-y-5">
                 {/* Show selected base resume */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                  <div className="text-sm text-blue-400">
-                    <span className="font-medium">Base Resume:</span> {baseResumes.find(r => r.id === selectedBaseResume)?.name}
+                <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-3">
+                  <div className="text-sm text-purple-300">
+                    <span className="font-medium text-purple-400">Base Resume:</span> {baseResumes.find(r => r.id === selectedBaseResume)?.name}
                   </div>
                 </div>
 
@@ -617,44 +619,40 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
           </div>
 
           {/* Footer */}
-          <div className="px-6 py-4 border-t border-gray-800 bg-gradient-to-r from-neutral-900 via-black to-neutral-900">
+          <div className="px-6 py-4 border-t border-neutral-800">
             <div className="flex justify-between items-center">
               <div>
                 {dialogStep === 2 && (
                   <Button 
-                    variant="outline" 
+                    variant="ghost" 
                     onClick={handleBack} 
-                    className="h-10 px-6 border-2 text-gray-200 border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all duration-200"
+                    className="h-10 px-4 text-neutral-400 hover:text-white hover:bg-neutral-800"
                   >
-                    <span className="flex items-center gap-2">
-                      ← Back
-                    </span>
+                    ← Back
                   </Button>
                 )}
               </div>
               <div className="flex gap-3">
                 <Button 
-                  variant="outline" 
+                  variant="ghost" 
                   onClick={() => setOpen(false)} 
-                  className="h-10 px-6 border-2 text-gray-200 border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all duration-200"
+                  className="h-10 px-4 text-neutral-400 hover:text-white hover:bg-neutral-800"
                 >
                   Cancel
                 </Button>
                 {dialogStep === 1 && (
                   <Button 
                     onClick={handleNext} 
-                    className="h-10 px-6 bg-gradient-to-r from-purple-600 to-blue-700 hover:from-purple-700 hover:to-blue-800 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                    className="h-10 px-6 bg-purple-600 hover:bg-purple-700 text-white font-medium"
                   >
-                    <span className="flex items-center gap-2">
-                      Next →
-                    </span>
+                    Next →
                   </Button>
                 )}
                 {dialogStep === 2 && (
                   <Button 
                     onClick={handleCreate} 
                     disabled={isCreating}
-                    className="h-10 px-6 bg-gradient-to-r from-purple-600 to-blue-700 hover:from-purple-700 hover:to-blue-800 disabled:from-purple-300 disabled:to-blue-300 text-white font-semibold shadow-lg hover:shadow-xl disabled:shadow-none transition-all duration-200"
+                    className="h-10 px-6 bg-purple-600 hover:bg-purple-700 disabled:bg-neutral-700 text-white font-medium disabled:text-neutral-400"
                   >
                     {isCreating ? (
                       <span className="flex items-center gap-2">
@@ -662,9 +660,7 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
                         Creating...
                       </span>
                     ) : (
-                      <span className="flex items-center gap-2">
-                        Create Resume
-                      </span>
+                      "Create Resume"
                     )}
                   </Button>
                 )}

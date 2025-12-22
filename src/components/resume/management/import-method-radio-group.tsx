@@ -33,21 +33,21 @@ function ImportMethodRadioItem({
         className={cn(
           "relative overflow-hidden",
           "flex flex-col items-center justify-center rounded-xl p-3 h-full min-h-[110px]",
-          "bg-gray-900/80 backdrop-blur-sm",
-          "border border-gray-700/50 shadow-lg shadow-black/20",
-          "hover:border-gray-600/70 hover:shadow-xl hover:shadow-black/30",
-          "hover:bg-gray-800/90",
+          "bg-neutral-800/80 backdrop-blur-sm",
+          "border border-neutral-700/50 shadow-lg shadow-black/20",
+          "hover:border-neutral-600/70 hover:shadow-xl hover:shadow-black/30",
+          "hover:bg-neutral-700/90",
           "transition-all duration-300 ease-out",
-          "peer-checked:border-blue-500/60 peer-checked:shadow-xl peer-checked:shadow-blue-500/10",
-          "peer-checked:bg-gray-800/90",
-          "focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+          "peer-checked:border-purple-500/60 peer-checked:shadow-xl peer-checked:shadow-purple-500/10",
+          "peer-checked:bg-neutral-700/90",
+          "focus:outline-none focus:ring-2 focus:ring-purple-500/30"
         )}
       >
         {/* Selected state indicator */}
         <div 
           className={cn(
             "absolute inset-0 rounded-xl opacity-0 transition-all duration-300",
-            "peer-checked:opacity-100 peer-checked:bg-gradient-to-br peer-checked:from-blue-600/20 peer-checked:to-purple-600/20"
+            "peer-checked:opacity-100 peer-checked:bg-gradient-to-br peer-checked:from-purple-600/20 peer-checked:to-purple-500/10"
           )}
         />
 
@@ -57,8 +57,8 @@ function ImportMethodRadioItem({
           <div 
             className={cn(
               "relative mb-4 p-3 rounded-lg",
-              "bg-gray-800/60 border border-gray-600/30",
-              "group-hover:bg-gray-700/70 group-hover:border-gray-500/50",
+              "bg-neutral-700/60 border border-neutral-600/30",
+              "group-hover:bg-neutral-600/70 group-hover:border-neutral-500/50",
               "peer-checked:bg-gradient-to-br peer-checked:border-transparent",
               "transition-all duration-300 ease-out"
             )}
@@ -73,7 +73,7 @@ function ImportMethodRadioItem({
 
           {/* Title with clean styling */}
           <h3 className={cn(
-            "font-semibold text-lg mb-2 text-gray-100",
+            "font-semibold text-lg mb-2 text-neutral-100",
             "group-hover:text-white peer-checked:text-white",
             "transition-colors duration-300"
           )}>
@@ -82,8 +82,8 @@ function ImportMethodRadioItem({
 
           {/* Description with clean styling */}
           <p className={cn(
-            "text-sm leading-relaxed text-gray-400",
-            "group-hover:text-gray-300 peer-checked:text-gray-300",
+            "text-sm leading-relaxed text-neutral-400",
+            "group-hover:text-neutral-300 peer-checked:text-neutral-300",
             "transition-colors duration-300"
           )}>
             {description}
@@ -92,9 +92,9 @@ function ImportMethodRadioItem({
           {/* Clean selection indicator */}
           <div className={cn(
             "absolute top-4 right-4 w-5 h-5 rounded-full",
-            "border-2 border-gray-600 bg-gray-800",
+            "border-2 border-neutral-600 bg-neutral-800",
             "opacity-0 peer-checked:opacity-100",
-            "peer-checked:border-blue-500 peer-checked:bg-blue-500",
+            "peer-checked:border-purple-500 peer-checked:bg-purple-500",
             "transition-all duration-300"
           )}>
             <div className={cn(

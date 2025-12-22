@@ -22,76 +22,65 @@ export function MiniResumePreview({
     if (!dateString) return '';
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
-      month: '2-digit',
-      day: '2-digit',
+      month: 'short',
+      day: 'numeric',
       year: 'numeric'
     });
   }
 
-  const accentBorder = type === 'base' ? 'gray-200' : 'purple-300';
-  const _accentBg = type === 'base' ? 'white' : 'purple-50';
-  const _accentText = type === 'base' ? 'gray-700' : 'purple-600';
-  const glowColor = type === 'base' 
-    ? 'shadow-gray-300/20 hover:shadow-gray-300/30' 
-    : 'shadow-purple-500/20 hover:shadow-purple-500/30';
-
   return (
     <div className={cn(
       "relative w-full aspect-[8.5/11]",
-      "rounded-lg overflow-hidden",
-      "border shadow-lg",
-      `border-${accentBorder}`,
-      type === 'base' ? "bg-white" : "bg-gradient-to-br from-purple-50 to-indigo-50",
-      "transition-all duration-300",
-      "hover:shadow-xl hover:-translate-y-1",
-      glowColor,
-      "group",
+      "rounded-xl overflow-hidden",
+      "border transition-all duration-200",
+      type === 'base' 
+        ? "bg-white border-neutral-200" 
+        : "bg-gradient-to-br from-white to-indigo-50/30 border-indigo-200/50",
+      "shadow-sm hover:shadow-md",
+      "group cursor-pointer",
       className
     )}>
-      {/* Paper texture */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent_0%,rgba(0,0,0,0.02)_50%,transparent_100%)]" />
-      
       {/* Content Container */}
       <div className="relative h-full p-4 flex flex-col">
         {/* Header Section */}
-        <div className="text-center mb-3 pb-2 border-b border-gray-200">
-          <h3 className="font-semibold text-gray-900 mb-1 text-xs leading-tight overflow-hidden break-words">
+        <div className="text-center mb-3 pb-2.5 border-b border-neutral-100">
+          <h3 className="font-semibold text-neutral-800 text-xs leading-tight line-clamp-2 min-h-[2.5em]">
             {name}
           </h3>
           <div className={cn(
-            "inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium",
+            "inline-flex items-center mt-1.5 px-2 py-0.5 rounded-full text-[10px] font-medium",
             type === 'base' 
-              ? "bg-gray-100 text-gray-700" 
-              : "bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-700"
+              ? "bg-neutral-100 text-neutral-600" 
+              : "bg-indigo-50 text-indigo-600"
           )}>
-            {type === 'base' ? 'Base Resume' : 'Tailored Resume'}
+            {type === 'base' ? 'Base' : 'Tailored'}
           </div>
         </div>
 
-        {/* Mock Resume Content */}
-        <div className="flex-1 space-y-4">
+        {/* Mock Resume Content - Skeleton Lines */}
+        <div className="flex-1 space-y-3">
           {/* Contact Info Section */}
-          <div className="flex justify-center gap-2">
+          <div className="flex justify-center gap-1.5">
             {[...Array(3)].map((_, i) => (
               <div
                 key={`contact-${i}`}
-                className="h-1 rounded-full bg-gray-200 w-12"
+                className="h-1 rounded-full bg-neutral-200 w-10"
               />
             ))}
           </div>
 
           {/* Summary Section */}
-          <div className="space-y-1">
-            <div className="h-1.5 w-16 rounded-full bg-gray-300" />
+          <div className="space-y-1.5">
+            <div className="h-1.5 w-14 rounded-full bg-neutral-300" />
             <div className="space-y-1">
               {[...Array(3)].map((_, i) => (
                 <div
                   key={`summary-${i}`}
                   className={cn(
-                    "h-1 rounded-full bg-gray-200",
-                    i === 0 && "w-[95%]",
-                    i === 1 && "w-[85%]",
-                    i === 2 && "w-[90%]"
+                    "h-1 rounded-full bg-neutral-150",
+                    i === 0 && "w-[95%] bg-neutral-200",
+                    i === 1 && "w-[85%] bg-neutral-200",
+                    i === 2 && "w-[75%] bg-neutral-200"
                   )}
                 />
               ))}
@@ -99,23 +88,21 @@ export function MiniResumePreview({
           </div>
 
           {/* Experience Section */}
-          <div className="space-y-1">
-            <div className="h-1.5 w-20 rounded-full bg-gray-300" />
+          <div className="space-y-1.5">
+            <div className="h-1.5 w-16 rounded-full bg-neutral-300" />
             {[...Array(2)].map((_, groupIndex) => (
-              <div key={`exp-group-${groupIndex}`} className="py-1 space-y-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="h-1 w-24 rounded-full bg-gray-300" />
-                  <div className="h-1 w-16 rounded-full bg-gray-200" />
+              <div key={`exp-group-${groupIndex}`} className="py-0.5 space-y-1">
+                <div className="flex items-center gap-1.5">
+                  <div className="h-1 w-20 rounded-full bg-neutral-300" />
+                  <div className="h-1 w-12 rounded-full bg-neutral-200" />
                 </div>
                 {[...Array(2)].map((_, i) => (
                   <div
                     key={`exp-${groupIndex}-${i}`}
                     className={cn(
-                      "h-1 rounded-full bg-gray-200",
-                      groupIndex === 0 && i === 0 && "w-[85%]",
-                      groupIndex === 0 && i === 1 && "w-[90%]",
-                      groupIndex === 1 && i === 0 && "w-[95%]",
-                      groupIndex === 1 && i === 1 && "w-[80%]"
+                      "h-1 rounded-full bg-neutral-200",
+                      i === 0 && "w-[90%]",
+                      i === 1 && "w-[80%]"
                     )}
                   />
                 ))}
@@ -124,13 +111,13 @@ export function MiniResumePreview({
           </div>
 
           {/* Skills Section */}
-          <div className="space-y-1">
-            <div className="h-1.5 w-14 rounded-full bg-gray-300" />
-            <div className="flex flex-wrap gap-2">
+          <div className="space-y-1.5">
+            <div className="h-1.5 w-12 rounded-full bg-neutral-300" />
+            <div className="flex flex-wrap gap-1.5">
               {[...Array(4)].map((_, i) => (
                 <div
                   key={`skill-${i}`}
-                  className="h-1 rounded-full bg-gray-200 w-16"
+                  className="h-1 rounded-full bg-neutral-200 w-12"
                 />
               ))}
             </div>
@@ -139,20 +126,19 @@ export function MiniResumePreview({
 
         {/* Footer with creation date */}
         {createdAt && (
-          <div className="absolute bottom-2 right-2 text-[10px] text-gray-400">
-            {formatDate(createdAt)}
+          <div className="mt-2 pt-2 border-t border-neutral-100">
+            <span className="text-[10px] text-neutral-400">
+              {formatDate(createdAt)}
+            </span>
           </div>
         )}
       </div>
 
-      {/* Hover overlay with enhanced glow */}
+      {/* Subtle hover overlay */}
       <div className={cn(
         "absolute inset-0 opacity-0 group-hover:opacity-100",
-        "transition-opacity duration-300",
-        "bg-gradient-to-br",
-        type === 'base'
-          ? "from-gray-500/5 to-gray-500/5"
-          : "from-purple-500/10 to-indigo-500/10"
+        "transition-opacity duration-200",
+        "bg-gradient-to-t from-neutral-900/5 to-transparent"
       )} />
     </div>
   );

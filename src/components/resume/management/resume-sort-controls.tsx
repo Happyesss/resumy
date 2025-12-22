@@ -62,15 +62,19 @@ export function ResumeSortControls({
     <div className="hidden sm:flex items-center gap-2">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="gap-2 bg-white">
-            <span>Sort by {sortOptions.find(opt => opt.value === currentSort)?.label}</span>
+          <Button 
+            variant="ghost" 
+            className="gap-2 bg-neutral-800 border border-neutral-700 text-neutral-300 hover:bg-neutral-700 hover:text-white"
+          >
+            <span className="text-sm">Sort: {sortOptions.find(opt => opt.value === currentSort)?.label}</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="end" className="bg-neutral-900 border-neutral-800">
           {sortOptions.map((option) => (
             <DropdownMenuItem
               key={option.value}
               onClick={() => handleSortChange(option.value as SortOption)}
+              className="text-neutral-300 hover:text-white hover:bg-neutral-800 focus:bg-neutral-800 focus:text-white"
             >
               <option.icon className="mr-2 h-4 w-4" />
               {option.label}

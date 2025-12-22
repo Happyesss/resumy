@@ -316,10 +316,10 @@ export function ShareNotifications() {
         >
           <Bell className={cn(
             "h-4 w-4 transition-colors",
-            newCount > 0 ? "text-pink-400" : "text-slate-400"
+            newCount > 0 ? "text-white" : "text-slate-400"
           )} />
           {newCount > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-bold rounded-full bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-lg shadow-pink-500/30 animate-pulse">
+            <span className="absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-bold rounded-full bg-purple-600 text-white border border-purple-500">
               {newCount > 99 ? '99+' : newCount}
             </span>
           )}
@@ -330,10 +330,10 @@ export function ShareNotifications() {
         className="w-[calc(100vw-2rem)] sm:w-[380px] max-h-[480px] overflow-hidden bg-black/95 border border-white/10 rounded-xl shadow-2xl p-0"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-b border-white/10 bg-gradient-to-r from-pink-500/10 to-purple-500/10">
+        <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-b border-white/10 bg-neutral-900">
           <div className="flex items-center gap-1.5 sm:gap-2">
-            <div className="p-1 sm:p-1.5 rounded-lg bg-gradient-to-br from-pink-500 to-purple-500">
-              <Eye className="h-3 sm:h-3.5 w-3 sm:w-3.5 text-white" />
+            <div className="p-1 sm:p-1.5 rounded-lg bg-neutral-800 border border-neutral-700">
+              <Eye className="h-3 sm:h-3.5 w-3 sm:w-3.5 text-neutral-400" />
             </div>
             <h3 className="font-semibold text-white text-xs sm:text-sm">Resume Views</h3>
           </div>
@@ -348,8 +348,8 @@ export function ShareNotifications() {
         <div className="overflow-y-auto max-h-[360px]">
           {!data || data.notifications.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-              <div className="p-4 rounded-full bg-white/5 mb-4">
-                <Eye className="h-8 w-8 text-slate-500" />
+              <div className="p-4 rounded-full bg-neutral-800 border border-neutral-700 mb-4">
+                <Eye className="h-8 w-8 text-neutral-500" />
               </div>
               <p className="text-sm text-slate-400 mb-1">No views yet</p>
               <p className="text-xs text-slate-500">
@@ -361,10 +361,10 @@ export function ShareNotifications() {
               {data.notifications.slice(0, 20).map((notification) => (
                 <div
                   key={notification.id}
-                  className="flex items-start gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 hover:bg-white/5 transition-colors cursor-pointer"
+                  className="flex items-start gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 hover:bg-neutral-800/50 transition-colors cursor-pointer"
                 >
                   {/* Device icon */}
-                  <div className="p-1.5 sm:p-2 rounded-lg bg-white/5 flex-shrink-0">
+                  <div className="p-1.5 sm:p-2 rounded-lg bg-neutral-800 border border-neutral-700 flex-shrink-0">
                     <DeviceIcon 
                       deviceType={notification.deviceType} 
                       className="h-3.5 sm:h-4 w-3.5 sm:w-4 text-slate-400" 
@@ -408,11 +408,11 @@ export function ShareNotifications() {
 
         {/* Footer */}
         {data && data.notifications.length > 0 && (
-          <div className="px-3 sm:px-4 py-2.5 sm:py-3 border-t border-white/10 bg-white/5">
+          <div className="px-3 sm:px-4 py-2.5 sm:py-3 border-t border-white/10 bg-neutral-900">
             <Link
               href="/resumes/share"
               onClick={() => setIsOpen(false)}
-              className="flex items-center justify-center gap-1.5 sm:gap-2 w-full py-2 px-3 sm:px-4 text-xs sm:text-sm font-medium text-white bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 rounded-lg transition-colors"
+              className="flex items-center justify-center gap-1.5 sm:gap-2 w-full py-2 px-3 sm:px-4 text-xs sm:text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors"
             >
               View All Analytics
               <Eye className="h-4 w-4" />

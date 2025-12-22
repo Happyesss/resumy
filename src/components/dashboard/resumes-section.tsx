@@ -88,30 +88,39 @@ export function ResumesSection({
   }, []);
 
   if (!isMounted) {
-    return <div>Loading...</div>;
+    return (
+      <div className="animate-pulse space-y-4">
+        <div className="h-8 w-48 bg-neutral-800 rounded-lg" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="aspect-[8.5/11] bg-neutral-800 rounded-xl" />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   const config = {
     base: {
-      gradient: 'from-purple-400 to-indigo-500',
-      border: 'border-purple-400/30',
-      bg: 'bg-purple-400/10',
-      text: 'text-purple-400',
+      gradient: 'from-neutral-200 to-neutral-400',
+      border: 'border-neutral-700',
+      bg: 'bg-neutral-800/50',
+      text: 'text-neutral-300',
       icon: FileText,
       accent: {
-        bg: 'purple-400/20',
-        hover: 'purple-400/30'
+        bg: 'neutral-800',
+        hover: 'neutral-700'
       }
     },
     tailored: {
-      gradient: 'from-purple-400 to-blue-500',
-      border: 'border-purple-400/30',
-      bg: 'bg-blue-400/10',
-      text: 'text-purple-400',
+      gradient: 'from-blue-400 to-indigo-400',
+      border: 'border-indigo-500/30',
+      bg: 'bg-indigo-500/10',
+      text: 'text-indigo-400',
       icon: Sparkles,
       accent: {
-        bg: 'blue-400/20',
-        hover: 'blue-400/30'
+        bg: 'indigo-500/20',
+        hover: 'indigo-500/30'
       }
     }
   }[type];
@@ -190,63 +199,46 @@ export function ResumesSection({
             <button className={cn(
               "aspect-[8.5/11] rounded-xl",
               "relative overflow-hidden",
-              "border-2 border-dashed transition-all duration-300",
-              "group/new-resume flex flex-col items-center justify-center gap-4",
-              "border-red-400/40 hover:border-red-400/70",
-              "bg-gradient-to-br from-gray-900 to-gray-800",
-              "hover:shadow-lg hover:shadow-red-400/10 hover:-translate-y-1",
-              "w-full sm:w-auto"
+              "border-2 border-dashed transition-all duration-200",
+              "group/new-resume flex flex-col items-center justify-center gap-3",
+              "border-neutral-700 hover:border-neutral-600",
+              "bg-neutral-900",
+              "hover:-translate-y-0.5",
+              "w-full"
             )}>
               <div className={cn(
                 "relative z-10 flex flex-col items-center",
-                "transform transition-all duration-300",
-                "group-hover/new-resume:scale-105"
+                "transition-all duration-200"
               )}>
                 <div className={cn(
-                  "h-12 w-12 rounded-xl",
+                  "h-11 w-11 rounded-lg",
                   "flex items-center justify-center",
-                  "bg-gradient-to-br from-gray-800 to-gray-700",
-                  "border border-red-400/30",
-                  "shadow-sm group-hover/new-resume:shadow-md",
-                  "group-hover/new-resume:scale-110"
+                  "bg-neutral-800",
+                  "border border-neutral-700"
                 )}>
-                  <config.icon className={cn(
-                    "h-5 w-5 transition-all duration-300",
-                    "text-red-400",
-                    "group-hover/new-resume:scale-110"
-                  )} />
+                  <config.icon className="h-5 w-5 text-neutral-500" />
                 </div>
                 
-                <span className={cn(
-                  "mt-4 text-sm font-medium",
-                  "transition-all duration-300",
-                  "text-red-400",
-                  "group-hover/new-resume:font-semibold"
-                )}>
+                <span className="mt-3 text-sm font-medium text-neutral-400">
                   Limit Reached
                 </span>
                 
-                <span className={cn(
-                  "mt-2 text-xs",
-                  "transition-all duration-300 opacity-70",
-                  "text-red-400/70",
-                  "group-hover/new-resume:opacity-100"
-                )}>
+                <span className="mt-1 text-xs text-neutral-500">
                   {totalResumesCount}/{resumeLimit} resumes
                 </span>
               </div>
             </button>
           </AlertDialogTrigger>
-          <AlertDialogContent className="border-black">
+          <AlertDialogContent className="bg-neutral-900 border-neutral-800">
             <AlertDialogHeader>
               <AlertDialogTitle className="text-white">Resume Limit Reached</AlertDialogTitle>
-              <AlertDialogDescription className="text-gray-400">
+              <AlertDialogDescription className="text-neutral-400">
                 You have reached the maximum limit of {resumeLimit} resumes ({totalResumesCount}/{resumeLimit} used). 
                 Please delete an existing resume to create a new one.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel className="bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700">
+              <AlertDialogCancel className="bg-neutral-800 border-neutral-700 text-neutral-300 hover:bg-neutral-700 hover:text-white">
                 Okay
               </AlertDialogCancel>
             </AlertDialogFooter>
@@ -266,57 +258,48 @@ export function ResumesSection({
         <button className={cn(
           "aspect-[8.5/11] rounded-xl",
           "relative overflow-hidden",
-          "border-2 border-dashed transition-all duration-300",
-          "group/new-resume flex flex-col items-center justify-center gap-4",
+          "border-2 border-dashed transition-all duration-200",
+          "group/new-resume flex flex-col items-center justify-center gap-3",
           type === 'base'
-            ? "border-gray-400 hover:border-gray-100"
-            : "border-purple-400/40 hover:border-purple-400/70",
-          "bg-gradient-to-br from-gray-900 to-gray-800",
-          "hover:shadow-lg hover:shadow-purple-400/10 hover:-translate-y-1",
-          "w-full sm:w-auto"
+            ? "border-neutral-600 hover:border-neutral-500"
+            : "border-indigo-500/40 hover:border-indigo-500/60",
+          "bg-neutral-900",
+          "hover:-translate-y-0.5",
+          "w-full"
         )}>
           <div className={cn(
             "relative z-10 flex flex-col items-center",
-            "transform transition-all duration-300",
-            "group-hover/new-resume:scale-105"
+            "transition-all duration-200",
+            "group-hover/new-resume:scale-[1.02]"
           )}>
             <div className={cn(
-              "h-12 w-12 rounded-xl",
+              "h-11 w-11 rounded-lg",
               "flex items-center justify-center",
-              "bg-gradient-to-br from-gray-800 to-gray-700",
-              type === 'base'
-                ? "border border-white"
-                : "border border-purple-400/30",
-              "shadow-sm group-hover/new-resume:shadow-md",
-              "group-hover/new-resume:scale-110"
+              "bg-neutral-800 group-hover/new-resume:bg-neutral-700",
+              "border",
+              type === 'base' ? "border-neutral-600" : "border-indigo-500/40",
+              "transition-colors duration-200"
             )}>
               <config.icon className={cn(
-                "h-5 w-5 transition-all duration-300",
+                "h-5 w-5 transition-colors duration-200",
                 type === 'base'
-                  ? "text-white"
-                  : "text-purple-400",
-                "group-hover/new-resume:scale-110"
+                  ? "text-neutral-400 group-hover/new-resume:text-white"
+                  : "text-indigo-400 group-hover/new-resume:text-indigo-300"
               )} />
             </div>
             
             <span className={cn(
-              "mt-4 text-sm font-medium",
-              "transition-all duration-300",
+              "mt-3 text-sm font-medium transition-colors duration-200",
               type === 'base'
-                ? "text-white"
-                : "text-purple-400",
-              "group-hover/new-resume:font-semibold"
+                ? "text-neutral-400 group-hover/new-resume:text-white"
+                : "text-indigo-400 group-hover/new-resume:text-indigo-300"
             )}>
               Create {type === 'base' ? 'Base' : 'Tailored'} Resume
             </span>
             
             <span className={cn(
-              "mt-2 text-xs",
-              "transition-all duration-300 opacity-0",
-              type === 'base'
-                ? "text-white/70"
-                : "text-purple-400/70",
-              "group-hover/new-resume:opacity-100"
+              "mt-1 text-xs transition-opacity duration-200 opacity-0 group-hover/new-resume:opacity-100",
+              "text-neutral-500"
             )}>
               {totalResumesCount}/{resumeLimit} used
             </span>
@@ -327,48 +310,17 @@ export function ResumesSection({
   };
 
   const LimitReachedCard = () => (
-    <div className={cn(
-      "group/limit",
-      "transition-all duration-300",
-    )}>
-      <div className={cn(
-        "aspect-[8.5/11] rounded-xl",
-        "relative overflow-hidden",
-        "border-2 border-dashed",
-        "flex flex-col items-center justify-center gap-4",
-        "border-purple-400/40",
-        "bg-gradient-to-br from-gray-900 to-gray-800",
-        "shadow-lg shadow-purple-400/10",
-        "border-purple-400/70"
-      )}>
-        <div className={cn(
-          "relative z-10 flex flex-col items-center",
-          "transform transition-all duration-300"
-        )}>
-          <div className={cn(
-            "h-12 w-12 rounded-xl",
-            "flex items-center justify-center",
-            "bg-gradient-to-br from-gray-800 to-gray-700",
-            "border border-purple-400/30",
-            "shadow-md"
-          )}>
-            <config.icon className={cn(
-              "h-5 w-5 text-purple-400"
-            )} />
-          </div>
-          <span className={cn(
-            "mt-4 text-sm font-medium",
-            "text-purple-400"
-          )}>
-            {type === 'base' ? 'Base' : 'Tailored'} Limit Reached
-          </span>
-          <span className={cn(
-            "mt-2 text-xs text-center px-2",
-            "text-purple-400/70"
-          )}>
-            Delete existing resumes to create more
-          </span>
+    <div className="aspect-[8.5/11] rounded-xl relative overflow-hidden border-2 border-dashed border-neutral-700 bg-neutral-900 flex flex-col items-center justify-center gap-3">
+      <div className="flex flex-col items-center">
+        <div className="h-11 w-11 rounded-lg flex items-center justify-center bg-neutral-800 border border-neutral-700">
+          <config.icon className="h-5 w-5 text-neutral-500" />
         </div>
+        <span className="mt-3 text-sm font-medium text-neutral-400">
+          {type === 'base' ? 'Base' : 'Tailored'} Limit Reached
+        </span>
+        <span className="mt-1 text-xs text-center px-4 text-neutral-500">
+          Delete existing resumes to create more
+        </span>
       </div>
     </div>
   );
@@ -379,28 +331,25 @@ export function ResumesSection({
 
     return (
       <div className={cn(
-        "group relative transition-all duration-300",
+        "group relative transition-all duration-200",
         isDeleting && "opacity-50 pointer-events-none",
-        resume.isOptimistic && "animate-in slide-in-from-top-1 duration-300"
+        resume.isOptimistic && "animate-in slide-in-from-top-1 duration-200"
       )}>
         <AlertDialog>
           <div className="relative">
             {resume.isOptimistic ? (
-              <div className={cn("cursor-wait relative")}>
+              <div className="cursor-wait relative">
                 <MiniResumePreview
                   name={resume.name}
                   type={type}
                   target_role={resume.target_role}
                   createdAt={resume.created_at}
-                  className={cn(
-                    "transition-all duration-300 opacity-60",
-                    "pointer-events-none"
-                  )}
+                  className="opacity-60 pointer-events-none"
                 />
-                <div className="absolute inset-0 bg-gray-900/90 backdrop-blur-sm rounded-xl flex items-center justify-center z-10">
+                <div className="absolute inset-0 bg-neutral-900/90 backdrop-blur-sm rounded-xl flex items-center justify-center z-10">
                   <div className="flex flex-col items-center gap-2">
-                    <Loader2 className="h-5 w-5 animate-spin text-purple-400" />
-                    <span className="text-xs font-medium text-purple-400">Copying...</span>
+                    <Loader2 className="h-5 w-5 animate-spin text-neutral-400" />
+                    <span className="text-xs font-medium text-neutral-400">Copying...</span>
                   </div>
                 </div>
               </div>
@@ -411,13 +360,13 @@ export function ResumesSection({
                   type={type}
                   target_role={resume.target_role}
                   createdAt={resume.created_at}
-                  className="hover:-translate-y-1 transition-transform duration-300"
+                  className="hover:-translate-y-0.5 transition-transform duration-200"
                 />
               </Link>
             )}
 
             {!resume.isOptimistic && (
-              <div className="absolute bottom-3 left-3 flex gap-2">
+              <div className="absolute bottom-3 right-3 flex gap-2">
                 <AlertDialogTrigger asChild>
                   <Button
                     size="icon"
@@ -425,13 +374,11 @@ export function ResumesSection({
                     disabled={isDeleting}
                     className={cn(
                       "h-8 w-8 rounded-lg",
-                      "bg-gray-800 hover:bg-gray-700",
-                      "text-rose-400 hover:text-rose-300",
-                      "border border-gray-700",
-                      "shadow-sm",
-                      "transition-all duration-300",
-                      "hover:scale-105 hover:shadow-md",
-                      "hover:-translate-y-0.5",
+                      "bg-neutral-800/90 hover:bg-red-500/20",
+                      "text-red-400 hover:text-red-300",
+                      "border border-neutral-700 hover:border-red-500/50",
+                      "backdrop-blur-sm",
+                      "transition-all duration-200",
                       isDeleting && "opacity-50 cursor-not-allowed"
                     )}
                   >
@@ -451,20 +398,18 @@ export function ResumesSection({
                     disabled={isDeleting || isCopying}
                     className={cn(
                       "h-8 w-8 rounded-lg",
-                      "bg-gray-800 hover:bg-gray-700",
-                      "text-white hover:text-green-400",
-                      "border border-gray-700",
-                      "shadow-sm",
-                      "transition-all duration-300",
-                      "hover:scale-105 hover:shadow-md",
-                      "hover:-translate-y-0.5",
+                      "bg-neutral-800/90 hover:bg-neutral-700",
+                      "text-neutral-300 hover:text-white",
+                      "border border-neutral-700",
+                      "backdrop-blur-sm",
+                      "transition-all duration-200",
                       (isDeleting || isCopying) && "opacity-50 cursor-not-allowed"
                     )}
                   >
                     {isCopying ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
-                      <Copy className="h-4 w-4 text-white" />
+                      <Copy className="h-4 w-4" />
                     )}
                   </Button>
                 ) : (
@@ -475,48 +420,29 @@ export function ResumesSection({
                         variant="ghost"
                         className={cn(
                           "h-8 w-8 rounded-lg",
-                          "bg-gray-800 hover:bg-gray-700",
-                          "text-white hover:text-green-400",
-                          "border border-gray-700",
-                          "shadow-sm",
-                          "transition-all duration-300",
-                          "hover:scale-105 hover:shadow-md",
-                          "hover:-translate-y-0.5"
+                          "bg-neutral-800/90 hover:bg-neutral-700",
+                          "text-neutral-300 hover:text-white",
+                          "border border-neutral-700",
+                          "backdrop-blur-sm",
+                          "transition-all duration-200"
                         )}
                       >
-                        <Copy className="h-4 w-4 text-white" />
+                        <Copy className="h-4 w-4" />
                       </Button>
                     </AlertDialogTrigger>
-                    <AlertDialogContent className="border-black">
+                    <AlertDialogContent className="bg-neutral-900 border-neutral-800">
                       <AlertDialogHeader>
                         <AlertDialogTitle className="text-white">
-                          {canCreateMore ? "Create Resume" : "Resume Limit Reached"}
+                          Resume Limit Reached
                         </AlertDialogTitle>
-                        <AlertDialogDescription className="text-gray-400">
-                          {canCreateMore 
-                            ? `You can create more ${type} resumes. Currently using ${totalResumesCount}/${resumeLimit} total resumes.`
-                            : `You have reached the maximum limit of ${resumeLimit} resumes (${totalResumesCount}/${resumeLimit} used). Please delete an existing resume to create a new one.`
-                          }
+                        <AlertDialogDescription className="text-neutral-400">
+                          You have reached the maximum limit of {resumeLimit} resumes ({totalResumesCount}/{resumeLimit} used). Please delete an existing resume to create a new one.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel className="bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700">
-                          Cancel
+                        <AlertDialogCancel className="bg-neutral-800 border-neutral-700 text-neutral-300 hover:bg-neutral-700 hover:text-white">
+                          Okay
                         </AlertDialogCancel>
-                        {canCreateMore && (
-                          <AlertDialogAction asChild>
-                            <CreateResumeDialog 
-                              type={type as 'base' | 'tailored'}
-                              profile={profile}
-                              totalResumesCount={totalResumesCount}
-                              baseResumes={type === 'tailored' ? baseResumes : undefined}
-                            >
-                              <Button className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:from-purple-600 hover:to-indigo-700">
-                                Create Resume
-                              </Button>
-                            </CreateResumeDialog>
-                          </AlertDialogAction>
-                        )}
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
@@ -524,15 +450,15 @@ export function ResumesSection({
               </div>
             )}
           </div>
-          <AlertDialogContent className="border-black">
+          <AlertDialogContent className="bg-neutral-900 border-neutral-800">
             <AlertDialogHeader>
               <AlertDialogTitle className="text-white">Delete Resume</AlertDialogTitle>
-              <AlertDialogDescription className="text-gray-400">
+              <AlertDialogDescription className="text-neutral-400">
                 Are you sure you want to delete &quot;{resume.name}&quot;? This action cannot be undone.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel className="bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700">
+              <AlertDialogCancel className="bg-neutral-800 border-neutral-700 text-neutral-300 hover:bg-neutral-700 hover:text-white">
                 Cancel
               </AlertDialogCancel>
               <AlertDialogAction
@@ -541,7 +467,7 @@ export function ResumesSection({
                     handleDeleteResume(resume.id, resume.name);
                   });
                 }}
-                className="bg-rose-600 text-white hover:bg-rose-700"
+                className="bg-red-600 text-white hover:bg-red-700"
               >
                 Delete
               </AlertDialogAction>
@@ -553,146 +479,138 @@ export function ResumesSection({
   };
 
   return (
-    <div className="relative">
-      <div className="flex flex-col gap-4 w-full">
-        <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <h2 className={
-            type === 'base'
-              ? "text-2xl sm:text-3xl font-semibold tracking-tight text-gray-200"
-              : `text-2xl sm:text-3xl font-semibold tracking-tight bg-gradient-to-r ${config.gradient} bg-clip-text text-transparent`
-          }>
-            {type === 'base' ? 'Base' : 'Tailored'} Resumes
+    <div className="space-y-4">
+      {/* Section Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <h2 className={cn(
+            "text-lg sm:text-xl font-semibold tracking-tight",
+            type === 'base' ? "text-white" : "text-white"
+          )}>
+            {type === 'base' ? 'Base Resumes' : 'Tailored Resumes'}
           </h2>
-          <div className="flex items-center gap-2 mb-4">
-            <ResumeSortControls 
-              sortParam={sortParam}
-              directionParam={directionParam}
-              currentSort={currentSort}
-              currentDirection={currentDirection}
-            />
-          </div>
+          <span className={cn(
+            "px-2 py-0.5 rounded-md text-xs font-medium",
+            type === 'base' 
+              ? "bg-neutral-800 text-neutral-400" 
+              : "bg-indigo-500/10 text-indigo-400"
+          )}>
+            {optimisticResumes.length}
+          </span>
         </div>
-
-        {optimisticResumes.length > paginationState.itemsPerPage && (
-          <div className="hidden md:flex w-full items-start justify-start -mt-4">
-            <Pagination className="flex justify-end">
-              <PaginationContent className="gap-1">
-                <PaginationItem>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handlePageChange(paginationState.currentPage - 1)}
-                    disabled={paginationState.currentPage === 1}
-                    className="h-8 w-8 p-0 text-gray-400 hover:text-white bg-gray-800 border-gray-700"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </Button>
-                </PaginationItem>
-                
-                {Array.from({ length: Math.ceil(optimisticResumes.length / paginationState.itemsPerPage) }).map((_, index) => {
-                  const pageNumber = index + 1;
-                  const totalPages = Math.ceil(optimisticResumes.length / paginationState.itemsPerPage);
-                  
-                  if (
-                    pageNumber === 1 || 
-                    pageNumber === totalPages || 
-                    (pageNumber >= paginationState.currentPage - 1 && pageNumber <= paginationState.currentPage + 1)
-                  ) {
-                    return (
-                      <PaginationItem key={index}>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handlePageChange(pageNumber)}
-                          className={cn(
-                            "h-8 w-8 p-0 bg-gray-800 border-gray-700",
-                            "text-gray-400 hover:text-white",
-                            paginationState.currentPage === pageNumber && "font-medium text-purple-400"
-                          )}
-                        >
-                          {pageNumber}
-                        </Button>
-                      </PaginationItem>
-                    );
-                  }
-
-                  if (
-                    pageNumber === 2 && paginationState.currentPage > 3 ||
-                    pageNumber === totalPages - 1 && paginationState.currentPage < totalPages - 2
-                  ) {
-                    return (
-                      <PaginationItem key={index}>
-                        <span className="text-gray-500 px-2">...</span>
-                      </PaginationItem>
-                    );
-                  }
-
-                  return null;
-                })}
-
-                <PaginationItem>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handlePageChange(paginationState.currentPage + 1)}
-                    disabled={paginationState.currentPage === Math.ceil(optimisticResumes.length / paginationState.itemsPerPage)}
-                    className="h-8 w-8 p-0 text-gray-400 hover:text-white bg-gray-800 border-gray-700"
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div>
-        )}
+        <div className="flex items-center gap-2">
+          <ResumeSortControls 
+            sortParam={sortParam}
+            directionParam={directionParam}
+            currentSort={currentSort}
+            currentDirection={currentDirection}
+          />
+        </div>
       </div>
 
-      <div className="relative pb-6">
-        {/* Mobile View */}
-        <div className="md:hidden w-full space-y-6">
-          {canCreateMore ? (
-            <div className="px-2 w-full flex">
-              <CreateResumeCard />
-            </div>
-          ) : (
-            <div className="px-4 w-full">
-              <LimitReachedCard />
-            </div>
-          )}
+      {/* Pagination - Only show when needed */}
+      {optimisticResumes.length > paginationState.itemsPerPage && (
+        <div className="hidden md:flex w-full justify-end">
+          <Pagination>
+            <PaginationContent className="gap-1">
+              <PaginationItem>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handlePageChange(paginationState.currentPage - 1)}
+                  disabled={paginationState.currentPage === 1}
+                  className="h-8 w-8 p-0 text-neutral-400 hover:text-white bg-neutral-800 border-neutral-700 disabled:opacity-50"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+              </PaginationItem>
+              
+              {Array.from({ length: Math.ceil(optimisticResumes.length / paginationState.itemsPerPage) }).map((_, index) => {
+                const pageNumber = index + 1;
+                const totalPages = Math.ceil(optimisticResumes.length / paginationState.itemsPerPage);
+                
+                if (
+                  pageNumber === 1 || 
+                  pageNumber === totalPages || 
+                  (pageNumber >= paginationState.currentPage - 1 && pageNumber <= paginationState.currentPage + 1)
+                ) {
+                  return (
+                    <PaginationItem key={index}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handlePageChange(pageNumber)}
+                        className={cn(
+                          "h-8 w-8 p-0 bg-neutral-800 border-neutral-700",
+                          "text-neutral-400 hover:text-white",
+                          paginationState.currentPage === pageNumber && "bg-neutral-700 text-white font-medium"
+                        )}
+                      >
+                        {pageNumber}
+                      </Button>
+                    </PaginationItem>
+                  );
+                }
+
+                if (
+                  pageNumber === 2 && paginationState.currentPage > 3 ||
+                  pageNumber === totalPages - 1 && paginationState.currentPage < totalPages - 2
+                ) {
+                  return (
+                    <PaginationItem key={index}>
+                      <span className="text-neutral-500 px-2">...</span>
+                    </PaginationItem>
+                  );
+                }
+
+                return null;
+              })}
+
+              <PaginationItem>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handlePageChange(paginationState.currentPage + 1)}
+                  disabled={paginationState.currentPage === Math.ceil(optimisticResumes.length / paginationState.itemsPerPage)}
+                  className="h-8 w-8 p-0 text-neutral-400 hover:text-white bg-neutral-800 border-neutral-700 disabled:opacity-50"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
+
+      {/* Resume Grid */}
+      <div className="relative">
+        {/* Mobile View - Carousel */}
+        <div className="md:hidden space-y-4">
+          <div className="w-full max-w-[280px] mx-auto">
+            {canCreateMore ? <CreateResumeCard /> : <LimitReachedCard />}
+          </div>
 
           {paginatedResumes.length > 0 && (
-            <div className="w-full">
-              <Carousel className="w-full">
-                <CarouselContent>
-                  {paginatedResumes.map((resume: OptimisticResume) => (
-                    <CarouselItem key={resume.id} className="basis-[85%] pl-4">
-                      <ResumeCard resume={resume} />
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <div className="hidden sm:block">
-                  <CarouselPrevious className="absolute -left-12 top-1/2 bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white" />
-                  <CarouselNext className="absolute -right-12 top-1/2 bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white" />
-                </div>
-              </Carousel>
-            </div>
+            <Carousel className="w-full">
+              <CarouselContent className="-ml-2">
+                {paginatedResumes.map((resume: OptimisticResume) => (
+                  <CarouselItem key={resume.id} className="pl-2 basis-[75%] sm:basis-[60%]">
+                    <ResumeCard resume={resume} />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="hidden sm:flex -left-10 bg-neutral-800 border-neutral-700 text-neutral-400 hover:bg-neutral-700 hover:text-white" />
+              <CarouselNext className="hidden sm:flex -right-10 bg-neutral-800 border-neutral-700 text-neutral-400 hover:bg-neutral-700 hover:text-white" />
+            </Carousel>
           )}
         </div>
 
         {/* Desktop Grid View */}
-        <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {canCreateMore ? (
-            <CreateResumeCard />
-          ) : (
-            <LimitReachedCard />
-          )}
-
+        <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
+          {canCreateMore ? <CreateResumeCard /> : <LimitReachedCard />}
           {paginatedResumes.map((resume: OptimisticResume) => (
             <ResumeCard key={resume.id} resume={resume} />
           ))}
-          {optimisticResumes.length === 0 && optimisticResumes.length + 1 < 4 && (
-            <div className="col-span-2 md:col-span-1" />
-          )}
         </div>
       </div>
     </div>
