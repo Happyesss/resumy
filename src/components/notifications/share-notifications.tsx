@@ -278,15 +278,13 @@ export function ShareNotifications() {
     }
   }, []);
 
-  // Handle opening dropdown - delete read notifications after delay
+  // Handle opening dropdown - delete read notifications when closing
   const handleOpenChange = useCallback((open: boolean) => {
     setIsOpen(open);
     
-    if (open && unreadCount > 0) {
-      // Mark all as read and delete after a short delay
-      setTimeout(() => {
-        markAllAsRead();
-      }, 2000);
+    // When closing the dropdown, delete all unread notifications
+    if (!open && unreadCount > 0) {
+      markAllAsRead();
     }
   }, [unreadCount, markAllAsRead]);
 

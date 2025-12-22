@@ -404,27 +404,27 @@ export function CreateBaseResumeDialog({ children, profile, totalResumesCount }:
         {children}
       </DialogTrigger>
       <DialogContent className={cn(
-        "sm:max-w-[520px] p-0 max-h-[85vh] overflow-y-auto",
+        "sm:max-w-[520px] p-0 max-h-[85vh] overflow-y-auto w-[95vw]",
         "bg-neutral-900 border border-neutral-800 shadow-2xl rounded-2xl",
       )}>
         {/* Compact Header */}
-        <div className="relative px-6 py-5 border-b border-neutral-800">
-          <div className="flex items-center gap-4">
-            <div className="p-2.5 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/20 border border-purple-500/30">
-              <FileText className="w-5 h-5 text-purple-400" />
+        <div className="relative px-4 sm:px-6 py-4 sm:py-5 border-b border-neutral-800">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="p-2 sm:p-2.5 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/20 border border-purple-500/30">
+              <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
             </div>
-            <div className="flex-1">
-              <DialogTitle className="text-lg font-semibold text-white">
+            <div className="flex-1 min-w-0">
+              <DialogTitle className="text-base sm:text-lg font-semibold text-white truncate">
                 Create Base Resume
               </DialogTitle>
-              <p className="text-sm text-neutral-400 mt-0.5">
+              <p className="text-xs sm:text-sm text-neutral-400 mt-0.5 truncate">
                 {currentStep === 1 ? 'Set your target role' : 'Choose resume content'}
               </p>
             </div>
             {/* Step indicator */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <div className={cn(
-                "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-200",
+                "w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-medium transition-all duration-200",
                 currentStep >= 1 
                   ? "bg-purple-500/20 text-purple-400 border border-purple-500/50" 
                   : "bg-neutral-800 text-neutral-500 border border-neutral-700"
@@ -432,11 +432,11 @@ export function CreateBaseResumeDialog({ children, profile, totalResumesCount }:
                 1
               </div>
               <div className={cn(
-                "w-8 h-0.5 rounded-full transition-all duration-200",
+                "w-6 sm:w-8 h-0.5 rounded-full transition-all duration-200",
                 currentStep >= 2 ? "bg-purple-500/50" : "bg-neutral-700"
               )} />
               <div className={cn(
-                "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-200",
+                "w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-medium transition-all duration-200",
                 currentStep >= 2 
                   ? "bg-purple-500/20 text-purple-400 border border-purple-500/50" 
                   : "bg-neutral-800 text-neutral-500 border border-neutral-700"
@@ -448,25 +448,25 @@ export function CreateBaseResumeDialog({ children, profile, totalResumesCount }:
         </div>
 
         {/* Content */}
-        <div className="px-6 py-8 min-h-[280px]">
+        <div className="px-4 sm:px-6 py-6 sm:py-8 min-h-[280px]">
           {currentStep === 1 && (
-            <div className="space-y-8">
+            <div className="space-y-6 sm:space-y-8">
               {/* Hero Section */}
-              <div className="text-center space-y-3">
-                <div className="w-14 h-14 mx-auto rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center">
-                  <FileText className="w-7 h-7 text-purple-400" />
+              <div className="text-center space-y-2 sm:space-y-3">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 mx-auto rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center">
+                  <FileText className="w-6 h-6 sm:w-7 sm:h-7 text-purple-400" />
                 </div>
-                <h3 className="text-xl font-semibold text-white">
+                <h3 className="text-lg sm:text-xl font-semibold text-white">
                   Target Role
                 </h3>
-                <p className="text-sm text-neutral-400 max-w-sm mx-auto">
+                <p className="text-xs sm:text-sm text-neutral-400 max-w-sm mx-auto px-4">
                   Tailor your resume for your career goals
                 </p>
               </div>
               
               {/* Form Section */}
-              <div className="max-w-sm mx-auto">
-                <div className="bg-neutral-900 rounded-xl p-5 border border-neutral-800">
+              <div className="w-full max-w-sm mx-auto px-2 sm:px-0">
+                <div className="bg-neutral-900 rounded-xl p-4 sm:p-5 border border-neutral-800">
                   <div className="space-y-3">
                     <Label htmlFor="target-role" className="text-sm font-medium text-neutral-300 flex items-center gap-2">
                       <span>Role</span>
@@ -485,7 +485,7 @@ export function CreateBaseResumeDialog({ children, profile, totalResumesCount }:
                           }
                         }}
                         className={cn(
-                          "h-11 text-base px-4 bg-neutral-800 border border-neutral-700 rounded-lg text-white",
+                          "h-10 sm:h-11 text-sm sm:text-base px-3 sm:px-4 bg-neutral-800 border border-neutral-700 rounded-lg text-white",
                           "focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20",
                           "placeholder:text-neutral-500",
                           "transition-all duration-200",
@@ -513,7 +513,7 @@ export function CreateBaseResumeDialog({ children, profile, totalResumesCount }:
               {/* Import Options */}
               <div className="space-y-3">
                 <Label className="text-sm font-medium text-neutral-300">Resume Content</Label>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {[
                     { id: 'import-profile', icon: Copy, label: 'From Profile', desc: 'Use existing data' },
                     { id: 'import-resume', icon: Upload, label: 'Import Resume', desc: 'Upload or paste' },
@@ -532,17 +532,17 @@ export function CreateBaseResumeDialog({ children, profile, totalResumesCount }:
                       <Label
                         htmlFor={option.id}
                         className={cn(
-                          "flex flex-col items-center p-4 rounded-xl border cursor-pointer transition-all",
+                          "flex flex-row sm:flex-col items-center gap-3 sm:gap-0 p-3 sm:p-4 rounded-xl border cursor-pointer transition-all",
                           "bg-neutral-900 border-neutral-800",
                           "hover:border-purple-500/50 hover:bg-purple-500/5",
                           "peer-checked:border-purple-500 peer-checked:bg-purple-500/10"
                         )}
                       >
                         <option.icon className={cn(
-                          "w-5 h-5 mb-2 transition-colors",
+                          "w-5 h-5 sm:mb-2 transition-colors flex-shrink-0",
                           importOption === option.id ? "text-purple-400" : "text-neutral-500"
                         )} />
-                        <div className="text-center">
+                        <div className="text-left sm:text-center flex-1 sm:flex-none">
                           <div className={cn(
                             "text-xs font-medium transition-colors",
                             importOption === option.id ? "text-white" : "text-neutral-400"
@@ -707,31 +707,31 @@ export function CreateBaseResumeDialog({ children, profile, totalResumesCount }:
         </AlertDialog>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-neutral-800">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 border-t border-neutral-800">
           <div className="flex justify-between items-center">
             <div>
               {currentStep === 2 && (
                 <Button 
                   variant="ghost" 
                   onClick={handleBack} 
-                  className="h-10 px-4 text-neutral-400 hover:text-white hover:bg-neutral-800"
+                  className="h-9 sm:h-10 px-3 sm:px-4 text-sm sm:text-base text-neutral-400 hover:text-white hover:bg-neutral-800"
                 >
                   ← Back
                 </Button>
               )}
             </div>
-            <div className="flex gap-3">
+            <div className="flex gap-2 sm:gap-3">
               <Button 
                 variant="ghost" 
                 onClick={() => setOpen(false)} 
-                className="h-10 px-4 text-neutral-400 hover:text-white hover:bg-neutral-800"
+                className="h-9 sm:h-10 px-3 sm:px-4 text-sm sm:text-base text-neutral-400 hover:text-white hover:bg-neutral-800"
               >
                 Cancel
               </Button>
               {currentStep === 1 && (
                 <Button 
                   onClick={handleNext} 
-                  className="h-10 px-6 bg-purple-600 hover:bg-purple-700 text-white font-medium"
+                  className="h-9 sm:h-10 px-4 sm:px-6 text-sm sm:text-base bg-purple-600 hover:bg-purple-700 text-white font-medium"
                 >
                   Next →
                 </Button>
@@ -740,7 +740,7 @@ export function CreateBaseResumeDialog({ children, profile, totalResumesCount }:
                 <Button 
                   onClick={handleCreate} 
                   disabled={isCreating} 
-                  className="h-10 px-6 bg-purple-600 hover:bg-purple-700 disabled:bg-neutral-700 text-white font-medium disabled:text-neutral-400"
+                  className="h-9 sm:h-10 px-4 sm:px-6 text-sm sm:text-base bg-purple-600 hover:bg-purple-700 disabled:bg-neutral-700 text-white font-medium disabled:text-neutral-400"
                 >
                   {isCreating ? (
                     <span className="flex items-center gap-2">

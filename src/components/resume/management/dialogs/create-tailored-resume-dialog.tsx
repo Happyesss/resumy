@@ -390,19 +390,19 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
         <DialogTrigger asChild>
           {children}
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[700px] p-0 max-h-[85vh] overflow-y-auto bg-neutral-900 border border-neutral-800 shadow-2xl rounded-2xl">
+        <DialogContent className="sm:max-w-[700px] p-0 max-h-[85vh] overflow-y-auto w-[95vw] bg-neutral-900 border border-neutral-800 shadow-2xl rounded-2xl">
           
           {/* Header */}
-          <div className="relative px-6 py-5 border-b border-neutral-800">
-            <div className="flex items-center gap-4">
-              <div className="p-2.5 rounded-xl bg-gradient-to-br from-purple-500/20 to-indigo-500/20 border border-purple-500/30">
-                <Sparkles className="w-5 h-5 text-purple-400" />
+          <div className="relative px-4 sm:px-6 py-4 sm:py-5 border-b border-neutral-800">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="p-2 sm:p-2.5 rounded-xl bg-gradient-to-br from-purple-500/20 to-indigo-500/20 border border-purple-500/30">
+                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
               </div>
-              <div className="flex-1">
-                <DialogTitle className="text-lg font-semibold text-white">
+              <div className="flex-1 min-w-0">
+                <DialogTitle className="text-base sm:text-lg font-semibold text-white truncate">
                   Create Tailored Resume
                 </DialogTitle>
-                <DialogDescription className="text-sm text-neutral-400 mt-0.5">
+                <DialogDescription className="text-xs sm:text-sm text-neutral-400 mt-0.5 truncate">
                   {dialogStep === 1 
                     ? "Choose a base resume to start with"
                     : "Configure job details and tailoring method"
@@ -410,9 +410,9 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
                 </DialogDescription>
               </div>
               {/* Step indicator */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 sm:gap-2">
                 <div className={cn(
-                  "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-200",
+                  "w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-medium transition-all duration-200",
                   dialogStep >= 1 
                     ? "bg-purple-500/20 text-purple-400 border border-purple-500/50" 
                     : "bg-neutral-800 text-neutral-500 border border-neutral-700"
@@ -420,11 +420,11 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
                   1
                 </div>
                 <div className={cn(
-                  "w-8 h-0.5 rounded-full transition-all duration-200",
+                  "w-6 sm:w-8 h-0.5 rounded-full transition-all duration-200",
                   dialogStep >= 2 ? "bg-purple-500/50" : "bg-neutral-700"
                 )} />
                 <div className={cn(
-                  "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-200",
+                  "w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-medium transition-all duration-200",
                   dialogStep >= 2 
                     ? "bg-purple-500/20 text-purple-400 border border-purple-500/50" 
                     : "bg-neutral-800 text-neutral-500 border border-neutral-700"
@@ -436,27 +436,27 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
           </div>
 
           {/* Content */}
-          <div className="px-6 py-8 min-h-[300px] relative">
+          <div className="px-4 sm:px-6 py-6 sm:py-8 min-h-[300px] relative">
             {isCreating && <LoadingOverlay currentStep={currentStep} />}
             
             {dialogStep === 1 && (
-              <div className="space-y-8">
+              <div className="space-y-6 sm:space-y-8">
                 {/* Hero Section */}
-                <div className="text-center space-y-3">
-                  <div className="w-14 h-14 mx-auto rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center">
-                    <Sparkles className="w-7 h-7 text-purple-400" />
+                <div className="text-center space-y-2 sm:space-y-3">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 mx-auto rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center">
+                    <Sparkles className="w-6 h-6 sm:w-7 sm:h-7 text-purple-400" />
                   </div>
-                  <h3 className="text-lg font-semibold text-neutral-100 mb-2">
+                  <h3 className="text-base sm:text-lg font-semibold text-neutral-100 mb-2">
                     Select Your Base Resume
                   </h3>
-                  <p className="text-sm text-neutral-400 max-w-md mx-auto">
+                  <p className="text-xs sm:text-sm text-neutral-400 max-w-md mx-auto px-4">
                     Choose which resume you&apos;d like to tailor for this job opportunity
                   </p>
                 </div>
                 
                 {/* Form Section */}
-                <div className="max-w-lg mx-auto">
-                  <div className="bg-neutral-900 rounded-xl p-5 border border-neutral-800">
+                <div className="max-w-lg mx-auto px-2 sm:px-0">
+                  <div className="bg-neutral-900 rounded-xl p-4 sm:p-5 border border-neutral-800">
                     <div className="space-y-5">
                       {/* Base Resume Selector */}
                       <div className="space-y-2">
@@ -473,18 +473,18 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
                       
                       {/* Resume Transformation Visualization */}
                       {selectedBaseResume ? (
-                        <div className="relative bg-gradient-to-br from-neutral-800/80 to-neutral-900/80 rounded-2xl p-6 border border-neutral-700/50 overflow-hidden">
+                        <div className="relative bg-gradient-to-br from-neutral-800/80 to-neutral-900/80 rounded-2xl p-4 sm:p-6 border border-neutral-700/50 overflow-hidden">
                           {/* Background decoration */}
                           <div className="absolute inset-0 overflow-hidden">
                             <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-purple-500/5 blur-2xl" />
                             <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-indigo-500/5 blur-2xl" />
                           </div>
                           
-                          <div className="relative flex items-center justify-between gap-4">
+                          <div className="relative flex items-center justify-between gap-2 sm:gap-4">
                             {/* Base Resume Card */}
                             <div className="flex-1 flex flex-col items-center">
                               <div className="relative group">
-                                <div className="w-20 h-28 bg-white rounded-lg shadow-lg border border-neutral-200 overflow-hidden transition-transform duration-300 group-hover:scale-105">
+                                <div className="w-16 h-24 sm:w-20 sm:h-28 bg-white rounded-lg shadow-lg border border-neutral-200 overflow-hidden transition-transform duration-300 group-hover:scale-105">
                                   {/* Mini resume mockup */}
                                   <div className="p-2 space-y-2">
                                     <div className="h-1.5 w-10 mx-auto bg-neutral-300 rounded-full" />
@@ -509,7 +509,7 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
                             </div>
 
                             {/* Transformation Arrow */}
-                            <div className="flex flex-col items-center gap-2 px-2">
+                            <div className="flex flex-col items-center gap-1 sm:gap-2 px-1 sm:px-2">
                               <div className="relative">
                                 {/* Animated dots */}
                                 <div className="flex items-center gap-1">
@@ -528,7 +528,7 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
                             {/* Tailored Resume Card */}
                             <div className="flex-1 flex flex-col items-center">
                               <div className="relative group">
-                                <div className="w-20 h-28 bg-gradient-to-br from-white to-purple-50 rounded-lg shadow-lg border border-purple-200/50 overflow-hidden transition-transform duration-300 group-hover:scale-105">
+                                <div className="w-16 h-24 sm:w-20 sm:h-28 bg-gradient-to-br from-white to-purple-50 rounded-lg shadow-lg border border-purple-200/50 overflow-hidden transition-transform duration-300 group-hover:scale-105">
                                   {/* Mini resume mockup with purple accents */}
                                   <div className="p-2 space-y-2">
                                     <div className="h-1.5 w-10 mx-auto bg-purple-400 rounded-full" />
@@ -558,10 +558,10 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
                           </div>
                           
                           {/* Selected Resume Info */}
-                          <div className="relative mt-5 pt-4 border-t border-neutral-700/50">
-                            <div className="flex items-center justify-center gap-2 bg-green-500/10 border border-green-500/30 rounded-lg px-4 py-2">
-                              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                              <span className="text-sm font-medium text-green-400">
+                          <div className="relative mt-4 sm:mt-5 pt-3 sm:pt-4 border-t border-neutral-700/50">
+                            <div className="flex items-center justify-center gap-2 bg-green-500/10 border border-green-500/30 rounded-lg px-3 sm:px-4 py-2">
+                              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse flex-shrink-0" />
+                              <span className="text-xs sm:text-sm font-medium text-green-400 truncate">
                                 {baseResumes.find(r => r.id === selectedBaseResume)?.name}
                               </span>
                               <span className="text-xs text-neutral-500">selected</span>
@@ -592,10 +592,10 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
             )}
 
             {dialogStep === 2 && (
-              <div className="space-y-5">
+              <div className="space-y-4 sm:space-y-5">
                 {/* Show selected base resume */}
-                <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-3">
-                  <div className="text-sm text-purple-300">
+                <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-2.5 sm:p-3">
+                  <div className="text-xs sm:text-sm text-purple-300 truncate">
                     <span className="font-medium text-purple-400">Base Resume:</span> {baseResumes.find(r => r.id === selectedBaseResume)?.name}
                   </div>
                 </div>
@@ -619,31 +619,31 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
           </div>
 
           {/* Footer */}
-          <div className="px-6 py-4 border-t border-neutral-800">
+          <div className="px-4 sm:px-6 py-3 sm:py-4 border-t border-neutral-800">
             <div className="flex justify-between items-center">
               <div>
                 {dialogStep === 2 && (
                   <Button 
                     variant="ghost" 
                     onClick={handleBack} 
-                    className="h-10 px-4 text-neutral-400 hover:text-white hover:bg-neutral-800"
+                    className="h-9 sm:h-10 px-3 sm:px-4 text-sm sm:text-base text-neutral-400 hover:text-white hover:bg-neutral-800"
                   >
                     ← Back
                   </Button>
                 )}
               </div>
-              <div className="flex gap-3">
+              <div className="flex gap-2 sm:gap-3">
                 <Button 
                   variant="ghost" 
                   onClick={() => setOpen(false)} 
-                  className="h-10 px-4 text-neutral-400 hover:text-white hover:bg-neutral-800"
+                  className="h-9 sm:h-10 px-3 sm:px-4 text-sm sm:text-base text-neutral-400 hover:text-white hover:bg-neutral-800"
                 >
                   Cancel
                 </Button>
                 {dialogStep === 1 && (
                   <Button 
                     onClick={handleNext} 
-                    className="h-10 px-6 bg-purple-600 hover:bg-purple-700 text-white font-medium"
+                    className="h-9 sm:h-10 px-4 sm:px-6 text-sm sm:text-base bg-purple-600 hover:bg-purple-700 text-white font-medium"
                   >
                     Next →
                   </Button>
@@ -652,7 +652,7 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
                   <Button 
                     onClick={handleCreate} 
                     disabled={isCreating}
-                    className="h-10 px-6 bg-purple-600 hover:bg-purple-700 disabled:bg-neutral-700 text-white font-medium disabled:text-neutral-400"
+                    className="h-9 sm:h-10 px-4 sm:px-6 text-sm sm:text-base bg-purple-600 hover:bg-purple-700 disabled:bg-neutral-700 text-white font-medium disabled:text-neutral-400"
                   >
                     {isCreating ? (
                       <span className="flex items-center gap-2">
