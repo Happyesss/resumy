@@ -139,13 +139,13 @@ export function CoverLetterPanel({
   if (resume.is_base_resume) {
     return (
       <div className={cn(
-        "p-6 rounded-2xl",
+        "p-4 sm:p-6 rounded-2xl",
         "bg-zinc-900/50 border border-zinc-800/80",
         "space-y-6 text-center"
       )}>
         <div className="space-y-4">
-          <div className="w-16 h-16 mx-auto bg-violet-500/10 rounded-2xl flex items-center justify-center border border-violet-500/20">
-            <FileText className="h-8 w-8 text-violet-400" />
+          <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto bg-violet-500/10 rounded-xl sm:rounded-2xl flex items-center justify-center border border-violet-500/20">
+            <FileText className="h-6 w-6 sm:h-8 sm:w-8 text-violet-400" />
           </div>
           
           <div className="space-y-2">
@@ -161,21 +161,21 @@ export function CoverLetterPanel({
             baseResumes={[resume]}
           >
             <Button
-              variant="outline"
-              size="lg"
-              className={cn(
-                "mt-6",
-                "bg-gradient-to-r from-violet-500/10 to-purple-500/10",
-                "border border-violet-500/30 hover:border-violet-500/50",
-                "text-violet-400 hover:text-violet-300",
-                "hover:from-violet-500/20 hover:to-purple-500/20",
-                "transition-all duration-200",
-                "shadow-lg hover:shadow-violet-500/20"
-              )}
-            >
-              <Plus className="h-5 w-5 mr-2" />
-              Tailor This Resume
-            </Button>
+                variant="outline"
+                size="lg"
+                className={cn(
+                  "mt-4 sm:mt-6 h-10 sm:h-auto",
+                  "bg-gradient-to-r from-violet-500/10 to-purple-500/10",
+                  "border border-violet-500/30 hover:border-violet-500/50",
+                  "text-violet-400 hover:text-violet-300",
+                  "hover:from-violet-500/20 hover:to-purple-500/20",
+                  "transition-all duration-200",
+                  "shadow-lg hover:shadow-violet-500/20"
+                )}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Tailor This Resume
+              </Button>
           </CreateTailoredResumeDialog>
         </div>
       </div>
@@ -184,7 +184,7 @@ export function CoverLetterPanel({
 
   return (
     <div className={cn(
-      "p-6 rounded-2xl",
+      "p-4 sm:p-6 rounded-2xl",
       "bg-zinc-900/50 border border-zinc-800/80",
       "space-y-6"
     )}>
@@ -203,7 +203,7 @@ export function CoverLetterPanel({
         <div className="space-y-4">
           {/* AI Improvement Prompt */}
           <div className={cn(
-            "p-4 rounded-xl",
+            "p-3 sm:p-4 rounded-xl",
             "bg-zinc-900/50 border border-zinc-800"
           )}>
             <AIImprovementPrompt
@@ -221,7 +221,7 @@ export function CoverLetterPanel({
               variant="default"
               size="lg"
               className={cn(
-                "h-12",
+                "h-10 sm:h-12",
                 "bg-violet-500/10 hover:bg-violet-500/20",
                 "text-violet-400 hover:text-violet-300",
                 "border border-violet-500/30 hover:border-violet-500/50",
@@ -233,12 +233,12 @@ export function CoverLetterPanel({
             >
               {isGenerating ? (
                 <>
-                  <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                   Generating...
                 </>
               ) : (
                 <>
-                  <Sparkles className="h-5 w-5 mr-2" />
+                  <Sparkles className="h-4 w-4 mr-2" />
                   Generate with AI
                 </>
               )}
@@ -248,7 +248,7 @@ export function CoverLetterPanel({
               variant="outline"
               size="lg"
               className={cn(
-                "h-12",
+                "h-10 sm:h-12",
                 "border-rose-500/30 hover:border-rose-500/50",
                 "text-rose-400 hover:text-rose-300",
                 "bg-rose-500/5 hover:bg-rose-500/10",
@@ -256,7 +256,7 @@ export function CoverLetterPanel({
               )}
               onClick={() => updateField('has_cover_letter', false)}
             >
-              <Trash2 className="h-5 w-5 mr-2" />
+              <Trash2 className="h-4 w-4 mr-2" />
               Delete
             </Button>
           </div>
@@ -264,9 +264,9 @@ export function CoverLetterPanel({
       ) : (
         <div className="space-y-4">
           {/* Empty State */}
-          <div className="p-6 rounded-xl bg-zinc-900/30 border border-zinc-800/50 text-center">
-            <div className="w-16 h-16 mx-auto mb-4 bg-zinc-800/50 rounded-2xl flex items-center justify-center border border-zinc-700/50">
-              <FileText className="h-8 w-8 text-zinc-500" />
+          <div className="p-4 sm:p-6 rounded-xl bg-zinc-900/30 border border-zinc-800/50 text-center">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 bg-zinc-800/50 rounded-xl sm:rounded-2xl flex items-center justify-center border border-zinc-700/50">
+              <FileText className="h-6 w-6 sm:h-8 sm:w-8 text-zinc-500" />
             </div>
             <p className="text-zinc-400 text-sm">No cover letter has been created for this resume yet.</p>
           </div>

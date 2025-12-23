@@ -174,7 +174,7 @@ export function ColdMailPanel({
   // Show "tailor resume" message for base resumes
   if (resume.is_base_resume) {
     return (
-      <div className="p-6 space-y-6">
+      <div className="p-4 sm:p-6 space-y-6">
         {/* Header */}
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center border border-blue-500/20">
@@ -193,12 +193,12 @@ export function ColdMailPanel({
           "space-y-4 text-center"
         )}>
           <div className="space-y-4">
-            <div className="w-16 h-16 mx-auto bg-violet-500/10 rounded-2xl flex items-center justify-center border border-violet-500/20">
-              <Sparkles className="h-8 w-8 text-violet-400" />
+            <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto bg-violet-500/10 rounded-xl sm:rounded-2xl flex items-center justify-center border border-violet-500/20">
+              <Sparkles className="h-5 w-5 sm:h-8 sm:w-8 text-violet-400" />
             </div>
             
             <div className="space-y-2">
-              <h3 className="text-xl font-semibold text-white">
+              <h3 className="text-lg sm:text-xl font-semibold text-white">
                 Tailor Your Resume First
               </h3>
               <p className="text-zinc-400 leading-relaxed max-w-sm mx-auto text-sm">
@@ -210,7 +210,7 @@ export function ColdMailPanel({
               <Button
                 size="lg"
                 className={cn(
-                  "mt-6 h-12",
+                  "mt-4 sm:mt-6 h-10 sm:h-12",
                   "bg-gradient-to-r from-violet-500/10 to-purple-500/10",
                   "border border-violet-500/30 hover:border-violet-500/50",
                   "text-violet-400 hover:text-violet-300",
@@ -232,7 +232,7 @@ export function ColdMailPanel({
   // Show "no job" message for tailored resumes without job context
   if (!job) {
     return (
-      <div className="p-6 space-y-6">
+      <div className="p-4 sm:p-6 space-y-6">
         {/* Header */}
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center border border-blue-500/20">
@@ -246,17 +246,17 @@ export function ColdMailPanel({
 
         {/* No Job Notice */}
         <div className={cn(
-          "p-6 rounded-2xl",
+          "p-4 sm:p-6 rounded-2xl",
           "bg-zinc-900/50 border border-zinc-800/80",
           "space-y-4 text-center"
         )}>
           <div className="space-y-4">
-            <div className="w-16 h-16 mx-auto bg-amber-500/10 rounded-2xl flex items-center justify-center border border-amber-500/20">
-              <Building className="h-8 w-8 text-amber-400" />
+            <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto bg-amber-500/10 rounded-xl sm:rounded-2xl flex items-center justify-center border border-amber-500/20">
+              <Building className="h-5 w-5 sm:h-8 sm:w-8 text-amber-400" />
             </div>
             
             <div className="space-y-2">
-              <h3 className="text-xl font-semibold text-white">
+              <h3 className="text-lg sm:text-xl font-semibold text-white">
                 No Target Job Found
               </h3>
               <p className="text-zinc-400 leading-relaxed max-w-sm mx-auto text-sm">
@@ -270,7 +270,7 @@ export function ColdMailPanel({
   }
 
   return (
-    <div className="p-6 space-y-6">
+  <div className="p-4 sm:p-6 space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center border border-blue-500/20">
@@ -284,7 +284,7 @@ export function ColdMailPanel({
 
       {/* Info Card */}
       <div className={cn(
-        "p-4 rounded-xl",
+        "p-3 sm:p-4 rounded-xl",
         "bg-amber-500/10 border border-amber-500/30"
       )}>
         <p className="text-amber-300 text-xs leading-relaxed">
@@ -320,7 +320,7 @@ export function ColdMailPanel({
 
       {/* Email Generation Form */}
       <div className={cn(
-        "p-4 rounded-2xl",
+        "p-3 sm:p-4 rounded-2xl",
         "bg-zinc-900/50 border border-zinc-800/80",
         "space-y-3"
       )}>
@@ -333,7 +333,7 @@ export function ColdMailPanel({
               onChange={(e) => setMailData(prev => ({ ...prev, to: e.target.value }))}
               placeholder="hiring@company.com"
               className={cn(
-                "h-12 bg-zinc-900/50 border-zinc-800",
+                "h-10 sm:h-12 bg-zinc-900/50 border-zinc-800",
                 "text-zinc-200 placeholder:text-zinc-500",
                 "focus:border-blue-500/50 focus:bg-zinc-900",
                 "transition-all duration-200"
@@ -349,7 +349,7 @@ export function ColdMailPanel({
               onChange={(e) => setMailData(prev => ({ ...prev, customPrompt: e.target.value }))}
               placeholder="What makes you interested in this company?"
               className={cn(
-                "min-h-[80px] bg-zinc-900/50 border-zinc-800",
+                "min-h-[80px] sm:min-h-[100px] bg-zinc-900/50 border-zinc-800",
                 "text-zinc-200 placeholder:text-zinc-500",
                 "focus:border-blue-500/50 focus:bg-zinc-900",
                 "transition-all duration-200",
@@ -363,7 +363,7 @@ export function ColdMailPanel({
           onClick={generateColdMail}
           disabled={isGenerating || !job}
           className={cn(
-            "w-full h-12",
+            "w-full h-10 sm:h-12",
             "bg-gradient-to-r from-blue-500/10 to-cyan-500/10",
             "border border-blue-500/30 hover:border-blue-500/50",
             "text-blue-400 hover:text-blue-300",
@@ -379,7 +379,7 @@ export function ColdMailPanel({
             </>
           ) : (
             <>
-              <Sparkles className="h-5 w-5 mr-2" />
+              <Sparkles className="h-4 w-4 mr-2" />
               Generate Cold Email
             </>
           )}
@@ -407,7 +407,7 @@ export function ColdMailPanel({
               <div className={cn(
                 "p-3 bg-zinc-900/50 border border-zinc-800 rounded-xl",
                 "text-zinc-200 whitespace-pre-wrap text-sm leading-relaxed",
-                "max-h-[300px] overflow-y-auto"
+                "max-h-[240px] overflow-y-auto"
               )}>
                 {mailData.body}
               </div>

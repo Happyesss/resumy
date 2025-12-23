@@ -25,7 +25,7 @@ export function TemplatesPanel({ resume, onTemplateSelect }: TemplatesPanelProps
   };
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 p-4 sm:p-6">
       {/* Header */}
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 bg-rose-500/10 rounded-xl flex items-center justify-center border border-rose-500/20">
@@ -39,7 +39,7 @@ export function TemplatesPanel({ resume, onTemplateSelect }: TemplatesPanelProps
 
       {/* Main CTA Card */}
       <div className={cn(
-        "p-6 rounded-2xl",
+        "p-4 sm:p-6 rounded-2xl",
         "bg-zinc-900/50 border border-zinc-800/80",
         "hover:border-rose-500/30 transition-all duration-200"
       )}>
@@ -66,7 +66,7 @@ export function TemplatesPanel({ resume, onTemplateSelect }: TemplatesPanelProps
           <Button
             onClick={() => setIsModalOpen(true)}
             className={cn(
-              "h-12 mt-2",
+              "h-10 sm:h-12 mt-2",
               "bg-gradient-to-r from-rose-500/10 to-pink-500/10",
               "border border-rose-500/30 hover:border-rose-500/50",
               "text-rose-400 hover:text-rose-300",
@@ -83,7 +83,7 @@ export function TemplatesPanel({ resume, onTemplateSelect }: TemplatesPanelProps
 
       {/* Features List */}
       <div className={cn(
-        "p-6 rounded-2xl",
+        "p-4 sm:p-6 rounded-2xl",
         "bg-zinc-900/50 border border-zinc-800/80"
       )}>
         <div className="flex items-center gap-2 mb-4">

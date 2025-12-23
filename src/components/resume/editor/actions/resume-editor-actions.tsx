@@ -105,15 +105,15 @@ const QuickTabButton = ({
         <button
           onClick={onClick}
           className={cn(
-            "flex items-center justify-center",
-            "w-8 h-8 sm:w-auto sm:h-auto sm:px-3 sm:py-2 rounded-lg",
+            "flex items-center justify-center flex-shrink-0",
+            "w-7 h-7 sm:w-auto sm:h-auto sm:px-3 sm:py-2 rounded-lg",
             "text-xs font-medium",
             "transition-all duration-200",
             "hover:scale-105",
             color
           )}
         >
-          <Icon className="h-4 w-4" />
+          <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           <span className="hidden sm:inline ml-2">{label}</span>
         </button>
       </TooltipTrigger>
@@ -204,11 +204,12 @@ export function ResumeEditorActions({
   return (
     <div className={cn(
       "px-2 py-2 sm:px-3 sm:py-2.5 @container",
-      "flex items-center justify-between gap-2 sm:gap-4",
-      "bg-zinc-950"
+      "flex items-center justify-between gap-1 sm:gap-4",
+      "bg-zinc-950",
+      "overflow-hidden"
     )}>
       {/* Left side: Quick access tabs */}
-      <div className="flex items-center gap-0.5 sm:gap-1">
+      <div className="flex items-center gap-0.5 overflow-x-auto scrollbar-hide flex-shrink min-w-0">
         <QuickTabButton
           onClick={() => setActiveTab("cover-letter")}
           icon={FileText}
@@ -236,7 +237,7 @@ export function ResumeEditorActions({
       </div>
 
       {/* Right side: Action buttons */}
-      <div className="flex items-center gap-0.5 sm:gap-1">
+      <div className="flex items-center gap-0.5 sm:gap-1 flex-shrink-0">
         {/* Import */}
         <TextImportDialog
           resume={resume}

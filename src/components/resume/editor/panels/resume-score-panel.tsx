@@ -181,7 +181,7 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
   // If no score data is available, show the empty state
   if (!scoreData) {
     return (
-      <div className="space-y-6 p-6">
+      <div className="space-y-6 p-4 sm:p-6">
         {error && (
           <div className={cn(
             "p-4 rounded-xl",
@@ -199,17 +199,17 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
         )}
         
         <div className={cn(
-          "p-6 rounded-2xl",
+          "p-4 sm:p-6 rounded-2xl",
           "bg-zinc-900/50 border border-zinc-800/80",
           "space-y-6 text-center"
         )}>
           <div className="space-y-4">
-            <div className="w-16 h-16 mx-auto bg-amber-500/10 rounded-2xl flex items-center justify-center border border-amber-500/20">
-              <FileText className="h-8 w-8 text-amber-400" />
+            <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto bg-amber-500/10 rounded-xl sm:rounded-2xl flex items-center justify-center border border-amber-500/20">
+              <FileText className="h-6 w-6 sm:h-8 sm:w-8 text-amber-400" />
             </div>
             
             <div className="space-y-2">
-              <h3 className="text-xl font-semibold text-white">
+              <h3 className="text-lg sm:text-xl font-semibold text-white">
                 Resume Score Analysis
               </h3>
               <p className="text-zinc-400 leading-relaxed max-w-sm mx-auto text-sm">
@@ -222,7 +222,7 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
               disabled={isCalculating}
               size="lg"
               className={cn(
-                "mt-6 h-12",
+                "mt-4 sm:mt-6 h-10 sm:h-12",
                 "bg-gradient-to-r from-amber-500/10 to-orange-500/10",
                 "border border-amber-500/30 hover:border-amber-500/50",
                 "text-amber-400 hover:text-amber-300",
@@ -248,7 +248,7 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
 
   // When we have score data, show the full analysis
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 p-4 sm:p-6">
       {error && (
         <div className={cn(
           "p-4 rounded-xl",
@@ -292,7 +292,7 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
 
       {/* Main Score Card */}
       <div className={cn(
-        "p-6 rounded-2xl",
+        "p-4 sm:p-6 rounded-2xl",
         "bg-zinc-900/50 border border-zinc-800/80"
       )}>
         <div className="flex flex-col items-center gap-6 text-center">
@@ -302,7 +302,7 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
               <div className="w-10 h-10 bg-amber-500/10 rounded-xl flex items-center justify-center border border-amber-500/20">
                 <FileText className="h-5 w-5 text-amber-400" />
               </div>
-              <h3 className="text-xl font-semibold text-white">
+              <h3 className="text-lg sm:text-xl font-semibold text-white">
                 Resume Score Analysis
               </h3>
             </div>
@@ -310,7 +310,7 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
           </div>
           
           {/* Score Circle */}
-          <div className="w-40 h-40">
+          <div className="w-28 h-28 sm:w-40 sm:h-40">
             <CircularProgressbar
               value={scoreData.overallScore.score}
               text={`${scoreData.overallScore.score}%`}
@@ -328,7 +328,7 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
 
       {/* Key Improvements Card */}
       <div className={cn(
-        "p-6 rounded-2xl",
+        "p-4 sm:p-6 rounded-2xl",
         "bg-zinc-900/50 border border-zinc-800/80"
       )}>
         <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
@@ -391,7 +391,7 @@ function MetricsCard({ title, metrics }: { title: string; metrics: Record<string
 
   return (
     <div className={cn(
-      "p-6 rounded-2xl",
+      "p-4 sm:p-6 rounded-2xl",
       "bg-zinc-900/50 border border-zinc-800/80"
     )}>
       <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">

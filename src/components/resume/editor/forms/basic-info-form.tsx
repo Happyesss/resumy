@@ -143,28 +143,28 @@ export const BasicInfoForm = memo(function BasicInfoFormComponent({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-3 sm:space-y-6">
       {/* Fill from Profile Button */}
       {profile && (
         <Button
           onClick={handleFillFromProfile}
           variant="outline"
           className={cn(
-            "w-full h-12",
+            "w-full h-9 sm:h-12",
             "bg-gradient-to-r from-emerald-500/5 to-teal-500/5",
             "border border-dashed border-emerald-500/30",
             "hover:border-emerald-500/50 hover:from-emerald-500/10 hover:to-teal-500/10",
             "text-emerald-400 hover:text-emerald-300",
-            "rounded-xl",
-            "font-medium text-sm",
+            "rounded-lg sm:rounded-xl",
+            "font-medium text-xs sm:text-sm",
             "transition-all duration-200",
             "hover:shadow-lg hover:shadow-emerald-500/10",
             "group"
           )}
         >
-          <UserCircle2 className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
+          <UserCircle2 className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 group-hover:scale-110 transition-transform" />
           Fill from Profile
-          <Sparkles className="ml-2 h-3 w-3 opacity-60" />
+          <Sparkles className="ml-1.5 sm:ml-2 h-3 w-3 opacity-60" />
         </Button>
       )}
 
