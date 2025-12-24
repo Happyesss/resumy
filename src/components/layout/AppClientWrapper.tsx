@@ -31,7 +31,10 @@ export default function AppClientWrapper({ children }: { children: ReactNode }) 
           message.includes('AbortException: TextLayer') ||
           message.includes('PDF TextLayer task cancelled') ||
           message.includes('PDF component rendering error') ||
-          message.includes('Cannot read properties of null (reading \'props\')')) {
+          message.includes('Cannot read properties of null (reading \'props\')') ||
+          message.includes('unreachable code after return statement') ||
+          message.includes('Referrer Policy') ||
+          message.includes('preloaded with link preload was not used')) {
         return;
       }
       originalWarn.apply(console, args);

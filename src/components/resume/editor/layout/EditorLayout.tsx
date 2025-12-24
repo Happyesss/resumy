@@ -17,7 +17,7 @@ export function EditorLayout({
     <main className={cn(
       "flex h-full",
     )}>
-      <div className="relative py-4 px-6 md:px-8 lg:px-12 mx-auto  w-full h-full  shadow-xl ">
+      <div className="relative py-2 sm:py-3 lg:py-4 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 mx-auto w-full h-full shadow-xl">
         <ResizablePanels
           isBaseResume={isBaseResume}
           editorPanel={editorPanel}

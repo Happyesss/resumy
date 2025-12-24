@@ -86,7 +86,7 @@ export function ResizablePanels({
           )}
         >
           {/* Editor Panel */}
-          <ResizablePanel defaultSize={40} minSize={30} maxSize={70}>
+          <ResizablePanel defaultSize={40} minSize={20} maxSize={75}>
             {editorPanel}
           </ResizablePanel>
 
@@ -103,8 +103,8 @@ export function ResizablePanels({
           {/* Preview Panel */}
           <ResizablePanel 
             defaultSize={60} 
-            minSize={30} 
-            maxSize={70}
+            minSize={25} 
+            maxSize={80}
             onResize={(size) => {
               lastPercentageRef.current = size; // Store current percentage
               updatePixelWidth();

@@ -106,20 +106,19 @@ const QuickTabButton = ({
           onClick={onClick}
           className={cn(
             "flex items-center justify-center flex-shrink-0",
-            "w-7 h-7 sm:w-auto sm:h-auto sm:px-3 sm:py-2 rounded-lg",
+            "w-8 h-8 rounded-lg",
             "text-xs font-medium",
             "transition-all duration-200",
             "hover:scale-105",
             color
           )}
         >
-          <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-          <span className="hidden sm:inline ml-2">{label}</span>
+          <Icon className="h-4 w-4" />
         </button>
       </TooltipTrigger>
       <TooltipContent 
         side="bottom" 
-        className="bg-zinc-900 border-zinc-800 text-zinc-300 text-xs sm:hidden"
+        className="bg-zinc-900 border-zinc-800 text-zinc-300 text-xs"
       >
         {label}
       </TooltipContent>
@@ -203,13 +202,13 @@ export function ResumeEditorActions({
 
   return (
     <div className={cn(
-      "px-2 py-2 sm:px-3 sm:py-2.5 @container",
-      "flex items-center justify-between gap-1 sm:gap-4",
+      "px-1 py-1 sm:px-1.5 sm:py-1.5 lg:px-2 lg:py-2 @container",
+      "flex items-center justify-between gap-0.5 sm:gap-1 lg:gap-2",
       "bg-zinc-950",
-      "overflow-hidden"
+      "overflow-hidden min-w-0"
     )}>
       {/* Left side: Quick access tabs */}
-      <div className="flex items-center gap-0.5 overflow-x-auto scrollbar-hide flex-shrink min-w-0">
+      <div className="flex items-center gap-0.5 overflow-x-auto scrollbar-hide flex-shrink min-w-0 flex-1">
         <QuickTabButton
           onClick={() => setActiveTab("cover-letter")}
           icon={FileText}
@@ -239,28 +238,39 @@ export function ResumeEditorActions({
       {/* Right side: Action buttons */}
       <div className="flex items-center gap-0.5 sm:gap-1 flex-shrink-0">
         {/* Import */}
-        <TextImportDialog
-          resume={resume}
-          onResumeChange={onResumeChange}
-          trigger={
-            <button
-              className={cn(
-                "flex items-center justify-center",
-                "w-8 h-8 sm:w-auto sm:h-auto sm:px-3 sm:py-2 rounded-lg",
-                "text-xs font-medium",
-                "text-indigo-400 bg-indigo-500/10",
-                "hover:bg-indigo-500/20",
-                "transition-all duration-200"
-              )}
+        <TooltipProvider delayDuration={0}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <TextImportDialog
+                resume={resume}
+                onResumeChange={onResumeChange}
+                trigger={
+                  <button
+                    className={cn(
+                      "flex items-center justify-center",
+                      "w-8 h-8 rounded-lg",
+                      "text-xs font-medium",
+                      "text-indigo-400 bg-indigo-500/10",
+                      "hover:bg-indigo-500/20",
+                      "transition-all duration-200"
+                    )}
+                  >
+                    <Upload className="h-4 w-4" />
+                  </button>
+                }
+              />
+            </TooltipTrigger>
+            <TooltipContent 
+              side="bottom" 
+              className="bg-zinc-900 border-zinc-800 text-zinc-300 text-xs"
             >
-              <Upload className="h-4 w-4" />
-              <span className="hidden sm:inline ml-2">Import</span>
-            </button>
-          }
-        />
+              Import
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
 
         {/* Divider */}
-        <div className="w-px h-5 sm:h-6 bg-zinc-800 mx-1 sm:mx-2" />
+        <div className="w-px h-5 bg-zinc-800 mx-1" />
 
         {/* Download */}
         <ActionButton

@@ -33,9 +33,7 @@ export function MiniResumePreview({
       "relative w-full aspect-[8.5/11]",
       "rounded-xl overflow-hidden",
       "border transition-all duration-200",
-      type === 'base' 
-        ? "bg-white border-neutral-200" 
-        : "bg-gradient-to-br from-white to-indigo-50/30 border-indigo-200/50",
+      "bg-white border-neutral-200",
       "shadow-sm hover:shadow-md",
       "group cursor-pointer",
       className
@@ -51,7 +49,7 @@ export function MiniResumePreview({
             "inline-flex items-center mt-1.5 px-2 py-0.5 rounded-full text-[10px] font-medium",
             type === 'base' 
               ? "bg-neutral-100 text-neutral-600" 
-              : "bg-indigo-50 text-indigo-600"
+              : "bg-indigo-100 text-indigo-600"
           )}>
             {type === 'base' ? 'Base' : 'Tailored'}
           </div>

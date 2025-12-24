@@ -78,10 +78,10 @@ const BasicInfoField = memo(function BasicInfoField({
           value={value || ''}
           onChange={handleChange}
           className={cn(
-            "h-12 pl-4 pr-12",
+            "h-8 sm:h-9 lg:h-10 pl-2.5 sm:pl-3 pr-8 sm:pr-10",
             "bg-zinc-900/50 border-zinc-800",
-            "text-white text-sm",
-            "rounded-xl",
+            "text-white text-[10px] sm:text-xs lg:text-sm",
+            "rounded-lg",
             "transition-all duration-200",
             "hover:border-zinc-700 hover:bg-zinc-900/70",
             "focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20",
@@ -91,16 +91,16 @@ const BasicInfoField = memo(function BasicInfoField({
           placeholder={placeholder}
         />
         <div className={cn(
-          "absolute right-3 top-1/2 -translate-y-1/2",
-          "w-8 h-8 flex items-center justify-center",
-          "rounded-lg",
+          "absolute right-1.5 sm:right-2 top-1/2 -translate-y-1/2",
+          "w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 flex items-center justify-center",
+          "rounded-md lg:rounded-lg",
           "bg-zinc-800/80",
           "transition-all duration-200",
           "group-focus-within:bg-emerald-500/20",
           "group-focus-within:scale-105"
         )}>
           <Icon className={cn(
-            "h-4 w-4",
+            "h-2.5 w-2.5 sm:h-3 sm:w-3 lg:h-3.5 lg:w-3.5",
             "text-zinc-500",
             "transition-colors duration-200",
             "group-focus-within:text-emerald-400"
@@ -150,49 +150,49 @@ export const BasicInfoForm = memo(function BasicInfoFormComponent({
           onClick={handleFillFromProfile}
           variant="outline"
           className={cn(
-            "w-full h-9 sm:h-12",
+            "w-full h-8 sm:h-10 lg:h-11",
             "bg-gradient-to-r from-emerald-500/5 to-teal-500/5",
             "border border-dashed border-emerald-500/30",
             "hover:border-emerald-500/50 hover:from-emerald-500/10 hover:to-teal-500/10",
             "text-emerald-400 hover:text-emerald-300",
-            "rounded-lg sm:rounded-xl",
-            "font-medium text-xs sm:text-sm",
+            "rounded-lg",
+            "font-medium text-[10px] sm:text-xs lg:text-sm",
             "transition-all duration-200",
             "hover:shadow-lg hover:shadow-emerald-500/10",
             "group"
           )}
         >
-          <UserCircle2 className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 group-hover:scale-110 transition-transform" />
+          <UserCircle2 className="mr-1 sm:mr-1.5 h-3 w-3 sm:h-3.5 sm:w-3.5 group-hover:scale-110 transition-transform" />
           Fill from Profile
-          <Sparkles className="ml-1.5 sm:ml-2 h-3 w-3 opacity-60" />
+          <Sparkles className="ml-1 sm:ml-1.5 h-2.5 w-2.5 sm:h-3 sm:w-3 opacity-60" />
         </Button>
       )}
 
       {/* Personal Details Section */}
       <div className={cn(
-        "rounded-2xl",
+        "rounded-xl lg:rounded-2xl",
         "bg-zinc-900/50",
         "border border-zinc-800/80",
-        "p-5",
-        "space-y-5"
+        "p-2 sm:p-3 lg:p-4",
+        "space-y-2 sm:space-y-3 lg:space-y-4"
       )}>
         {/* Section Header */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <div className={cn(
-            "w-8 h-8 rounded-lg",
+            "w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 rounded-md lg:rounded-lg",
             "bg-emerald-500/10",
             "flex items-center justify-center"
           )}>
-            <User className="h-4 w-4 text-emerald-400" />
+            <User className="h-2.5 w-2.5 sm:h-3 sm:w-3 lg:h-3.5 lg:w-3.5 text-emerald-400" />
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-white">Personal Details</h3>
-            <p className="text-xs text-zinc-500">Your basic contact information</p>
+            <h3 className="text-[10px] sm:text-xs lg:text-sm font-semibold text-white">Personal Details</h3>
+            <p className="text-[8px] sm:text-[10px] lg:text-xs text-zinc-500">Your basic contact information</p>
           </div>
         </div>
 
         {/* Name Fields */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5 lg:gap-3">
           <BasicInfoField
             field="first_name"
             value={resume.first_name}
@@ -220,7 +220,7 @@ export const BasicInfoForm = memo(function BasicInfoFormComponent({
         />
 
         {/* Phone & Location */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5 lg:gap-3">
           <BasicInfoField
             field="phone_number"
             value={resume.phone_number || ''}
@@ -241,31 +241,31 @@ export const BasicInfoForm = memo(function BasicInfoFormComponent({
 
       {/* Online Presence Section */}
       <div className={cn(
-        "rounded-2xl",
+        "rounded-xl lg:rounded-2xl",
         "bg-zinc-900/50",
         "border border-zinc-800/80",
-        "p-5",
-        "space-y-5"
+        "p-2 sm:p-3 lg:p-4",
+        "space-y-2 sm:space-y-3 lg:space-y-4"
       )}>
         {/* Section Header */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <div className={cn(
-              "w-8 h-8 rounded-lg",
+              "w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 rounded-md lg:rounded-lg",
               "bg-violet-500/10",
               "flex items-center justify-center"
             )}>
-              <Globe className="h-4 w-4 text-violet-400" />
+              <Globe className="h-2.5 w-2.5 sm:h-3 sm:w-3 lg:h-3.5 lg:w-3.5 text-violet-400" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-white">Online Presence</h3>
-              <p className="text-xs text-zinc-500">Your professional profiles</p>
+              <h3 className="text-[10px] sm:text-xs lg:text-sm font-semibold text-white">Online Presence</h3>
+              <p className="text-[8px] sm:text-[10px] lg:text-xs text-zinc-500">Your professional profiles</p>
             </div>
           </div>
           <span className={cn(
-            "text-[10px] font-medium uppercase tracking-wider",
+            "text-[9px] sm:text-[10px] font-medium uppercase tracking-wider",
             "text-zinc-600 bg-zinc-800/80",
-            "px-2 py-1 rounded-md"
+            "px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md"
           )}>
             Optional
           </span>
@@ -282,7 +282,7 @@ export const BasicInfoForm = memo(function BasicInfoFormComponent({
         />
 
         {/* LinkedIn & GitHub */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5 lg:gap-3">
           <BasicInfoField
             field="linkedin_url"
             value={resume.linkedin_url || ''}
@@ -304,20 +304,20 @@ export const BasicInfoForm = memo(function BasicInfoFormComponent({
 
       {/* Pro Tip Card */}
       <div className={cn(
-        "rounded-xl",
+        "rounded-lg lg:rounded-xl",
         "bg-gradient-to-br from-emerald-500/5 to-teal-500/5",
         "border border-emerald-500/20",
-        "p-4"
+        "p-2 sm:p-3 lg:p-4"
       )}>
-        <div className="flex gap-3">
+        <div className="flex gap-2 sm:gap-2.5">
           <div className={cn(
-            "w-6 h-6 rounded-lg shrink-0",
+            "w-5 h-5 sm:w-5 sm:h-5 lg:w-6 lg:h-6 rounded-md lg:rounded-lg shrink-0",
             "bg-emerald-500/20",
             "flex items-center justify-center"
           )}>
-            <Sparkles className="h-3 w-3 text-emerald-400" />
+            <Sparkles className="h-2.5 w-2.5 sm:h-2.5 sm:w-2.5 lg:h-3 lg:w-3 text-emerald-400" />
           </div>
-          <p className="text-xs text-zinc-400 leading-relaxed">
+          <p className="text-[10px] sm:text-[10px] lg:text-xs text-zinc-400 leading-relaxed">
             <span className="text-emerald-400 font-medium">Pro tip:</span>{' '}
             Include your professional email and ensure all URLs are complete and working. 
             Your online presence helps recruiters learn more about your work.

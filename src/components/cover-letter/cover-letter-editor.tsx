@@ -42,7 +42,7 @@ function CoverLetterEditor({
     content: initialData?.content as string || '<p>Start writing your cover letter...</p>',
     editorProps: {
       attributes: {
-        class: 'prose prose-xxs focus:outline-none h-full overflow-none max-w-none text-black ',
+        class: 'prose prose-xxs focus:outline-none h-full overflow-none max-w-none text-black [&_p]:text-justify [&_p]:leading-relaxed',
       },
     },
     onUpdate: ({ editor }) => {
@@ -72,7 +72,7 @@ function CoverLetterEditor({
   }, [editor])
 
   return (
-    <div className="relative w-full max-w-[816px] mx-auto shadow-lg overflow-hidden mb-12 bg-white">
+    <div className="relative w-full shadow-lg overflow-hidden bg-white">
       {editor && (
         <BubbleMenu 
           editor={editor} 
@@ -217,13 +217,13 @@ function CoverLetterEditor({
           } : {}}
         >
           <div className={cn(
-            "absolute inset-0 my-12 mx-16 overflow-hidden",
+            "absolute inset-0 my-12 mx-16 overflow-y-auto bg-white",
             isPrintVersion && "!my-0 !mx-8"
           )}>
             <EditorContent 
               editor={editor} 
               className={cn(
-                "h-full focus:outline-none prose prose-xxs max-w-none flex flex-col [&_p]:mb-4 [&_p:first-child]:mt-0 [&_p:last-child]:mb-0",
+                "min-h-full focus:outline-none prose prose-xxs max-w-none [&_p]:mb-4 [&_p:first-child]:mt-0 [&_p:last-child]:mb-0 [&_p]:text-justify [&_p]:leading-relaxed",
                 isPrintVersion && "!prose-sm !text-[12pt] [&_p]:!mb-3"
               )}
             />

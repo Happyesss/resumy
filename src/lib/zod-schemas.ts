@@ -6,7 +6,7 @@ export const workExperienceSchema = z.object({
   position: z.string().optional(),
   location: z.string().optional(),
   date: z.string().optional(),
-  description: z.array(z.string()).optional(),
+  description: z.array(z.string()).describe("REQUIRED: Array of bullet points describing achievements and responsibilities. Must preserve all original bullet points and enhance them, never remove or reduce the count.").optional(),
   technologies: z.array(z.string()).optional(),
 });
 
@@ -22,7 +22,7 @@ export const educationSchema = z.object({
 
 export const projectSchema = z.object({
   name: z.string().optional(),
-  description: z.array(z.string()).optional(),
+  description: z.array(z.string()).describe("REQUIRED: Array of bullet points describing the project. Must preserve all original bullet points and enhance them, never remove or reduce the count.").optional(),
   date: z.string().optional(),
   technologies: z.array(z.string()).optional(),
   url: z.string().optional(),

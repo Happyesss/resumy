@@ -53,11 +53,11 @@ export function EditorPanel({
   const [activeTab, setActiveTab] = useState("basic");
 
   return (
-    <div className="flex flex-col sm:mr-4 relative h-full max-h-full @container">
+    <div className="flex flex-col mr-1 sm:mr-2 lg:mr-3 relative h-full max-h-full @container overflow-hidden">
       {/* Main content area */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden min-w-0">
         <ScrollArea className="flex-1" ref={scrollAreaRef}>
-          <div className="relative pb-20">
+          <div className="relative pb-16 lg:pb-20">
             {/* Sticky header with actions */}
             <div className={cn(
               "sticky top-0 z-20",
@@ -71,7 +71,7 @@ export function EditorPanel({
             </div>
 
             {/* Content container with padding */}
-            <div className="px-2 sm:px-3 py-3 sm:py-4 space-y-3 sm:space-y-4">
+            <div className="px-1 sm:px-1.5 lg:px-2 py-1.5 sm:py-2 lg:py-3 space-y-2 sm:space-y-2.5 lg:space-y-3">
               {/* Tailored Job Accordion */}
               <Accordion type="single" collapsible defaultValue="basic">
                 <TailoredJobAccordion

@@ -511,17 +511,17 @@ export function TailoredJobAccordion({
   };
 
   return (
-    <AccordionItem value="job" className="mb-4 backdrop-blur-xl rounded-lg shadow-lg border-blue-500/50 border-2">
-      <div className="px-4">
-        <AccordionTrigger className="hover:no-underline group">
-          <div className="flex items-center gap-2">
-            <div className={cn("p-1 rounded-md transition-transform duration-300 group-data-[state=open]:scale-105", "bg-blue-500/20")}>
-              <BriefcaseIcon className={cn("h-3.5 w-3.5", "text-blue-400")} />
+    <AccordionItem value="job" className="mb-2 sm:mb-3 backdrop-blur-xl rounded-lg shadow-lg border-blue-500/50 border-2">
+      <div className="px-2 sm:px-3 lg:px-4">
+        <AccordionTrigger className="hover:no-underline group py-2 sm:py-2.5">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className={cn("p-0.5 sm:p-1 rounded-md transition-transform duration-300 group-data-[state=open]:scale-105", "bg-blue-500/20")}>
+              <BriefcaseIcon className={cn("h-3 w-3 sm:h-3.5 sm:w-3.5", "text-blue-400")} />
             </div>
             <div className="flex flex-col items-start">
-              <span className={cn("text-sm font-medium", "text-blue-100")}>{title}</span>
+              <span className={cn("text-xs sm:text-sm font-medium", "text-blue-100")}>{title}</span>
               {company && (
-                <span className="text-xs text-blue-300/80">{company}</span>
+                <span className="text-[10px] sm:text-xs text-blue-300/80">{company}</span>
               )}
             </div>
           </div>

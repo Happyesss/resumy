@@ -281,20 +281,70 @@ export async function createTailoredResume(
   // Extract the ID from base resume to prevent duplicate ID error
   const { id: _baseId, ...baseResumeWithoutId } = baseResume;
 
-  // Ensure all properties of tailoredContent are properly initialized
+  // Helper function to merge work experience with fallback to base resume
+  const mergeWorkExperience = () => {
+    const tailoredExp = tailoredContent.work_experience || [];
+    const baseExp = baseResume.work_experience || [];
+    
+    // If no tailored experience, use base
+    if (tailoredExp.length === 0) return baseExp;
+    
+    return tailoredExp.map((exp, index) => {
+      const correspondingBase = baseExp[index];
+      const description = Array.isArray(exp.description) && exp.description.length > 0 
+        ? exp.description.map(desc => desc || '') 
+        : (correspondingBase?.description || []);
+      
+      return {
+        company: exp.company || correspondingBase?.company || '',
+        position: exp.position || correspondingBase?.position || '',
+        location: exp.location || correspondingBase?.location || '',
+        date: exp.date || correspondingBase?.date || '',
+        description,
+        technologies: Array.isArray(exp.technologies) && exp.technologies.length > 0 
+          ? exp.technologies 
+          : (correspondingBase?.technologies || [])
+      };
+    });
+  };
+
+  // Helper function to merge projects with fallback to base resume
+  const mergeProjects = () => {
+    const tailoredProjects = tailoredContent.projects || [];
+    const baseProjects = baseResume.projects || [];
+    
+    // If no tailored projects, use base
+    if (tailoredProjects.length === 0) return baseProjects;
+    
+    return tailoredProjects.map((proj, index) => {
+      const correspondingBase = baseProjects[index];
+      const description = Array.isArray(proj.description) && proj.description.length > 0 
+        ? proj.description.map(desc => desc || '') 
+        : (correspondingBase?.description || []);
+      
+      return {
+        name: proj.name || correspondingBase?.name || '',
+        description,
+        date: proj.date || correspondingBase?.date || '',
+        technologies: Array.isArray(proj.technologies) && proj.technologies.length > 0 
+          ? proj.technologies 
+          : (correspondingBase?.technologies || []),
+        url: proj.url || correspondingBase?.url || '',
+        github_url: proj.github_url || correspondingBase?.github_url || ''
+      };
+    });
+  };
+
+  // Ensure all properties of tailoredContent are properly initialized with smart merging
+  const mergedWorkExperience = mergeWorkExperience();
+  const mergedProjects = mergeProjects();
+
   const normalizedTailoredContent = {
     ...tailoredContent,
-    work_experience: (tailoredContent.work_experience || []).map(exp => ({
-      company: exp.company || '',
-      position: exp.position || '',
-      location: exp.location || '',
-      date: exp.date || '',
-      description: Array.isArray(exp.description) ? exp.description.map(desc => desc || '') : [],
-      technologies: Array.isArray(exp.technologies) ? exp.technologies : []
-    })),
-    education: (tailoredContent.education || []),
-    skills: (tailoredContent.skills || []),
-    projects: (tailoredContent.projects || []),
+    work_experience: mergedWorkExperience,
+    education: (tailoredContent.education || baseResume.education || []),
+    skills: (tailoredContent.skills || baseResume.skills || []),
+    projects: mergedProjects,
   };
 
   const newResume = {
@@ -318,15 +368,12 @@ export async function createTailoredResume(
     // Ensure section configurations are preserved
     section_configs: baseResume.section_configs,
     section_order: baseResume.section_order,
-    // Ensure work experience is properly transferred
-    work_experience: tailoredContent.work_experience?.map(exp => ({
-      ...exp,
-      description: exp.description || []
-    })) || baseResume.work_experience || [],
+    // Use the merged work experience and projects
+    work_experience: mergedWorkExperience,
     // Ensure other sections are properly transferred
     education: tailoredContent.education || baseResume.education || [],
     skills: tailoredContent.skills || baseResume.skills || [],
-    projects: tailoredContent.projects || baseResume.projects || [],
+    projects: mergedProjects,
     // Set the resume title/name
     resume_title: `${jobTitle} at ${companyName}`,
     name: `${jobTitle} at ${companyName}`,
