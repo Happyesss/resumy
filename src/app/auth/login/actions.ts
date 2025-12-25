@@ -50,21 +50,6 @@ export async function signup(formData: FormData): Promise<AuthResult> {
   const password = formData.get('password') as string;
   const name = formData.get('name') as string;
 
-  // First check if user already exists by trying to list users with this email
-  const { data: existingUsers, error: checkError } = await supabase.auth.admin.listUsers();
-  
-  if (checkError) {
-    console.error('Error checking existing user:', checkError);
-    return { success: false, error: 'Unable to verify email availability. Please try again.' };
-  }
-
-  // Check if any user has this email
-  const userExists = existingUsers?.users?.some(user => user.email === email);
-  
-  if (userExists) {
-    return { success: false, error: 'An account with this email already exists. Please use a different email or try logging in.' };
-  }
-
   const data = {
     email,
     password,
@@ -88,8 +73,15 @@ export async function signup(formData: FormData): Promise<AuthResult> {
     });
     
     // Handle specific error cases
-    if (signupError.message.includes('User already registered')) {
-      return { success: false, error: 'An account with this email already exists. Please use a different email or try logging in.' };
+    if (signupError.message.includes('User already registered') || 
+        signupError.message.includes('already been registered') ||
+        signupError.code === 'user_already_exists' ||
+        signupError.status === 422) {
+      return { success: false, error: 'An account with this email already exists. Please try logging in instead.' };
+    }
+    
+    if (signupError.message.includes('Email rate limit exceeded')) {
+      return { success: false, error: 'Too many signup attempts. Please try again in a few minutes.' };
     }
     
     return { success: false, error: signupError.message }
