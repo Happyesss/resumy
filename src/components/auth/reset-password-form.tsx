@@ -60,7 +60,7 @@ export function ResetPasswordForm() {
       {formState.success ? (
         <Alert className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 rounded-lg">
           <AlertDescription>
-            Check your email for a password reset link.
+            Check your email for a password reset link. You should receive it within 1 minute. Please check your spam folder if you don&apos;t see it in your inbox.
           </AlertDescription>
         </Alert>
       ) : (

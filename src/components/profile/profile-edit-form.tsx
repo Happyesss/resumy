@@ -32,6 +32,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { formatProfileWithAI } from "../../utils/actions/profiles/ai";
 
 import { ChangePasswordForm } from "@/components/profile/change-password-form";
+import { LogoutButton } from "@/components/auth/logout-button";
 import { cn } from "@/lib/utils";
 import { importResume, updateProfile } from "@/utils/actions/profiles/actions";
 import { AlertTriangle } from "lucide-react";
@@ -641,6 +642,13 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
+                  
+                  {/* Logout Button */}
+                  <LogoutButton 
+                    className="w-full border-zinc-700 text-zinc-400 font-medium rounded-lg 
+                      hover:bg-zinc-900 hover:text-zinc-300 hover:border-zinc-600 
+                      transition-colors h-10 flex items-center justify-center gap-2 bg-transparent"
+                  />
                 </div>
               </div>
               {/* Content area on the right */}
@@ -908,6 +916,12 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                 </AlertDialogContent>
               </AlertDialog>
               
+              {/* Logout Button */}
+              <LogoutButton 
+                className="w-full border-zinc-700 text-zinc-400 font-medium rounded-lg 
+                  hover:bg-zinc-900 hover:text-zinc-300 hover:border-zinc-600 
+                  transition-colors h-10 flex items-center justify-center gap-2 bg-transparent"
+              />
             </div>
           </div>
         </SheetContent>

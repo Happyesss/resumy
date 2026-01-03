@@ -121,7 +121,7 @@ export default function AnalyzeResumePage() {
       {/* For authenticated users, AppHeader is already shown by layout.tsx */}
       {isAuthenticated === false && <AnalyzeNavbar />}
 
-      <div className="pt-16 lg:pt-20">
+      <div className={isAuthenticated === false ? "pt-16 lg:pt-20" : ""}>
 
         
         {!scoreData ? (

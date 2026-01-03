@@ -8,7 +8,6 @@ interface ChangePasswordResult {
 }
 
 export async function changePassword(
-  currentPassword: string,
   newPassword: string
 ): Promise<ChangePasswordResult> {
   try {
@@ -25,17 +24,7 @@ export async function changePassword(
       return { success: false, error: 'User email not found' };
     }
 
-    // Verify current password by attempting to sign in
-    const { error: verifyError } = await supabase.auth.signInWithPassword({
-      email: user.email,
-      password: currentPassword,
-    });
-
-    if (verifyError) {
-      return { success: false, error: 'Current password is incorrect' };
-    }
-
-    // Update to new password
+    // Update to new password - user is already authenticated, no need to verify current password
     const { error: updateError } = await supabase.auth.updateUser({
       password: newPassword
     });
