@@ -151,55 +151,55 @@ export function ATSTimeline({ scoreData, resumeFile, keywordAnalysis, isProcessi
     switch (status) {
       case 'passed':
         return { 
-          bg: 'bg-green-500/20', 
-          text: 'text-green-400', 
+          bg: 'bg-emerald-500/20', 
+          text: 'text-emerald-400', 
           icon: CheckCircle,
-          border: 'border-green-500/30'
+          border: 'border-emerald-500/30'
         };
       case 'warning':
         return { 
-          bg: 'bg-yellow-500/20', 
-          text: 'text-yellow-400', 
+          bg: 'bg-amber-500/20', 
+          text: 'text-amber-400', 
           icon: AlertTriangle,
-          border: 'border-yellow-500/30'
+          border: 'border-amber-500/30'
         };
       case 'failed':
         return { 
-          bg: 'bg-red-500/20', 
-          text: 'text-red-400', 
+          bg: 'bg-rose-500/20', 
+          text: 'text-rose-400', 
           icon: XCircle,
-          border: 'border-red-500/30'
+          border: 'border-rose-500/30'
         };
       default:
         return { 
-          bg: 'bg-gray-500/20', 
-          text: 'text-gray-400', 
+          bg: 'bg-zinc-500/20', 
+          text: 'text-zinc-400', 
           icon: Clock,
-          border: 'border-gray-500/30'
+          border: 'border-zinc-500/30'
         };
     }
   };
 
   return (
-    <Card className="bg-gray-800 border-gray-700">
+    <Card className="bg-zinc-900 border-zinc-800 rounded-xl">
       <div className="p-4">
         <div className="flex items-center gap-2 mb-4">
-          <div className="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center">
-            <Zap className="h-3 w-3 text-blue-400" />
+          <div className="w-6 h-6 bg-orange-500/10 rounded flex items-center justify-center">
+            <Zap className="h-3 w-3 text-orange-400" />
           </div>
           <div>
             <h3 className="text-sm font-semibold text-white">ATS Processing Pipeline</h3>
-            <p className="text-xs text-gray-400">How your resume gets processed by ATS</p>
+            <p className="text-xs text-zinc-400">How your resume gets processed by ATS</p>
           </div>
         </div>
 
         {/* Processing Time Summary */}
-        <div className="mb-4 p-2 bg-gray-900/50 rounded text-xs">
+        <div className="mb-4 p-2 bg-zinc-800/50 rounded text-xs">
           <div className="flex items-center justify-between">
-            <span className="text-gray-300">Processing Time:</span>
-            <span className="text-blue-400 font-mono">{totalTime}s</span>
+            <span className="text-zinc-300">Processing Time:</span>
+            <span className="text-orange-400 font-mono">{totalTime}s</span>
           </div>
-          <div className="flex items-center justify-between text-xs text-gray-500 mt-1">
+          <div className="flex items-center justify-between text-xs text-zinc-500 mt-1">
             <span>{processingStatus}</span>
             <span>{completedSteps}/{atsStepsWithDistributedTime.length} completed</span>
           </div>
@@ -222,11 +222,11 @@ export function ATSTimeline({ scoreData, resumeFile, keywordAnalysis, isProcessi
               >
                 {/* Timeline connector line */}
                 {index < atsStepsWithDistributedTime.length - 1 && (
-                  <div className="absolute left-4 top-8 w-0.5 h-4 bg-gray-600 z-0" />
+                  <div className="absolute left-4 top-8 w-0.5 h-4 bg-zinc-700 z-0" />
                 )}
                 
                 <div className={cn(
-                  "relative bg-gray-900/30 rounded p-3 border transition-all duration-200 hover:bg-gray-900/50",
+                  "relative bg-zinc-800/30 rounded p-3 border transition-all duration-200 hover:bg-zinc-800/50",
                   statusConfig.border,
                   step.status === 'failed' && !scoreData ? 'opacity-50' : 'opacity-100'
                 )}>
@@ -242,7 +242,7 @@ export function ATSTimeline({ scoreData, resumeFile, keywordAnalysis, isProcessi
                           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                           className="w-3 h-3"
                         >
-                          <Clock className="h-3 w-3 text-blue-400" />
+                          <Clock className="h-3 w-3 text-indigo-400" />
                         </motion.div>
                       ) : (
                         <StepIcon className={cn("h-3 w-3", statusConfig.text)} />
@@ -270,7 +270,7 @@ export function ATSTimeline({ scoreData, resumeFile, keywordAnalysis, isProcessi
                       </div>
 
                       {/* Step Description - smaller */}
-                      <p className="text-gray-400 text-xs mb-2 leading-tight">
+                      <p className="text-zinc-400 text-xs mb-2 leading-tight">
                         {step.description}
                       </p>
 
@@ -279,14 +279,14 @@ export function ATSTimeline({ scoreData, resumeFile, keywordAnalysis, isProcessi
                         {step.details.slice(0, 2).map((detail, detailIndex) => (
                           <div key={detailIndex} className="flex items-center gap-1 text-xs">
                             <div className={cn("w-1 h-1 rounded-full", 
-                              step.status === 'passed' ? 'bg-green-400' :
-                              step.status === 'warning' ? 'bg-yellow-400' : 'bg-red-400'
+                              step.status === 'passed' ? 'bg-emerald-400' :
+                              step.status === 'warning' ? 'bg-orange-400' : 'bg-red-400'
                             )} />
-                            <span className="text-gray-300 text-xs">{detail}</span>
+                            <span className="text-zinc-300 text-xs">{detail}</span>
                           </div>
                         ))}
                         {step.details.length > 2 && (
-                          <div className="text-xs text-gray-500">
+                          <div className="text-xs text-zinc-500">
                             +{step.details.length - 2} more details
                           </div>
                         )}
@@ -300,14 +300,14 @@ export function ATSTimeline({ scoreData, resumeFile, keywordAnalysis, isProcessi
         </div>
 
         {/* Bottom Tips - more compact */}
-        <div className="mt-4 p-3 bg-gradient-to-r from-blue-900/20 to-indigo-900/20 rounded border border-blue-500/20">
+        <div className="mt-4 p-3 bg-gradient-to-r from-orange-900/20 to-amber-900/20 rounded border border-orange-500/20">
           <div className="flex items-start gap-2">
-            <div className="w-4 h-4 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Brain className="h-2 w-2 text-blue-400" />
+            <div className="w-4 h-4 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Brain className="h-2 w-2 text-orange-400" />
             </div>
             <div>
-              <h5 className="text-blue-300 font-medium text-xs mb-1">ATS Optimization Tips</h5>
-              <ul className="text-xs text-gray-400 space-y-0.5">
+              <h5 className="text-emerald-300 font-medium text-xs mb-1">ATS Optimization Tips</h5>
+              <ul className="text-xs text-zinc-400 space-y-0.5">
                 <li>• Use standard headers (Experience, Education, Skills)</li>
                 <li>• Include job-relevant keywords naturally</li>
                 <li>• Avoid complex formatting and graphics</li>

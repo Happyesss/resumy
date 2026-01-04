@@ -379,41 +379,84 @@ export function ShareManagementContent({
                       <div className="relative p-3 sm:p-4 md:p-5">
                         <div className="flex flex-col gap-3 sm:gap-4">
                           {/* Resume Info */}
-                          <div className="flex items-center gap-2.5 sm:gap-3 md:gap-4 min-w-0 flex-1">
-                            <div className={`w-10 sm:w-12 h-10 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0 ${
-                              share?.is_active
-                                ? 'bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30'
-                                : share
-                                  ? 'bg-gradient-to-br from-red-500/20 to-orange-500/20 border border-red-500/30'
-                                  : 'bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/20'
-                            }`}>
-                              <FileText className={`w-6 h-6 ${
-                                share?.is_active ? 'text-green-400' : share ? 'text-red-400' : 'text-purple-400'
-                              }`} />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <div className="flex items-center gap-2">
-                                <h3 className="text-lg font-semibold text-white truncate">
-                                  {resume.name}
-                                </h3>
-                                {share?.is_active && (
-                                  <span className="flex-shrink-0 px-2 py-0.5 text-[10px] font-medium rounded-full bg-green-500/20 text-green-400 border border-green-500/30">
-                                    LIVE
+                          <div className="flex items-center justify-between gap-2.5 sm:gap-3 md:gap-4">
+                            <div className="flex items-center gap-2.5 sm:gap-3 md:gap-4 min-w-0 flex-1">
+                              <div className={`w-10 sm:w-12 h-10 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0 ${
+                                share?.is_active
+                                  ? 'bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30'
+                                  : share
+                                    ? 'bg-gradient-to-br from-red-500/20 to-orange-500/20 border border-red-500/30'
+                                    : 'bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/20'
+                              }`}>
+                                <FileText className={`w-6 h-6 ${
+                                  share?.is_active ? 'text-green-400' : share ? 'text-red-400' : 'text-purple-400'
+                                }`} />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center gap-2">
+                                  <h3 className="text-lg font-semibold text-white truncate">
+                                    {resume.name}
+                                  </h3>
+                                  {share?.is_active && (
+                                    <>
+                                      <span className="flex-shrink-0 px-2 py-0.5 text-[10px] font-medium rounded-full bg-green-500/20 text-green-400 border border-green-500/30">
+                                        LIVE
+                                      </span>
+                                      {/* Redirection - Open Link */}
+                                      <a
+                                        href={`${shareBaseUrl}/r/${share.share_id}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="p-1.5 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 text-slate-400 hover:text-white transition-all"
+                                        title="Open shared resume"
+                                      >
+                                        <ExternalLink className="w-3.5 h-3.5" />
+                                      </a>
+                                    </>
+                                  )}
+                                </div>
+                                <div className="flex flex-wrap items-center gap-2 mt-1 text-sm text-slate-400">
+                                  <span className="truncate">
+                                    {resume.first_name} {resume.last_name}
                                   </span>
-                                )}
-                              </div>
-                              <div className="flex flex-wrap items-center gap-2 mt-1 text-sm text-slate-400">
-                                <span className="truncate">
-                                  {resume.first_name} {resume.last_name}
-                                </span>
-                                {resume.target_role && (
-                                  <>
-                                    <span className="text-slate-600">•</span>
-                                    <span className="truncate text-pink-400">{resume.target_role}</span>
-                                  </>
-                                )}
+                                  {resume.target_role && (
+                                    <>
+                                      <span className="text-slate-600">•</span>
+                                      <span className="truncate text-pink-400">{resume.target_role}</span>
+                                    </>
+                                  )}
+                                </div>
                               </div>
                             </div>
+                            
+                            {/* Copy and Delete buttons - Top Right */}
+                            {share && (
+                              <div className="flex items-center gap-2">
+                                {/* Copy Link */}
+                                <Button
+                                  onClick={() => copyLink(share.share_id)}
+                                  variant="outline"
+                                  size="sm"
+                                  className="border-pink-500/30 bg-pink-500/10 text-white hover:bg-pink-500/20 hover:border-pink-500/50 h-8 sm:h-9 text-xs sm:text-sm px-2 sm:px-2.5"
+                                  title={copiedId === share.share_id ? "Copied" : "Copy"}
+                                  aria-label={copiedId === share.share_id ? "Copied" : "Copy"}
+                                >
+                                  {copiedId === share.share_id ? (
+                                    <Check className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-white" />
+                                  ) : (
+                                    <Copy className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-white" />
+                                  )}
+                                </Button>
+
+                                {/* Delete */}
+                                <DeleteShareDialog
+                                  shareId={share.id}
+                                  resumeName={resume.name || `${resume.first_name} ${resume.last_name}`}
+                                  onConfirm={handleDeleteShare}
+                                  isLoading={isLoading}
+                                />
+                              </div>
+                            )}
                           </div>
 
                           {/* Stats & Actions */}
@@ -421,10 +464,9 @@ export function ShareManagementContent({
                             {share && (
                               <>
                                 {/* View Count */}
-                                <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                                <div className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
                                   <Eye className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-blue-400" />
                                   <span className="font-semibold text-blue-400 text-xs sm:text-sm">{share.view_count}</span>
-                                  <span className="text-blue-400/60 text-[10px] sm:text-xs hidden sm:inline">views</span>
                                 </div>
 
                                 {/* Toggle Status */}
@@ -450,55 +492,18 @@ export function ShareManagementContent({
                                   )}
                                 </button>
 
-                                {/* Copy Link */}
-                                <Button
-                                  onClick={() => copyLink(share.share_id)}
-                                  variant="outline"
-                                  size="sm"
-                                  className="border-pink-500/30 bg-pink-500/10 text-pink-400 hover:bg-pink-500/20 hover:border-pink-500/50 h-8 sm:h-9 text-xs sm:text-sm px-2 sm:px-3"
-                                >
-                                  {copiedId === share.share_id ? (
-                                    <>
-                                      <Check className="w-3.5 sm:w-4 h-3.5 sm:h-4 sm:mr-1.5" />
-                                      <span className="hidden sm:inline">Copied</span>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <Copy className="w-3.5 sm:w-4 h-3.5 sm:h-4 sm:mr-1.5" />
-                                      <span className="hidden sm:inline">Copy</span>
-                                    </>
-                                  )}
-                                </Button>
-
-                                {/* Open Link */}
-                                <a
-                                  href={`${shareBaseUrl}/r/${share.share_id}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="p-1.5 sm:p-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 text-slate-400 hover:text-white transition-all"
-                                >
-                                  <ExternalLink className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
-                                </a>
-
-                                {/* Expand/View Logs */}
+                                {/* Analytics (inline, right-aligned) */}
                                 <button
                                   onClick={() => setExpandedResumeId(isExpanded ? null : resume.id)}
-                                  className={`p-1.5 sm:p-2 rounded-lg transition-all ${
+                                  className={`ml-auto flex items-center gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all text-xs sm:text-sm font-medium ${
                                     isExpanded
                                       ? 'bg-pink-500/20 border border-pink-500/30 text-pink-400'
                                       : 'bg-white/5 border border-white/10 text-slate-400 hover:bg-white/10 hover:text-white'
                                   }`}
                                 >
-                                  <Activity className="w-4 h-4" />
+                                  <Activity className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
+                                  <span className="hidden sm:inline">Analytics</span>
                                 </button>
-
-                                {/* Delete */}
-                                <DeleteShareDialog
-                                  shareId={share.id}
-                                  resumeName={resume.name || `${resume.first_name} ${resume.last_name}`}
-                                  onConfirm={handleDeleteShare}
-                                  isLoading={isLoading}
-                                />
                               </>
                             )}
 
@@ -521,7 +526,7 @@ export function ShareManagementContent({
 
                         {/* Share Link URL */}
                         {share && (
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 px-2.5 sm:px-3 py-2 rounded-lg bg-black/30 border border-white/5 text-xs">
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 px-2.5 sm:px-3 py-2 rounded-lg bg-black/30 border border-white/5 text-xs">
                             <Link2 className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-slate-500 flex-shrink-0" />
                             <span className="text-slate-400 truncate flex-1 font-mono text-[10px] sm:text-xs break-all">
                               {shareBaseUrl}/r/{share.share_id}

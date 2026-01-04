@@ -116,7 +116,7 @@ export default function AnalyzeResumePage() {
   };
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-zinc-950">
       {/* Navigation Bar - Only show AnalyzeNavbar for non-authenticated users */}
       {/* For authenticated users, AppHeader is already shown by layout.tsx */}
       {isAuthenticated === false && <AnalyzeNavbar />}
@@ -144,8 +144,8 @@ export default function AnalyzeResumePage() {
 
               {/* Right Side - Resume Preview Component */}
               <div className="space-y-6 mt-8 lg:mt-0">
-                {/* Pass current text so preview updates live */}
-                <ResumePreviewCard resumeText={resumeText} />
+                {/* Pass current text so preview updates live. Only show scanning animation while analyzing (or during countdown). */}
+                <ResumePreviewCard resumeText={resumeText} isAnalyzing={isAnalyzing || delayCountdown !== null} />
               </div>
             </div>
           </div>

@@ -154,7 +154,7 @@ export function UploadForm({
           </p>
         </div>
       </div>
-      <Card className="max-w-md mx-auto bg-black border border-zinc-800 rounded-xl shadow-lg p-6 flex flex-col items-center justify-center">
+      <Card className="max-w-md mx-auto bg-transparent border border-zinc-800 rounded-xl shadow-lg p-6 flex flex-col items-center justify-center">
         <div className="w-full text-center">
           <p className="text-gray-200 text-base mb-1">Drop your resume here or choose a file.</p>
           <p className="text-gray-400 text-sm mb-6">PDF & DOCX only. Max 2MB file size.</p>

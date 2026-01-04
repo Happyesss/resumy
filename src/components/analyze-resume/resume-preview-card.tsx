@@ -6,11 +6,12 @@ import { motion } from 'framer-motion';
 
 interface ResumePreviewCardProps {
   resumeText?: string;
+  isAnalyzing?: boolean;
 }
 
-export default function ResumePreviewCard({ resumeText: _resumeText }: ResumePreviewCardProps) {
+export default function ResumePreviewCard({ resumeText: _resumeText, isAnalyzing = false }: ResumePreviewCardProps) {
   return (
-    <section className="relative w-[98%] h-screen bg-black flex flex-col items-center justify-start p-4 pt-8">
+    <section className="relative w-[98%] h-screen flex flex-col items-center justify-start p-4 pt-8">
       {/* Two small CTA boxes connected by a dotted line */}
       <div className="w-full flex flex-row items-center justify-center gap-4 mb-4 -mt-16">
         <motion.div
@@ -49,14 +50,16 @@ export default function ResumePreviewCard({ resumeText: _resumeText }: ResumePre
         className="w-full max-w-2xl h-[600px]"
       >
         <Card className="relative bg-zinc-900 rounded-xl shadow-2xl overflow-hidden border border-zinc-800">
-          {/* Scanning Animation Overlay */}
-          <motion.div
-            initial={{ y: 0 }}
-            animate={{ y: [0, 550, 0] }}
-            transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-            className="absolute left-0 w-full h-16 bg-gradient-to-b from-purple-500/30 via-purple-400/10 to-transparent pointer-events-none z-20"
-            style={{ top: 0 }}
-          />
+          {/* Scanning Animation Overlay - only active while analyzing */}
+          {isAnalyzing && (
+            <motion.div
+              initial={{ y: 0 }}
+              animate={{ y: [0, 550, 0] }}
+              transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
+              className="absolute left-0 w-full h-16 bg-gradient-to-b from-purple-500/30 via-purple-400/10 to-transparent pointer-events-none z-20"
+              style={{ top: 0 }}
+            />
+          )}
           {/* Unique Resume Analysis Badge */}
           <div className="absolute top-4 right-4 z-10">
             <span className="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg border border-indigo-700">
