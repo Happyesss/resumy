@@ -18,6 +18,12 @@ const config = {
   		}
   	},
   	extend: {
+			screens: {
+				// Extra-large breakpoint for very wide screens where we want to
+				// show tab labels next to icons. This keeps the tab bar icon-only
+				// at medium/large widths (e.g. ~1580px) and avoids layout overflow.
+				'3xl': '1800px'
+			},
   		colors: {
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',

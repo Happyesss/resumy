@@ -124,15 +124,15 @@ export function ResumeEditorTabs() {
                       )} />
                     </div>
                     
-                    {/* Label - only shown on 2xl screens and larger */}
-                    <span className="hidden 2xl:inline-block whitespace-nowrap ml-2">
+                    {/* Label - only shown on very wide screens (3xl+) */}
+                    <span className="hidden 3xl:inline-block whitespace-nowrap ml-2">
                       {tab.label}
                     </span>
                   </TabsTrigger>
                 </TooltipTrigger>
                 <TooltipContent 
                   side="bottom" 
-                  className="2xl:hidden bg-zinc-900 border-zinc-800 text-zinc-300 text-xs"
+                  className="3xl:hidden bg-zinc-900 border-zinc-800 text-zinc-300 text-xs"
                 >
                   {tab.label}
                 </TooltipContent>

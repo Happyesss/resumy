@@ -348,7 +348,7 @@ export const ResumePreview = memo(function ResumePreview({ resume, variant = 'ba
 
   // Display the generated PDF using react-pdf with better error handling
   return (
-    <div className=" h-full relative bg-black/15">
+    <div className=" h-full relative bg-transparent">
         <Document
           // Force remount when URL changes to avoid pdf.js worker race conditions
           key={url}

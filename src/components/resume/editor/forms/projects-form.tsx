@@ -721,10 +721,10 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                                     align="start"
                                     sideOffset={2}
                                     className={cn(
-                                      "w-72 p-3.5",
-                                      "border-2 border-purple-300",
-                                      "shadow-lg shadow-purple-100/50",
-                                      "rounded-lg"
+                                      "w-80 p-4",
+                                      "bg-zinc-900 border border-zinc-800",
+                                      "shadow-xl shadow-black/20",
+                                      "rounded-xl"
                                     )}
                                   >
                                     <AIImprovementPrompt
@@ -738,6 +738,7 @@ export const ProjectsForm = memo(function ProjectsFormComponent({
                                       }))}
                                       onSubmit={() => rewritePoint(index, descIndex)}
                                       isLoading={loadingPointAI[index]?.[descIndex]}
+                                      colorTheme="amber"
                                     />
                                   </TooltipContent>
                                 </Tooltip>

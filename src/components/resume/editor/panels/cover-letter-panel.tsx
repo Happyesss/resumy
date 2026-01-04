@@ -212,6 +212,7 @@ export function CoverLetterPanel({
               isLoading={isGenerating}
               placeholder="e.g., Focus on leadership experience and technical skills"
               hideSubmitButton
+              colorTheme="violet"
             />
           </div>
 

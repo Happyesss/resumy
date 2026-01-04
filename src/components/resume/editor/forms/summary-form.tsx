@@ -176,6 +176,7 @@ export function SummaryForm({ summary, onChange }: SummaryFormProps) {
                   onSubmit={handleImprove}
                   isLoading={isImproving}
                   placeholder="e.g., Emphasize cloud, leadership, and measurable impact"
+                  colorTheme="violet"
                 />
               </TooltipContent>
             </Tooltip>
