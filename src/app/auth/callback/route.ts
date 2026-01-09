@@ -12,13 +12,40 @@ export async function GET(request: NextRequest) {
   const next = requestUrl.searchParams.get('next')
   const error = requestUrl.searchParams.get('error')
   const errorDescription = requestUrl.searchParams.get('error_description')
+  const state = requestUrl.searchParams.get('state')
+
+  // Validate state parameter exists for OAuth callbacks (CSRF protection)
+  // Note: Supabase handles state validation internally, but we log for debugging
+  if (code && !state) {
+    console.warn('OAuth callback received without state parameter - potential security issue')
+  }
 
   // Handle errors in the callback URL
   if (error) {
     console.error('Auth callback error:', error, errorDescription);
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || requestUrl.origin
+    
+    // Handle specific OAuth errors with user-friendly messages
+    const friendlyError = error;
+    let friendlyDescription = errorDescription || '';
+    
+    // LinkedIn specific errors
+    if (error === 'access_denied') {
+      friendlyDescription = 'You cancelled the sign-in process. Please try again if you want to continue.';
+    } else if (error === 'user_cancelled_login' || error === 'user_cancelled_authorize') {
+      friendlyDescription = 'Sign-in was cancelled. Please try again.';
+    } else if (error === 'invalid_request') {
+      friendlyDescription = 'Invalid authentication request. Please try again.';
+    } else if (error === 'unauthorized_client') {
+      friendlyDescription = 'This application is not authorized. Please contact support.';
+    } else if (error === 'server_error') {
+      friendlyDescription = 'The authentication server encountered an error. Please try again later.';
+    } else if (error === 'temporarily_unavailable') {
+      friendlyDescription = 'The authentication service is temporarily unavailable. Please try again later.';
+    }
+    
     // Redirect to login page with error information
-    return NextResponse.redirect(new URL(`/auth/login?error=${error}&error_description=${encodeURIComponent(errorDescription || '')}`, siteUrl))
+    return NextResponse.redirect(new URL(`/auth/login?error=${friendlyError}&error_description=${encodeURIComponent(friendlyDescription)}`, siteUrl))
   }
 
   if (code) {

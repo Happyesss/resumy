@@ -157,6 +157,7 @@ export async function signInWithGithub(): Promise<GithubAuthResult> {
       provider: 'github',
       options: {
         redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+        scopes: 'read:user user:email',
         queryParams: {
           next: '/'
         }
@@ -164,6 +165,7 @@ export async function signInWithGithub(): Promise<GithubAuthResult> {
     });
 
     if (error) {
+      console.error('GitHub OAuth error:', error);
       return { success: false, error: error.message };
     }
 
@@ -173,6 +175,52 @@ export async function signInWithGithub(): Promise<GithubAuthResult> {
 
     return { success: false, error: 'Failed to get OAuth URL' };
   } catch (error) {
+    console.error('Unexpected GitHub OAuth error:', error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'An unexpected error occurred' 
+    };
+  }
+}
+
+// LinkedIn Sign In
+export async function signInWithLinkedIn(): Promise<GithubAuthResult> {
+  const supabase = await createClient();
+
+  try {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'linkedin_oidc',
+      options: {
+        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+        scopes: 'openid profile email',
+        queryParams: {
+          next: '/'
+        }
+      }
+    });
+
+    if (error) {
+      console.error('LinkedIn OAuth error:', error);
+      
+      // Handle specific LinkedIn OAuth errors
+      if (error.message.includes('provider is not enabled')) {
+        return { success: false, error: 'LinkedIn sign-in is not available at the moment. Please try another method.' };
+      }
+      
+      if (error.message.includes('invalid_client')) {
+        return { success: false, error: 'LinkedIn authentication configuration error. Please try another method.' };
+      }
+      
+      return { success: false, error: error.message };
+    }
+
+    if (data?.url) {
+      return { success: true, url: data.url };
+    }
+
+    return { success: false, error: 'Failed to get LinkedIn OAuth URL' };
+  } catch (error) {
+    console.error('Unexpected LinkedIn OAuth error:', error);
     return { 
       success: false, 
       error: error instanceof Error ? error.message : 'An unexpected error occurred' 

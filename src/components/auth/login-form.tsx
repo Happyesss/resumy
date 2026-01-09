@@ -108,7 +108,6 @@ export function LoginForm() {
         <Label htmlFor="login-email" className="text-sm font-medium text-white">Email</Label>
         <div className="relative">
           <Input 
-            autoFocus
             id="login-email"
             name="email"
             type="email"

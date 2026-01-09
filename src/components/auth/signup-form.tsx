@@ -136,7 +136,6 @@ export function SignupForm() {
                 maxLength={50}
                 validation={validations.name}
                 isTouched={touchedFields.name}
-                autoFocus
                 className="bg-black border-purple-400/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 hover:bg-black hover:border-purple-400/50 focus:bg-black"
               />
             </div>
