@@ -1,15 +1,15 @@
 import type { NextConfig } from 'next'
  
 const nextConfig: NextConfig = {
-  // Disable turbo mode temporarily to fix build issues
-  // experimental: {
-  //   turbo: {
-  //     // ...
-  //   },
-  // },
-  // Remove console logs in production for performance
+  // Increase server actions body size limit for file uploads (default 1MB is too small)
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
+  },
+  // Remove only console.log in production, keep console.error and console.warn for debugging
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error', 'warn'] } : false,
   },
   productionBrowserSourceMaps: false,
   reactStrictMode: true,
