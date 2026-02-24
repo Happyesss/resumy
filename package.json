@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "NODE_OPTIONS='--max-old-space-size=6144' next dev --turbopack",
     "build": "next build",
     "build:cf": "pnpm install --no-frozen-lockfile && next build",
     "start": "next start",

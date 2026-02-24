@@ -415,7 +415,7 @@ function createResumeStyles(settings = {
     // Base page configuration
     page: {
       paddingTop: document_margin_vertical,
-      paddingBottom: document_margin_vertical + 28,
+      paddingBottom: document_margin_vertical,
       paddingLeft: document_margin_horizontal,
       paddingRight: document_margin_horizontal,
       fontFamily: 'Helvetica',
