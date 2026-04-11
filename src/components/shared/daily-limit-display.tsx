@@ -1,6 +1,7 @@
 'use client';
 
 import { getAIRequestLimit, getRemainingAIRequests } from '@/lib/ai-request-limit';
+import { API_KEYS_STORAGE_KEYS, hasStoredApiKey } from '@/lib/ai-key-storage';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 
@@ -13,9 +14,11 @@ interface DailyLimitDisplayProps {
 export function DailyLimitDisplay({ className, showLabel = true, userEmail: _userEmail }: DailyLimitDisplayProps) {
   const dailyLimit = getAIRequestLimit();
   const [remaining, setRemaining] = useState(dailyLimit);
+  const [usesOwnKey, setUsesOwnKey] = useState(false);
 
   useEffect(() => {
     const updateRemaining = () => {
+      setUsesOwnKey(hasStoredApiKey());
       setRemaining(getRemainingAIRequests());
     };
 
@@ -27,7 +30,12 @@ export function DailyLimitDisplay({ className, showLabel = true, userEmail: _use
 
     // Listen for storage events (when user makes requests in other tabs)
     const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'gemini-daily-usage') {
+      if (
+        e.key === null ||
+        e.key === 'ai-daily-usage' ||
+        e.key === 'gemini-daily-usage' ||
+        API_KEYS_STORAGE_KEYS.includes(e.key as (typeof API_KEYS_STORAGE_KEYS)[number])
+      ) {
         updateRemaining();
       }
     };
@@ -50,30 +58,36 @@ export function DailyLimitDisplay({ className, showLabel = true, userEmail: _use
           AI Requests:
         </span>
       )}
-      <div className="flex items-center space-x-1">
-        <span className={cn(
-          "text-sm font-medium",
-          remaining <= 10 ? "text-red-500" : 
-          remaining <= 25 ? "text-yellow-500" : 
-          "text-green-500"
-        )}>
-          {remaining}
-        </span>
-        <span className="text-sm text-muted-foreground">
-          / {dailyLimit}
-        </span>
-      </div>
-      <div className="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
-        <div 
-          className={cn(
-            "h-full transition-all duration-300",
-            percentage >= 90 ? "bg-red-500" :
-            percentage >= 75 ? "bg-yellow-500" :
-            "bg-green-500"
-          )}
-          style={{ width: `${percentage}%` }}
-        />
-      </div>
+      {usesOwnKey ? (
+        <span className="text-sm font-medium text-emerald-500">Using your API key</span>
+      ) : (
+        <>
+          <div className="flex items-center space-x-1">
+            <span className={cn(
+              "text-sm font-medium",
+              remaining <= 10 ? "text-red-500" : 
+              remaining <= 25 ? "text-yellow-500" : 
+              "text-green-500"
+            )}>
+              {remaining}
+            </span>
+            <span className="text-sm text-muted-foreground">
+              / {dailyLimit}
+            </span>
+          </div>
+          <div className="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div 
+              className={cn(
+                "h-full transition-all duration-300",
+                percentage >= 90 ? "bg-red-500" :
+                percentage >= 75 ? "bg-yellow-500" :
+                "bg-green-500"
+              )}
+              style={{ width: `${percentage}%` }}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }

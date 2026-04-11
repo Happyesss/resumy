@@ -1,7 +1,7 @@
 import { checkRateLimit } from '@/lib/rateLimiter';
 import { tools } from '@/lib/tools';
 import { Job, Resume } from '@/lib/types';
-import { initializeAIClient, type AIConfig } from '@/utils/ai-tools';
+import { initializeAIClient, isUsingUserProvidedApiKey, type AIConfig } from '@/utils/ai-tools';
 import { getAuthenticatedUser } from '@/utils/auth';
 import { LanguageModelV1, smoothStream, streamText, ToolInvocation } from 'ai';
 
@@ -22,63 +22,43 @@ interface ChatRequest {
 export async function POST(req: Request) {
   try {
     const requestBody = await req.json();
-    
-    // Console log the entire request to see what's being sent
-    console.log('=== FULL CHAT REQUEST ===');
-    console.log('Request body keys:', Object.keys(requestBody));
-    console.log('Messages count:', requestBody.messages?.length || 0);
-    console.log('Target role:', requestBody.target_role);
-    console.log('Config:', JSON.stringify(requestBody.config, null, 2));
-    console.log('Job:', requestBody.job ? 'Job object present' : 'No job');
-    console.log('Resume present:', !!requestBody.resume);
-    
+
     if (requestBody.resume) {
       // Remove document_settings from the resume object as it's no longer supported
       if (requestBody.resume.document_settings) {
-        console.log('Removing document_settings from resume object');
         delete requestBody.resume.document_settings;
       }
-      
-      console.log('Resume keys:', Object.keys(requestBody.resume));
-      console.log('Resume first_name:', requestBody.resume.first_name);
-      console.log('Resume last_name:', requestBody.resume.last_name);
-      console.log('Resume target_role:', requestBody.resume.target_role);
-      console.log('Work experience count:', requestBody.resume.work_experience?.length || 0);
-      console.log('Education count:', requestBody.resume.education?.length || 0);
-      console.log('Skills count:', requestBody.resume.skills?.length || 0);
-      console.log('Projects count:', requestBody.resume.projects?.length || 0);
     }
-    
-    console.log('Full request body:', JSON.stringify(requestBody, null, 2));
-    console.log('=== END CHAT REQUEST ===');
 
     const { messages, target_role, config, job, resume }: ChatRequest = requestBody;
 
     // Get user ID for rate limiting
     const user = await getAuthenticatedUser();
 
-    // Apply rate limiting for all users
-    try {
-      await checkRateLimit(user.id);
-    } catch (error) {
-      // Add type checking for error
-      const message = error instanceof Error ? error.message : 'Rate limit exceeded';
-      const match = message.match(/(\d+) seconds/);
-      const retryAfter = match ? parseInt(match[1], 10) : 60;
-      
-      return new Response(
-        JSON.stringify({ 
-          error: message, // Use validated message
-          expirationTimestamp: Date.now() + retryAfter * 1000
-        }),
-        {
-          status: 429,
-          headers: {
-            "Content-Type": "application/json",
-            "Retry-After": String(retryAfter),
-          },
-        }
-      );
+    // Skip app-level throttling when users bring their own provider key.
+    if (!isUsingUserProvidedApiKey(config)) {
+      try {
+        await checkRateLimit(user.id);
+      } catch (error) {
+        // Add type checking for error
+        const message = error instanceof Error ? error.message : 'Rate limit exceeded';
+        const match = message.match(/(\d+) seconds/);
+        const retryAfter = match ? parseInt(match[1], 10) : 60;
+        
+        return new Response(
+          JSON.stringify({ 
+            error: message, // Use validated message
+            expirationTimestamp: Date.now() + retryAfter * 1000
+          }),
+          {
+            status: 429,
+            headers: {
+              "Content-Type": "application/json",
+              "Retry-After": String(retryAfter),
+            },
+          }
+        );
+      }
     }
 
     // Initialize the AI client using the provided config

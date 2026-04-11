@@ -5,6 +5,7 @@ import Tiptap from '@/components/ui/tiptap';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useToast } from '@/hooks/use-toast';
 import { hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
+import { getStoredApiKeys, getStoredDefaultModel } from '@/lib/ai-key-storage';
 import { cn } from '@/lib/utils';
 import { improveSummary } from '@/utils/actions/resumes/ai';
 import { Check, FileText, Lightbulb, Loader2, Sparkles, X } from 'lucide-react';
@@ -86,7 +87,10 @@ export function SummaryForm({ summary, onChange }: SummaryFormProps) {
     }
     try {
       setIsImproving(true);
-      const improved = await improveSummary(summary, improvementPrompt);
+      const improved = await improveSummary(summary, improvementPrompt, {
+        model: getStoredDefaultModel(),
+        apiKeys: getStoredApiKeys(),
+      });
       incrementAIUsage();
       
       setImprovedSummary({

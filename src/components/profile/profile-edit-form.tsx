@@ -6,9 +6,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Education, Profile, Project, WorkExperience } from "@/lib/types";
 
-import { Briefcase, FolderGit2, GraduationCap, Lock, PanelLeft, Save, Trash2, Upload, User, Wrench } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Briefcase, FolderGit2, GraduationCap, KeyRound, Lock, PanelLeft, Save, Trash2, Upload, User, Wrench } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { ProfileBasicInfoForm } from "@/components/profile/profile-basic-info-form";
@@ -34,16 +34,18 @@ import { formatProfileWithAI } from "../../utils/actions/profiles/ai";
 import { ChangePasswordForm } from "@/components/profile/change-password-form";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { cn } from "@/lib/utils";
+import { getStoredApiKeys, getStoredDefaultModel } from "@/lib/ai-key-storage";
 import { importResume, updateProfile } from "@/utils/actions/profiles/actions";
 import { AlertTriangle } from "lucide-react";
 import pdfToText from "react-pdftotext";
+import { AiApiKeysForm } from "@/components/profile/ai-api-keys-form";
 
 interface ProfileEditFormProps {
   profile: Profile;
 }
 
 // Tab order for navigation
-const PROFILE_TABS = ["basic", "experience", "projects", "education", "skills", "security"];
+const PROFILE_TABS = ["basic", "experience", "projects", "education", "skills", "api-keys", "security"];
 
 export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProps) {
   const [profile, setProfile] = useState(initialProfile);
@@ -56,6 +58,8 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
   const [isResumeDragging, setIsResumeDragging] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("basic");
+  const desktopTabListRef = useRef<HTMLDivElement | null>(null);
+  const searchParams = useSearchParams();
 
   // Helpers for navigation
   const currentTabIdx = PROFILE_TABS.indexOf(activeTab);
@@ -69,6 +73,13 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
   };
   const router = useRouter();
 
+  useEffect(() => {
+    const queryTab = searchParams.get("tab");
+    if (queryTab && PROFILE_TABS.includes(queryTab)) {
+      setActiveTab(queryTab);
+    }
+  }, [searchParams]);
+
   // Sync with server state when initialProfile changes
   useEffect(() => {
     setProfile(initialProfile);
@@ -81,6 +92,11 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
       setResumeContent(""); // Clear content when dialog closes
     }
   }, [isResumeDialogOpen]);
+
+  useEffect(() => {
+    // Avoid loading the desktop sidebar at an offset scroll position.
+    desktopTabListRef.current?.scrollTo({ top: 0 });
+  }, []);
 
   const updateField = (field: keyof Profile, value: unknown) => {
     setProfile(prev => ({ ...prev, [field]: value }));
@@ -164,18 +180,8 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
       setIsProcessingResume(true);
       
       // Get model and API key from local storage
-      const _MODEL_STORAGE_KEY = 'resumy-default-model';
-      const LOCAL_STORAGE_KEY = 'resumy-api-keys';
-      
-      const selectedModel = 'gemini-2.5-flash-lite'; // Use same model as resume editor
-      const storedKeys = localStorage.getItem(LOCAL_STORAGE_KEY);
-      let apiKeys = [];
-      
-      try {
-        apiKeys = storedKeys ? JSON.parse(storedKeys) : [];
-      } catch (error) {
-        console.error('Error parsing API keys:', error);
-      }
+      const selectedModel = getStoredDefaultModel();
+      const apiKeys = getStoredApiKeys();
       
       try {
         const result = await formatProfileWithAI(content, {
@@ -357,7 +363,9 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
 
   // Update onClick handler for both API Key buttons
   const handleApiKeyClick = () => {
-    toast.info("API key management is currently unavailable");
+    setIsResumeDialogOpen(false);
+    setActiveTab("api-keys");
+    toast.info("Add your API key in AI Keys under Profile settings.");
   };
 
   return (
@@ -383,7 +391,7 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full h-full">
             <div className="flex flex-col md:flex-row gap-6 h-full min-h-[600px]">
               {/* Left Navbar - Desktop view */}
-              <div className="hidden md:flex min-w-[220px] w-[240px] lg:w-[260px] shrink-0 flex-col sticky top-20 self-start max-h-[calc(100vh-6rem)] overflow-y-auto">
+              <div className="hidden md:flex min-w-[220px] w-[240px] lg:w-[260px] shrink-0 flex-col sticky top-20 self-start h-[calc(100dvh-6rem)] min-h-0 overflow-hidden">
                 {/* Import Options at the top */}
                 <div className="bg-zinc-900/80 rounded-xl border border-zinc-800 mt-4 mb-6 p-4">
                   <div className="flex items-center gap-2 mb-3">
@@ -524,7 +532,8 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                 </div>
 
                 {/* Tab List */}
-                <TabsList className="flex flex-col w-full h-auto bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden p-0">
+                <div className="flex-1 min-h-0 overflow-hidden">
+                <TabsList ref={desktopTabListRef} className="flex flex-col justify-start items-stretch w-full h-full bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-y-auto overscroll-contain p-0 pr-1">
                   <TabsTrigger 
                     value="basic" 
                     className="w-full group flex items-center gap-3 px-4 py-3.5 text-left justify-start transition-all duration-200
@@ -581,6 +590,17 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                     <span className="text-sm font-medium">Skills</span>
                   </TabsTrigger>
                   <TabsTrigger 
+                    value="api-keys" 
+                    className="w-full group flex items-center gap-3 px-4 py-3.5 text-left justify-start transition-all duration-200
+                      data-[state=active]:bg-zinc-800 data-[state=active]:text-white
+                      data-[state=inactive]:text-zinc-400 data-[state=inactive]:hover:text-zinc-200 data-[state=inactive]:hover:bg-zinc-800/50"
+                  >
+                    <div className="p-1.5 rounded-md bg-zinc-800 group-data-[state=active]:bg-emerald-500/20">
+                      <KeyRound className="h-4 w-4 text-zinc-400 group-data-[state=active]:text-emerald-400" />
+                    </div>
+                    <span className="text-sm font-medium">AI Keys</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
                     value="security" 
                     className="w-full group flex items-center gap-3 px-4 py-3.5 text-left justify-start transition-all duration-200
                       data-[state=active]:bg-zinc-800 data-[state=active]:text-white
@@ -592,9 +612,10 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                     <span className="text-sm font-medium">Security</span>
                   </TabsTrigger>
                 </TabsList>
+                </div>
 
                 {/* Save and Reset buttons */}
-                <div className="flex flex-col gap-2 mt-6">
+                <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-zinc-800/80">
                   <Button 
                     onClick={handleSubmit} 
                     disabled={isSubmitting}
@@ -708,6 +729,13 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                     </div>
                   </TabsContent>
 
+                  <TabsContent value="api-keys" className="mt-0 animate-in fade-in-50 duration-200">
+                    <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+                      <h2 className="text-base font-semibold text-zinc-100 mb-6">AI Keys & Model Settings</h2>
+                      <AiApiKeysForm />
+                    </div>
+                  </TabsContent>
+
                   <TabsContent value="security" className="mt-0 animate-in fade-in-50 duration-200">
                     <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
                       <h2 className="text-base font-semibold text-zinc-100 mb-6">Security Settings</h2>
@@ -752,12 +780,12 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
 
       {/* Mobile Navigation Slide-out */}
       <Sheet open={isNavOpen} onOpenChange={setIsNavOpen}>
-        <SheetContent side="left" className="w-[280px] sm:w-[320px] bg-zinc-950 border-r border-zinc-800 p-0">
+        <SheetContent side="left" className="w-[280px] sm:w-[320px] bg-zinc-950 border-r border-zinc-800 p-0 overflow-y-auto">
           <SheetHeader className="sr-only">
             <SheetTitle>Profile Navigation</SheetTitle>
             <SheetDescription>Navigate between different sections of your profile</SheetDescription>
           </SheetHeader>
-          <div className="flex flex-col h-full">
+          <div className="flex flex-col h-full min-h-0">
             {/* Import Options - Mobile */}
             <div className="border-b border-zinc-800 px-4 py-4 mt-12">
               <div className="flex items-center gap-2 mb-3">
@@ -780,12 +808,12 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
             </div>
 
             {/* Mobile Tab Navigation */}
-            <div className="flex-1 overflow-y-auto py-2">
+            <div className="flex-1 overflow-y-auto py-2 min-h-0">
               <Tabs value={activeTab} onValueChange={(value) => {
                 setActiveTab(value);
                 setIsNavOpen(false);
               }} className="w-full h-full">
-                <TabsList className="flex flex-col w-full h-auto bg-transparent border-none p-0">
+                <TabsList className="flex flex-col justify-start items-stretch w-full h-auto bg-transparent border-none p-0">
                 <TabsTrigger 
                   value="basic" 
                   className="w-full group flex items-center gap-3 px-4 py-3.5 text-left justify-start transition-all duration-200
@@ -844,6 +872,18 @@ export function ProfileEditForm({ profile: initialProfile }: ProfileEditFormProp
                     <Wrench className="h-4 w-4 text-zinc-400 group-data-[state=active]:text-emerald-400" />
                   </div>
                   <span className="text-sm font-medium">Skills</span>
+                </TabsTrigger>
+
+                <TabsTrigger 
+                  value="api-keys" 
+                  className="w-full group flex items-center gap-3 px-4 py-3.5 text-left justify-start transition-all duration-200
+                    data-[state=active]:bg-zinc-800 data-[state=active]:text-white
+                    data-[state=inactive]:text-zinc-400 data-[state=inactive]:hover:text-zinc-200 data-[state=inactive]:hover:bg-zinc-800/50"
+                >
+                  <div className="p-1.5 rounded-md bg-zinc-800 group-data-[state=active]:bg-emerald-500/20">
+                    <KeyRound className="h-4 w-4 text-zinc-400 group-data-[state=active]:text-emerald-400" />
+                  </div>
+                  <span className="text-sm font-medium">AI Keys</span>
                 </TabsTrigger>
 
                 <TabsTrigger 

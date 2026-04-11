@@ -74,10 +74,10 @@ export function ApiKeyErrorAlert({ error, router }: ApiKeyErrorAlertProps) {
                   ? "There was an issue processing the response. Please try your request again."
                   : ((error as Error)?.message?.includes('Google API key not found') ||
                       JSON.stringify(error).includes('Google API key not found'))
-                      ? "Google API key not found. Please add your Google API key in the profile settings to use Gemini 2.5 Flash-Lite Preview 06-17."
+                      ? "No compatible API key found. Add a Gemini API key (recommended free tier) or another provider key in Profile > AI Keys."
                       : ((error as Error)?.message?.includes('invalid_api_key') ||
                           JSON.stringify(error).includes('invalid_api_key'))
-                          ? "Your Google API key is invalid. Please check your key and try again."
+                        ? "Your API key is invalid. Please update it in Profile > AI Keys and try again."
                           : ((error as Error)?.message?.includes('Rate limit exceeded') ||
                               JSON.stringify(error).includes('Rate limit exceeded') ||
                               (error as Error)?.message?.includes('fetch failed') ||
@@ -145,9 +145,9 @@ export function ApiKeyErrorAlert({ error, router }: ApiKeyErrorAlertProps) {
                   "border border-gray-400",
                   "h-8"
                 )}
-                onClick={() => router.push('/profile')}
+                onClick={() => router.push('/profile?tab=api-keys')}
               >
-                Add Google API Key
+                Manage AI API Keys
               </Button>
             </div>
           </>

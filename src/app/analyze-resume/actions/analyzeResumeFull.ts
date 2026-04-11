@@ -3,9 +3,8 @@
 import { ResumeScoreMetrics } from "@/components/resume/editor/panels/resume-score-panel";
 import { Resume } from "@/lib/types";
 import { resumeScoreSchema, simplifiedResumeSchema } from "@/lib/zod-schemas";
-import { ApiKey } from "@/utils/ai-tools";
-import { createGoogleGenerativeAI } from '@ai-sdk/google';
-import { generateObject, LanguageModelV1 } from "ai";
+import { ApiKey, initializeAIClient } from "@/utils/ai-tools";
+import { generateObject } from "ai";
 import { z } from "zod";
 
 /**
@@ -285,18 +284,14 @@ async function analyzeResumeWithSingleAIRequest(
   resumeText: string,
   targetRole: string,
   model: string,
-  _apiKeys: ApiKey[]
+  apiKeys: ApiKey[]
 ): Promise<{ structuredResume: Resume; score: ResumeScoreMetrics; keywordAnalysis: KeywordAnalysis }> {
   try {
-    // Use GEMINI_API_KEY for resume analysis
-    const apiKey = process.env.GEMINI_API_KEY;
-    
-    if (!apiKey) {
-      throw new Error('GEMINI_API_KEY not found. Please set it in .env.local');
-    }
-    
-    // Initialize AI client
-    const aiClient = createGoogleGenerativeAI({ apiKey })(model) as LanguageModelV1;
+    // Initialize AI client from user-provided keys (with env fallback).
+    const aiClient = initializeAIClient({
+      model,
+      apiKeys,
+    });
     
     const { object } = (await generateObject({
       model: aiClient,
@@ -502,11 +497,6 @@ export async function analyzeResumeFull(
     throw new Error("Resume text is too short or empty. Please provide a valid resume.");
   }
 
-  // Environment validation
-  if (!process.env.GEMINI_API_KEY) {
-    console.error('Missing API key: GEMINI_API_KEY is undefined');
-    throw new Error("AI service is temporarily unavailable. Please try again later.");
-  }
   const {
     model = "gemini-2.5-flash-lite",
     atsEnhanced = true,

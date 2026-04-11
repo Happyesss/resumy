@@ -6,7 +6,7 @@ import {
     simplifiedJobSchema,
     simplifiedResumeSchema
 } from "@/lib/zod-schemas";
-import { AIConfig, initializeAIClient } from '@/utils/ai-tools';
+import { AIConfig, initializeAIClient, isUsingUserProvidedApiKey } from '@/utils/ai-tools';
 import { getAuthenticatedUser } from '@/utils/auth';
 import { generateObject, LanguageModelV1 } from 'ai';
 import { z } from 'zod';
@@ -19,8 +19,11 @@ export async function tailorResumeToJob(
 ) {
   const user = await getAuthenticatedUser();
   const aiClient = initializeAIClient(config);
-// Check rate limit
-  await checkRateLimit(user.id);
+
+  // Check rate limit only for platform-managed keys.
+  if (!isUsingUserProvidedApiKey(config)) {
+    await checkRateLimit(user.id);
+  }
 
 try {
     const { object } = await generateObject({
@@ -102,8 +105,11 @@ prompt: `
 export async function formatJobListing(jobListing: string, config?: AIConfig) {
   const user = await getAuthenticatedUser();
   const aiClient = initializeAIClient(config);
-// Check rate limit
-  await checkRateLimit(user.id);
+
+  // Check rate limit only for platform-managed keys.
+  if (!isUsingUserProvidedApiKey(config)) {
+    await checkRateLimit(user.id);
+  }
 
 try {
     const { object } = await generateObject({

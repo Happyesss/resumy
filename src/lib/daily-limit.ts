@@ -1,10 +1,14 @@
 'use client';
 
 import { isEducationalEmail } from './constants';
+import { hasStoredApiKey } from '@/lib/ai-key-storage';
 
 // Daily limit configuration
-export const DAILY_REQUEST_LIMIT = 30;
-export const EDUCATIONAL_DAILY_REQUEST_LIMIT = 50;
+export const DAILY_REQUEST_LIMIT = 10;
+export const EDUCATIONAL_DAILY_REQUEST_LIMIT = 18;
+
+const DAILY_USAGE_STORAGE_KEY = 'ai-daily-usage';
+const LEGACY_DAILY_USAGE_STORAGE_KEY = 'gemini-daily-usage';
 
 interface DailyUsage {
   date: string;
@@ -23,7 +27,9 @@ export function getDailyUsage(): DailyUsage {
   }
 
   const today = getTodayKey();
-  const stored = localStorage.getItem('gemini-daily-usage');
+  const stored =
+    localStorage.getItem(DAILY_USAGE_STORAGE_KEY) ||
+    localStorage.getItem(LEGACY_DAILY_USAGE_STORAGE_KEY);
   
   if (!stored) {
     return { date: today, count: 0 };
@@ -51,6 +57,10 @@ function getDailyRequestLimit(email?: string | null): number {
 
 // Check if user has reached daily limit
 export function hasReachedDailyLimit(email?: string | null): boolean {
+  if (hasStoredApiKey()) {
+    return false;
+  }
+
   const usage = getDailyUsage();
   const limit = getDailyRequestLimit(email);
   return usage.count >= limit;
@@ -58,6 +68,10 @@ export function hasReachedDailyLimit(email?: string | null): boolean {
 
 // Get remaining requests for today
 export function getRemainingRequests(email?: string | null): number {
+  if (hasStoredApiKey()) {
+    return getDailyRequestLimit(email);
+  }
+
   const usage = getDailyUsage();
   const limit = getDailyRequestLimit(email);
   return Math.max(0, limit - usage.count);
@@ -71,6 +85,7 @@ export function getCurrentDailyLimit(email?: string | null): number {
 // Increment daily usage count
 export function incrementDailyUsage(): void {
   if (typeof window === 'undefined') return;
+  if (hasStoredApiKey()) return;
 
   const usage = getDailyUsage();
   const newUsage: DailyUsage = {
@@ -78,11 +93,12 @@ export function incrementDailyUsage(): void {
     count: usage.count + 1
   };
   
-  localStorage.setItem('gemini-daily-usage', JSON.stringify(newUsage));
+  localStorage.setItem(DAILY_USAGE_STORAGE_KEY, JSON.stringify(newUsage));
 }
 
 // Reset daily usage (for testing or manual reset)
 export function resetDailyUsage(): void {
   if (typeof window === 'undefined') return;
-  localStorage.removeItem('gemini-daily-usage');
+  localStorage.removeItem(DAILY_USAGE_STORAGE_KEY);
+  localStorage.removeItem(LEGACY_DAILY_USAGE_STORAGE_KEY);
 }

@@ -5,6 +5,7 @@ import { AnalyzeNavbar } from "@/components/analyze-resume/navbar";
 import ResumePreviewCard from "@/components/analyze-resume/resume-preview-card";
 import { UploadForm } from "@/components/analyze-resume/upload-form";
 import { ResumeScoreMetrics } from "@/components/resume/editor/panels/resume-score-panel";
+import { getStoredApiKeys, getStoredDefaultModel } from "@/lib/ai-key-storage";
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
 import { analyzeResumeFull } from "./actions/analyzeResumeFull"; // 🆕 local action
@@ -80,13 +81,16 @@ export default function AnalyzeResumePage() {
 
       await new Promise(resolve => setTimeout(resolve, 4000));
 
+      const model = getStoredDefaultModel();
+      const apiKeys = getStoredApiKeys();
+
       // Single comprehensive analysis request with enhanced features
       const analysisResult = await analyzeResumeFull(resumeText, {
-        model: "gemini-2.5-flash-lite",
+        model,
         atsEnhanced: true,
         targetRole: "General",
         includeDetailedFeedback: true,
-        apiKeys: [],
+        apiKeys,
       });
 
       setScoreData(analysisResult.score);
