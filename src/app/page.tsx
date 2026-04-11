@@ -16,7 +16,9 @@ import { BrandSchema } from "@/components/seo/BrandSchema";
 import { NextGenSEOSuite } from "@/components/seo/NextGenSEOSuite";
 import { Logo } from "@/components/ui/logo";
 import { createClient } from "@/utils/supabase/server";
+import { Github } from "lucide-react";
 import { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import Script from "next/script";
 
@@ -528,22 +530,33 @@ export default async function Page() {
                 </div>
                 
                 {/* Mobile Auth Buttons and Menu */}
-                <div className="md:hidden flex items-center gap-1.5 sm:gap-2">
+                <div className="md:hidden flex items-center gap-1 sm:gap-1.5">
+                  <Link
+                    href={GITHUB_REPO_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Star Resumy on GitHub"
+                    title={githubStarsLabel}
+                    className="inline-flex min-[400px]:hidden h-7 w-7 shrink-0 items-center justify-center rounded-md border border-zinc-700/80 bg-zinc-900/90 text-zinc-200 shadow-[0_1px_0_rgba(255,255,255,0.04)_inset] transition-all duration-200 hover:-translate-y-0.5 hover:border-zinc-500 hover:bg-zinc-900 hover:shadow-[0_8px_22px_rgba(0,0,0,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                  >
+                    <Github className="h-3.5 w-3.5" />
+                  </Link>
+
                   <GitHubStarBadge
                     href={GITHUB_REPO_URL}
                     starCount={githubStarsValue}
                     starLabel={githubStarsLabel}
                     compact
-                    className="hidden min-[380px]:inline-flex shrink-0"
+                    className="hidden min-[400px]:inline-flex shrink-0"
                   />
 
                   <AuthDialog defaultTab="login">
-                    <button className="hidden min-[400px]:inline-flex shrink-0 whitespace-nowrap px-3 py-1.5 text-xs font-medium text-white border border-white hover:bg-white hover:text-black transition-all duration-200 rounded-md">
+                    <button className="inline-flex shrink-0 whitespace-nowrap px-2.5 py-1.5 text-[11px] font-medium text-white border border-white hover:bg-white hover:text-black transition-all duration-200 rounded-md">
                       Login
                     </button>
                   </AuthDialog>
                   <AuthDialog defaultTab="signup">
-                    <button className="inline-flex shrink-0 whitespace-nowrap px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium rounded-md transition-all duration-200">
+                    <button className="inline-flex shrink-0 whitespace-nowrap px-2.5 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-[11px] font-medium rounded-md transition-all duration-200">
                       Sign Up
                     </button>
                   </AuthDialog>
