@@ -111,11 +111,12 @@ export interface Profile {
 
 export const AI_PROVIDERS = {
   GOOGLE: 'google',
+  XAI: 'xai',
   // TOGETHER: 'together',
   // COHERE: 'cohere',
   // FIREWORKS: 'fireworks',
   // DEEPINFRA: 'deepinfra',
-  // GROQ: 'groq'
+  // GROQ: 'groq',
   DEEPSEEK: 'deepseek',
 } as const;
 
@@ -129,7 +130,7 @@ export type ServiceName =
   | 'google'
   // | 'vertex'
   // | 'mistral'
-  // | 'xai'
+  | 'xai'
   // | 'together'
   // | 'cohere'
   // | 'fireworks'

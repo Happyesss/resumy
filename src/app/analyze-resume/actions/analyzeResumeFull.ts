@@ -3,9 +3,11 @@
 import { ResumeScoreMetrics } from "@/components/resume/editor/panels/resume-score-panel";
 import { Resume } from "@/lib/types";
 import { resumeScoreSchema, simplifiedResumeSchema } from "@/lib/zod-schemas";
-import { ApiKey, initializeAIClient } from "@/utils/ai-tools";
+import { initializeAIClient } from "@/utils/ai-tools";
 import { generateObject } from "ai";
 import { z } from "zod";
+
+const ANALYZE_RESUME_MODEL = "gemini-2.5-flash-lite";
 
 /**
  * Enhanced ATS diagnostics interface for comprehensive resume analysis
@@ -42,9 +44,7 @@ interface AtsDiagnostics {
  * Configuration options for the resume analysis
  */
 interface AnalysisConfig {
-  model?: string;
   atsEnhanced?: boolean;
-  apiKeys?: ApiKey[];
   targetRole?: string;
   baseResumeTemplate?: Partial<Resume>;
   includeDetailedFeedback?: boolean;
@@ -282,15 +282,12 @@ const combinedAnalysisSchema = z.object({
  */
 async function analyzeResumeWithSingleAIRequest(
   resumeText: string,
-  targetRole: string,
-  model: string,
-  apiKeys: ApiKey[]
+  targetRole: string
 ): Promise<{ structuredResume: Resume; score: ResumeScoreMetrics; keywordAnalysis: KeywordAnalysis }> {
   try {
-    // Initialize AI client from user-provided keys (with env fallback).
+    // Analyze-resume always uses the app-managed server key.
     const aiClient = initializeAIClient({
-      model,
-      apiKeys,
+      model: ANALYZE_RESUME_MODEL,
     });
     
     const { object } = (await generateObject({
@@ -498,9 +495,7 @@ export async function analyzeResumeFull(
   }
 
   const {
-    model = "gemini-2.5-flash-lite",
     atsEnhanced = true,
-    apiKeys = [],
     targetRole = "General",
     baseResumeTemplate: _baseResumeTemplate = {},
     includeDetailedFeedback: _includeDetailedFeedback = true
@@ -512,9 +507,7 @@ export async function analyzeResumeFull(
     // Step 1: Single AI request for both parsing and scoring
     const { structuredResume, score, keywordAnalysis } = await analyzeResumeWithSingleAIRequest(
       resumeText,
-      targetRole,
-      model,
-      apiKeys
+      targetRole
     );
 
     // Step 2: Run ATS diagnostics (if enabled) - this is local processing
@@ -535,7 +528,7 @@ export async function analyzeResumeFull(
       atsDiagnostics,
       processingTime,
       analysisMetadata: {
-        modelUsed: model,
+        modelUsed: ANALYZE_RESUME_MODEL,
         atsEnhanced,
         targetRole,
         timestamp: new Date().toISOString()
@@ -547,7 +540,7 @@ export async function analyzeResumeFull(
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       resumeLength: resumeText?.length || 0,
-      model,
+      model: ANALYZE_RESUME_MODEL,
       targetRole,
       timestamp: new Date().toISOString()
     });
@@ -584,8 +577,6 @@ export async function analyzeResumeQuick(
   const startTime = Date.now();
   
   const {
-    model = "gemini-2.5-flash-lite",
-    apiKeys = [],
     targetRole = "General",
     includeDetailedFeedback: _includeDetailedFeedback2 = true
   } = config;
@@ -594,9 +585,7 @@ export async function analyzeResumeQuick(
     // Single AI request for both parsing and scoring (no ATS diagnostics)
     const { structuredResume, score, keywordAnalysis } = await analyzeResumeWithSingleAIRequest(
       resumeText,
-      targetRole,
-      model,
-      apiKeys
+      targetRole
     );
 
     const processingTime = Date.now() - startTime;
@@ -609,7 +598,7 @@ export async function analyzeResumeQuick(
       keywordAnalysis,
       processingTime,
       analysisMetadata: {
-        modelUsed: model,
+        modelUsed: ANALYZE_RESUME_MODEL,
         atsEnhanced: false,
         targetRole,
         timestamp: new Date().toISOString()

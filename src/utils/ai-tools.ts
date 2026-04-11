@@ -70,6 +70,8 @@ function getEnvironmentApiKey(provider: SupportedAIService): string | null {
       return process.env.OPENAI_API_KEY || null;
     case 'anthropic':
       return process.env.ANTHROPIC_API_KEY || null;
+    case 'xai':
+      return process.env.XAI_API_KEY || null;
     case 'groq':
       return process.env.GROQ_API_KEY || null;
     case 'deepseek':
@@ -87,6 +89,8 @@ function getEnvironmentKeyHint(provider: SupportedAIService): string {
       return 'OPENAI_API_KEY';
     case 'anthropic':
       return 'ANTHROPIC_API_KEY';
+    case 'xai':
+      return 'XAI_API_KEY';
     case 'groq':
       return 'GROQ_API_KEY';
     case 'deepseek':
@@ -148,6 +152,11 @@ export function initializeAIClient(config?: AIConfig, _useThinking?: boolean): L
       return createOpenAI({ apiKey })(modelId) as LanguageModelV1;
     case 'anthropic':
       return createAnthropic({ apiKey })(modelId) as LanguageModelV1;
+    case 'xai':
+      return createOpenAI({
+        apiKey,
+        baseURL: 'https://api.x.ai/v1',
+      })(modelId) as LanguageModelV1;
     case 'groq':
       return createGroq({ apiKey })(modelId) as LanguageModelV1;
     case 'deepseek':
