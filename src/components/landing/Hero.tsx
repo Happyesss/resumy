@@ -1,10 +1,15 @@
 "use client";
 import { AuthDialog } from "@/components/auth/auth-dialog";
 import { DotPattern } from "@/components/magicui/dot-pattern";
-import { ArrowRight, ChevronDown, Globe2, Rocket, Sparkles, Star, Trophy } from "lucide-react";
+import { ArrowRight, ChevronDown, Github, Globe2, Rocket, Sparkles, Star, Trophy } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export function Hero() {
+interface HeroProps {
+  githubRepoUrl?: string;
+}
+
+export function Hero({ githubRepoUrl = "https://github.com/Happyesss/resumyy" }: HeroProps) {
   const [_mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -32,6 +37,19 @@ export function Hero() {
         <div className="text-center space-y-10">
           {/* Main Headline */}
           <div className="space-y-4">
+            <div className="flex justify-center">
+              <Link
+                href={githubRepoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 rounded-full border border-emerald-300/35 bg-gradient-to-r from-emerald-500/20 via-teal-500/10 to-emerald-500/20 px-4 py-1.5 text-xs sm:text-sm font-medium text-emerald-100 backdrop-blur-sm transition-all duration-300 hover:border-emerald-200/70 hover:bg-emerald-500/25 hover:shadow-[0_0_25px_rgba(16,185,129,0.25)]"
+                aria-label="View Resumy open-source code on GitHub"
+              >
+                <Github className="h-4 w-4" />
+                <span>Open Source</span>
+              </Link>
+            </div>
+
             <h1 className="text-4xl lg:text-6xl font-extrabold tracking-tight leading-tight">
               <span className="block text-white">
                 Resumes That Work
@@ -48,6 +66,9 @@ export function Hero() {
               Tell your story. Highlight your strengths. Get hired — with
               <span className="text-purple-400 font-medium"> AI-crafted resumes </span>
               tailored to fit your goals.
+            </p>
+            <p className="text-sm text-emerald-200/85 max-w-2xl mx-auto">
+              Built in public, open to contributions, and free for the community.
             </p>
           </div>
 

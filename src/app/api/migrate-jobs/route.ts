@@ -11,7 +11,24 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   }
 })
 
-export async function POST() {
+export async function POST(request: Request) {
+  const isProduction = process.env.NODE_ENV === 'production';
+  const migrationRouteEnabled = process.env.ENABLE_MIGRATION_ROUTE === 'true';
+  const migrationRouteToken = process.env.MIGRATION_ROUTE_TOKEN;
+
+  // Keep this endpoint closed in production unless explicitly enabled.
+  if (isProduction && !migrationRouteEnabled) {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  }
+
+  // In production, require a shared token to prevent public abuse.
+  if (isProduction) {
+    const providedToken = request.headers.get('x-migration-token');
+    if (!migrationRouteToken || providedToken !== migrationRouteToken) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+  }
+
   try {
     console.log('Starting jobs table check...')
     

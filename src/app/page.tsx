@@ -9,6 +9,7 @@ import { ResumeTracking } from "@/components/landing/ResumeTracking";
 import { Testimonials } from "@/components/landing/Testimonials";
 import { VideoShowcase } from "@/components/landing/VideoShowcase";
 import { Footer } from "@/components/layout/footer";
+import { GitHubStarBadge } from "@/components/layout/github-star-badge";
 import { MobileNavLinks, NavLinks } from "@/components/layout/nav-links";
 import { AdvancedSeoSchema } from "@/components/seo/AdvancedSeoSchema";
 import { BrandSchema } from "@/components/seo/BrandSchema";
@@ -18,6 +19,15 @@ import { createClient } from "@/utils/supabase/server";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import Script from "next/script";
+
+const GITHUB_REPO_URL = "https://github.com/Happyesss/resumyy";
+
+function formatStarCount(stars: number) {
+  if (stars >= 1000) {
+    return `${(stars / 1000).toFixed(1).replace(/\.0$/, "")}k`;
+  }
+  return `${stars}`;
+}
 
 // Page-specific metadata that extends the base metadata from layout.tsx
 export const metadata: Metadata = {
@@ -275,6 +285,31 @@ export default async function Page() {
   // Check if user is authenticated
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+
+  let githubStars: number | null = null;
+  try {
+    const githubResponse = await fetch("https://api.github.com/repos/Happyesss/resumyy", {
+      next: { revalidate: 3600 },
+      headers: {
+        Accept: "application/vnd.github+json",
+        "User-Agent": "resumy-web",
+      },
+    });
+
+    if (githubResponse.ok) {
+      const repoData: { stargazers_count?: number } = await githubResponse.json();
+      if (typeof repoData.stargazers_count === "number") {
+        githubStars = repoData.stargazers_count;
+      }
+    }
+  } catch {
+    // Gracefully fall back to text-only CTA when GitHub API is unavailable.
+  }
+
+  const githubStarsValue = githubStars !== null ? formatStarCount(githubStars) : "0";
+  const githubStarsLabel = githubStars !== null
+    ? `${githubStarsValue} stars`
+    : "Star on GitHub";
   
   // If user is authenticated, redirect to home page
   if (user) {
@@ -458,11 +493,11 @@ export default async function Page() {
       <main aria-label="Resumy - Free AI Resume Builder homepage" className="bg-black ">
         {/* Enhanced Navigation */}
         <nav aria-label="Main navigation" className="bg-black border-b border-gray-800 fixed top-0 w-full z-[1000] transition-all duration-300 shadow-lg backdrop-blur-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               {/* Left - Logo */}
               <div className="flex items-center gap-2">
-                <Logo />
+                <Logo className="text-lg sm:text-xl" />
               </div>
               
               {/* Middle - Navigation Links */}
@@ -474,6 +509,12 @@ export default async function Page() {
               <div className="flex items-center gap-3">
                 {/* Desktop Auth Buttons */}
                 <div className="hidden md:flex items-center gap-3">
+                  <GitHubStarBadge
+                    href={GITHUB_REPO_URL}
+                    starCount={githubStarsValue}
+                    starLabel={githubStarsLabel}
+                  />
+
                   <AuthDialog defaultTab="login">
                     <button className="px-4 py-2 text-sm font-medium text-white border border-white hover:bg-white hover:text-black transition-all duration-200 rounded-lg">
                       Login
@@ -487,19 +528,29 @@ export default async function Page() {
                 </div>
                 
                 {/* Mobile Auth Buttons and Menu */}
-                <div className="md:hidden flex items-center gap-2">
+                <div className="md:hidden flex items-center gap-1.5 sm:gap-2">
+                  <GitHubStarBadge
+                    href={GITHUB_REPO_URL}
+                    starCount={githubStarsValue}
+                    starLabel={githubStarsLabel}
+                    compact
+                    className="hidden min-[380px]:inline-flex shrink-0"
+                  />
+
                   <AuthDialog defaultTab="login">
-                    <button className="px-3 py-1.5 text-xs font-medium text-white border border-white hover:bg-white hover:text-black transition-all duration-200 rounded-md">
+                    <button className="hidden min-[400px]:inline-flex shrink-0 whitespace-nowrap px-3 py-1.5 text-xs font-medium text-white border border-white hover:bg-white hover:text-black transition-all duration-200 rounded-md">
                       Login
                     </button>
                   </AuthDialog>
                   <AuthDialog defaultTab="signup">
-                    <button className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium rounded-md transition-all duration-200">
+                    <button className="inline-flex shrink-0 whitespace-nowrap px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium rounded-md transition-all duration-200">
                       Sign Up
                     </button>
                   </AuthDialog>
                   {/* Mobile Menu - moved here */}
-                  <MobileNavLinks />
+                  <div className="shrink-0">
+                    <MobileNavLinks />
+                  </div>
                 </div>
               </div>
             </div>
@@ -507,7 +558,7 @@ export default async function Page() {
         </nav>
         
         {/* Hero Section - Full width */}
-        <Hero />
+        <Hero githubRepoUrl={GITHUB_REPO_URL} />
         
         {/* Video Showcase Section */}
         <section id="product-demo">

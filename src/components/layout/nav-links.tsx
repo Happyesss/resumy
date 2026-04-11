@@ -69,7 +69,7 @@ function NavLink({ href, children, className, onClick }: NavLinkProps) {
 
 function DesktopNavLinks() {
   return (
-    <div className="flex items-center gap-8">
+    <div className="flex items-center gap-4 lg:gap-5">
       <NavLink 
         href="#features" 
         className="text-white hover:text-purple-400 hover:bg-gray-800/50 px-3 py-2 rounded-lg transition-all duration-200"
@@ -123,10 +123,10 @@ function MobileNavMenu() {
   }, []);
 
   return (
-    <div className="relative" ref={menuRef}>
+    <div className="relative shrink-0" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 text-white hover:text-purple-400 hover:bg-gray-800/50 rounded-lg transition-all duration-200"
+        className="inline-flex h-8 w-8 items-center justify-center rounded-md text-white hover:text-purple-400 hover:bg-gray-800/50 transition-all duration-200"
       >
         {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
