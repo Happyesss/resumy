@@ -1,65 +1,109 @@
-# Resumy
+<div align="center">
+  <img src="public/logo.png" alt="Resumy Logo" width="112" />
+  <h1>Resumy</h1>
+  <p><strong>AI-powered resume builder for ATS-ready resumes, tailored applications, cover letters, and outreach workflows.</strong></p>
 
-AI-powered resume builder built with Next.js 15, Supabase, and the Vercel AI SDK.
+  <p>
+    <a href="https://resumy.live">Live Demo</a>
+  </p>
 
-Resumy helps users create base resumes, generate tailored resumes for specific jobs, improve content with AI, analyze ATS readiness, generate cover letters and cold emails, and share resumes with view analytics.
+  <p>
+    <img src="https://img.shields.io/badge/Next.js-15-black?logo=next.js" alt="Next.js 15" />
+    <img src="https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white" alt="React 19" />
+    <img src="https://img.shields.io/badge/TypeScript-5.0+-3178c6?logo=typescript&logoColor=white" alt="TypeScript" />
+    <img src="https://img.shields.io/badge/Supabase-Postgres%20%2B%20Auth-3fcf8e?logo=supabase&logoColor=white" alt="Supabase" />
+    <img src="https://img.shields.io/badge/AI-Vercel%20AI%20SDK-111111" alt="Vercel AI SDK" />
+    <img src="https://img.shields.io/badge/License-Apache%202.0-blue" alt="Apache 2.0" />
+  </p>
+</div>
 
-## Repository Standards
+Resumy helps job seekers build strong resumes from a single workspace: create base resumes, generate tailored versions for specific roles, analyze ATS readiness, improve content with AI, create cover letters and cold emails, and share resumes with analytics.
 
-- Contribution guide: [CONTRIBUTING.md](CONTRIBUTING.md)
-- Code of conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+> This repository includes README, CONTRIBUTING.md, and CODE_OF_CONDUCT.md so GitHub shows the standard top tabs for README, Contributing, and Code of conduct.
 
-These files are included so GitHub can show the built-in top repository tabs for README, Code of conduct, and Contributing.
-
-## Preview
+## Product Preview
 
 ![Resumy Dashboard](public/images/Dashboard.png)
 
-## Core Features
+## Feature Gallery
 
-- Resume workspace with base and tailored resume flows
-- Rich resume editor with live preview and autosave
-- AI assistant for section improvements and resume editing help
-- ATS analysis with scoring, keyword insights, and recommendations
-- Cover letter editor and cold email generation
-- Resume template gallery and template switching
-- Public resume sharing with view analytics
-- Browser push notifications for share activity
-- Feedback/bug reporting system
-- Supabase authentication and row-level security
+| Dashboard | Resume Editor |
+| --- | --- |
+| ![Dashboard Workspace](public/images/Dashboard.png) | ![Resume Editor](public/images/editorImage.png) |
+| Manage base and tailored resumes in one workspace. | Edit content with live preview and autosave. |
+
+| ATS Analysis | AI Assistant |
+| --- | --- |
+| ![ATS Analysis](public/images/analyze.png) | ![AI Assistant](public/images/SS%20Chat.png) |
+| Analyze resume quality, role fit, and keyword gaps. | Improve sections with an in-editor AI assistant. |
+
+| Cover Letter | Cold Email |
+| --- | --- |
+| ![Cover Letter](public/images/coverletter.png) | ![Cold Email](public/images/coldmail.png) |
+| Generate and edit cover letters with synchronized data. | Draft personalized outreach emails quickly. |
+
+| Templates | ATS Result Snapshot |
+| --- | --- |
+| ![Templates](public/images/templates.png) | ![ATS Score Snapshot](public/images/result/score.png) |
+| Switch between multiple professional template styles. | Review score output and optimization feedback. |
+
+## Complete Feature Set
+
+- Resume workspace: base and tailored resume flows with organized dashboard views.
+- Rich editor: sections for profile, summary, work experience, projects, education, and skills.
+- Live preview: side-by-side editor and preview with quick PDF download support.
+- AI assistant: contextual suggestions and edits for resume sections.
+- ATS analysis: scoring, keyword analysis, and detailed improvement recommendations.
+- Cover letters: rich-text editing and PDF export support.
+- Cold email generation: AI-assisted outreach drafts for applications and networking.
+- Template system: modern, classic, creative, minimal, and professional variants.
+- Resume sharing: public share links with view tracking and controls.
+- View analytics: logs and aggregate visibility insights for shared resumes.
+- Notifications: browser push notifications for relevant share activity.
+- Feedback system: submit bug reports, feature requests, and general feedback.
+- Authentication and profiles: Supabase Auth with profile management.
+- Security model: Supabase Row Level Security policies across user data.
+- API architecture: Next.js API routes and server actions for feature workflows.
 
 ## Tech Stack
 
-- Framework: Next.js 15 (App Router), React 19, TypeScript
-- UI: Tailwind CSS, Radix UI, shadcn-style components
-- Data/Auth: Supabase (Postgres + Auth + RLS)
-- AI: Vercel AI SDK with provider support (Google, OpenAI, Anthropic, Groq, DeepSeek, xAI)
-- Infra utilities: Upstash Redis for rate limiting and related operations
+| Layer | Technologies |
+| --- | --- |
+| Frontend | Next.js 15 App Router, React 19, TypeScript |
+| UI System | Tailwind CSS, Radix UI, shadcn-style components, Framer Motion |
+| Rich Text and Editing | TipTap editor ecosystem |
+| AI Runtime | Vercel AI SDK (`ai`) |
+| AI Providers | Google Gemini, OpenAI, Anthropic, Groq, DeepSeek, xAI |
+| Data and Auth | Supabase (Postgres, Auth, RLS) |
+| Realtime and Limits | Upstash Redis, custom rate limiting and daily usage controls |
+| Document Generation | @react-pdf/renderer, html2canvas/html2pdf tooling |
+| Validation and Types | Zod schemas, TypeScript types |
+| Tooling | ESLint, TypeScript compiler, pnpm |
 
 ## Project Structure
 
 ```text
 src/
   app/                 # Routes, layouts, and API endpoints
-  components/          # UI and feature components
+  components/          # Feature and UI components
   hooks/               # Custom React hooks
-  lib/                 # Core libraries, constants, schemas, utilities
-  utils/               # Server/client helpers, actions, Supabase utilities
-  types/               # Shared TypeScript types
-public/                # Static assets (images, templates, icons)
-schema.sql             # Database schema and policies
+  lib/                 # Core config, constants, schemas, utilities
+  types/               # Shared TypeScript definitions
+  utils/               # Actions, auth helpers, Supabase clients
+public/                # Images, templates, icons, and static assets
+schema.sql             # Database schema, triggers, and RLS policies
 ```
 
-## Getting Started
+## Quick Start
 
 ### 1. Prerequisites
 
 - Node.js 20+
-- pnpm (recommended), npm, or yarn
+- pnpm (recommended) or npm/yarn
 - Supabase project
-- At least one AI provider API key (for AI features)
+- At least one AI provider key for AI features
 
-### 2. Install Dependencies
+### 2. Install
 
 ```bash
 git clone https://github.com/Happyesss/resumyy.git
@@ -67,15 +111,13 @@ cd resumyy
 pnpm install
 ```
 
-### 3. Configure Environment Variables
-
-Copy the example file and update values.
+### 3. Configure Environment
 
 ```bash
 cp .env.example .env.local
 ```
 
-Minimum required variables:
+Required variables:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL="https://your-supabase-project.supabase.co"
@@ -85,7 +127,7 @@ GEMINI_API_KEY="your-gemini-api-key"
 NEXT_PUBLIC_SITE_URL="http://localhost:3000"
 ```
 
-Optional but recommended:
+Optional variables:
 
 ```env
 UPSTASH_REDIS_REST_URL="https://your-redis-instance.upstash.io"
@@ -93,13 +135,15 @@ UPSTASH_REDIS_REST_TOKEN="your-upstash-redis-token"
 NEXT_PUBLIC_SHARE_URL="http://localhost:3001"
 NEXT_PUBLIC_VAPID_PUBLIC_KEY="your-vapid-public-key"
 VAPID_PRIVATE_KEY="your-vapid-private-key"
+ENABLE_MIGRATION_ROUTE="false"
+MIGRATION_ROUTE_TOKEN="set-a-long-random-secret"
 ```
 
 ### 4. Set Up Database
 
-Run [schema.sql](schema.sql) in your Supabase SQL editor to create tables, indexes, triggers, and RLS policies.
+Run [schema.sql](schema.sql) in Supabase SQL Editor.
 
-### 5. Start Development Server
+### 5. Run the App
 
 ```bash
 pnpm dev
@@ -107,31 +151,30 @@ pnpm dev
 
 Open http://localhost:3000.
 
-## Available Scripts
+## Development Commands
 
 ```bash
-pnpm dev         # Start dev server (Turbopack)
-pnpm build       # Build for production
+pnpm dev         # Start development server (Turbopack)
+pnpm build       # Create production build
 pnpm start       # Start production server
-pnpm lint        # Lint
-pnpm lint:fix    # Lint and fix
-pnpm type-check  # TypeScript type check
+pnpm lint        # Run lint checks
+pnpm lint:fix    # Auto-fix lint issues
+pnpm type-check  # Run TypeScript checks
 ```
 
 ## Documentation
 
-- Setup details: [SETUP_GUIDE.md](SETUP_GUIDE.md)
-- Deployment details: [DEPLOYMENT.md](DEPLOYMENT.md)
-- Subscription/reference notes: [SUBSCRIPTION_PLAN.md](SUBSCRIPTION_PLAN.md)
+- [SETUP_GUIDE.md](SETUP_GUIDE.md)
+- [DEPLOYMENT.md](DEPLOYMENT.md)
+- [CONTRIBUTING.md](CONTRIBUTING.md)
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
 ## Contributing
 
-Contributions are welcome.
-
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
-Important: All contributions must flow through the dev branch. Do not open pull requests directly against main.
+Important policy: all contributions must flow through the dev branch.
 
 ## License
 
-This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE).
+Licensed under Apache License 2.0. See [LICENSE](LICENSE).
