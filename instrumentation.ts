@@ -6,7 +6,7 @@ export async function register() {
       console.error('Unhandled Rejection at:', promise, 'reason:', reason)
     })
 
-    // Catch uncaught exceptions - log them but let PM2 handle the restart
+    // Catch uncaught exceptions - log them and let the process manager handle restart
     process.on('uncaughtException', (error) => {
       console.error('Uncaught Exception:', error.message, error.stack)
     })

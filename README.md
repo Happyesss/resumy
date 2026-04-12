@@ -196,7 +196,6 @@ pnpm type-check  # Run TypeScript checks
 ## Documentation
 
 - [SETUP_GUIDE.md](SETUP_GUIDE.md)
-- [DEPLOYMENT.md](DEPLOYMENT.md)
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 

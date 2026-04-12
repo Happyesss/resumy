@@ -8,8 +8,6 @@
     "build:cf": "pnpm install --no-frozen-lockfile && next build",
     "start": "next start",
     "lint": "next lint",
-    "deploy:setup": "chmod +x setup-droplet.sh && ./setup-droplet.sh",
-    "deploy:ssl": "chmod +x setup-ssl.sh && ./setup-ssl.sh",
     "lint:fix": "next lint --fix",
     "type-check": "tsc --noEmit",
     "build:analyze": "ANALYZE=true npm run build"
