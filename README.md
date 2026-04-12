@@ -48,6 +48,8 @@ Cool features in Resumy Share:
 - Privacy-conscious session tracking with dedupe windows to reduce inflated counts.
 - In-view actions: copy link, download PDF, and zoom controls (including touch/trackpad pinch).
 
+![Resumy Share Preview](public/images/share.png)
+
 > This repository includes README, CONTRIBUTING.md, and CODE_OF_CONDUCT.md so GitHub shows the standard top tabs for README, Contributing, and Code of conduct.
 
 ## Product Preview
