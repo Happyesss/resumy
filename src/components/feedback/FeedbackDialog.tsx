@@ -211,22 +211,22 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={cn(
         "bg-zinc-950 border-zinc-800 text-white p-0 gap-0 overflow-hidden",
-        "w-[calc(100vw-2rem)] max-w-[95vw] sm:max-w-[560px]",
-        "max-h-[90vh] flex flex-col"
+        "w-[calc(100vw-2rem)] max-w-[92vw] sm:max-w-[500px]",
+        "max-h-[85vh] flex flex-col"
       )}>
         {step === 'form' && (
           <>
             {/* Header */}
-            <DialogHeader className="px-5 pt-5 pb-4 border-b border-zinc-800/50 shrink-0">
+            <DialogHeader className="px-4 pt-4 pb-3 border-b border-zinc-800/50 shrink-0">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-purple-500/10 border border-purple-500/20">
-                  <MessageSquare className="h-5 w-5 text-purple-400" />
+                <div className="p-1.5 rounded-lg bg-purple-500/10 border border-purple-500/20">
+                  <MessageSquare className="h-4 w-4 text-purple-400" />
                 </div>
                 <div>
-                  <DialogTitle className="text-lg font-semibold text-zinc-100">
+                  <DialogTitle className="text-base font-semibold text-zinc-100">
                     Send Feedback
                   </DialogTitle>
-                  <DialogDescription className="text-sm text-zinc-500 mt-0.5">
+                  <DialogDescription className="text-xs text-zinc-500 mt-0.5">
                     Help us improve your experience
                   </DialogDescription>
                 </div>
@@ -235,7 +235,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
 
             {/* Scrollable Form Content */}
             <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
-              <div className="p-5 space-y-5">
+              <div className="p-4 space-y-4">
                 {/* Feedback Type */}
                 <div className="space-y-2.5">
                   <Label className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
@@ -248,7 +248,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
                         type="button"
                         onClick={() => setType(option.value)}
                         className={cn(
-                          'flex items-center gap-2 px-3 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200',
+                          'flex items-center gap-2 px-2.5 py-2 rounded-lg border text-xs font-medium transition-all duration-200',
                           type === option.value
                             ? `${typeStyles[option.value].active} ring-2 ring-offset-1 ring-offset-zinc-950`
                             : `border-zinc-800 bg-zinc-900/50 text-zinc-500 ${typeStyles[option.value].inactive}`
@@ -273,7 +273,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
                         type="button"
                         onClick={() => setPriority(option.value)}
                         className={cn(
-                          'px-4 py-2 rounded-lg border text-sm font-medium transition-all duration-200',
+                          'px-3 py-1.5 rounded-lg border text-xs font-medium transition-all duration-200',
                           priority === option.value
                             ? priorityStyles[option.value].active
                             : `border-zinc-800 bg-zinc-900/50 text-zinc-500 ${priorityStyles[option.value].inactive}`
@@ -299,7 +299,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="Brief summary..."
-                    className="flex h-11 w-full rounded-lg border px-4 py-2 text-sm 
+                    className="flex h-10 w-full rounded-lg border px-3 py-2 text-sm 
                       bg-zinc-900/50 border-zinc-800 text-zinc-100 
                       placeholder:text-zinc-600
                       focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/20 
@@ -328,7 +328,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
                         ? "Describe the feature and how it would help..."
                         : "Share your thoughts or suggestions..."
                     }
-                    className="min-h-[100px] bg-zinc-900/50 border-zinc-800 text-zinc-100 
+                    className="min-h-[90px] bg-zinc-900/50 border-zinc-800 text-zinc-100 
                       placeholder:text-zinc-600 resize-none
                       focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/20 
                       hover:border-zinc-700 hover:bg-zinc-900/70 focus:bg-zinc-900/70"
@@ -348,7 +348,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
                       onClick={() => fileInputRef.current?.click()}
                       onDrop={handleDrop}
                       onDragOver={handleDragOver}
-                      className="w-full border border-dashed border-zinc-800 rounded-lg p-4 
+                      className="w-full border border-dashed border-zinc-800 rounded-lg p-3 
                         text-center cursor-pointer transition-all duration-200 
                         hover:border-purple-500/40 hover:bg-purple-500/5 group"
                     >
@@ -409,13 +409,13 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
               </div>
 
               {/* Footer */}
-              <div className="px-5 py-4 border-t border-zinc-800/50 bg-zinc-900/30 shrink-0">
+              <div className="px-4 py-3 border-t border-zinc-800/50 bg-zinc-900/30 shrink-0">
                 <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3">
                   <Button
                     type="button"
                     variant="outline"
                     onClick={handleClose}
-                    className="flex-1 h-10 border-zinc-800 bg-transparent text-zinc-400 
+                    className="flex-1 h-9 border-zinc-800 bg-transparent text-zinc-400 
                       hover:bg-zinc-800 hover:text-zinc-200 hover:border-zinc-700"
                   >
                     Cancel
@@ -423,7 +423,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
                   <Button
                     type="submit"
                     disabled={isSubmitting || !title.trim() || !description.trim()}
-                    className="flex-1 h-10 bg-purple-600 hover:bg-purple-500 text-white border-0
+                    className="flex-1 h-9 bg-purple-600 hover:bg-purple-500 text-white border-0
                       disabled:bg-zinc-800 disabled:text-zinc-500"
                   >
                     {isSubmitting ? (
@@ -445,20 +445,20 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
         )}
 
         {step === 'success' && (
-          <div className="p-8 text-center space-y-4">
-            <div className="mx-auto w-14 h-14 rounded-full bg-purple-500/10 border border-purple-500/20 
+          <div className="p-6 text-center space-y-3">
+            <div className="mx-auto w-12 h-12 rounded-full bg-purple-500/10 border border-purple-500/20 
               flex items-center justify-center">
-              <CheckCircle2 className="h-7 w-7 text-purple-400" />
+              <CheckCircle2 className="h-6 w-6 text-purple-400" />
             </div>
             <div className="space-y-1">
-              <h3 className="text-lg font-semibold text-zinc-100">Thank You!</h3>
+              <h3 className="text-base font-semibold text-zinc-100">Thank You!</h3>
               <p className="text-sm text-zinc-500">
                 Your feedback has been submitted successfully.
               </p>
             </div>
             <Button
               onClick={handleClose}
-              className="h-10 px-6 bg-purple-600 hover:bg-purple-500 text-white"
+              className="h-9 px-5 bg-purple-600 hover:bg-purple-500 text-white"
             >
               Close
             </Button>
@@ -466,27 +466,27 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
         )}
 
         {step === 'error' && (
-          <div className="p-8 text-center space-y-4">
-            <div className="mx-auto w-14 h-14 rounded-full bg-red-500/10 border border-red-500/20 
+          <div className="p-6 text-center space-y-3">
+            <div className="mx-auto w-12 h-12 rounded-full bg-red-500/10 border border-red-500/20 
               flex items-center justify-center">
-              <AlertCircle className="h-7 w-7 text-red-400" />
+              <AlertCircle className="h-6 w-6 text-red-400" />
             </div>
             <div className="space-y-1">
-              <h3 className="text-lg font-semibold text-zinc-100">Something went wrong</h3>
+              <h3 className="text-base font-semibold text-zinc-100">Something went wrong</h3>
               <p className="text-sm text-zinc-500">{errorMessage || 'Please try again.'}</p>
             </div>
             <div className="flex gap-3 justify-center">
               <Button
                 onClick={() => setStep('form')}
                 variant="outline"
-                className="h-10 px-5 border-zinc-800 bg-transparent text-zinc-400 
+                className="h-9 px-4 border-zinc-800 bg-transparent text-zinc-400 
                   hover:bg-zinc-800 hover:text-zinc-200"
               >
                 Try Again
               </Button>
               <Button
                 onClick={handleClose}
-                className="h-10 px-5 bg-purple-600 hover:bg-purple-500 text-white"
+                className="h-9 px-4 bg-purple-600 hover:bg-purple-500 text-white"
               >
                 Close
               </Button>

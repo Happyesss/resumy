@@ -19,6 +19,35 @@
 
 Resumy helps job seekers build strong resumes from a single workspace: create base resumes, generate tailored versions for specific roles, analyze ATS readiness, improve content with AI, create cover letters and cold emails, and share resumes with analytics.
 
+## Ecosystem Repositories
+
+- Main application (Resumy): https://github.com/Happyesss/resumy
+- Public sharing service (Resumy Share): https://github.com/Happyesss/resumy-share
+
+## Resumy Share Service
+
+Resumy Share is the public link delivery layer for resumes created in the main app. It runs as a dedicated service and powers all public resume URLs.
+
+Primary URL pattern:
+
+- https://share.resumy.live/r/{share_id}
+
+How it is connected to the main app:
+
+1. In the Resumy dashboard, users create or manage share links for a resume.
+2. The main app saves share configuration in Supabase (`resume_shares`) and generates the public URL using `NEXT_PUBLIC_SHARE_URL`.
+3. Resumy Share resolves `share_id` or custom slug, validates active/expiry status, and renders the resume page.
+4. On each valid visit, Resumy Share sends analytics events to `share_view_analytics` and increments view totals.
+5. The main app reads those analytics so users can monitor audience activity from the dashboard.
+
+Cool features in Resumy Share:
+
+- Public resume links with active/expiry controls and optional indexing behavior.
+- Live view tracking and aggregate counters for each shared link.
+- Device, browser, OS, country, and referrer analytics capture.
+- Privacy-conscious session tracking with dedupe windows to reduce inflated counts.
+- In-view actions: copy link, download PDF, and zoom controls (including touch/trackpad pinch).
+
 > This repository includes README, CONTRIBUTING.md, and CODE_OF_CONDUCT.md so GitHub shows the standard top tabs for README, Contributing, and Code of conduct.
 
 ## Product Preview
