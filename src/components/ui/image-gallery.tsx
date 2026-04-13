@@ -38,6 +38,7 @@ export function ImageGallery({
             src={image.src}
             alt={image.alt}
             fill
+            unoptimized={image.src.startsWith("/")}
             className="object-cover"
             sizes="64px"
           />

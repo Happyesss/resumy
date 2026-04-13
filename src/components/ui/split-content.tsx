@@ -40,6 +40,7 @@ export function SplitContent({
   onImageSelect,
   selectedImage,
 }: SplitContentProps) {
+  const isLocalImage = imageSrc.startsWith("/");
   
   // Function to get unique styling for each heading (no icon)
   const getHeadingStyle = (heading: string) => {
@@ -155,6 +156,7 @@ export function SplitContent({
                   src={imageSrc}
                   alt={heading}
                   fill
+                  unoptimized={isLocalImage}
                   className={cn(
                     "rounded-xl transition-all duration-700 group-hover:scale-[1.02] group-hover:brightness-110",
                     imageOverflowRight ? "object-cover" : "object-contain"
