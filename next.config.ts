@@ -1,4 +1,6 @@
 import type { NextConfig } from 'next'
+
+const isCloudflareBuild = process.env.CLOUDFLARE === '1' || process.env.CF_PAGES === '1'
  
 const nextConfig: NextConfig = {
   // Increase server actions body size limit for file uploads (default 1MB is too small)
@@ -60,6 +62,8 @@ const nextConfig: NextConfig = {
   
   // Optimize images
   images: {
+    // Disable Next image optimization when building for Cloudflare.
+    unoptimized: isCloudflareBuild,
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],

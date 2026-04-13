@@ -82,6 +82,31 @@ Your application should now be running at [http://localhost:3000](http://localho
 - Job application tracking
 - Interactive AI writing assistant
 
+## Cloudflare Deployment (OpenNext)
+
+This project can be deployed to Cloudflare using the OpenNext adapter.
+
+1. Build for Cloudflare:
+
+```bash
+pnpm build:cf
+```
+
+2. Preview in Cloudflare runtime locally:
+
+```bash
+pnpm preview:cf
+```
+
+3. Deploy:
+
+```bash
+pnpm deploy:cf
+```
+
+Use `pnpm cf-typegen` to generate `cloudflare-env.d.ts` when you add or update Cloudflare bindings.
+For full deployment details, see `DEPLOYMENT.md`.
+
 ## Troubleshooting
 
 - **Database Connection Issues**: Make sure your PostgreSQL service is running and the DATABASE_URL is correct

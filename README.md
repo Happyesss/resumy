@@ -187,15 +187,30 @@ Open http://localhost:3000.
 ```bash
 pnpm dev         # Start development server (Turbopack)
 pnpm build       # Create production build
+pnpm build:cf    # Build for Cloudflare (OpenNext)
+pnpm preview:cf  # Preview Cloudflare worker locally
+pnpm deploy:cf   # Build and deploy to Cloudflare
+pnpm cf-typegen  # Generate Cloudflare env types
 pnpm start       # Start production server
 pnpm lint        # Run lint checks
 pnpm lint:fix    # Auto-fix lint issues
 pnpm type-check  # Run TypeScript checks
 ```
 
+## Cloudflare Deployment
+
+This app includes first-class Cloudflare deployment wiring using OpenNext.
+
+- Worker entry: `.open-next/worker.js`
+- Static assets: `.open-next/assets`
+- Config files: `wrangler.toml`, `open-next.config.ts`
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for full deploy instructions.
+
 ## Documentation
 
 - [SETUP_GUIDE.md](SETUP_GUIDE.md)
+- [DEPLOYMENT.md](DEPLOYMENT.md)
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 

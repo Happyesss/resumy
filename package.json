@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "NODE_OPTIONS='--max-old-space-size=6144' next dev --turbopack",
     "build": "next build",
-    "build:cf": "pnpm install --no-frozen-lockfile && next build",
+    "build:cf": "CLOUDFLARE=1 opennextjs-cloudflare build",
+    "preview:cf": "CLOUDFLARE=1 opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy:cf": "CLOUDFLARE=1 opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
@@ -122,6 +125,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@opennextjs/cloudflare": "^1.14.4",
     "@shadcn/ui": "^0.0.4",
     "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/typography": "^0.5.15",
@@ -131,7 +135,8 @@
     "@types/react-dom": "^19.0.2",
     "eslint": "^9.17.0",
     "eslint-config-next": "15.1.2",
-    "organize-imports-cli": "^0.10.0"
+    "organize-imports-cli": "^0.10.0",
+    "wrangler": "^4.81.1"
   },
   "engines": {
     "node": ">=20.0.0"
