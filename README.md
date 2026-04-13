@@ -24,6 +24,32 @@ Resumy helps job seekers build strong resumes from a single workspace: create ba
 - Main application (Resumy): https://github.com/Happyesss/resumy
 - Public sharing service (Resumy Share): https://github.com/Happyesss/resumy-share
 
+## Product Preview
+
+![Resumy Dashboard](public/images/Dashboard.png)
+
+## Feature Gallery
+
+| Dashboard | Resume Editor |
+| --- | --- |
+| ![Dashboard Workspace](public/images/Dashboard.png) | ![Resume Editor](public/images/editorImage.png) |
+| Manage base and tailored resumes in one workspace. | Edit content with live preview and autosave. |
+
+| ATS Analysis | AI Assistant |
+| --- | --- |
+| ![ATS Analysis](public/images/analyze.png) | ![AI Assistant](public/images/SS%20Chat.png) |
+| Analyze resume quality, role fit, and keyword gaps. | Improve sections with an in-editor AI assistant. |
+
+| Cover Letter | Cold Email |
+| --- | --- |
+| ![Cover Letter](public/images/coverletter.png) | ![Cold Email](public/images/coldmail.png) |
+| Generate and edit cover letters with synchronized data. | Draft personalized outreach emails quickly. |
+
+| Templates | ATS Result Snapshot |
+| --- | --- |
+| ![Templates](public/images/templates.png) | ![ATS Score Snapshot](public/images/result/score.png) |
+| Switch between multiple professional template styles. | Review score output and optimization feedback. |
+
 ## Resumy Share Service
 
 Resumy Share is the public link delivery layer for resumes created in the main app. It runs as a dedicated service and powers all public resume URLs.
@@ -51,32 +77,6 @@ Cool features in Resumy Share:
 ![Resumy Share Preview](public/images/share.png)
 
 > This repository includes README, CONTRIBUTING.md, and CODE_OF_CONDUCT.md so GitHub shows the standard top tabs for README, Contributing, and Code of conduct.
-
-## Product Preview
-
-![Resumy Dashboard](public/images/Dashboard.png)
-
-## Feature Gallery
-
-| Dashboard | Resume Editor |
-| --- | --- |
-| ![Dashboard Workspace](public/images/Dashboard.png) | ![Resume Editor](public/images/editorImage.png) |
-| Manage base and tailored resumes in one workspace. | Edit content with live preview and autosave. |
-
-| ATS Analysis | AI Assistant |
-| --- | --- |
-| ![ATS Analysis](public/images/analyze.png) | ![AI Assistant](public/images/SS%20Chat.png) |
-| Analyze resume quality, role fit, and keyword gaps. | Improve sections with an in-editor AI assistant. |
-
-| Cover Letter | Cold Email |
-| --- | --- |
-| ![Cover Letter](public/images/coverletter.png) | ![Cold Email](public/images/coldmail.png) |
-| Generate and edit cover letters with synchronized data. | Draft personalized outreach emails quickly. |
-
-| Templates | ATS Result Snapshot |
-| --- | --- |
-| ![Templates](public/images/templates.png) | ![ATS Score Snapshot](public/images/result/score.png) |
-| Switch between multiple professional template styles. | Review score output and optimization feedback. |
 
 ## Complete Feature Set
 
