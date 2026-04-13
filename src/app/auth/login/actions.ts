@@ -2,6 +2,7 @@
 
 import { getAuthenticatedClient, getServiceClient } from "@/utils/actions/utils/supabase";
 import { createClient, createServiceClient } from "@/utils/supabase/server";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 interface AuthResult {
@@ -11,6 +12,32 @@ interface AuthResult {
 
 interface GithubAuthResult extends AuthResult {
   url?: string;
+}
+
+function getEnvSiteUrl(): string | null {
+  const rawUrl = process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL;
+  if (!rawUrl) return null;
+
+  try {
+    return new URL(rawUrl).origin;
+  } catch {
+    return null;
+  }
+}
+
+async function getRequestOrigin(): Promise<string | null> {
+  const requestHeaders = await headers();
+  const host = requestHeaders.get('x-forwarded-host') || requestHeaders.get('host');
+  if (!host) return null;
+
+  const proto = requestHeaders.get('x-forwarded-proto') ||
+    (host.includes('localhost') || host.startsWith('127.0.0.1') ? 'http' : 'https');
+
+  return `${proto}://${host}`;
+}
+
+async function resolveSiteUrl(): Promise<string> {
+  return getEnvSiteUrl() || (await getRequestOrigin()) || 'http://localhost:3000';
 }
 
 // Login
@@ -45,6 +72,7 @@ export async function login(formData: FormData): Promise<AuthResult> {
 // Signup
 export async function signup(formData: FormData): Promise<AuthResult> {
   const supabase = await createServiceClient();
+  const siteUrl = await resolveSiteUrl();
 
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
@@ -57,7 +85,7 @@ export async function signup(formData: FormData): Promise<AuthResult> {
       data: {
         full_name: name,
       },
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/confirm`
+      emailRedirectTo: `${siteUrl}/auth/confirm`
     }
   }
   
@@ -100,10 +128,11 @@ export async function logout() {
 // Password Reset
 export async function resetPasswordForEmail(formData: FormData): Promise<AuthResult> {
   const supabase = await createClient();
+  const siteUrl = await resolveSiteUrl();
   const email = formData.get('email') as string;
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/update-password`,
+    redirectTo: `${siteUrl}/auth/update-password`,
   });
 
   if (error) {
@@ -151,12 +180,13 @@ export async function joinWaitlist(formData: FormData): Promise<AuthResult> {
 // GitHub Sign In
 export async function signInWithGithub(): Promise<GithubAuthResult> {
   const supabase = await createClient();
+  const siteUrl = await resolveSiteUrl();
 
   try {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+        redirectTo: `${siteUrl}/auth/callback`,
         scopes: 'read:user user:email',
         queryParams: {
           next: '/'
@@ -186,12 +216,13 @@ export async function signInWithGithub(): Promise<GithubAuthResult> {
 // LinkedIn Sign In
 export async function signInWithLinkedIn(): Promise<GithubAuthResult> {
   const supabase = await createClient();
+  const siteUrl = await resolveSiteUrl();
 
   try {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'linkedin_oidc',
       options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+        redirectTo: `${siteUrl}/auth/callback`,
         scopes: 'openid profile email',
         queryParams: {
           next: '/'

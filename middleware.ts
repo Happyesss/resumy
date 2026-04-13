@@ -2,6 +2,22 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { updateSession } from '@/utils/supabase/middleware'
 
 export async function middleware(request: NextRequest) {
+  const isLandingPage = request.nextUrl.pathname === '/'
+  const hasOAuthQuery = request.nextUrl.searchParams.has('code') || request.nextUrl.searchParams.has('error')
+
+  // Cloudflare/OpenNext can occasionally return OAuth callbacks to "/".
+  // Forward those requests to the dedicated callback route so code exchange still runs.
+  if (isLandingPage && hasOAuthQuery) {
+    const callbackUrl = request.nextUrl.clone()
+    callbackUrl.pathname = '/auth/callback'
+    return NextResponse.redirect(callbackUrl)
+  }
+
+  // Keep landing page lightweight when there is no auth callback query.
+  if (isLandingPage) {
+    return NextResponse.next()
+  }
+
   try {
     return await updateSession(request)
   } catch (error) {
@@ -33,9 +49,8 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - api/webhooks (webhook endpoints)
-     * - $ (base URL / landing page)
      * Run on all other routes to protect them
      */
-    '/((?!_next/static|_next/image|favicon.ico|api/webhooks|$|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|api/webhooks|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }
