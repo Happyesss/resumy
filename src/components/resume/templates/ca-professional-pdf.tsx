@@ -1,8 +1,18 @@
 'use client';
 
 import { Resume } from "@/lib/types";
-import { Document as PDFDocument, Page as PDFPage, StyleSheet, Text, View } from '@react-pdf/renderer';
+import { Document as PDFDocument, Link, Page as PDFPage, StyleSheet, Text, View } from '@react-pdf/renderer';
 import { memo } from 'react';
+
+const normalizeExternalUrl = (url: string) => {
+  const trimmed = url.trim();
+  if (!trimmed) return '';
+
+  // Mobile PDF viewers require explicit URI schemes for reliable link handling.
+  if (/^[a-zA-Z][a-zA-Z\d+.-]*:/.test(trimmed)) return trimmed;
+
+  return `https://${trimmed}`;
+};
 
 // Utility function to parse markdown and render mixed text with bold formatting
 const parseMarkdownText = (text: string) => {
@@ -286,21 +296,43 @@ interface CAPDFResumeProps {
 
 const CAPDFResume = memo(({ resume }: CAPDFResumeProps) => {
   const renderContactInfo = () => {
-    const contactItems = [];
-    
-    if (resume.email) contactItems.push(resume.email);
-    if (resume.phone_number) contactItems.push(resume.phone_number);
-    if (resume.location) contactItems.push(resume.location);
-    if (resume.linkedin_url) contactItems.push(resume.linkedin_url);
-    if (resume.website) contactItems.push(resume.website);
+    const contactItems: { text: string; href?: string }[] = [];
+
+    if (resume.email) {
+      contactItems.push({ text: resume.email, href: `mailto:${resume.email}` });
+    }
+    if (resume.phone_number) {
+      contactItems.push({ text: resume.phone_number });
+    }
+    if (resume.location) {
+      contactItems.push({ text: resume.location });
+    }
+    if (resume.linkedin_url) {
+      contactItems.push({
+        text: resume.linkedin_url.replace('https://', '').replace('http://', ''),
+        href: normalizeExternalUrl(resume.linkedin_url),
+      });
+    }
+    if (resume.website) {
+      contactItems.push({
+        text: resume.website.replace('https://', '').replace('http://', ''),
+        href: normalizeExternalUrl(resume.website),
+      });
+    }
 
     return (
       <View style={caStyles.contactInfo}>
         {contactItems.map((item, index) => (
-          <Text key={index} style={caStyles.contactItem}>
-            {item}
-            {index < contactItems.length - 1 && ' | '}
-          </Text>
+          <View key={`${item.text}-${index}`} style={{ flexDirection: 'row', alignItems: 'center' }}>
+            {item.href ? (
+              <Link src={item.href} style={[caStyles.contactItem, caStyles.link]}>
+                {item.text}
+              </Link>
+            ) : (
+              <Text style={caStyles.contactItem}>{item.text}</Text>
+            )}
+            {index < contactItems.length - 1 && <Text style={caStyles.contactItem}> | </Text>}
+          </View>
         ))}
       </View>
     );
