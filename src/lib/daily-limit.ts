@@ -4,8 +4,8 @@ import { isEducationalEmail } from './constants';
 import { hasStoredApiKey } from '@/lib/ai-key-storage';
 
 // Daily limit configuration
-export const DAILY_REQUEST_LIMIT = 10;
-export const EDUCATIONAL_DAILY_REQUEST_LIMIT = 18;
+export const DAILY_REQUEST_LIMIT = 20;
+export const EDUCATIONAL_DAILY_REQUEST_LIMIT = 30;
 
 const DAILY_USAGE_STORAGE_KEY = 'ai-daily-usage';
 const LEGACY_DAILY_USAGE_STORAGE_KEY = 'gemini-daily-usage';

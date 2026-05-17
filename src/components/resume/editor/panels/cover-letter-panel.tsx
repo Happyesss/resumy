@@ -2,7 +2,7 @@ import { CreateTailoredResumeDialog } from "@/components/resume/management/dialo
 import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
+import { getAIRequestLimit, hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
 import { Job, Resume } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { generate } from "@/utils/actions/cover-letter/actions";
@@ -25,6 +25,7 @@ export function CoverLetterPanel({
   resume,
   job,
   aiConfig,
+  userEmail,
 }: CoverLetterPanelProps) {
   const { dispatch } = useResumeContext();
   const [isGenerating, setIsGenerating] = useState(false);
@@ -44,10 +45,11 @@ export function CoverLetterPanel({
     if (!job) return;
 
     // Check AI request limit
-    if (hasReachedAILimit()) {
+    if (hasReachedAILimit(userEmail)) {
+      const dailyLimit = getAIRequestLimit(userEmail);
       toast({
         title: "AI Request Limit Reached",
-  description: "You have reached your daily AI request limit.",
+        description: `You have reached today's AI credit limit (${dailyLimit} requests).`,
         variant: "destructive",
       });
       return;

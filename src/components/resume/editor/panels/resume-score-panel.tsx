@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { hasReachedAILimit, incrementAIUsage } from "@/lib/ai-request-limit";
+import { getAIRequestLimit, hasReachedAILimit, incrementAIUsage } from "@/lib/ai-request-limit";
 import { Resume } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { generateResumeScore } from "@/utils/actions/resumes/actions";
@@ -106,7 +106,7 @@ function updateStoredScores(resumeId: string, score: ResumeScoreMetrics) {
   }
 }
 
-export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
+export default function ResumeScorePanel({ resume, userEmail }: ResumeScorePanelProps) {
   const { toast } = useToast();
   const [isCalculating, setIsCalculating] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -125,10 +125,11 @@ export default function ResumeScorePanel({ resume }: ResumeScorePanelProps) {
 
   const handleRecalculate = async () => {
     // Check AI request limit
-    if (hasReachedAILimit()) {
+    if (hasReachedAILimit(userEmail)) {
+      const dailyLimit = getAIRequestLimit(userEmail);
       toast({
         title: "AI Request Limit Reached",
-  description: "You have reached your daily AI request limit.",
+        description: `You have reached today's AI credit limit (${dailyLimit} requests).`,
         variant: "destructive",
       });
       return;

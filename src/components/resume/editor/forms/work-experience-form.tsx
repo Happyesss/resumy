@@ -31,7 +31,7 @@ import {
     TooltipContent, TooltipProvider, TooltipTrigger
 } from "@/components/ui/tooltip";
 import { toast } from "@/hooks/use-toast";
-import { hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
+import { getAIRequestLimit, hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
 import { generateWorkExperiencePoints, improveWorkExperience } from "@/utils/actions/resumes/ai";
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { AIImprovementPrompt } from "../../shared/ai-improvement-prompt";
@@ -207,10 +207,11 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
     if (!exp) return; // Safety check
 
     // Check AI request limit
-    if (hasReachedAILimit()) {
+    if (hasReachedAILimit(profile.email)) {
+      const dailyLimit = getAIRequestLimit(profile.email);
       toast({
         title: "AI Request Limit Reached",
-  description: "You have reached your daily AI request limit.",
+        description: `You have reached today's AI credit limit (${dailyLimit} requests).`,
         variant: "destructive",
       });
       return;
@@ -322,10 +323,11 @@ export const WorkExperienceForm = memo(function WorkExperienceFormComponent({
     const customPrompt = improvementConfig[expIndex]?.[pointIndex] || "";  // Add default value
     
     // Check AI request limit
-    if (hasReachedAILimit()) {
+    if (hasReachedAILimit(profile.email)) {
+      const dailyLimit = getAIRequestLimit(profile.email);
       toast({
         title: "AI Request Limit Reached",
-  description: "You have reached your daily AI request limit.",
+        description: `You have reached today's AI credit limit (${dailyLimit} requests).`,
         variant: "destructive",
       });
       return;

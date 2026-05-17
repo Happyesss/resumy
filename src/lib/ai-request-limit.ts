@@ -9,22 +9,22 @@ import {
 } from '@/lib/daily-limit';
 
 // Backward-compatible wrappers around the single daily limiter.
-export function hasReachedAILimit(_userId?: string): boolean {
-  return hasReachedDailyLimit();
+export function hasReachedAILimit(email?: string | null): boolean {
+  return hasReachedDailyLimit(email);
 }
 
-export function getRemainingAIRequests(_userId?: string): number {
-  return getRemainingRequests();
+export function getRemainingAIRequests(email?: string | null): number {
+  return getRemainingRequests(email);
 }
 
-export function getAIRequestLimit(): number {
-  return getCurrentDailyLimit();
+export function getAIRequestLimit(email?: string | null): number {
+  return getCurrentDailyLimit(email);
 }
 
-export function incrementAIUsage(_userId?: string): void {
+export function incrementAIUsage(_email?: string | null): void {
   incrementDailyUsage();
 }
 
-export function resetAIUsage(_userId?: string): void {
+export function resetAIUsage(_email?: string | null): void {
   resetDailyUsage();
 }

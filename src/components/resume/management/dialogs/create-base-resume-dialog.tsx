@@ -19,7 +19,7 @@ import { ApiErrorDialog } from "@/components/ui/api-error-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
-import { hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
+import { getAIRequestLimit, hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
 import { getResumeLimit } from '@/lib/constants';
 import { countResumes } from '@/utils/actions/resumes/actions';
 import { convertTextToResume } from "@/utils/actions/resumes/ai";
@@ -145,10 +145,11 @@ export function CreateBaseResumeDialog({ children, profile, totalResumesCount }:
     }
 
     // Check AI request limit (only for AI-powered creation)
-    if (importOption === 'import-resume' && hasReachedAILimit()) {
+    if (importOption === 'import-resume' && hasReachedAILimit(profile.email)) {
+      const dailyLimit = getAIRequestLimit(profile.email);
       toast({
         title: "AI Request Limit Reached",
-  description: "You have reached your daily AI request limit.",
+        description: `You have reached today's AI credit limit (${dailyLimit} requests).`,
         variant: "destructive",
       });
       return;

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import Tiptap from '@/components/ui/tiptap';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useToast } from '@/hooks/use-toast';
-import { hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
+import { getAIRequestLimit, hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
 import { getStoredApiKeys, getStoredDefaultModel } from '@/lib/ai-key-storage';
 import { cn } from '@/lib/utils';
 import { improveSummary } from '@/utils/actions/resumes/ai';
@@ -18,7 +18,7 @@ interface SummaryFormProps {
   userEmail?: string | null;
 }
 
-export function SummaryForm({ summary, onChange }: SummaryFormProps) {
+export function SummaryForm({ summary, onChange, userEmail }: SummaryFormProps) {
   const { toast } = useToast();
   const [improvementPrompt, setImprovementPrompt] = useState('');
   const [isImproving, setIsImproving] = useState(false);
@@ -77,10 +77,11 @@ export function SummaryForm({ summary, onChange }: SummaryFormProps) {
       });
       return;
     }
-    if (hasReachedAILimit()) {
+    if (hasReachedAILimit(userEmail)) {
+      const dailyLimit = getAIRequestLimit(userEmail);
       toast({
         title: 'AI Request Limit Reached',
-        description: 'You have reached your daily AI request limit.',
+        description: `You have reached today's AI credit limit (${dailyLimit} requests).`,
         variant: 'destructive'
       });
       return;

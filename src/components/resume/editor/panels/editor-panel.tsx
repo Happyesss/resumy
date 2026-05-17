@@ -195,6 +195,7 @@ export function EditorPanel({
         resume={resume} 
         onResumeChange={onResumeChange}
         job={job}
+        userEmail={profile.email}
       />
     </div>
   );

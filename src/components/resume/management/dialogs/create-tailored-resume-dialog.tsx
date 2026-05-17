@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
-import { hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
+import { getAIRequestLimit, hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
 import { getResumeLimit } from '@/lib/constants';
 import { Profile, Resume } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -81,11 +81,12 @@ export function CreateTailoredResumeDialog({ children, baseResumes, profile, tot
       return;
     }
 
-    // Check AI request limit (hardcoded 50 requests)
-    if (hasReachedAILimit()) {
+    // Check AI request limit
+    if (hasReachedAILimit(profile?.email)) {
+      const dailyLimit = getAIRequestLimit(profile?.email);
       toast({
         title: "AI Request Limit Reached",
-  description: "You have reached your daily AI request limit.",
+        description: `You have reached today's AI credit limit (${dailyLimit} requests).`,
         variant: "destructive",
       });
       return;

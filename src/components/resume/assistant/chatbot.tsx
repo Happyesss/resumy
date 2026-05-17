@@ -18,6 +18,8 @@ import { Card } from "@/components/ui/card";
 import { LoadingDots } from '@/components/ui/loading-dots';
 import { MemoizedMarkdown } from '@/components/ui/memoized-markdown';
 import { Textarea } from '@/components/ui/textarea';
+import { toast } from "@/hooks/use-toast";
+import { getCurrentDailyLimit, hasReachedDailyLimit, incrementDailyUsage } from "@/lib/daily-limit";
 import { Education, Job, Project, Resume, Skill, WorkExperience } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { ApiKey } from '@/utils/ai-tools';
@@ -42,6 +44,7 @@ interface ChatBotProps {
   resume: Resume;
   onResumeChange: (field: keyof Resume, value: Resume[typeof field]) => void;
   job?: Job | null;
+  userEmail?: string | null;
 }
 
 function ScrollToBottom() {
@@ -67,7 +70,7 @@ function ScrollToBottom() {
   );
 }
 
-export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
+export default function ChatBot({ resume, onResumeChange, job, userEmail }: ChatBotProps) {
   const router = useRouter();
   const [accordionValue, setAccordionValue] = React.useState<string>("");
   const [apiKeys, setApiKeys] = React.useState<ApiKey[]>([]);
@@ -227,6 +230,7 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
       }
     },
     onFinish() {
+      incrementDailyUsage();
       setIsInitialLoading(false);
     },
     // onResponse(response) {
@@ -236,7 +240,15 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
 
   // Memoize the submit handler
   const handleSubmit = useCallback((message: string) => {
-
+    if (hasReachedDailyLimit(userEmail)) {
+      const dailyLimit = getCurrentDailyLimit(userEmail);
+      toast({
+        title: "AI Request Limit Reached",
+        description: `You have reached today's AI credit limit (${dailyLimit} requests).`,
+        variant: "destructive",
+      });
+      return;
+    }
 
     setIsInitialLoading(true);
     append({
@@ -246,7 +258,7 @@ export default function ChatBot({ resume, onResumeChange, job }: ChatBotProps) {
 
 
     setAccordionValue("chat");
-  }, [append]);
+  }, [append, userEmail]);
 
   // Add delete handler
   const _handleDelete = (id: string) => {

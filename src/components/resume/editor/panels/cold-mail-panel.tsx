@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
-import { hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
+import { getAIRequestLimit, hasReachedAILimit, incrementAIUsage } from '@/lib/ai-request-limit';
 import { Job, Resume } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { generate } from "@/utils/actions/cold-mail/actions";
@@ -24,6 +24,7 @@ interface ColdMailPanelProps {
 export function ColdMailPanel({
   resume,
   job,
+  userEmail,
 }: ColdMailPanelProps) {
   const { dispatch } = useResumeContext();
   const [isGenerating, setIsGenerating] = useState(false);
@@ -61,10 +62,11 @@ export function ColdMailPanel({
     }
 
     // Check AI request limit
-    if (hasReachedAILimit()) {
+    if (hasReachedAILimit(userEmail)) {
+      const dailyLimit = getAIRequestLimit(userEmail);
       toast({
         title: "AI Request Limit Reached",
-  description: "You have reached your daily AI request limit.",
+        description: `You have reached today's AI credit limit (${dailyLimit} requests).`,
         variant: "destructive",
       });
       return;

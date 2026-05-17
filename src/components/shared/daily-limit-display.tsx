@@ -11,15 +11,15 @@ interface DailyLimitDisplayProps {
   userEmail?: string | null;
 }
 
-export function DailyLimitDisplay({ className, showLabel = true, userEmail: _userEmail }: DailyLimitDisplayProps) {
-  const dailyLimit = getAIRequestLimit();
+export function DailyLimitDisplay({ className, showLabel = true, userEmail }: DailyLimitDisplayProps) {
+  const dailyLimit = getAIRequestLimit(userEmail);
   const [remaining, setRemaining] = useState(dailyLimit);
   const [usesOwnKey, setUsesOwnKey] = useState(false);
 
   useEffect(() => {
     const updateRemaining = () => {
       setUsesOwnKey(hasStoredApiKey());
-      setRemaining(getRemainingAIRequests());
+      setRemaining(getRemainingAIRequests(userEmail));
     };
 
     // Update immediately
@@ -46,7 +46,7 @@ export function DailyLimitDisplay({ className, showLabel = true, userEmail: _use
       clearInterval(interval);
       window.removeEventListener('storage', handleStorageChange);
     };
-  }, []);
+  }, [userEmail]);
 
   const usedCount = dailyLimit - remaining;
   const percentage = (usedCount / dailyLimit) * 100;
