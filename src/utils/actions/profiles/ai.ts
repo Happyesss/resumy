@@ -1,7 +1,9 @@
 'use server';
+import { checkRateLimit } from '@/lib/rateLimiter';
 import { sanitizeUnknownStrings } from '@/lib/utils';
 import { textImportSchema } from '@/lib/zod-schemas';
-import { initializeAIClient, type AIConfig } from '@/utils/ai-tools';
+import { initializeAIClient, isUsingUserProvidedApiKey, type AIConfig } from '@/utils/ai-tools';
+import { getAuthenticatedUser } from '@/utils/auth';
 import { generateObject, LanguageModelV1 } from 'ai';
 import { z } from 'zod';
 
@@ -91,6 +93,10 @@ export async function formatProfileWithAI(
   config?: AIConfig
 ): Promise<Record<string, unknown>> {
     try {
+      const user = await getAuthenticatedUser();
+      if (!isUsingUserProvidedApiKey(config)) {
+        await checkRateLimit(user.id);
+      }
       const aiClient = initializeAIClient(config);
       
       const { object } = await safeGenerateObject({

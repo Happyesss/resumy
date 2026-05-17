@@ -1,11 +1,16 @@
 'use server';
 
+import { checkRateLimit } from '@/lib/rateLimiter';
 import { initializeAIClient, type AIConfig } from '@/utils/ai-tools';
+import { getAuthenticatedUser } from '@/utils/auth';
 import { streamText } from 'ai';
 import { createStreamableValue } from 'ai/rsc';
 
 export async function generate(input: string, config?: AIConfig) {
   try {
+    const user = await getAuthenticatedUser();
+    // cold-mail always uses the platform key — always enforce rate limit
+    await checkRateLimit(user.id);
     const stream = createStreamableValue('');
     const data = JSON.parse(input);
     const { resume, job, recipientName, customPrompt } = data;

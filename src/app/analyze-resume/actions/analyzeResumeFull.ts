@@ -1,9 +1,11 @@
 'use server'
 
 import { ResumeScoreMetrics } from "@/components/resume/editor/panels/resume-score-panel";
+import { checkRateLimit } from '@/lib/rateLimiter';
 import { Resume } from "@/lib/types";
 import { resumeScoreSchema, simplifiedResumeSchema } from "@/lib/zod-schemas";
 import { initializeAIClient } from "@/utils/ai-tools";
+import { getAuthenticatedUser } from '@/utils/auth';
 import { generateObject } from "ai";
 import { z } from "zod";
 
@@ -488,7 +490,10 @@ export async function analyzeResumeFull(
   config: AnalysisConfig = {}
 ): Promise<FullAnalysisResult> {
   const startTime = Date.now();
-  
+
+  const user = await getAuthenticatedUser();
+  await checkRateLimit(user.id);
+
   // Input validation
   if (!resumeText || resumeText.trim().length < 50) {
     throw new Error("Resume text is too short or empty. Please provide a valid resume.");
@@ -575,7 +580,10 @@ export async function analyzeResumeQuick(
   config: Omit<AnalysisConfig, 'atsEnhanced'> = {}
 ): Promise<Omit<FullAnalysisResult, 'atsDiagnostics'>> {
   const startTime = Date.now();
-  
+
+  const user = await getAuthenticatedUser();
+  await checkRateLimit(user.id);
+
   const {
     targetRole = "General",
     includeDetailedFeedback: _includeDetailedFeedback2 = true

@@ -1,11 +1,21 @@
 'use server';
 
 import { PROJECT_GENERATOR_MESSAGE, PROJECT_IMPROVER_MESSAGE, SUMMARY_IMPROVER_MESSAGE, TEXT_ANALYZER_SYSTEM_MESSAGE, WORK_EXPERIENCE_GENERATOR_MESSAGE, WORK_EXPERIENCE_IMPROVER_MESSAGE } from "@/lib/prompts";
+import { checkRateLimit } from '@/lib/rateLimiter';
 import { Resume, WorkExperience } from "@/lib/types";
 import { projectAnalysisSchema, textImportSchema, workExperienceBulletPointsSchema, workExperienceItemsSchema } from "@/lib/zod-schemas";
-import { initializeAIClient, type AIConfig } from '@/utils/ai-tools';
+import { initializeAIClient, isUsingUserProvidedApiKey, type AIConfig } from '@/utils/ai-tools';
+import { getAuthenticatedUser } from '@/utils/auth';
 import { generateObject, generateText } from "ai";
 import { z } from "zod";
+
+// Shared: authenticate + enforce rate limit for platform-managed AI calls
+async function enforceRateLimit(config?: AIConfig): Promise<void> {
+  const user = await getAuthenticatedUser();
+  if (!isUsingUserProvidedApiKey(config)) {
+    await checkRateLimit(user.id);
+  }
+}
 
 // Helper function to clean JSON responses that might be wrapped in markdown
 function cleanJsonResponse(text: string): string {
@@ -85,6 +95,7 @@ async function safeGenerateObject(params: Record<string, unknown>) {
 // Base Resume Creation 
 // TEXT CONTENT -> RESUME
 export async function convertTextToResume(prompt: string, existingResume: Resume, targetRole: string, config?: AIConfig) {
+  await enforceRateLimit(config);
 
   // Use config if provided, otherwise use gemini-2.0-flash for import resume functionality
   const importConfig = config || { model: 'gemini-2.0-flash', apiKeys: [] };
@@ -670,7 +681,8 @@ function parseProjectsSection(text: string): Array<{name: string; description: s
       numPoints: number = 3,
       customPrompt: string = '',
       config?: AIConfig
-    ) { 
+    ) {
+      await enforceRateLimit(config);
       const aiClient = initializeAIClient(config);
   
       const { object } = await safeGenerateObject({
@@ -691,6 +703,7 @@ function parseProjectsSection(text: string): Array<{name: string; description: s
     
       // WORK EXPERIENCE BULLET POINTS IMPROVEMENT
       export async function improveWorkExperience(point: string, customPrompt?: string, config?: AIConfig) {
+          await enforceRateLimit(config);
           const aiClient = initializeAIClient(config);
           
           const { object } = await safeGenerateObject({
@@ -708,7 +721,7 @@ function parseProjectsSection(text: string): Array<{name: string; description: s
     
       // PROJECT BULLET POINTS IMPROVEMENT
       export async function improveProject(point: string, customPrompt?: string, config?: AIConfig) {
-          
+          await enforceRateLimit(config);
           const aiClient = initializeAIClient(config);
 
   
@@ -726,6 +739,7 @@ function parseProjectsSection(text: string): Array<{name: string; description: s
 
       // PROFESSIONAL SUMMARY IMPROVEMENT
       export async function improveSummary(summary: string, customPrompt?: string, config?: AIConfig) {
+        await enforceRateLimit(config);
         const aiClient = initializeAIClient(config);
 
         // For summary we expect plain string back (not JSON object with property) for simplicity
@@ -749,6 +763,7 @@ function parseProjectsSection(text: string): Array<{name: string; description: s
           customPrompt: string = '',
           config?: AIConfig
       ) {
+          await enforceRateLimit(config);
           const aiClient = initializeAIClient(config);
           
           const { object } = await safeGenerateObject({
@@ -768,6 +783,7 @@ function parseProjectsSection(text: string): Array<{name: string; description: s
       
       // Text Import for profile
       export async function processTextImport(text: string, config?: AIConfig) {
+          await enforceRateLimit(config);
           const aiClient = initializeAIClient(config);
           
           const { object } = await safeGenerateObject({
@@ -788,6 +804,7 @@ function parseProjectsSection(text: string): Array<{name: string; description: s
           prompt: string,
           config?: AIConfig
       ) {
+          await enforceRateLimit(config);
           const aiClient = initializeAIClient(config);
           
           const { object } = await safeGenerateObject({
@@ -807,6 +824,7 @@ function parseProjectsSection(text: string): Array<{name: string; description: s
       
       // ADDING TEXT CONTENT TO RESUME
       export async function addTextToResume(prompt: string, existingResume: Resume, config?: AIConfig) {
+          await enforceRateLimit(config);
           const aiClient = initializeAIClient(config);
   
           

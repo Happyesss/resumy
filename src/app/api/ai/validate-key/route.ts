@@ -1,4 +1,5 @@
 import { DEFAULT_MODEL_BY_PROVIDER, normalizeServiceName } from "@/lib/ai-provider-config";
+import { checkRateLimit } from '@/lib/rateLimiter';
 import { initializeAIClient, type AIConfig } from "@/utils/ai-tools";
 import { getAuthenticatedUser } from "@/utils/auth";
 import { generateText } from "ai";
@@ -50,10 +51,21 @@ function buildErrorMessage(rawMessage: string): { success: boolean; error?: stri
 }
 
 export async function POST(request: Request) {
+  let userId: string;
   try {
-    await getAuthenticatedUser();
+    const user = await getAuthenticatedUser();
+    userId = user.id;
   } catch {
     return NextResponse.json({ success: false, error: "Not authenticated" }, { status: 401 });
+  }
+
+  try {
+    // Tight limit: 5 validations per minute to prevent key probing / external API abuse
+    await checkRateLimit(userId, 5, 60);
+  } catch (e) {
+    if (e instanceof Error && e.message.includes('Rate limit exceeded')) {
+      return NextResponse.json({ success: false, error: e.message }, { status: 429 });
+    }
   }
 
   try {

@@ -1,11 +1,17 @@
 'use server';
 
-import { initializeAIClient, type AIConfig } from '@/utils/ai-tools';
+import { checkRateLimit } from '@/lib/rateLimiter';
+import { initializeAIClient, isUsingUserProvidedApiKey, type AIConfig } from '@/utils/ai-tools';
+import { getAuthenticatedUser } from '@/utils/auth';
 import { LanguageModelV1, streamText } from 'ai';
 import { createStreamableValue } from 'ai/rsc';
 
 export async function generate(input: string, config?: AIConfig) {
   try {
+    const user = await getAuthenticatedUser();
+    if (!isUsingUserProvidedApiKey(config)) {
+      await checkRateLimit(user.id);
+    }
     const stream = createStreamableValue('');
     const aiClient = initializeAIClient(config);
 
