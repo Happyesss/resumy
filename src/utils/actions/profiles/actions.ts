@@ -1,8 +1,29 @@
 'use server';
 
+import { cacheKey, deleteCache, getCache, setCache, TTL } from "@/lib/redis";
 import { Profile } from "@/lib/types";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
+
+export async function getProfile(): Promise<Profile | null> {
+  const supabase = await createClient();
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (error || !user) return null;
+
+  const key = cacheKey.profile(user.id);
+  const cached = await getCache<Profile>(key);
+  if (cached) return cached;
+
+  const { data, error: fetchError } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('user_id', user.id)
+    .single();
+
+  if (fetchError || !data) return null;
+  await setCache(key, data, TTL.PROFILE);
+  return data;
+}
 
 export async function updateProfile(data: Partial<Profile>): Promise<Profile> {
   const supabase = await createClient();
@@ -28,6 +49,8 @@ export async function updateProfile(data: Partial<Profile>): Promise<Profile> {
   revalidatePath('/profile/edit', 'layout');
   revalidatePath('/resumes', 'layout');
   revalidatePath('/profile', 'layout');
+
+  await deleteCache(cacheKey.profile(user.id));
 
   return profile;
 }
@@ -104,6 +127,8 @@ export async function importResume(data: Partial<Profile>): Promise<Profile> {
   revalidatePath('/resumes', 'layout');
   revalidatePath('/profile', 'layout');
 
+  await deleteCache(cacheKey.profile(user.id));
+
   return profile;
 }
 
@@ -141,6 +166,8 @@ export async function resetProfile(): Promise<Profile> {
   if (error) {
     throw new Error('Failed to reset profile');
   }
+
+  await deleteCache(cacheKey.profile(user.id));
 
   return profile;
 }

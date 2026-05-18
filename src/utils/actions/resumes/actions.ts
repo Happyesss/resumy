@@ -1,6 +1,7 @@
 'use server'
 
 import { getResumeLimit } from "@/lib/constants";
+import { cacheKey, deleteCache, deleteCacheByPattern, getCache, setCache, TTL } from "@/lib/redis";
 import { Education, Profile, Project, Resume, Skill, WorkExperience } from "@/lib/types";
 import { resumeScoreSchema, simplifiedResumeSchema } from "@/lib/zod-schemas";
 import { AIConfig, initializeAIClient } from "@/utils/ai-tools";
@@ -19,20 +20,24 @@ export async function getResumeById(resumeId: string): Promise<{ resume: Resume;
     return null;
   }
 
+  const resumeCacheKey = cacheKey.resume(user.id, resumeId);
+  const profileCacheKey = cacheKey.profile(user.id);
+
   try {
-    const [resumeResult, profileResult] = await Promise.all([
-      supabase
-        .from('resumes')
-        .select('*')
-        .eq('id', resumeId)
-        .eq('user_id', user.id)
-        .single(),
-      supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', user.id)
-        .single()
+    const [cachedResume, cachedProfile] = await Promise.all([
+      getCache<Resume>(resumeCacheKey),
+      getCache<Profile>(profileCacheKey),
     ]);
+
+    const resumePromise = cachedResume
+      ? Promise.resolve({ data: cachedResume, error: null })
+      : supabase.from('resumes').select('*').eq('id', resumeId).eq('user_id', user.id).single();
+
+    const profilePromise = cachedProfile
+      ? Promise.resolve({ data: cachedProfile, error: null })
+      : supabase.from('profiles').select('*').eq('user_id', user.id).single();
+
+    const [resumeResult, profileResult] = await Promise.all([resumePromise, profilePromise]);
 
     if (resumeResult.error || !resumeResult.data) {
       return null;
@@ -42,9 +47,12 @@ export async function getResumeById(resumeId: string): Promise<{ resume: Resume;
       return null;
     }
 
+    if (!cachedResume) await setCache(resumeCacheKey, resumeResult.data, TTL.RESUME);
+    if (!cachedProfile) await setCache(profileCacheKey, profileResult.data, TTL.PROFILE);
+
     return { 
-      resume: resumeResult.data, 
-      profile: profileResult.data 
+      resume: resumeResult.data as Resume, 
+      profile: profileResult.data as Profile
     };
   } catch (_error) {
     return null;
@@ -70,6 +78,8 @@ export async function updateResume(resumeId: string, data: Partial<Resume>): Pro
   if (updateError) {
     throw new Error('Failed to update resume');
   }
+
+  await deleteCache(cacheKey.resume(user.id, resumeId));
 
   return resume;
 }
@@ -134,6 +144,11 @@ export async function deleteResume(resumeId: string): Promise<void> {
     revalidatePath('/resumes/base', 'layout');
     revalidatePath('/resumes/tailored', 'layout');
     revalidatePath('/jobs', 'layout');
+
+    await Promise.all([
+      deleteCache(cacheKey.resume(user.id, resumeId), cacheKey.recentResumes(user.id)),
+      deleteCacheByPattern(cacheKey.resumeCounts(user.id)),
+    ]);
 
   } catch (error) {
     throw error instanceof Error ? error : new Error('Failed to delete resume');
@@ -248,6 +263,11 @@ export async function createBaseResume(
     console.error('\nNo resume data returned after insert');
     throw new Error('Resume creation failed: No data returned');
   }
+
+  await Promise.all([
+    deleteCache(cacheKey.recentResumes(user.id)),
+    deleteCacheByPattern(cacheKey.resumeCounts(user.id)),
+  ]);
 
   return resume;
 }
@@ -399,7 +419,12 @@ export async function createTailoredResume(
       throw error;
     }
   }
-  
+
+  await Promise.all([
+    deleteCache(cacheKey.recentResumes(user.id)),
+    deleteCacheByPattern(cacheKey.resumeCounts(user.id)),
+  ]);
+
   return data;
 }
 
@@ -494,6 +519,11 @@ export async function copyResume(resumeId: string): Promise<Resume> {
   revalidatePath('/resumes/base', 'layout');
   revalidatePath('/resumes/tailored', 'layout');
 
+  await Promise.all([
+    deleteCache(cacheKey.recentResumes(user.id)),
+    deleteCacheByPattern(cacheKey.resumeCounts(user.id)),
+  ]);
+
   return copiedResume;
 }
 
@@ -504,6 +534,10 @@ export async function countResumes(type: 'base' | 'tailored' | 'all'): Promise<n
   if (error || !user) {
     throw new Error('User not authenticated');
   }
+
+  const key = cacheKey.resumeCount(user.id, type);
+  const cached = await getCache<number>(key);
+  if (cached !== null) return cached;
 
   let query = supabase
     .from('resumes')
@@ -520,7 +554,9 @@ export async function countResumes(type: 'base' | 'tailored' | 'all'): Promise<n
     throw new Error('Failed to count resumes');
   }
 
-  return count || 0;
+  const result = count || 0;
+  await setCache(key, result, TTL.RESUME_COUNT);
+  return result;
 }
 
 

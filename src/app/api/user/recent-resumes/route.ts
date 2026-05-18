@@ -1,10 +1,11 @@
+import { cacheKey, getCache, setCache, TTL } from "@/lib/redis";
 import { createClient } from "@/utils/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(_request: NextRequest) {
   try {
     const supabase = await createClient();
-    
+
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -12,6 +13,10 @@ export async function GET(_request: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+
+    const key = cacheKey.recentResumes(user.id);
+    const cached = await getCache<{ id: string; name: string; target_role: string; created_at: string; is_base_resume: boolean }[]>(key);
+    if (cached) return NextResponse.json({ resumes: cached });
 
     // Get user's most recent resumes
     const { data: resumes, error } = await supabase
@@ -26,7 +31,9 @@ export async function GET(_request: NextRequest) {
       return NextResponse.json({ error: "Failed to fetch resumes" }, { status: 500 });
     }
 
-    return NextResponse.json({ resumes: resumes || [] });
+    const result = resumes || [];
+    await setCache(key, result, TTL.RECENT_RESUMES);
+    return NextResponse.json({ resumes: result });
   } catch (error) {
     console.error("API error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

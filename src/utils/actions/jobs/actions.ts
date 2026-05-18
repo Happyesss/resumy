@@ -1,5 +1,6 @@
 'use server';
 
+import { cacheKey, deleteCacheByPattern, getCache, setCache, TTL } from "@/lib/redis";
 import type { Job } from "@/lib/types";
 import { simplifiedJobSchema } from "@/lib/zod-schemas";
 import { createClient } from "@/utils/supabase/server";
@@ -62,7 +63,9 @@ export async function createJob(jobListing: z.infer<typeof simplifiedJobSchema>)
     console.error('[createJob] Error creating job:', error);
     throw error;
   }
-  
+
+  await deleteCacheByPattern(cacheKey.jobsAll(user.id));
+
   return mapDbJobToJob(data);
 }
 
@@ -99,6 +102,8 @@ export async function deleteJob(jobId: string): Promise<void> {
   // Also revalidate the general paths
   revalidatePath('/', 'layout');
   revalidatePath('/resumes', 'layout');
+
+  await deleteCacheByPattern(cacheKey.jobsAll(user.id));
 }
 
 
@@ -108,6 +113,17 @@ export async function getJobListings({
   filters 
 }: JobListingParams) {
   const supabase = await createClient();
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
+  if (userError || !user) throw new Error('User not authenticated');
+
+  // Only cache unfiltered requests (filtered results are too varied)
+  const hasFilters = filters && Object.values(filters).some(v => v !== undefined && (Array.isArray(v) ? v.length > 0 : true));
+  const key = !hasFilters ? cacheKey.jobs(user.id, page, pageSize) : null;
+
+  if (key) {
+    const cached = await getCache<{ jobs: Job[]; totalCount: number; currentPage: number; totalPages: number }>(key);
+    if (cached) return cached;
+  }
 
   // Calculate offset
   const offset = (page - 1) * pageSize;
@@ -116,6 +132,7 @@ export async function getJobListings({
   let query = supabase
     .from('jobs')
     .select('*', { count: 'exact' })
+    .eq('user_id', user.id)
     .order('created_at', { ascending: false });
 
   // Apply filters if they exist (only for columns that exist in the database)
@@ -145,12 +162,15 @@ export async function getJobListings({
     throw new Error('Failed to fetch job listings');
   }
 
-  return {
+  const result = {
     jobs: jobs?.map(mapDbJobToJob) || [],
     totalCount: count ?? 0,
     currentPage: page,
     totalPages: Math.ceil((count ?? 0) / pageSize)
   };
+
+  if (key) await setCache(key, result, TTL.JOBS);
+  return result;
 }
 
 export async function deleteTailoredJob(jobId: string): Promise<void> {
