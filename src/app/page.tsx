@@ -33,8 +33,8 @@ function formatStarCount(stars: number) {
 
 // Page-specific metadata that extends the base metadata from layout.tsx
 export const metadata: Metadata = {
-  title: "Resumy - Free AI Resume Builder | Create Professional Resumes Online in Minutes",
-  description: "Create professional, ATS-optimized resumes for free with Resumy's AI-powered resume builder. Get hired faster with smart resume templates, keyword optimization, AI assistance, and expert guidance. Build modern resumes that pass applicant tracking systems (ATS) and impress hiring managers. Perfect for software engineers, data scientists, marketing professionals, and all career levels. Start building your perfect resume today - no sign-up required!",
+  title: "Resumy - #1 Free AI Resume Builder | No Paywall, No Subscription, No Credit Card",
+  description: "The best free AI resume builder — create professional ATS-optimized resumes in minutes. Unlike Zety, Novoresume, and Resume.io that charge you to download, Resumy is 100% free forever. AI-powered writing, smart templates, keyword optimization. No hidden fees, no watermarks, no credit card required. Start for free today!",
   keywords: [
     // Long tail keywords - 100 specific phrases
     "free AI powered resume builder online",

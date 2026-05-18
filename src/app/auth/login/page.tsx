@@ -1,6 +1,8 @@
 import { LoginForm } from "@/components/auth/login-form";
 import { createClient } from "@/utils/supabase/server";
+import { ArrowLeft } from "lucide-react";
 import { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
@@ -24,6 +26,16 @@ export default async function LoginPage() {
 
   return (
     <div className="min-h-screen bg-black">
+      {/* Back to home */}
+      <div className="absolute top-4 left-4">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to home
+        </Link>
+      </div>
       <div className="container relative flex pt-20 flex-col items-center justify-center lg:px-0">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[420px]">
           <div className="flex flex-col space-y-2 text-center">

@@ -191,6 +191,46 @@ export function AdvancedSeoSchema() {
               },
               {
                 "@type": "Question",
+                "name": "Is there a truly free resume builder with no hidden fees?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, Resumy is 100% free with absolutely no hidden fees, no watermarks, and no subscription. Many resume builders like Zety, Novoresume, and Resume.io charge you when you try to download. Resumy lets you download your resume as a PDF for free, always."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is Resumy a free alternative to Zety?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Resumy is a completely free alternative to Zety. Unlike Zety which requires a paid subscription to download your resume, Resumy lets you create, edit, and download professional ATS-optimized resumes entirely for free with AI assistance."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is Resumy a free alternative to Novoresume?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Resumy is a free alternative to Novoresume. While Novoresume charges for premium features, Resumy provides AI-powered resume building, ATS optimization, and professional templates — all completely free."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is Resumy a free alternative to Resume.io?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Resumy is a completely free alternative to Resume.io. Resume.io requires a subscription to download your resume, but Resumy gives you everything — AI writing, ATS-friendly templates, and PDF download — at zero cost."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What is the best free AI resume builder in 2025?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Resumy is one of the best free AI resume builders in 2025. It offers AI-powered bullet point generation, ATS optimization, professional templates, and PDF download — all completely free with no credit card required. It is also open source, meaning it is transparent and community-driven."
+                }
+              },
+              {
+                "@type": "Question",
                 "name": "Are Resumy resumes ATS-friendly?",
                 "acceptedAnswer": {
                   "@type": "Answer",
@@ -219,6 +259,14 @@ export function AdvancedSeoSchema() {
                 "acceptedAnswer": {
                   "@type": "Answer",
                   "text": "Our AI analyzes your information and provides suggestions for resume content, keyword optimization, and formatting improvements. It helps you create compelling bullet points and ensures your resume is optimized for your target job."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Do I need to create an account to use Resumy?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "You can start building your resume immediately. Creating a free account allows you to save your resumes and access them from any device."
                 }
               }
             ]

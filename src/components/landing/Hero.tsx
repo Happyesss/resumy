@@ -52,23 +52,20 @@ export function Hero({ githubRepoUrl = "https://github.com/Happyesss/resumyy" }:
 
             <h1 className="text-4xl lg:text-6xl font-extrabold tracking-tight leading-tight">
               <span className="block text-white">
-                Resumes That Work
+                The Best Free
               </span>
               <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Work as Hard
+                AI Resume Builder
               </span>
               <span className="block text-white">
-                As You Do
+                — No Paywalls, Ever.
               </span>
             </h1>
 
             <p className="text-lg lg:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed mt-6">
-              Tell your story. Highlight your strengths. Get hired — with
-              <span className="text-purple-400 font-medium"> AI-crafted resumes </span>
-              tailored to fit your goals.
-            </p>
-            <p className="text-sm text-emerald-200/85 max-w-2xl mx-auto">
-              Built in public, open to contributions, and free for the community.
+              Build ATS-optimized, professional resumes in minutes with AI assistance.
+              <span className="text-purple-400 font-medium"> Completely free</span> — no credit card, no subscription, no limits.
+              While others charge you, we believe great tools should be free for everyone.
             </p>
           </div>
 
