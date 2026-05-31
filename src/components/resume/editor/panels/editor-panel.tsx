@@ -83,7 +83,7 @@ export function EditorPanel({
 
               {/* Tabs container */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <ResumeEditorTabs />
+                <ResumeEditorTabs activeTab={activeTab} />
 
                 {/* Tab content with smooth transitions */}
                 <div className="mt-4">

@@ -1,12 +1,30 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { ArrowRight, Palette, Sparkles } from 'lucide-react';
+import { Check, ChevronRight, Layers, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { TemplateSelectionModal } from '../../templates/template-selection-modal';
-
 import { Resume } from '@/lib/types';
+
+const TEMPLATE_LABELS: Record<string, string> = {
+  'default': 'Default',
+  'modern-1': 'Modern Professional',
+  'classic-1': 'Classic Executive',
+  'minimal-1': 'Minimal Clean',
+  'modern-2': 'Tech Professional',
+  'creative-modern': 'Creative Modern',
+  'creative-minimal': 'Creative Minimal',
+  'ca-professional': 'CA Professional',
+  'software-engineer': 'Software Engineer',
+};
+
+const FEATURES = [
+  'ATS-Optimized Formatting',
+  'Professional Typography',
+  'Customizable Colors',
+  'Multiple Layout Options',
+  'Industry-Specific Designs',
+  'One-Click Application',
+];
 
 interface TemplatesPanelProps {
   resume?: Resume;
@@ -18,111 +36,70 @@ export function TemplatesPanel({ resume, onTemplateSelect }: TemplatesPanelProps
 
   const handleTemplateSelect = (templateId: string) => {
     onTemplateSelect?.(templateId);
-    // Here you would apply the template to the resume
-    console.log('Template selected:', templateId);
-    // Show success message
-    // toast({ title: "Template Applied", description: "Your resume has been updated with the new template." });
   };
 
+  const currentLabel = resume?.template
+    ? (TEMPLATE_LABELS[resume.template] ?? resume.template)
+    : 'Default';
+
   return (
-    <div className="space-y-6 p-4 sm:p-6">
+    <div className="p-4 space-y-3">
       {/* Header */}
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-rose-500/10 rounded-xl flex items-center justify-center border border-rose-500/20">
-          <Palette className="h-5 w-5 text-rose-400" />
+      <div className="flex items-center gap-2.5 mb-1">
+        <div className="w-8 h-8 bg-[#bf5af2]/10 rounded-xl flex items-center justify-center border border-[#bf5af2]/20">
+          <Layers className="h-4 w-4 text-[#bf5af2]" />
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-white">Resume Templates</h3>
-          <p className="text-xs text-zinc-500">Choose from professionally designed templates</p>
+          <h3 className="text-[14px] font-semibold text-white tracking-tight">Resume Templates</h3>
+          <p className="text-[11px] text-white/40">Choose from professionally designed templates</p>
         </div>
       </div>
 
-      {/* Main CTA Card */}
-      <div className={cn(
-        "p-4 sm:p-6 rounded-2xl",
-        "bg-zinc-900/50 border border-zinc-800/80",
-        "hover:border-rose-500/30 transition-all duration-200"
-      )}>
-        <div className="space-y-4 text-center">
-          <div className="flex items-center justify-center gap-2">
-            <Sparkles className="h-5 w-5 text-rose-400" />
-            <h3 className="text-base font-semibold text-white">
-              Transform Your Resume
-            </h3>
+      {/* Current template + CTA */}
+      <div className="bg-[#2c2c2e] rounded-2xl border border-white/[0.07] overflow-hidden">
+        {/* Active template row */}
+        <div className="flex items-center gap-3 px-4 py-3 border-b border-white/[0.05]">
+          <div className="flex-1 min-w-0">
+            <p className="text-[11px] text-white/40 mb-0.5">Active template</p>
+            <p className="text-[13px] font-medium text-white truncate">{currentLabel}</p>
           </div>
-          <p className="text-zinc-400 text-sm max-w-md mx-auto leading-relaxed">
-            Browse our template collection and give your resume a professional makeover.
-            {resume?.template && (
-              <span className="block mt-2 text-xs text-rose-400">
-                Current template: <span className="font-medium">{resume.template}</span>
-              </span>
-            )}
-            {!resume?.template && (
-              <span className="block mt-2 text-xs text-zinc-500">
-                Using default template
-              </span>
-            )}
-          </p>
-          <Button
-            onClick={() => setIsModalOpen(true)}
-            className={cn(
-              "h-10 sm:h-12 mt-2",
-              "bg-gradient-to-r from-rose-500/10 to-pink-500/10",
-              "border border-rose-500/30 hover:border-rose-500/50",
-              "text-rose-400 hover:text-rose-300",
-              "hover:from-rose-500/20 hover:to-pink-500/20",
-              "transition-all duration-200"
-            )}
-          >
-            <Palette className="h-4 w-4 mr-2" />
-            Browse Templates
-            <ArrowRight className="h-4 w-4 ml-2" />
-          </Button>
+          <div className="w-5 h-5 rounded-full bg-[#bf5af2]/20 flex items-center justify-center flex-shrink-0">
+            <Check className="h-3 w-3 text-[#bf5af2]" strokeWidth={3} />
+          </div>
+        </div>
+
+        {/* Browse button */}
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-white/[0.04] transition-colors group"
+        >
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-lg bg-[#bf5af2]/10 flex items-center justify-center">
+              <Sparkles className="h-3.5 w-3.5 text-[#bf5af2]" />
+            </div>
+            <div>
+              <p className="text-[13px] font-medium text-white">Browse Templates</p>
+              <p className="text-[11px] text-white/40">Click to preview & switch instantly</p>
+            </div>
+          </div>
+          <ChevronRight className="h-4 w-4 text-white/30 group-hover:text-white/60 transition-colors flex-shrink-0" />
+        </button>
+      </div>
+
+      {/* Features — compact pill list */}
+      <div className="bg-[#2c2c2e] rounded-2xl border border-white/[0.07] px-4 py-3">
+        <p className="text-[11px] font-medium text-white/40 uppercase tracking-widest mb-2.5">Template Features</p>
+        <div className="grid grid-cols-1 gap-y-2">
+          {FEATURES.map((feature) => (
+            <div key={feature} className="flex items-center gap-2">
+              <div className="w-1 h-1 rounded-full bg-[#bf5af2] flex-shrink-0" />
+              <span className="text-[12px] text-white/70">{feature}</span>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Features List */}
-      <div className={cn(
-        "p-4 sm:p-6 rounded-2xl",
-        "bg-zinc-900/50 border border-zinc-800/80"
-      )}>
-        <div className="flex items-center gap-2 mb-4">
-          <Sparkles className="h-4 w-4 text-rose-400" />
-          <h4 className="text-sm font-semibold text-white">Template Features</h4>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="w-1.5 h-1.5 bg-rose-500 rounded-full" />
-              <span className="text-xs text-zinc-300">ATS-Optimized Formatting</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-1.5 h-1.5 bg-rose-500 rounded-full" />
-              <span className="text-xs text-zinc-300">Professional Typography</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-1.5 h-1.5 bg-rose-500 rounded-full" />
-              <span className="text-xs text-zinc-300">Customizable Colors</span>
-            </div>
-          </div>
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="w-1.5 h-1.5 bg-rose-500 rounded-full" />
-              <span className="text-xs text-zinc-300">Multiple Layout Options</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-1.5 h-1.5 bg-rose-500 rounded-full" />
-              <span className="text-xs text-zinc-300">Industry-Specific Designs</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-1.5 h-1.5 bg-rose-500 rounded-full" />
-              <span className="text-xs text-zinc-300">One-Click Application</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Template Selection Modal */}
+      {/* Floating template picker */}
       <TemplateSelectionModal
         isOpen={isModalOpen}
         onOpenChange={setIsModalOpen}

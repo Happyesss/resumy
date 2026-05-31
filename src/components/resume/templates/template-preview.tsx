@@ -450,6 +450,78 @@ export function TemplatePreview({ templateId, className, enableZoom = false }: T
             </div>
           </div>
         );
+      case 'software-engineer':
+        return (
+          <div className="w-full h-full bg-white p-2 text-xs">
+            {/* Header – centered name + contact row */}
+            <div className="text-center mb-1.5">
+              <div className="h-1.5 bg-black w-1/2 mx-auto mb-0.5"></div>
+              <div className="flex justify-center items-center gap-1">
+                <div className="h-0.5 bg-gray-600 w-5"></div>
+                <div className="w-0.5 h-0.5 bg-gray-400 rounded-full"></div>
+                <div className="h-0.5 bg-gray-600 w-7"></div>
+                <div className="w-0.5 h-0.5 bg-gray-400 rounded-full"></div>
+                <div className="h-0.5 bg-gray-600 w-5"></div>
+              </div>
+            </div>
+            {/* HR separator */}
+            <div className="border-t border-black mb-1.5"></div>
+            {/* Education section */}
+            <div className="mb-1.5">
+              <div className="h-0.5 bg-black w-1/4 mb-1"></div>
+              <div className="flex justify-between mb-0.5">
+                <div className="h-0.5 bg-black w-2/5"></div>
+                <div className="h-0.5 bg-gray-600 w-1/5"></div>
+              </div>
+              <div className="flex justify-between">
+                <div className="h-0.5 bg-gray-500 w-1/3"></div>
+                <div className="h-0.5 bg-gray-500 w-1/6"></div>
+              </div>
+            </div>
+            {/* HR separator */}
+            <div className="border-t border-black mb-1.5"></div>
+            {/* Experience section */}
+            <div className="mb-1.5">
+              <div className="h-0.5 bg-black w-1/3 mb-1"></div>
+              <div className="flex justify-between mb-0.5">
+                <div className="h-0.5 bg-black w-2/5"></div>
+                <div className="h-0.5 bg-gray-600 w-1/4"></div>
+              </div>
+              <div className="flex justify-between mb-0.5">
+                <div className="h-0.5 bg-gray-500 w-1/3"></div>
+                <div className="h-0.5 bg-gray-500 w-1/5"></div>
+              </div>
+              <div className="space-y-0.5">
+                <div className="flex items-start gap-0.5">
+                  <div className="w-0.5 h-0.5 bg-black mt-0.5 flex-shrink-0"></div>
+                  <div className="h-0.5 bg-gray-600 w-full"></div>
+                </div>
+                <div className="flex items-start gap-0.5">
+                  <div className="w-0.5 h-0.5 bg-black mt-0.5 flex-shrink-0"></div>
+                  <div className="h-0.5 bg-gray-600 w-4/5"></div>
+                </div>
+              </div>
+            </div>
+            {/* HR separator */}
+            <div className="border-t border-black mb-1.5"></div>
+            {/* Projects section */}
+            <div>
+              <div className="h-0.5 bg-black w-1/4 mb-1"></div>
+              <div className="flex justify-between mb-0.5">
+                <div className="flex gap-1">
+                  <div className="h-0.5 bg-black w-10"></div>
+                  <div className="h-0.5 bg-gray-400 w-1"></div>
+                  <div className="h-0.5 bg-gray-500 w-8"></div>
+                </div>
+                <div className="h-0.5 bg-gray-600 w-1/5"></div>
+              </div>
+              <div className="flex items-start gap-0.5">
+                <div className="w-0.5 h-0.5 bg-black mt-0.5 flex-shrink-0"></div>
+                <div className="h-0.5 bg-gray-600 w-full"></div>
+              </div>
+            </div>
+          </div>
+        );
       default:
         return (
           <div className="w-full h-full bg-gray-100 p-2 flex items-center justify-center">

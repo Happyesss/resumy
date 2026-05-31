@@ -1,4 +1,5 @@
 // PDF Templates
+export { SoftwareEngineerPDF } from './software-engineer-pdf';
 export { CAPDFResume } from './ca-professional-pdf';
 export { ClassicResumePDF } from './classic-resume-pdf';
 export { CreativeMinimalPDF } from './creative-minimal-pdf';

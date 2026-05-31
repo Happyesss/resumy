@@ -4,6 +4,7 @@ import { Resume } from "@/lib/types";
 import { Document as PDFDocument, Image, Link, Page as PDFPage, StyleSheet, Text, View } from '@react-pdf/renderer';
 import type { ReactNode } from 'react';
 import { memo, useCallback, useMemo } from 'react';
+import { SoftwareEngineerPDF } from '../../templates/software-engineer-pdf';
 import { CAPDFResume } from '../../templates/ca-professional-pdf';
 import { ClassicResumePDF } from '../../templates/classic-resume-pdf';
 import { CreativeMinimalPDF } from '../../templates/creative-minimal-pdf';
@@ -733,6 +734,10 @@ export const ResumePDFDocument = memo(function ResumePDFDocument({ resume, varia
 
   if (safeResume.template && (safeResume.template.includes('ca-professional') || safeResume.template === 'ca-professional')) {
     return <CAPDFResume resume={safeResume} />;
+  }
+
+  if (safeResume.template && (safeResume.template.includes('software-engineer') || safeResume.template === 'software-engineer')) {
+    return <SoftwareEngineerPDF resume={safeResume} variant={variant} />;
   }
 
   // Default template (includes 'default' and undefined template)

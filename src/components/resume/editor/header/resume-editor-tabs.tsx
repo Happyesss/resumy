@@ -3,77 +3,38 @@
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { 
-  Briefcase, 
-  FileText, 
-  FolderGit2, 
-  GraduationCap, 
-  User, 
+import {
+  Briefcase,
+  FileText,
+  FolderGit2,
+  GraduationCap,
+  LucideIcon,
+  User,
   Wrench,
-  LucideIcon
 } from "lucide-react";
+import { CSSProperties } from "react";
 
 interface TabConfig {
   value: string;
   label: string;
   icon: LucideIcon;
-  color: string;
-  bgColor: string;
-  activeGradient: string;
+  hex: string;
 }
 
 const tabs: TabConfig[] = [
-  {
-    value: "basic",
-    label: "Basic Info",
-    icon: User,
-    color: "text-emerald-400",
-    bgColor: "bg-emerald-500/10",
-    activeGradient: "from-emerald-500/20 to-teal-500/10"
-  },
-  {
-    value: "summary",
-    label: "Summary",
-    icon: FileText,
-    color: "text-violet-400",
-    bgColor: "bg-violet-500/10",
-    activeGradient: "from-violet-500/20 to-purple-500/10"
-  },
-  {
-    value: "work",
-    label: "Work",
-    icon: Briefcase,
-    color: "text-blue-400",
-    bgColor: "bg-blue-500/10",
-    activeGradient: "from-blue-500/20 to-cyan-500/10"
-  },
-  {
-    value: "projects",
-    label: "Projects",
-    icon: FolderGit2,
-    color: "text-amber-400",
-    bgColor: "bg-amber-500/10",
-    activeGradient: "from-amber-500/20 to-orange-500/10"
-  },
-  {
-    value: "education",
-    label: "Education",
-    icon: GraduationCap,
-    color: "text-cyan-400",
-    bgColor: "bg-cyan-500/10",
-    activeGradient: "from-cyan-500/20 to-sky-500/10"
-  },
-  {
-    value: "skills",
-    label: "Skills",
-    icon: Wrench,
-    color: "text-rose-400",
-    bgColor: "bg-rose-500/10",
-    activeGradient: "from-rose-500/20 to-pink-500/10"
-  }
+  { value: "basic",     label: "Basic Info",  icon: User,        hex: "#30d158" },
+  { value: "summary",   label: "Summary",     icon: FileText,    hex: "#bf5af2" },
+  { value: "work",      label: "Work",        icon: Briefcase,   hex: "#0a84ff" },
+  { value: "projects",  label: "Projects",    icon: FolderGit2,  hex: "#ffd60a" },
+  { value: "education", label: "Education",   icon: GraduationCap, hex: "#5ac8fa" },
+  { value: "skills",    label: "Skills",      icon: Wrench,      hex: "#ff453a" },
 ];
 
-export function ResumeEditorTabs() {
+interface ResumeEditorTabsProps {
+  activeTab?: string;
+}
+
+export function ResumeEditorTabs({ activeTab }: ResumeEditorTabsProps) {
   return (
     <div className="w-full py-1.5 lg:py-2">
       <TabsList className={cn(
@@ -86,52 +47,65 @@ export function ResumeEditorTabs() {
       )}>
         {tabs.map((tab) => {
           const Icon = tab.icon;
+          const isActive = activeTab === tab.value;
+
+          const triggerStyle: CSSProperties = isActive ? {
+            background: `linear-gradient(135deg, ${tab.hex}26 0%, ${tab.hex}0d 100%)`,
+            boxShadow: `0 0 14px ${tab.hex}28, 0 0 0 1px ${tab.hex}30`,
+          } : {};
+
+          const iconWrapStyle: CSSProperties = isActive ? {
+            background: `${tab.hex}22`,
+          } : {};
+
           return (
             <TooltipProvider key={tab.value} delayDuration={300}>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <TabsTrigger
                     value={tab.value}
+                    style={triggerStyle}
                     className={cn(
                       "group relative flex items-center justify-center",
                       "flex-1 min-w-0",
                       "px-2 lg:px-3 py-2 lg:py-2.5 rounded-lg",
                       "font-medium text-xs",
                       "transition-all duration-200 ease-out",
-                      // Inactive state
                       "text-zinc-500 hover:text-zinc-300",
                       "hover:bg-zinc-800/60",
-                      // Active state
                       "data-[state=active]:text-white",
-                      `data-[state=active]:bg-gradient-to-br data-[state=active]:${tab.activeGradient}`,
                       "data-[state=active]:shadow-md",
                       "data-[state=active]:border data-[state=active]:border-zinc-700/50"
                     )}
                   >
                     {/* Icon container */}
-                    <div className={cn(
-                      "flex items-center justify-center",
-                      "w-6 h-6 lg:w-7 lg:h-7 rounded-lg",
-                      "transition-all duration-200",
-                      tab.bgColor,
-                      "group-data-[state=active]:scale-110",
-                      "group-hover:scale-105"
-                    )}>
-                      <Icon className={cn(
-                        "h-3 w-3 lg:h-3.5 lg:w-3.5 transition-colors duration-200",
-                        "text-zinc-500 group-hover:text-zinc-400",
-                        `group-data-[state=active]:${tab.color}`
-                      )} />
+                    <div
+                      style={iconWrapStyle}
+                      className={cn(
+                        "flex items-center justify-center",
+                        "w-6 h-6 lg:w-7 lg:h-7 rounded-lg",
+                        "transition-all duration-200",
+                        !isActive && "bg-zinc-800/50",
+                        isActive && "scale-110"
+                      )}
+                    >
+                      <Icon
+                        style={{ color: isActive ? tab.hex : undefined }}
+                        className={cn(
+                          "h-3 w-3 lg:h-3.5 lg:w-3.5 transition-colors duration-200",
+                          !isActive && "text-zinc-500 group-hover:text-zinc-400",
+                        )}
+                      />
                     </div>
-                    
+
                     {/* Label - only shown on very wide screens (3xl+) */}
                     <span className="hidden 3xl:inline-block whitespace-nowrap ml-2">
                       {tab.label}
                     </span>
                   </TabsTrigger>
                 </TooltipTrigger>
-                <TooltipContent 
-                  side="bottom" 
+                <TooltipContent
+                  side="bottom"
                   className="3xl:hidden bg-zinc-900 border-zinc-800 text-zinc-300 text-xs"
                 >
                   {tab.label}

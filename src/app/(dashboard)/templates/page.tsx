@@ -12,23 +12,16 @@ export const metadata: Metadata = {
 
 export default async function TemplatesPage() {
   return (
-    <main className="min-h-screen relative pb-12 sm:pb-16 lg:pb-20 bg-black">
-      {/* Background Pattern */}
-      <div 
-        className="absolute inset-0 bg-black"
+    <main className="min-h-screen bg-black relative">
+      {/* Top radial glow */}
+      <div
+        className="pointer-events-none fixed inset-x-0 top-0 h-[420px]"
         style={{
-          backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.4) 1.5px, transparent 1.5px)`,
-          backgroundSize: '40px 40px',
-          backgroundPosition: '0 -1.2rem',
-          backgroundAttachment: 'fixed'
+          background: 'radial-gradient(ellipse 70% 40% at 50% -10%, rgba(255,255,255,0.05) 0%, transparent 70%)',
         }}
       />
-      
-      {/* Content */}
-      <div className="relative z-10">
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
-          <TemplatesGallery />
-        </div>
+      <div className="relative z-10 container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <TemplatesGallery />
       </div>
     </main>
   );
