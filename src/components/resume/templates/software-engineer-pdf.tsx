@@ -249,7 +249,7 @@ const abeyStyles = StyleSheet.create({
     fontSize: 10,
     fontFamily: 'Times-Roman',
     color: COLOR.slateGrey,
-    textDecoration: 'underline',
+    textDecoration: 'none',
   },
   projectDate: {
     fontSize: 9,

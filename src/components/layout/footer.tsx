@@ -33,6 +33,7 @@ export function Footer() {
     {
       title: "Resources",
       links: [
+        { name: "Blog", href: "/blog", icon: <BookOpen className="h-4 w-4" /> },
         { name: "How It Works", href: "#how-it-works", icon: <BookOpen className="h-4 w-4" /> },
         { name: "Pricing", href: "#pricing", icon: <BarChart3 className="h-4 w-4" /> },
         { name: "About Us", href: "#about", icon: <Heart className="h-4 w-4" /> },

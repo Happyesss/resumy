@@ -69,34 +69,34 @@ function NavLink({ href, children, className, onClick }: NavLinkProps) {
 
 function DesktopNavLinks() {
   return (
-    <div className="flex items-center gap-4 lg:gap-5">
+    <div className="flex items-center gap-3 md:gap-4 lg:gap-5">
       <NavLink 
         href="#features" 
-        className="text-white hover:text-purple-400 hover:bg-gray-800/50 px-3 py-2 rounded-lg transition-all duration-200"
+        className="text-white hover:text-purple-400 hover:bg-gray-800/50 px-2.5 py-2 sm:px-3 rounded-lg transition-all duration-200"
       >
         Features
       </NavLink>
       <NavLink 
-        href="#how-it-works" 
-        className="text-white hover:text-purple-400 hover:bg-gray-800/50 px-3 py-2 rounded-lg transition-all duration-200"
-      >
-        How it Works
-      </NavLink>
-      <NavLink 
         href="#pricing" 
-        className="text-white hover:text-purple-400 hover:bg-gray-800/50 px-3 py-2 rounded-lg transition-all duration-200"
+        className="text-white hover:text-purple-400 hover:bg-gray-800/50 px-2.5 py-2 sm:px-3 rounded-lg transition-all duration-200"
       >
         Pricing
       </NavLink>
       <NavLink 
         href="#about" 
-        className="text-white hover:text-purple-400 hover:bg-gray-800/50 px-3 py-2 rounded-lg transition-all duration-200"
+        className="text-white hover:text-purple-400 hover:bg-gray-800/50 px-2.5 py-2 sm:px-3 rounded-lg transition-all duration-200"
       >
         About
       </NavLink>
       <NavLink 
+        href="/blog" 
+        className="text-white hover:text-purple-400 hover:bg-gray-800/50 px-2.5 py-2 sm:px-3 rounded-lg transition-all duration-200"
+      >
+        Blog
+      </NavLink>
+      <NavLink 
         href="/analyze-resume" 
-        className="text-white hover:text-teal-400 hover:bg-gray-800/50 px-3 py-2 rounded-lg transition-all duration-200 font-semibold flex items-center gap-2"
+        className="text-white hover:text-teal-400 hover:bg-gray-800/50 px-2.5 py-2 sm:px-3 rounded-lg transition-all duration-200 font-semibold flex items-center gap-2"
       >
         <Sparkles className="inline-block h-5 w-5 text-teal-400" />
         Analyze Resume
@@ -143,13 +143,6 @@ function MobileNavMenu() {
               Features
             </NavLink>
             <NavLink 
-              href="#how-it-works" 
-              className="block text-white hover:text-purple-400 hover:bg-gray-800/50 px-3 py-2 rounded-lg transition-all duration-200"
-              onClick={() => setIsOpen(false)}
-            >
-              How it Works
-            </NavLink>
-            <NavLink 
               href="#pricing" 
               className="block text-white hover:text-purple-400 hover:bg-gray-800/50 px-3 py-2 rounded-lg transition-all duration-200"
               onClick={() => setIsOpen(false)}
@@ -162,6 +155,13 @@ function MobileNavMenu() {
               onClick={() => setIsOpen(false)}
             >
               About
+            </NavLink>
+            <NavLink 
+              href="/blog" 
+              className="block text-white hover:text-purple-400 hover:bg-gray-800/50 px-3 py-2 rounded-lg transition-all duration-200"
+              onClick={() => setIsOpen(false)}
+            >
+              Blog
             </NavLink>
             <NavLink 
               href="/analyze-resume" 

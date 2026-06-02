@@ -491,8 +491,17 @@ export async function analyzeResumeFull(
 ): Promise<FullAnalysisResult> {
   const startTime = Date.now();
 
-  const user = await getAuthenticatedUser();
-  await checkRateLimit(user.id);
+  let userId: string | null = null;
+  try {
+    const user = await getAuthenticatedUser();
+    userId = user.id;
+  } catch (err) {
+    console.log('Analyze resume running for anonymous user:', err instanceof Error ? err.message : err);
+  }
+
+  if (userId) {
+    await checkRateLimit(userId);
+  }
 
   // Input validation
   if (!resumeText || resumeText.trim().length < 50) {
@@ -581,8 +590,17 @@ export async function analyzeResumeQuick(
 ): Promise<Omit<FullAnalysisResult, 'atsDiagnostics'>> {
   const startTime = Date.now();
 
-  const user = await getAuthenticatedUser();
-  await checkRateLimit(user.id);
+  let userId: string | null = null;
+  try {
+    const user = await getAuthenticatedUser();
+    userId = user.id;
+  } catch (err) {
+    console.log('Quick analyze resume running for anonymous user:', err instanceof Error ? err.message : err);
+  }
+
+  if (userId) {
+    await checkRateLimit(userId);
+  }
 
   const {
     targetRole = "General",

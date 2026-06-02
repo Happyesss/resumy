@@ -209,6 +209,81 @@ body {
   transform: translateY(-2px) !important;
 }
 
+/* ── Blog prose styles ─────────────────────────────────────────────────────── */
+.blog-prose p {
+  @apply text-white/70 text-base leading-[1.85] mb-5;
+}
+
+.blog-prose h3 {
+  @apply text-white/90 text-lg font-semibold mt-8 mb-3 tracking-tight;
+}
+
+.blog-prose h4 {
+  @apply text-white/80 text-base font-semibold mt-6 mb-2;
+}
+
+.blog-prose ul {
+  @apply mb-5 space-y-2;
+}
+
+.blog-prose ol {
+  @apply mb-5 space-y-2 list-decimal;
+}
+
+.blog-prose ul li {
+  @apply text-white/70 text-base leading-relaxed pl-5 relative;
+}
+
+.blog-prose ul li::before {
+  content: '•';
+  @apply absolute left-0 text-purple-400 font-bold;
+}
+
+.blog-prose ol li {
+  @apply text-white/70 text-base leading-relaxed ml-5;
+}
+
+.blog-prose strong {
+  @apply text-white/90 font-semibold;
+}
+
+.blog-prose em {
+  @apply text-white/75 italic;
+}
+
+.blog-prose a {
+  @apply text-purple-400 underline underline-offset-2 decoration-purple-400/40 hover:text-purple-300 hover:decoration-purple-300/60 transition-colors;
+}
+
+.blog-prose blockquote {
+  @apply border-l-2 border-purple-500/50 pl-5 my-6 text-white/60 italic;
+}
+
+.blog-prose code {
+  @apply rounded bg-white/[0.06] px-1.5 py-0.5 text-sm font-mono text-purple-300;
+}
+
+.blog-prose pre {
+  @apply rounded-xl bg-white/[0.04] border border-white/[0.06] p-5 overflow-x-auto my-6;
+}
+
+.blog-prose pre code {
+  @apply bg-transparent p-0 text-white/80;
+}
+
+.blog-prose table {
+  @apply w-full text-sm mb-6 border-collapse;
+}
+
+.blog-prose table th {
+  @apply text-white/80 font-semibold text-left border-b border-white/[0.08] pb-2 pr-4;
+}
+
+.blog-prose table td {
+  @apply text-white/60 border-b border-white/[0.04] py-2 pr-4;
+}
+
+
 @media (max-width: 640px) {
   #bmc-wbtn {
     bottom: 1rem !important;

@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next'
+import { getAllPosts } from '@/lib/blog-data'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://resumy.live'
@@ -360,5 +361,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.80,
     },
+
+    // ─── Blog ─────────────────────────────────────────────────────────────────
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: now,
+      changeFrequency: 'daily',
+      priority: 0.92,
+    },
+    ...getAllPosts().map((post) => ({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: new Date(post.updatedAt),
+      changeFrequency: 'weekly' as const,
+      priority: 0.88,
+    })),
   ]
 }
